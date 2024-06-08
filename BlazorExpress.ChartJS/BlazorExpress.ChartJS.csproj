@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+
+    <PackageId>BlazorExpress.ChartJS</PackageId>
+    <Version>1.0.0-preview1</Version>
+    <PackageVersion>1.0.0-preview1</PackageVersion>
+
+    <!--<PackageIconUrl></PackageIconUrl>-->
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://blazorexpress.com/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/BlazorExpress/BlazorExpress.ChartJS</RepositoryUrl>
+    <PackageTags>Blazor, WebAssembly, BlazorWebAssembly, Charts, BlazorBarChart, BlazorDoughnutChart, BlazorLineChart, BlazorPieChart</PackageTags>
+    <Description>BlazorExpress.ChartJS is a component library built on top of Blazor and ChartJS.</Description>
+    <Authors>Muthu</Authors>
+    <!--<Company>your_company</Company>-->
+    <Copyright>Copyright © 2024 Blazor Express</Copyright>
+    
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.5" />
+  </ItemGroup>
+
+</Project>

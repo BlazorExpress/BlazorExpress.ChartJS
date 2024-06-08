@@ -1,1 +1,1 @@
-# BlazorExpress.ChartJS
+ BlazorExpress.ChartJs component library built on the Blazor and chart.js javascript library.

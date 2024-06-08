@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlazorExpress.ChartJS\BlazorExpress.ChartJS.csproj" />
+  </ItemGroup>
+
+  <Target Name="EmbedDemos" BeforeTargets="PrepareForBuild">
+    <!-- Let's embed demos sources into the assembly to show the source at runtime. -->
+    <ItemGroup>
+      <EmbeddedResource Include="Components\**\*Demo*.razor" />
+      <EmbeddedResource Include="Components\**\*Snippet*" />
+    </ItemGroup>
+  </Target>
+
+</Project>
