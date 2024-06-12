@@ -3,6 +3,7 @@
 public partial class EmptyLayout : LayoutComponentBase
 {
     private string version = default!;
+    private string homeUrl = default!;
     private string docsUrl = default!;
     private string blogUrl = default!;
     private string githubUrl = default!;
@@ -18,6 +19,7 @@ public partial class EmptyLayout : LayoutComponentBase
     protected override void OnInitialized()
     {
         version = $"v{Configuration["version"]}"; // example: v0.6.1
+        homeUrl = $"{Configuration["urls:homeUrl"]}";
         docsUrl = $"{Configuration["urls:docs"]}";
         blogUrl = $"{Configuration["urls:blog"]}";
         githubUrl = $"{Configuration["urls:github"]}";

@@ -14,6 +14,7 @@ public partial class SectionHeading : ComponentBase
     {
         await Task.Delay(200);
         await JS.InvokeVoidAsync("navigateToHeading");
+
         await base.OnAfterRenderAsync(firstRender);
     }
 
@@ -37,14 +38,4 @@ public partial class SectionHeading : ComponentBase
     [Inject] protected IJSRuntime JS { get; set; } = null!;
 
     #endregion
-}
-
-public enum HeadingSize
-{
-    H1,
-    H2,
-    H3,
-    H4,
-    H5,
-    H6
 }

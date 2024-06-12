@@ -1,4 +1,5 @@
-@namespace BlazroExpress.ChartJS.Demo.RCL
+@using BlazorBootstrap
+@namespace BlazorExpress.ChartJS.Demo.RCL
 @inherits ComponentBase
 
 <!--googleoff: index-->
@@ -6,32 +7,6 @@
 {
     <div class="bd-example-snippet bd-code-snippet">
         <div class="d-flex align-items-center highlight-toolbar px-4 py-2 border">
-            <small class="font-monospace text-body-secondary text-uppercase">razor</small>
-            <div class="d-flex ms-auto">
-                <Tooltip Title="@clipboardTooltipTitle" role="button" @onclick="CopyToClipboardAsync">
-                    <Icon Name="@clipboardTooltipIconName" Color="@clipboardTooltipIconColor" />
-                </Tooltip>
-            </div>
-        </div>
-         <div class="highlight">
-             <pre>
-                    <code class="@LanguageCssClass">
-                        @if (codeSnippet is not null)
-                        {
-                            <text>@codeSnippet.Trim()</text>
-                        }
-                    </code>
-                </pre>
-         </div>
-     </div>
-}
-else if (!Tabs)
-{
-    <div class="bd-example-snippet bd-code-snippet">
-        <div class="bb-example">
-            <DynamicComponent Type="this.Type"/>
-        </div>
-        <div class="d-flex align-items-center highlight-toolbar px-4 py-2 border border-top-0">
             <small class="font-monospace text-body-secondary text-uppercase">razor</small>
             <div class="d-flex ms-auto">
                 <Tooltip Title="@clipboardTooltipTitle" role="button" @onclick="CopyToClipboardAsync">
@@ -51,6 +26,32 @@ else if (!Tabs)
         </div>
     </div>
 }
+else if (!Tabs)
+{
+    <div class="bd-example-snippet bd-code-snippet">
+        <div class="bb-example">
+            <DynamicComponent Type="this.Type" />
+        </div>
+        <div class="d-flex align-items-center highlight-toolbar px-4 py-2 border border-top-0">
+            <small class="font-monospace text-body-secondary text-uppercase">razor</small>
+            <div class="d-flex ms-auto">
+                <Tooltip Title="@clipboardTooltipTitle" role="button" @onclick="CopyToClipboardAsync">
+                    <Icon Name="@clipboardTooltipIconName" Color="@clipboardTooltipIconColor" />
+                </Tooltip>
+            </div>
+        </div>
+        <div class="highlight">
+            <pre>
+            <code class="@LanguageCssClass">
+                    @if (codeSnippet is not null)
+                    {
+                        <text>@codeSnippet.Trim()</text>
+                    }
+                        </code>
+                    </pre>
+        </div>
+    </div>
+}
 else // Tabs = true
 {
     <Tabs EnableFadeEffect="true">
@@ -60,7 +61,7 @@ else // Tabs = true
             </TitleTemplate>
             <Content>
                 <div class="bb-example border-top-0 mt-0">
-                    <DynamicComponent Type="this.Type"/>
+                    <DynamicComponent Type="this.Type" />
                 </div>
             </Content>
         </Tab>
@@ -76,13 +77,13 @@ else // Tabs = true
                 </div>
                 <div class="highlight">
                     <pre class="mt-0 me-4">
-                        <code class="@LanguageCssClass">
+                    <code class="@LanguageCssClass">
                             @if (codeSnippet is not null)
                             {
                                 <text>@codeSnippet.Trim()</text>
                             }
-                        </code>
-                    </pre>
+                                </code>
+                            </pre>
                 </div>
             </Content>
         </Tab>

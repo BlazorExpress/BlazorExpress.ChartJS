@@ -2,21 +2,30 @@
 
 public partial class MetaTags : ComponentBase
 {
+    private string homeUrl = default!;
+
     #region Members
 
     private string siteName => "Blazor Express - ChartJS";
 
     private string title => $"{Title} | {siteName}";
 
-    private string url => $"https://demos.blazorbootstrap.com{PageUrl}";
+    private string url => $"{homeUrl}{PageUrl}";
 
     #endregion
 
     #region Methods
 
+    protected override void OnInitialized()
+    {
+        homeUrl = $"{Configuration["urls:homeUrl"]}";
+    }
+
     #endregion
 
     #region Properties
+
+    [Inject] public IConfiguration Configuration { get; set; } = default!;
 
     /// <summary>
     /// Meta Url.

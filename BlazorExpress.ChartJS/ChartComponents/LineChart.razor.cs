@@ -2,6 +2,8 @@
 
 public partial class LineChart : ChartComponentBase
 {
+    private const string _jsObjectName = "window.blazorexpress.chartjs.line";
+
     #region Constructors
 
     public LineChart()
@@ -19,7 +21,7 @@ public partial class LineChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentNullException(nameof(chartData.Datasets));
+            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
 
         if (data is null)
             throw new ArgumentNullException(nameof(data));
@@ -29,21 +31,21 @@ public partial class LineChart : ChartComponentBase
                 if (data is LineChartDatasetData lineChartDatasetData)
                     lineChartDataset.Data?.Add(lineChartDatasetData.Data);
 
-        await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.line.addDatasetData", Id, dataLabel, data);
+        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetData", Id, dataLabel, data);
 
         return chartData;
     }
 
-    public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, List<IChartDatasetData> data)
+    public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data)
     {
         if (chartData is null)
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentNullException(nameof(chartData.Datasets));
+            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
 
         if (chartData.Labels is null)
-            throw new ArgumentNullException(nameof(chartData.Labels));
+            throw new ArgumentException("chartData.Labels must not be null", nameof(chartData));
 
         if (dataLabel is null)
             throw new ArgumentNullException(nameof(dataLabel));
@@ -74,7 +76,7 @@ public partial class LineChart : ChartComponentBase
                     lineChartDataset.Data?.Add(lineChartDatasetData.Data);
             }
 
-        await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.line.addDatasetsData", Id, dataLabel, data?.Select(x => (LineChartDatasetData)x));
+        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetsData", Id, dataLabel, data?.Select(x => (LineChartDatasetData)x));
 
         return chartData;
     }
@@ -93,7 +95,7 @@ public partial class LineChart : ChartComponentBase
         if (chartDataset is LineChartDataset)
         {
             chartData.Datasets.Add(chartDataset);
-            await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.line.addDataset", Id, (LineChartDataset)chartDataset);
+            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDataset", Id, (LineChartDataset)chartDataset);
         }
 
         return chartData;
@@ -112,7 +114,7 @@ public partial class LineChart : ChartComponentBase
 
         var datasets = chartData.Datasets.OfType<LineChartDataset>();
         var data = new { chartData.Labels, Datasets = datasets };
-        await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.line.initialize", Id, GetChartType(), data, (LineChartOptions)chartOptions, plugins);
+        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.initialize", Id, GetChartType(), data, (LineChartOptions)chartOptions, plugins);
     }
 
     public override async Task UpdateAsync(ChartData chartData, IChartOptions chartOptions)
@@ -128,7 +130,7 @@ public partial class LineChart : ChartComponentBase
 
         var datasets = chartData.Datasets.OfType<LineChartDataset>();
         var data = new { chartData.Labels, Datasets = datasets };
-        await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.line.update", Id, GetChartType(), data, (LineChartOptions)chartOptions);
+        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.update", Id, GetChartType(), data, (LineChartOptions)chartOptions);
     }
 
     #endregion

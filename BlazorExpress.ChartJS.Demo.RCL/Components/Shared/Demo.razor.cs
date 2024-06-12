@@ -4,9 +4,9 @@ public partial class Demo : ComponentBase
 {
     #region Fields and Constants
 
-    //private IconColor clipboardTooltipIconColor = IconColor.Dark;
+    private IconColor clipboardTooltipIconColor = IconColor.Dark;
 
-    //private IconName clipboardTooltipIconName = IconName.Clipboard;
+    private IconName clipboardTooltipIconName = IconName.Clipboard;
 
     private string? clipboardTooltipTitle = "Copy to clipboard";
 
@@ -78,8 +78,8 @@ public partial class Demo : ComponentBase
     public void OnCopySuccessJS()
     {
         clipboardTooltipTitle = "Copied!";
-        //clipboardTooltipIconName = IconName.Check2;
-        //clipboardTooltipIconColor = IconColor.Success;
+        clipboardTooltipIconName = IconName.Check2;
+        clipboardTooltipIconColor = IconColor.Success;
 
         StateHasChanged();
     }
@@ -91,8 +91,8 @@ public partial class Demo : ComponentBase
     public void ResetCopyStatusJS()
     {
         clipboardTooltipTitle = "Copy to clipboard";
-        //clipboardTooltipIconName = IconName.Clipboard;
-        //clipboardTooltipIconColor = IconColor.Dark;
+        clipboardTooltipIconName = IconName.Clipboard;
+        clipboardTooltipIconColor = IconColor.Dark;
 
         StateHasChanged();
     }

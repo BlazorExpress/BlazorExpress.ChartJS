@@ -1,11 +1,11 @@
 ﻿namespace BlazorExpress.ChartJS;
 
 /// <summary>
-/// Generates unique base32-encoded IDs.
+/// Generates efficient base32-encoded IDs.
 /// <see href="https://github.com/dotnet/aspnetcore/blob/main/src/Servers/Kestrel/shared/CorrelationIdGenerator.cs" />
 /// <see href="https://github.com/dotnet/orleans/blob/main/src/Orleans.Core/Networking/Shared/CorrelationIdGenerator.cs" />
 /// </summary>
-public static class ChartComponentIdGenerator
+public static class IdUtility
 {
     #region Fields and Constants
 
@@ -23,16 +23,16 @@ public static class ChartComponentIdGenerator
     #region Methods
 
     /// <summary>
-    /// Generates a base32-encoded unique Id.
+    /// Generates a base32-encoded ID.
     /// </summary>
-    /// <returns>The base32-encoded unique Id.</returns>
+    /// <returns>The base32-encoded ID.</returns>
     public static string GetNextId() => GenerateId(Interlocked.Increment(ref lastId));
 
     private static string GenerateId(long id)
     {
         return string.Create(13, id, (buffer, value) =>
         {
-            char[] encode32Chars = ChartComponentIdGenerator.encode32Chars;
+            char[] encode32Chars = IdUtility.encode32Chars;
 
             buffer[12] = encode32Chars[value & 31];
             buffer[11] = encode32Chars[(value >> 5) & 31];
