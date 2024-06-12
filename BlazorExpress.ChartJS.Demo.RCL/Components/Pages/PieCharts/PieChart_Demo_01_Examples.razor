@@ -1,9 +1,9 @@
 ﻿<PieChart @ref="pieChart" Width="500" />
 
 <div class="mt-5">
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await RandomizeAsync()"> Randomize </Button>
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await AddDatasetAsync()"> Add Dataset </Button>
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await AddDataAsync()">Add Data</Button>
+    <button class="btn btn-primary btn-sm" @onclick="async () => await RandomizeAsync()"> Randomize </button>
+    <button class="btn btn-primary btn-sm" @onclick="async () => await AddDatasetAsync()"> Add Dataset </button>
+    <button class="btn btn-primary btn-sm" @onclick="async () => await AddDataAsync()">Add Data</button>
 </div>
 
 @code {

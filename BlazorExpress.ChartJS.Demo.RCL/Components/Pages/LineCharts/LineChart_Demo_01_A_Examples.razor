@@ -1,11 +1,11 @@
 ﻿<LineChart @ref="lineChart" Width="500" Height="200" />
 
 <div class="mt-5">
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await RandomizeAsync()"> Randomize </Button>
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await AddDatasetAsync()"> Add Dataset </Button>
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await AddDataAsync()"> Add Data </Button>
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await ShowHorizontalLineChartAsync()"> Horizontal Line Chart </Button>
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await ShowVerticalLineChartAsync()"> Vertical Line Chart </Button>
+    <button class="btn btn-primary btn-sm" @onclick="async () => await RandomizeAsync()"> Randomize </button>
+    <button class="btn btn-primary btn-sm" @onclick="async () => await AddDatasetAsync()"> Add Dataset </button>
+    <button class="btn btn-primary btn-sm" @onclick="async () => await AddDataAsync()"> Add Data </button>
+    <button class="btn btn-primary btn-sm" @onclick="async () => await ShowHorizontalLineChartAsync()"> Horizontal Line Chart </button>
+    <button class="btn btn-primary btn-sm" @onclick="async () => await ShowVerticalLineChartAsync()"> Vertical Line Chart </button>
 </div>
 
 @code {

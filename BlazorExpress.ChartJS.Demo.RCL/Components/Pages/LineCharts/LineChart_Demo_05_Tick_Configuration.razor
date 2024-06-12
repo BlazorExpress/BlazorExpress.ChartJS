@@ -1,9 +1,9 @@
 ﻿<LineChart @ref="lineChart" Width="500" Height="200" />
 
 <div class="mt-5">
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await ChangeTicksAlignmentToStart()"> Alignment: start </Button>
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await ChangeTicksAlignmentToCenter()"> Alignment: center (default) </Button>
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await ChangeTicksAlignmentToEnd()"> Alignment: end </Button>
+    <button class="btn btn-primary btn-sm" @onclick="async () => await ChangeTicksAlignmentToStart()"> Alignment: start </button>
+    <button class="btn btn-primary btn-sm" @onclick="async () => await ChangeTicksAlignmentToCenter()"> Alignment: center (default) </button>
+    <button class="btn btn-primary btn-sm" @onclick="async () => await ChangeTicksAlignmentToEnd()"> Alignment: end </button>
 </div>
 
 @code {
