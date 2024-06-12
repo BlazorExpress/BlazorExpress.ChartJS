@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="components\pages\Index.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
@@ -31,23 +27,5 @@
       <EmbeddedResource Include="Components\**\*Snippet*" />
     </ItemGroup>
   </Target>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="components\pages\Index.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="components\pages\Index.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="components\pages\Index.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Components\Pages\DoughnutCharts\" />
-    <Folder Include="Components\Pages\LineCharts\" />
-    <Folder Include="Components\Pages\PieCharts\" />
-  </ItemGroup>
 
 </Project>
