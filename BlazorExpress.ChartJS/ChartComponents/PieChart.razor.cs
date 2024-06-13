@@ -2,6 +2,8 @@
 
 public partial class PieChart : ChartComponentBase
 {
+    private const string _jsObjectName = "window.blazorexpress.chartjs.pie";
+
     #region Constructors
 
     public PieChart()
@@ -19,7 +21,7 @@ public partial class PieChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentNullException(nameof(chartData.Datasets));
+            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
 
         if (data is null)
             throw new ArgumentNullException(nameof(data));
@@ -32,21 +34,21 @@ public partial class PieChart : ChartComponentBase
                     pieChartDataset.BackgroundColor?.Add(pieChartDatasetData.BackgroundColor!);
                 }
 
-        await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.pie.addDatasetData", Id, dataLabel, data);
+        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetData", Id, dataLabel, data);
 
         return chartData;
     }
 
-    public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, List<IChartDatasetData> data)
+    public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data)
     {
         if (chartData is null)
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentNullException(nameof(chartData.Datasets));
+            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
 
         if (chartData.Labels is null)
-            throw new ArgumentNullException(nameof(chartData.Labels));
+            throw new ArgumentException("chartData.Labels must not be null", nameof(chartData));
 
         if (dataLabel is null)
             throw new ArgumentNullException(nameof(dataLabel));
@@ -80,7 +82,7 @@ public partial class PieChart : ChartComponentBase
                 }
             }
 
-        await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.pie.addDatasetsData", Id, dataLabel, data?.Select(x => (PieChartDatasetData)x));
+        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetsData", Id, dataLabel, data?.Select(x => (PieChartDatasetData)x));
 
         return chartData;
     }
@@ -99,7 +101,7 @@ public partial class PieChart : ChartComponentBase
         if (chartDataset is PieChartDataset pieChartDataset)
         {
             chartData.Datasets.Add(pieChartDataset);
-            await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.pie.addDataset", Id, pieChartDataset);
+            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDataset", Id, pieChartDataset);
         }
 
         return chartData;
@@ -111,7 +113,7 @@ public partial class PieChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<PieChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.pie.initialize", Id, GetChartType(), data, (PieChartOptions)chartOptions, plugins);
+            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.initialize", Id, GetChartType(), data, (PieChartOptions)chartOptions, plugins);
         }
     }
 
@@ -121,7 +123,7 @@ public partial class PieChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<PieChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.pie.update", Id, GetChartType(), data, (PieChartOptions)chartOptions);
+            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.update", Id, GetChartType(), data, (PieChartOptions)chartOptions);
         }
     }
 

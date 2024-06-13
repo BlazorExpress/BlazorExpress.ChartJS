@@ -112,13 +112,13 @@ public class LineChartDataset : ChartDataset
     // https://www.chartjs.org/docs/latest/api/interfaces/LineControllerDatasetOptions.html#segment
 
     /// <summary>
-    /// If false, the lines between points are not drawn.
+    /// If <see langword="false"/>, the lines between points are not drawn.
     /// </summary>
     public bool ShowLine { get; set; } = true;
 
     /// <summary>
-    /// If true, lines will be drawn between points with no or null data.
-    /// If false, points with null data will create a break in the line.
+    /// If <see langword="true"/>, lines will be drawn between points with no or null data.
+    /// If <see langword="false"/>, points with null data will create a break in the line.
     /// Can also be a number specifying the maximum gap length to span.
     /// The unit of the value depends on the scale used.
     /// </summary>

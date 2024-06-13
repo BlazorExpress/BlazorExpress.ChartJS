@@ -2,6 +2,8 @@
 
 public partial class BarChart : ChartComponentBase
 {
+    private const string _jsObjectName = "window.blazorexpress.chartjs.bar";
+
     #region Constructors
 
     public BarChart()
@@ -19,7 +21,7 @@ public partial class BarChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentNullException(nameof(chartData.Datasets));
+            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
 
         if (data is null)
             throw new ArgumentNullException(nameof(data));
@@ -29,21 +31,21 @@ public partial class BarChart : ChartComponentBase
                 if (data is BarChartDatasetData barChartDatasetData)
                     barChartDataset.Data?.Add(barChartDatasetData.Data);
 
-        await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.bar.addDatasetData", Id, dataLabel, data);
+        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetData", Id, dataLabel, data);
 
         return chartData;
     }
 
-    public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, List<IChartDatasetData> data)
+    public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data)
     {
         if (chartData is null)
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentNullException(nameof(chartData.Datasets));
+            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
 
         if (chartData.Labels is null)
-            throw new ArgumentNullException(nameof(chartData.Labels));
+            throw new ArgumentException("chartData.Labels must not be null", nameof(chartData));
 
         if (dataLabel is null)
             throw new ArgumentNullException(nameof(dataLabel));
@@ -74,7 +76,7 @@ public partial class BarChart : ChartComponentBase
                     barChartDataset.Data?.Add(barChartDatasetData.Data);
             }
 
-        await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.bar.addDatasetsData", Id, dataLabel, data?.Select(x => (BarChartDatasetData)x));
+        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetsData", Id, dataLabel, data?.Select(x => (BarChartDatasetData)x));
 
         return chartData;
     }
@@ -85,7 +87,7 @@ public partial class BarChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentNullException(nameof(chartData.Datasets));
+            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
 
         if (chartDataset is null)
             throw new ArgumentNullException(nameof(chartDataset));
@@ -93,7 +95,7 @@ public partial class BarChart : ChartComponentBase
         if (chartDataset is BarChartDataset)
         {
             chartData.Datasets.Add(chartDataset);
-            await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.bar.addDataset", Id, (BarChartDataset)chartDataset);
+            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDataset", Id, (BarChartDataset)chartDataset);
         }
 
         return chartData;
@@ -105,7 +107,7 @@ public partial class BarChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<BarChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.bar.initialize", Id, GetChartType(), data, (BarChartOptions)chartOptions, plugins);
+            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.initialize", Id, GetChartType(), data, (BarChartOptions)chartOptions, plugins);
         }
     }
 
@@ -115,7 +117,7 @@ public partial class BarChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<BarChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.bar.update", Id, GetChartType(), data, (BarChartOptions)chartOptions);
+            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.update", Id, GetChartType(), data, (BarChartOptions)chartOptions);
         }
     }
 

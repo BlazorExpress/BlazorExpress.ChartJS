@@ -1,0 +1,22 @@
+﻿@attribute [Route(pageUrl)]
+
+<PageHeroSection PageUrl="@pageUrl"
+                 Title="@title"
+                 Heading="@heading"
+                 Description="@description"
+                 ImageUrl="@imageUrl" />
+
+<SectionHeading Size="HeadingSize.H4" Text="Locale" PageUrl="@pageUrl" HashTagName="locale" />
+<div class="my-3">
+    By default, the chart is using the default locale of the platform on which it is running.
+    In the following example, you will see the chart in the <b>German</b> locale (<b>de_DE</b>).
+</div>
+<Demo Type="typeof(LineChart_Demo_04_Locale)" Tabs="true" />
+
+@code {
+    private const string pageUrl = "/charts/line-chart/locale";
+    private const string title = "Blazor Line Chart";
+    private const string heading = "Blazor Line Chart";
+    private const string description = "A Blazor line chart component is a graphical representation of data that uses a series of connected points to show how the data changes over time. It is a type of x-y chart, where the x-axis represents the independent variable, such as time, and the y-axis represents the dependent variable, such as the value.";
+    private const string imageUrl = "https://i.imgur.com/8b7jH0D.png";
+}

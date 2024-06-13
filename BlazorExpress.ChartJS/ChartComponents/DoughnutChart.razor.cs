@@ -2,6 +2,8 @@
 
 public partial class DoughnutChart : ChartComponentBase
 {
+    private const string _jsObjectName = "window.blazorexpress.chartjs.doughnut";
+
     #region Constructors
 
     public DoughnutChart()
@@ -19,7 +21,7 @@ public partial class DoughnutChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentNullException(nameof(chartData.Datasets));
+            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
 
         if (data is null)
             throw new ArgumentNullException(nameof(data));
@@ -32,21 +34,21 @@ public partial class DoughnutChart : ChartComponentBase
                     doughnutChartDataset.BackgroundColor?.Add(doughnutChartDatasetData.BackgroundColor!);
                 }
 
-        await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.doughnut.addDatasetData", Id, dataLabel, data);
+        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetData", Id, dataLabel, data);
 
         return chartData;
     }
 
-    public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, List<IChartDatasetData> data)
+    public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data)
     {
         if (chartData is null)
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentNullException(nameof(chartData.Datasets));
+            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
 
         if (chartData.Labels is null)
-            throw new ArgumentNullException(nameof(chartData.Labels));
+            throw new ArgumentException("chartData.Labels must not be null", nameof(chartData));
 
         if (dataLabel is null)
             throw new ArgumentNullException(nameof(dataLabel));
@@ -80,7 +82,7 @@ public partial class DoughnutChart : ChartComponentBase
                 }
             }
 
-        await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.doughnut.addDatasetsData", Id, dataLabel, data?.Select(x => (DoughnutChartDatasetData)x));
+        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetsData", Id, dataLabel, data?.Select(x => (DoughnutChartDatasetData)x));
 
         return chartData;
     }
@@ -91,7 +93,7 @@ public partial class DoughnutChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentNullException(nameof(chartData.Datasets));
+            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
 
         if (chartDataset is null)
             throw new ArgumentNullException(nameof(chartDataset));
@@ -99,7 +101,7 @@ public partial class DoughnutChart : ChartComponentBase
         if (chartDataset is DoughnutChartDataset doughnutChartDataset)
         {
             chartData.Datasets.Add(doughnutChartDataset);
-            await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.doughnut.addDataset", Id, doughnutChartDataset);
+            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDataset", Id, doughnutChartDataset);
         }
 
         return chartData;
@@ -111,7 +113,7 @@ public partial class DoughnutChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<DoughnutChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.doughnut.initialize", Id, GetChartType(), data, (DoughnutChartOptions)chartOptions, plugins);
+            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.initialize", Id, GetChartType(), data, (DoughnutChartOptions)chartOptions, plugins);
         }
     }
 
@@ -121,7 +123,7 @@ public partial class DoughnutChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<DoughnutChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync("window.blazorexpress.chartjs.doughnut.update", Id, GetChartType(), data, (DoughnutChartOptions)chartOptions);
+            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.update", Id, GetChartType(), data, (DoughnutChartOptions)chartOptions);
         }
     }
 

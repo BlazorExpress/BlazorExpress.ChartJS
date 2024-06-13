@@ -25,7 +25,7 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
     /// <inheritdoc />
     protected override void OnInitialized()
     {
-        Id ??= ChartComponentIdGenerator.GetNextId();
+        Id ??= IdUtility.GetNextId();
 
         base.OnInitialized();
     }
@@ -38,7 +38,7 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
 
     public virtual async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IChartDatasetData data) => await Task.FromResult(chartData);
 
-    public virtual async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, List<IChartDatasetData> data) => await Task.FromResult(chartData);
+    public virtual async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data) => await Task.FromResult(chartData);
 
     public virtual async Task<ChartData> AddDatasetAsync(ChartData chartData, IChartDataset chartDataset, IChartOptions chartOptions) => await Task.FromResult(chartData);
 
@@ -153,7 +153,7 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
     }
 
     /// <inheritdoc />
-    /// <seealso cref="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable?view=net-6.0" />
+    /// <seealso href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable?view=net-6.0" />
     public void Dispose()
     {
         Dispose(true);
@@ -162,7 +162,7 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
 
     /// <inheritdoc />
     /// <seealso
-    ///     cref="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-disposeasync#implement-both-dispose-and-async-dispose-patterns" />
+    ///     href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-disposeasync#implement-both-dispose-and-async-dispose-patterns" />
     public async ValueTask DisposeAsync()
     {
         await DisposeAsyncCore(true).ConfigureAwait(false);
