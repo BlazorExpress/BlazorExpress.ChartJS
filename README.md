@@ -37,6 +37,8 @@ Get started any way you want
 
 ## Components
 
+| Component Name | Demos |
+|:--|:--|
 | Charts: Bar chart | [Demos](https://chartjs.blazorexpress.com/charts/bar-chart) |
 | Charts: Doughnut chart | [Demos](https://chartjs.blazorexpress.com/charts/doughnut-chart) |
 | Charts: Line chart | [Demos](https://chartjs.blazorexpress.com/charts/line-chart) |
