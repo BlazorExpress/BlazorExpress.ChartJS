@@ -1,4 +1,4 @@
-@attribute [Route(pageUrl)]
+﻿@attribute [Route(pageUrl)]
 
 <PageHeroSection PageUrl="@pageUrl"
                  Title="@title"
@@ -16,12 +16,12 @@
     For data visualization, you can use the predefined palettes <code>ColorUtility.CategoricalTwelveColors</code> for a 12-color palette and <code>ColorUtility.CategoricalSixColors</code> for a 6-color palette.
     These palettes offer a range of distinct and visually appealing colors that can be applied to represent different categories or data elements in your visualizations.
 </BlazorBootstrap.Callout>
-@* <Demo Type="typeof(DoughnutChart_Demo_01_Examples)" Tabs="true" /> *@
+<Demo Type="typeof(PieChart_Demo_01_Examples)" Tabs="true" />
 
 @code {
-    private const string pageUrl = "/charts/getting-started";
-    private const string title = "Blazor Doughnut Chart";
-    private const string heading = "Blazor Doughnut Chart";
-    private const string description = "A Blazor donut chart component is a circular chart that shows the proportional values of different categories. It is similar to a pie chart, but the center of the donut chart is hollow. This makes it easier to see the individual values of each category.";
-    private const string imageUrl = "https://i.imgur.com/xEPhAsW.png";
+    private const string pageUrl = "/charts/pie-chart";
+    private const string title = "Blazor Pie Chart";
+    private const string heading = "Blazor Pie Chart";
+    private const string description = "A Blazor pie chart component is a circular chart that shows the proportional values of different categories.";
+    private const string imageUrl = "https://i.imgur.com/ieBupT2.png";
 }
