@@ -1,14 +1,10 @@
 @attribute [Route(pageUrl)]
 
-<PageTitle>@title</PageTitle>
-
-<MetaTags PageUrl="@pageUrl" Title="@title" Description="@description" ImageUrl="@imageUrl" />
-
-<h1>@heading</h1>
-
-<div class="lead mb-3">@description</div>
-
-@* <CarbonAds /> *@
+<PageHeroSection PageUrl="@pageUrl"
+                 Title="@title"
+                 Heading="@heading"
+                 Description="@description"
+                 ImageUrl="@imageUrl" />
 
 <SectionHeading Size="HeadingSize.H4" Text="Data labels" PageUrl="@pageUrl" HashTagName="data-labels" />
 <Demo Type="typeof(BarChart_Demo_04_Stacked_BarChart_with_Datalabels)" Tabs="true" />

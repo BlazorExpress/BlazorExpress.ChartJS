@@ -17,9 +17,9 @@ public partial class MainLayout : MainLayoutBase
             new (){ Id = "305", Text = "Locale", Href = "/charts/bar-chart/locale", IconName = IconName.BarChartLine, ParentId = "3", Match = NavLinkMatch.All },
 
             new (){ Id = "4", Text = "Doughnut Chart", IconName = IconName.CircleFill, },
-            new (){ Id = "400", Text = "Doughnut", Href = "/charts/doughnut-chart", IconName = IconName.Circle, ParentId = "4", Match = NavLinkMatch.All },
-            new (){ Id = "400", Text = "Data labels", Href = "/charts/doughnut-chart/doughnut-labels", IconName = IconName.Circle, ParentId = "4", Match = NavLinkMatch.All },
-            new (){ Id = "400", Text = "Locale", Href = "/charts/doughnut-chart/locale", IconName = IconName.Circle, ParentId = "4", Match = NavLinkMatch.All },
+            new (){ Id = "401", Text = "Doughnut", Href = "/charts/doughnut-chart", IconName = IconName.Circle, ParentId = "4", Match = NavLinkMatch.All },
+            new (){ Id = "402", Text = "Data labels", Href = "/charts/doughnut-chart/doughnut-labels", IconName = IconName.Circle, ParentId = "4", Match = NavLinkMatch.All },
+            new (){ Id = "403", Text = "Locale", Href = "/charts/doughnut-chart/locale", IconName = IconName.Circle, ParentId = "4", Match = NavLinkMatch.All },
 
             new (){ Id = "5", Text = "Line Chart", IconName = IconName.GraphUpArrow },
             new (){ Id = "500", Text = "Line", Href = "/charts/line-chart", IconName = IconName.GraphUp, ParentId = "5", Match = NavLinkMatch.All },
