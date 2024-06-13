@@ -1,0 +1,31 @@
+@attribute [Route(pageUrl)]
+
+<PageTitle>@title</PageTitle>
+
+<MetaTags PageUrl="@pageUrl" Title="@title" Description="@description" ImageUrl="@imageUrl" />
+
+<h1>@heading</h1>
+
+<div class="lead mb-3">@description</div>
+
+@* <CarbonAds /> *@
+
+<Prerequisites />
+
+<SectionHeading Size="HeadingSize.H4" Text="How it works" PageUrl="@pageUrl" HashTagName="how-it-works" />
+<div class="mb-3">
+    In the following example, a categorical 12-color palette is used. 
+</div>
+<BlazorBootstrap.Callout Heading="TIP" Color="CalloutColor.Success">
+    For data visualization, you can use the predefined palettes <code>ColorUtility.CategoricalTwelveColors</code> for a 12-color palette and <code>ColorUtility.CategoricalSixColors</code> for a 6-color palette.
+    These palettes offer a range of distinct and visually appealing colors that can be applied to represent different categories or data elements in your visualizations.
+</BlazorBootstrap.Callout>
+<Demo Type="typeof(BarChart_Demo_01_Examples)" Tabs="true" />
+
+@code {
+    private const string pageUrl = "/charts/bar-chart";
+    private const string title = "Blazor Bar Chart";
+    private const string heading = "Blazor Bar Chart";
+    private const string description = "A Blazor Express bar chart component is used to represent data values as vertical bars. It is sometimes used to show trend data and to compare multiple data sets side by side.";
+    private const string imageUrl = "https://i.imgur.com/IX3bajc.png"; // TODO: update
+}

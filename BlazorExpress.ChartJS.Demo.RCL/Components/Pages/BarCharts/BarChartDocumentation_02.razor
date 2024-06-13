@@ -1,0 +1,22 @@
+@attribute [Route(pageUrl)]
+
+<PageTitle>@title</PageTitle>
+
+<MetaTags PageUrl="@pageUrl" Title="@title" Description="@description" ImageUrl="@imageUrl" />
+
+<h1>@heading</h1>
+
+<div class="lead mb-3">@description</div>
+
+@* <CarbonAds /> *@
+
+<SectionHeading Size="HeadingSize.H4" Text="Horizontal bar chart" PageUrl="@pageUrl" HashTagName="horizontal-bar-chart" />
+<Demo Type="typeof(BarChart_Demo_02_Horizontal_BarChart)" Tabs="true" />
+
+@code {
+    private const string pageUrl = "/charts/bar-chart/horizontal";
+    private const string title = "Blazor Bar Chart";
+    private const string heading = "Blazor Bar Chart";
+    private const string description = "A Blazor Express bar chart component is used to represent data values as vertical bars. It is sometimes used to show trend data and to compare multiple data sets side by side.";
+    private const string imageUrl = "https://i.imgur.com/IX3bajc.png";
+}
