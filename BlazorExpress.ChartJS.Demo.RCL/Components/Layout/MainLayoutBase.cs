@@ -21,7 +21,7 @@ public class MainLayoutBase : LayoutComponentBase
 
     protected override void OnInitialized()
     {
-        version = $"{Configuration["version"]}"; // example: 0.6.1
+        version = $"v{Configuration["version"]}"; // example: v0.6.1
         homeUrl = $"{Configuration["urls:homeUrl"]}";
         docsUrl = $"{Configuration["urls:docs"]}";
         blogUrl = $"{Configuration["urls:blog"]}";

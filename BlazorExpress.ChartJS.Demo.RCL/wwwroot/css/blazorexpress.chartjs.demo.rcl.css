@@ -1,5 +1,5 @@
-/*** START: home ***/
 :root {
+    --bb-sidebar-width: 300px !important; /* sidebar width override */
     --bd-purple: #4c0bce;
     --bd-violet: #712cf9;
     --bd-accent: #ffe484;
