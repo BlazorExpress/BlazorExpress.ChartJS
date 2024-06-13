@@ -11,7 +11,7 @@ public static class IdUtility
 
     // Base32 encoding - in ascii sort order for easy text based sorting
     // Ref: https://stackoverflow.com/a/37271406
-    private static readonly char[] encode32Chars = "ABCDEFGHIJKLMNOPQRSTUV0123456789".ToCharArray();
+    private static readonly char[] s_encode32Chars = "ABCDEFGHIJKLMNOPQRSTUV0123456789".ToCharArray();
 
     /// <summary>
     /// The last generated ID.
@@ -32,7 +32,7 @@ public static class IdUtility
     {
         return string.Create(13, id, (buffer, value) =>
         {
-            char[] encode32Chars = IdUtility.encode32Chars;
+            char[] encode32Chars = IdUtility.s_encode32Chars;
 
             buffer[12] = encode32Chars[value & 31];
             buffer[11] = encode32Chars[(value >> 5) & 31];
