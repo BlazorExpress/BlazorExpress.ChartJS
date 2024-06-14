@@ -6,7 +6,7 @@
     <Version>1.0.0-preview1</Version>
     <PackageVersion>1.0.0-preview1</PackageVersion>
 
-    <!--<PackageIconUrl></PackageIconUrl>-->
+    <PackageIcon>logo-180.png</PackageIcon>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://chartjs.blazorexpress.com</PackageProjectUrl>
     <RepositoryUrl>https://github.com/BlazorExpress/BlazorExpress.ChartJS</RepositoryUrl>
@@ -23,14 +23,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\nuget\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Include="..\BlazorExpress.ChartJS.Demo.WebAssembly\wwwroot\logo-180.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
+    <None Include="..\nuget\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\nuget\logo-180.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
