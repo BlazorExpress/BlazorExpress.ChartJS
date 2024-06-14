@@ -12,23 +12,20 @@ public class Snippet : ComponentBase
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        // no base call
-        builder.AddMarkupContent(0, "<!--googleoff: index-->");
-
         builder.OpenElement(300, "div");
         builder.AddAttribute(301, "class", "highlight show-code-only");
+
         builder.OpenElement(400, "pre");
-        builder.OpenElement(401, "code");
-        builder.AddAttribute(402, "class", LanguageCode.ToLanguageCssClass());
+
+        builder.OpenElement(500, "code");
+        builder.AddAttribute(501, "class", LanguageCode.ToLanguageCssClass());
 
         if (snippet != null)
-            builder.AddContent(403, snippet.Trim());
+            builder.AddContent(600, snippet.Trim());
 
         builder.CloseElement(); // end: code
         builder.CloseElement(); // end: pre
-        builder.CloseElement();
-
-        builder.AddMarkupContent(700, "<!--googleon: index-->");
+        builder.CloseElement(); // end: div
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
