@@ -6,7 +6,7 @@
 
 <h3 align="center">BlazorExpress.ChartJs component library</h3>
 <p align="center">
-    An open-source, production-ready Blazor charts component library built on the Blazor and <b>Chart.js</b> JavaScript library.
+    An open-source, production-ready Blazor charts component library built on the <b>Blazor</b> and <b>Chart.js</b> JavaScript library.
     <br>
     <a href="https://chartjs.blazorexpress.com/charts/getting-started"><strong>Getting Started »</strong></a>
     <br>
@@ -15,6 +15,7 @@
 ## Status
 
 [![NuGet](https://img.shields.io/nuget/vpre/BlazorExpress.ChartJS)](https://www.nuget.org/packages/BlazorExpress.ChartJS/absoluteLatest)
+[![NuGet](https://img.shields.io/nuget/dt/BlazorExpress.ChartJS.svg)](https://www.nuget.org/packages/BlazorExpress.ChartJS/absoluteLatest)
 
 ## Table of contents
 
