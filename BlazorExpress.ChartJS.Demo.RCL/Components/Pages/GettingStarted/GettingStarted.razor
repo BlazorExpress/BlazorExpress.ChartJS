@@ -1,4 +1,5 @@
 @attribute [Route(pageUrl)]
+@attribute [Route(pageUrl2)]
 
 <PageHeroSection PageUrl="@pageUrl"
                  Title="@title"
@@ -6,22 +7,45 @@
                  Description="@description"
                  ImageUrl="@imageUrl" />
 
-<Prerequisites />
-
-<SectionHeading Size="HeadingSize.H4" Text="How it works" PageUrl="@pageUrl" HashTagName="how-it-works" />
+<SectionHeading Size="HeadingSize.H4" Text="Install Nuget Package" PageUrl="@pageUrl" HashTagName="install-nuget-package" />
 <div class="mb-3">
-    In the following example, a categorical 12-color palette is used.
+    Looking to quickly add <b>BlazorExpress.ChartJS</b> to your project? Use NuGet package manager.
 </div>
-<BlazorBootstrap.Callout Heading="TIP" Color="CalloutColor.Success">
-    For data visualization, you can use the predefined palettes <code>ColorUtility.CategoricalTwelveColors</code> for a 12-color palette and <code>ColorUtility.CategoricalSixColors</code> for a 6-color palette.
-    These palettes offer a range of distinct and visually appealing colors that can be applied to represent different categories or data elements in your visualizations.
-</BlazorBootstrap.Callout>
-@* <Demo Type="typeof(DoughnutChart_Demo_01_Examples)" Tabs="true" /> *@
+<CodeSnippet File="~\Components\Pages\GettingStarted\Getting_Started_Snippet_01_Install.txt" />
+
+<SectionHeading Size="HeadingSize.H4" Text="Add script references" PageUrl="@pageUrl" HashTagName="add-script-references" />
+<div class="mb-3">
+    Insert the following references into the <b>body</b> section of the <b>wwwroot/index.html</b> file, immediately after the <b>_framework/blazor.webassembly.js</b> reference:
+</div>
+<CodeSnippet File="~\Components\Pages\GettingStarted\Getting_Started_Snippet_02_Scripts.html" />
+
+<SectionHeading Size="HeadingSize.H4" Text="Register services" PageUrl="@pageUrl" HashTagName="register-services" />
+<div class="mb-3">
+    Register tag helpers in <b>_Imports.razor</b>.
+</div>
+<CodeSnippet File="~\Components\Pages\GettingStarted\Getting_Started_Snippet_03_Register.txt" />
 
 @code {
     private const string pageUrl = "/charts/getting-started";
-    private const string title = "Blazor Doughnut Chart";
-    private const string heading = "Blazor Doughnut Chart";
-    private const string description = "A Blazor donut chart component is a circular chart that shows the proportional values of different categories. It is similar to a pie chart, but the center of the donut chart is hollow. This makes it easier to see the individual values of each category.";
+    private const string pageUrl2 = "/charts/getting-started/blazor-webassembly-net-8";
+    private const string title = "Getting started - Blazor WebAssembly (.NET 8)";
+    private const string heading = "Getting started - Blazor WebAssembly (.NET 8)";
+    private const string description = "Get started with the Enterprise-class Component library built on the Blazor and Chart.js JavaScript library.";
     private const string imageUrl = "https://i.imgur.com/xEPhAsW.png";
+
+    [Inject]
+    private NavigationManager _navigationManager { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            if (_navigationManager.Uri.Replace(_navigationManager.BaseUri, "").Contains("charts/getting-started"))
+                _navigationManager.NavigateTo(pageUrl2);
+        }
+        catch
+        {
+            // do nothing
+        }
+    }
 }
