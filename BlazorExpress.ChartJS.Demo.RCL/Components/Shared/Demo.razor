@@ -2,7 +2,6 @@
 @namespace BlazorExpress.ChartJS.Demo.RCL
 @inherits ComponentBase
 
-<!--googleoff: index-->
 @if (ShowCodeOnly)
 {
     <div class="bd-example-snippet bd-code-snippet">
@@ -16,10 +15,10 @@
         </div>
         <div class="highlight">
             <pre>
-                <code class="@LanguageCssClass">
-                    @if (codeSnippet is not null)
+                <code class="@LanguageCode.ToLanguageCssClass()">
+                    @if (snippet is not null)
                     {
-                        <text>@codeSnippet.Trim()</text>
+                        <text>@snippet.Trim()</text>
                     }
                 </code>
             </pre>
@@ -42,10 +41,10 @@ else if (!Tabs)
         </div>
         <div class="highlight">
             <pre>
-                <code class="@LanguageCssClass">
-                    @if (codeSnippet is not null)
+                <code class="@LanguageCode.ToLanguageCssClass()">
+                    @if (snippet is not null)
                     {
-                        <text>@codeSnippet.Trim()</text>
+                        <text>@snippet.Trim()</text>
                     }
                 </code>
             </pre>
@@ -57,7 +56,7 @@ else // Tabs = true
     <Tabs EnableFadeEffect="true">
         <Tab Active="true">
             <TitleTemplate>
-                <Icon Name="IconName.Display" Class="me-2" /><b>Demo</b>
+                <Icon Name="IconName.Display" Class="me-2" /><b>Example</b>
             </TitleTemplate>
             <Content>
                 <div class="bb-example border-top-0 mt-0">
@@ -67,7 +66,7 @@ else // Tabs = true
         </Tab>
         <Tab>
             <TitleTemplate>
-                <Icon Name="IconName.CodeSlash" Class="me-2" /><b>Source</b>
+                <Icon Name="IconName.CodeSlash" Class="me-2" /><b>View Source</b>
             </TitleTemplate>
             <Content>
                 <div class="position-relative d-block float-end mt-3 me-3 me-sm-4">
@@ -77,16 +76,15 @@ else // Tabs = true
                 </div>
                 <div class="highlight">
                     <pre class="mt-0 me-4">
-                    <code class="@LanguageCssClass">
-                            @if (codeSnippet is not null)
+                        <code class="@LanguageCode.ToLanguageCssClass()">
+                            @if (snippet is not null)
                             {
-                                <text>@codeSnippet.Trim()</text>
+                                <text>@snippet.Trim()</text>
                             }
-                                </code>
-                            </pre>
+                        </code>
+                    </pre>
                 </div>
             </Content>
         </Tab>
     </Tabs>
 }
-<!--googleon: index-->
