@@ -11,7 +11,7 @@
     <PackageProjectUrl>https://chartjs.blazorexpress.com</PackageProjectUrl>
     <RepositoryUrl>https://github.com/BlazorExpress/BlazorExpress.ChartJS</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageTags>Blazor, Charts, BlazorBarChart, BlazorDoughnutChart, BlazorLineChart, BlazorPieChart</PackageTags>
+    <PackageTags>Blazor, BlazorExpress, Charts, BlazorBarChart, BlazorDoughnutChart, BlazorLineChart, BlazorPieChart</PackageTags>
     <Description>An open-source, production-ready Blazor charts component library built on the Blazor and Chart.js JavaScript library.</Description>
     <Authors>Vikram Reddy</Authors>
     <!--<Company>your_company</Company>-->

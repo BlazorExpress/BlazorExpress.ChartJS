@@ -24,7 +24,7 @@
     <li><a href="/charts/pie-chart">Pie Chart</a></li>
 </ol>
 
-<BlazorBootstrap.Callout Color="CalloutColor.Info">
+<BlazorBootstrap.Callout Color="BlazorBootstrap.CalloutColor.Info">
     We will add Bubble Chart, Polar Area Chart, Radar Chart, Scatter Chart, and Mixed Chart support in the subsequent versions.
 </BlazorBootstrap.Callout>
 
@@ -48,10 +48,11 @@
         try
         {
             if (_navigationManager.Uri.Replace(_navigationManager.BaseUri, "").Equals(""))
-                _navigationManager.NavigateTo("/charts/overview");
-        } catch
+                _navigationManager.NavigateTo(pageUrl2);
+        }
+        catch
         {
             // do nothing
-        }        
+        }
     }
 }
