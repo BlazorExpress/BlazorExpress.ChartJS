@@ -1,8 +1,8 @@
-<DoughnutChart @ref="doughnutChart" Width="600" />
+<PieChart @ref="pieChart" Width="415" Height="415" />
 
 @code {
-    private DoughnutChart doughnutChart = default!;
-    private DoughnutChartOptions doughnutChartOptions = default!;
+    private PieChart pieChart = default!;
+    private PieChartOptions pieChartOptions = default!;
     private ChartData chartData = default!;
     private string[]? backgroundColors;
 
@@ -14,20 +14,19 @@
     protected override void OnInitialized()
     {
         backgroundColors = ColorUtility.CategoricalTwelveColors;
-        chartData = new ChartData { Labels = GetDefaultDataLabels(4), Datasets = GetDefaultDataSets(3) };
+        chartData = new ChartData { Labels = GetDefaultDataLabels(4), Datasets = GetDefaultDataSets(1) };
 
-        doughnutChartOptions = new();
-        doughnutChartOptions.Responsive = true;
-        doughnutChartOptions.Plugins.Title!.Text = "2022 - Sales";
-        doughnutChartOptions.Plugins.Title.Display = true;
+        pieChartOptions = new();
+        pieChartOptions.Responsive = true;
+        pieChartOptions.Plugins.Title!.Text = "2022 - Sales";
+        pieChartOptions.Plugins.Title.Display = true;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            // pass the plugin name to enable the data labels
-            await doughnutChart.InitializeAsync(chartData: chartData, chartOptions: doughnutChartOptions, plugins: new string[] { "ChartDataLabels" });
+            await pieChart.InitializeAsync(chartData, pieChartOptions);
         }
         await base.OnAfterRenderAsync(firstRender);
     }
@@ -40,22 +39,13 @@
 
         for (var index = 0; index < numberOfDatasets; index++)
         {
-            var dataset = GetRandomDoughnutChartDataset();
-
-            if (index == 0)
-                dataset.Datalabels.Anchor = "end";
-            else if (index == numberOfDatasets - 1)
-                dataset.Datalabels.Anchor = "start";
-            else
-                dataset.Datalabels.Anchor = "center";
-
-            datasets.Add(dataset);
+            datasets.Add(GetRandomPieChartDataset());
         }
 
         return datasets;
     }
 
-    private DoughnutChartDataset GetRandomDoughnutChartDataset()
+    private PieChartDataset GetRandomPieChartDataset()
     {
         datasetsCount += 1;
         return new() { Label = $"Team {datasetsCount}", Data = GetRandomData(), BackgroundColor = GetRandomBackgroundColors() };

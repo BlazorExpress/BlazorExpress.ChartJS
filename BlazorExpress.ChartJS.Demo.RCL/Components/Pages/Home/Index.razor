@@ -12,8 +12,24 @@
 
 @* <CarbonAds /> *@
 
-<SectionHeading Size="HeadingSize.H4" Text="Example" PageUrl="@pageUrl" HashTagName="example" />
-<Demo Type="typeof(Charts_Demo_00_Example)" Tabs="true" />
+<SectionHeading Size="HeadingSize.H4" Text="Gallery" PageUrl="@pageUrl" HashTagName="gallery" />
+<div class="row">
+    <div class="col-6 pr-4 pb-4">
+        <Charts_Demo_01_BarChart />
+    </div>
+    <div class="col-6 pb-4">
+        <Charts_Demo_03_LineChart />
+    </div>
+    <div class="col-6 pr-4 pb-4">
+        <Charts_Demo_02_DoughnutChart />
+    </div>
+    <div class="col-6">
+        <Charts_Demo_04_PieChart />
+    </div>
+</div>
+<div class="mt-4">
+    <Charts_Demo_99_Example />
+</div>
 
 <SectionHeading Size="HeadingSize.H4" Text="Chart Types" PageUrl="@pageUrl" HashTagName="chart-types" />
 <div class="mb-2">At this moment we are supporting four blazor chart types.</div>
@@ -39,7 +55,7 @@
     private const string title = "Blazor Chart Components";
     private const string heading = "Blazor Charts";
     private const string description = "Blazor Express charts are well-designed chart components on top of Chart.js to visualize data. It contains a rich UI gallery of charts that cater to all charting scenarios. Its high performance helps render large amounts of data quickly.";
-    private const string imageUrl = "https://i.imgur.com/IX3bajc.png"; // TODO: update
+    private const string imageUrl = "https://i.imgur.com/C5ObC3A.png";
 
     [Inject] private NavigationManager _navigationManager { get; set; } = default!;
 
