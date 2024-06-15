@@ -1,10 +1,5 @@
 <DoughnutChart @ref="doughnutChart" Width="500" />
 
-<div class="mt-5">
-    <button class="btn btn-primary btn-sm" @onclick="async () => await RandomizeAsync()"> Randomize </button>
-    <button class="btn btn-primary btn-sm" @onclick="async () => await AddDataAsync()">Add Data</button>
-</div>
-
 @code {
     private DoughnutChart doughnutChart = default!;
     private DoughnutChartOptions doughnutChartOptions = default!;
@@ -35,58 +30,6 @@
             await doughnutChart.InitializeAsync(chartData: chartData, chartOptions: doughnutChartOptions, plugins: new string[] { "ChartDataLabels" });
         }
         await base.OnAfterRenderAsync(firstRender);
-    }
-
-    private async Task RandomizeAsync()
-    {
-        if (chartData is null || chartData.Datasets is null || !chartData.Datasets.Any()) return;
-
-        var newDatasets = new List<IChartDataset>();
-
-        foreach (var dataset in chartData.Datasets)
-        {
-            if (dataset is DoughnutChartDataset doughnutChartDataset
-                && doughnutChartDataset is not null
-                && doughnutChartDataset.Data is not null)
-            {
-                var count = doughnutChartDataset.Data.Count;
-
-                var newData = new List<double>();
-                for (var i = 0; i < count; i++)
-                {
-                    newData.Add(random.Next(0, 100));
-                }
-
-                doughnutChartDataset.Data = newData;
-                newDatasets.Add(doughnutChartDataset);
-            }
-        }
-
-        chartData.Datasets = newDatasets;
-
-        await doughnutChart.UpdateAsync(chartData: chartData, chartOptions: doughnutChartOptions);
-    }
-
-    private async Task AddDataAsync()
-    {
-        if (dataLabelsCount >= 12)
-            return;
-
-        if (chartData is null || chartData.Datasets is null)
-            return;
-
-        var data = new List<IChartDatasetData>();
-        foreach (var dataset in chartData.Datasets)
-        {
-            if (dataset is DoughnutChartDataset doughnutChartDataset)
-            {
-                data.Add(new DoughnutChartDatasetData(doughnutChartDataset.Label, random.Next(0, 100), backgroundColors![dataLabelsCount]));
-            }
-        }
-
-        chartData = await doughnutChart.AddDataAsync(chartData, GetNextDataLabel(), data);
-
-        dataLabelsCount += 1;
     }
 
     #region Data Preparation

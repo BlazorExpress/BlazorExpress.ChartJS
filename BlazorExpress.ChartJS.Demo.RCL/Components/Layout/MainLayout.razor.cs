@@ -19,7 +19,6 @@ public partial class MainLayout : MainLayoutBase
             new (){ Id = "4", Text = "Doughnut Chart", IconName = IconName.CircleFill, },
             new (){ Id = "401", Text = "Doughnut", Href = "/charts/doughnut-chart", IconName = IconName.Circle, ParentId = "4", Match = NavLinkMatch.All },
             new (){ Id = "402", Text = "Data labels", Href = "/charts/doughnut-chart/doughnut-labels", IconName = IconName.Circle, ParentId = "4", Match = NavLinkMatch.All },
-            new (){ Id = "403", Text = "Locale", Href = "/charts/doughnut-chart/locale", IconName = IconName.Circle, ParentId = "4", Match = NavLinkMatch.All },
 
             new (){ Id = "5", Text = "Line Chart", IconName = IconName.GraphUpArrow },
             new (){ Id = "500", Text = "Line", Href = "/charts/line-chart", IconName = IconName.GraphUp, ParentId = "5", Match = NavLinkMatch.All },
@@ -31,7 +30,6 @@ public partial class MainLayout : MainLayoutBase
             new (){ Id = "600", Text = "Pie", Href = "/charts/pie-chart", IconName = IconName.PieChart, ParentId = "6", Match = NavLinkMatch.All },
             new (){ Id = "600", Text = "Data labels", Href = "/charts/pie-chart/data-labels", IconName = IconName.PieChart, ParentId = "6", Match = NavLinkMatch.All },
             new (){ Id = "600", Text = "Legend position", Href = "/charts/pie-chart/legend", IconName = IconName.PieChart, ParentId = "6", Match = NavLinkMatch.All },
-            new (){ Id = "600", Text = "Locale", Href = "/charts/pie-chart/locale", IconName = IconName.PieChart, ParentId = "6", Match = NavLinkMatch.All },
 
         };
 
