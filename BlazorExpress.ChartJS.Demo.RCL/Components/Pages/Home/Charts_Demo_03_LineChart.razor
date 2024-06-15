@@ -1,10 +1,4 @@
-﻿<LineChart @ref="lineChart" Width="600" />
-
-<div class="mt-5">
-    <button class="btn btn-primary btn-sm" @onclick="async () => await ChangeTicksAlignmentToStart()"> Alignment: start </button>
-    <button class="btn btn-primary btn-sm" @onclick="async () => await ChangeTicksAlignmentToCenter()"> Alignment: center (default) </button>
-    <button class="btn btn-primary btn-sm" @onclick="async () => await ChangeTicksAlignmentToEnd()"> Alignment: end </button>
-</div>
+<LineChart @ref="lineChart" Width="415" Height="207" />
 
 @code {
     private LineChart lineChart = default!;
@@ -20,10 +14,6 @@
     {
         chartData = new ChartData { Labels = GetDefaultDataLabels(6), Datasets = GetDefaultDataSets(3) };
         lineChartOptions = new() { Responsive = true, Interaction = new Interaction { Mode = InteractionMode.Index } };
-
-        // set ticks color
-        lineChartOptions.Scales.X!.Ticks = new ChartAxesTicks { Color = "red" };
-        lineChartOptions.Scales.Y!.Ticks = new ChartAxesTicks { Color = ColorUtility.CategoricalTwelveColors[4] };
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -33,24 +23,6 @@
             await lineChart.InitializeAsync(chartData, lineChartOptions);
         }
         await base.OnAfterRenderAsync(firstRender);
-    }
-
-    private async Task ChangeTicksAlignmentToStart()
-    {
-        lineChartOptions.Scales.X!.Ticks!.TicksAlignment = TicksAlignment.Start;
-        await lineChart.UpdateAsync(chartData, lineChartOptions);
-    }
-
-    private async Task ChangeTicksAlignmentToCenter()
-    {
-        lineChartOptions.Scales.X!.Ticks!.TicksAlignment = TicksAlignment.Center;
-        await lineChart.UpdateAsync(chartData, lineChartOptions);
-    }
-
-    private async Task ChangeTicksAlignmentToEnd()
-    {
-        lineChartOptions.Scales.X!.Ticks!.TicksAlignment = TicksAlignment.End;
-        await lineChart.UpdateAsync(chartData, lineChartOptions);
     }
 
     #region Data Preparation
