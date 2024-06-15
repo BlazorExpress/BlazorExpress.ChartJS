@@ -35,6 +35,12 @@
     <DocxTRow TItem="BarChart" MethodName="UpdateAsync(ChartData chartData, IChartOptions chartOptions)" ReturnType="Task" Description="" AddedVersion="1.10.0" />
 </DocxTable>
 
+<SectionHeading Size="HeadingSize.H2" Text="ChartData Members" PageUrl="@pageUrl" HashTagName="chartdata-Members" />
+<DocxTable TItem="ChartData" DocType="DocType.Properties">
+    <DocxTRow TItem="ChartData" PropertyName="@nameof(ChartData.Datasets)" PropertyType="List<IChartDataset>" DefaultValue="null" Required="true" Description="Gets or sets chart container height." AddedVersion="1.0.0" />
+    <DocxTRow TItem="ChartData" PropertyName="@nameof(ChartData.Labels)" PropertyType="List<string>" DefaultValue="Unit.Px" Required="true" Description="Gets or sets chart container height unit of measure." AddedVersion="1.0.0" />
+</DocxTable>
+
 @code {
     private const string pageUrl = "/charts/bar-chart";
     private const string title = "Blazor Bar Chart";

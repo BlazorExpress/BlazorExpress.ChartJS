@@ -6,9 +6,9 @@
     @if (DocType is DocType.Parameters or DocType.Properties)
     {
         <div class="table-responsive mb-3">
-            <table class="table table-bordered table-hover table-striped table-light">
+            <table class="table table-bordered table-hover">
                 <thead>
-                    <tr>
+                    <tr class="table-light">
                         <th>Name</th>
                         <th>Type</th>
                         <th>Default</th>
@@ -26,9 +26,9 @@
     else if (DocType == DocType.Methods)
     {
         <div class="table-responsive mb-3">
-            <table class="table table-bordered table-hover table-striped table-light">
+            <table class="table table-bordered table-hover">
                 <thead>
-                    <tr>
+                    <tr class="table-light">
                         <th>Name</th>
                         <th>Return type</th>
                         <th>Description</th>
@@ -44,9 +44,9 @@
     else if (DocType == DocType.Events)
     {
         <div class="table-responsive mb-3">
-            <table class="table table-bordered table-hover table-striped table-light">
+            <table class="table table-bordered table-hover">
                 <thead>
-                    <tr>
+                    <tr class="table-light">
                         <th>Name</th>
                         <th>Description</th>
                         <th>Added Version</th>

@@ -5,13 +5,20 @@
 @if (DocType is DocType.Parameters or DocType.Properties)
 {
     <tr>
-        <td>@PropertyName</td>
-        <td>@typeof(TItem).GetPropertyTypeName(PropertyName!)</td>
+        <td class="text-primary text-opacity-75">@PropertyName</td>
+        @if (string.IsNullOrWhiteSpace(PropertyType))
+        {
+            <td class="text-danger text-opacity-75">@typeof(TItem).GetPropertyTypeName(PropertyName!)</td>
+        }
+        else
+        {
+            <td class="text-danger text-opacity-75">@PropertyType</td>
+        }
         <td>@DefaultValue</td>
         <td class="text-center">
             @if (Required)
             {
-                <i class="bi bi-check-circle-fill text-primary"></i>
+                <i class="bi bi-check-circle-fill text-danger text-opacity-75"></i>
             }
         </td>
         <td>@Description</td>
@@ -21,8 +28,8 @@
 else if (DocType == DocType.Methods)
 {
     <tr>
-        <td>@MethodName</td>
-        <td>@ReturnType</td>
+        <td class="text-primary text-opacity-75">@MethodName</td>
+        <td class="text-danger text-opacity-75">@ReturnType</td>
         <td>@Description</td>
         <td>@AddedVersion</td>
     </tr>

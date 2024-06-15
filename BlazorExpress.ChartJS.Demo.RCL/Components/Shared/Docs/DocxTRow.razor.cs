@@ -6,6 +6,9 @@ public partial class DocxTRow<TItem> : ComponentBase
     public string? PropertyName { get; set; }
 
     [Parameter]
+    public string? PropertyType { get; set; }
+
+    [Parameter]
     public string? DefaultValue { get; set; }
 
     [Parameter]
