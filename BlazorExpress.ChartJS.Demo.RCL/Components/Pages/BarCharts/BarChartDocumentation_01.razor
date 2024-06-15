@@ -18,6 +18,11 @@
 </BlazorBootstrap.Callout>
 <Demo Type="typeof(BarChart_Demo_01_Examples)" Tabs="true" />
 
+<SectionHeading Size="HeadingSize.H2" Text="Parameters" PageUrl="@pageUrl" HashTagName="parameters" />
+<DocxTable TItem="BarChart" DocType="DocType.Parameters">
+    <DocxTRow TItem="BarChart" PropertyName="@nameof(BarChart.Height)" DefaultValue="" Required="true" Description="Gets or sets chart container height." AddedVersion="1.0.0" />
+</DocxTable>
+
 @code {
     private const string pageUrl = "/charts/bar-chart";
     private const string title = "Blazor Bar Chart";
