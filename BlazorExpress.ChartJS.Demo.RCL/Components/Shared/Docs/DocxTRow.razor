@@ -2,16 +2,28 @@
 @inherits ComponentBase
 @typeparam TItem
 
-<tr>
-    <td>@PropertyName</td>
-    <td>@typeof(TItem).GetPropertyTypeName(PropertyName!)</td>
-    <td>@DefaultValue</td>
-    <td class="text-center">
-        @if (Required)
-        {
-            <i class="bi bi-check-circle-fill text-primary"></i>
-        }
-    </td>
-    <td>@Description</td>
-    <td>@AddedVersion</td>
-</tr>
+@if (DocType is DocType.Parameters or DocType.Properties)
+{
+    <tr>
+        <td>@PropertyName</td>
+        <td>@typeof(TItem).GetPropertyTypeName(PropertyName!)</td>
+        <td>@DefaultValue</td>
+        <td class="text-center">
+            @if (Required)
+            {
+                <i class="bi bi-check-circle-fill text-primary"></i>
+            }
+        </td>
+        <td>@Description</td>
+        <td>@AddedVersion</td>
+    </tr>
+}
+else if (DocType == DocType.Methods)
+{
+    <tr>
+        <td>@MethodName</td>
+        <td>@ReturnType</td>
+        <td>@Description</td>
+        <td>@AddedVersion</td>
+    </tr>
+}

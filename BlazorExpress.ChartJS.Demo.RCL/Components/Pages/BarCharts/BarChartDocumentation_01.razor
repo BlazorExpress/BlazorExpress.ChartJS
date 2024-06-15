@@ -20,7 +20,19 @@
 
 <SectionHeading Size="HeadingSize.H2" Text="Parameters" PageUrl="@pageUrl" HashTagName="parameters" />
 <DocxTable TItem="BarChart" DocType="DocType.Parameters">
-    <DocxTRow TItem="BarChart" PropertyName="@nameof(BarChart.Height)" DefaultValue="" Required="true" Description="Gets or sets chart container height." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChart" PropertyName="@nameof(BarChart.Height)" DefaultValue="null" Required="false" Description="Gets or sets chart container height." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChart" PropertyName="@nameof(BarChart.HeightUnit)" DefaultValue="Unit.Px" Required="false" Description="Gets or sets chart container height unit of measure." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChart" PropertyName="@nameof(BarChart.Width)" DefaultValue="null" Required="false" Description="Gets or sets chart container width." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChart" PropertyName="@nameof(BarChart.WidthUnit)" DefaultValue="Unit.Px" Required="false" Description="Gets or sets chart container width unit of measure." AddedVersion="1.0.0" />
+</DocxTable>
+
+<SectionHeading Size="HeadingSize.H2" Text="Methods" PageUrl="@pageUrl" HashTagName="methods" />
+<DocxTable TItem="BarChart" DocType="DocType.Methods">
+    <DocxTRow TItem="BarChart" MethodName="AddDataAsync(ChartData chartData, string dataLabel, IChartDatasetData data)" ReturnType="Task<ChartData>" Description="" AddedVersion="1.10.0" />
+    <DocxTRow TItem="BarChart" MethodName="AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data)" ReturnType="Task<ChartData>" Description="" AddedVersion="1.10.0" />
+    <DocxTRow TItem="BarChart" MethodName="AddDatasetAsync(ChartData chartData, IChartDataset chartDataset, IChartOptions chartOptions)" ReturnType="Task<ChartData>" Description="" AddedVersion="1.10.0" />
+    <DocxTRow TItem="BarChart" MethodName="InitializeAsync(ChartData chartData, IChartOptions chartOptions, string[]? plugins = null)" ReturnType="Task" Description="" AddedVersion="1.10.0" />
+    <DocxTRow TItem="BarChart" MethodName="UpdateAsync(ChartData chartData, IChartOptions chartOptions)" ReturnType="Task" Description="" AddedVersion="1.10.0" />
 </DocxTable>
 
 @code {

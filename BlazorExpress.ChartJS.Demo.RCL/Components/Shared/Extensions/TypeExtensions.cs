@@ -7,6 +7,27 @@ public static class TypeExtensions
 {
     #region Methods
 
+
+
+    /// <summary>
+    /// Get property type name.
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="propertyName"></param>
+    /// <returns>string</returns>
+    public static string GetMethodName(this Type type, string methodName)
+    {
+        if (type is null || string.IsNullOrWhiteSpace(methodName))
+            return string.Empty;
+
+        var _methods = type.GetMethods();
+        var _methodName = type.GetMethodName(methodName);
+        if (_methodName is null)
+            return string.Empty;
+
+        return _methodName;
+    }
+
     /// <summary>
     /// Get property type name.
     /// </summary>

@@ -17,5 +17,14 @@ public partial class DocxTRow<TItem> : ComponentBase
     [Parameter]
     public string? AddedVersion { get; set; }
 
+    [CascadingParameter(Name = "DocType")]
+    public DocType DocType { get; set; } = DocType.Parameters;
+
+    [Parameter]
+    public string? MethodName { get; set; }
+
+    [Parameter]
+    public string? ReturnType { get; set; }
+
 
 }
