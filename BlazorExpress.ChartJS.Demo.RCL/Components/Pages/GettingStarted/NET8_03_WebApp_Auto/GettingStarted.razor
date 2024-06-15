@@ -1,0 +1,33 @@
+@attribute [Route(pageUrl)]
+
+<PageHeroSection PageUrl="@pageUrl"
+                 Title="@title"
+                 Heading="@heading"
+                 Description="@description"
+                 ImageUrl="@imageUrl" />
+
+<SectionHeading Size="HeadingSize.H4" Text="Install Nuget Package" PageUrl="@pageUrl" HashTagName="install-nuget-package" />
+<div class="mb-3">
+    Looking to quickly add <b>BlazorExpress.ChartJS</b> to your project? Use NuGet package manager.
+</div>
+<Snippet LanguageCode="LanguageCode.PowerShell" FilePath="~\Components\Pages\GettingStarted\NET8_03_WebApp_Auto\Getting_Started_Snippet_01_Install.txt" />
+
+<SectionHeading Size="HeadingSize.H4" Text="Add script references" PageUrl="@pageUrl" HashTagName="add-script-references" />
+<div class="mb-3">
+    Insert the following references into the <b>body</b> section of the <b>wwwroot/index.html</b> file, immediately after the <b>_framework/blazor.webassembly.js</b> reference:
+</div>
+<Snippet LanguageCode="LanguageCode.JavaScript" FilePath="~\Components\Pages\GettingStarted\NET8_03_WebApp_Auto\Getting_Started_Snippet_02_Scripts.html" />
+
+<SectionHeading Size="HeadingSize.H4" Text="Register services" PageUrl="@pageUrl" HashTagName="register-services" />
+<div class="mb-3">
+    Register tag helpers in <b>_Imports.razor</b>.
+</div>
+<Snippet LanguageCode="LanguageCode.Razor" FilePath="~\Components\Pages\GettingStarted\NET8_03_WebApp_Auto\Getting_Started_Snippet_03_Register.txt" />
+
+@code {
+    private const string pageUrl = "/charts/getting-started/blazor-webapp-auto-global-net-8";
+    private const string title = "Getting started - Blazor WebApp (.NET 8) - Interactive render mode Auto - Global location";
+    private const string heading = "Getting started - Blazor WebApp (.NET 8) - Interactive render mode Auto - Global location";
+    private const string description = "Get started with the Enterprise-class Component library built on the Blazor and Chart.js JavaScript library.";
+    private const string imageUrl = "https://i.imgur.com/C5ObC3A.png";
+}
