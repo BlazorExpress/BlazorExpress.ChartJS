@@ -15,10 +15,11 @@ public partial class MainLayout : MainLayoutBase
 
             new (){ Id = "3", Text = "Bar Chart", IconName = IconName.BarChartLineFill },
             new (){ Id = "301", Text = "Bar", Href = "/charts/bar-chart", IconName = IconName.BarChartLine, ParentId = "3", Match = NavLinkMatch.All },
-            new (){ Id = "302", Text = "Horizontal", Href = "/charts/bar-chart/horizontal", IconName = IconName.BarChartLine, ParentId = "3", Match = NavLinkMatch.All },
-            new (){ Id = "303", Text = "Stacked", Href = "/charts/bar-chart/stacked", IconName = IconName.BarChartLine, ParentId = "3", Match = NavLinkMatch.All },
-            new (){ Id = "304", Text = "Data labels", Href = "/charts/bar-chart/data-labels", IconName = IconName.BarChartLine, ParentId = "3", Match = NavLinkMatch.All },
-            new (){ Id = "305", Text = "Locale", Href = "/charts/bar-chart/locale", IconName = IconName.BarChartLine, ParentId = "3", Match = NavLinkMatch.All },
+            new (){ Id = "302", Text = "Horizontal", Href = "/charts/bar-chart/horizontal", IconName = IconName.BarChartLine, ParentId = "3", },
+            new (){ Id = "303", Text = "Stacked", Href = "/charts/bar-chart/stacked", IconName = IconName.BarChartLine, ParentId = "3", },
+            new (){ Id = "304", Text = "Data labels", Href = "/charts/bar-chart/data-labels", IconName = IconName.BarChartLine, ParentId = "3", },
+            new (){ Id = "305", Text = "Locale", Href = "/charts/bar-chart/locale", IconName = IconName.BarChartLine, ParentId = "3", },
+            new (){ Id = "305", Text = "API Documentation", Href = "/charts/bar-chart/api-documentation", IconName = IconName.FileTextFill, ParentId = "3", },
 
             new (){ Id = "4", Text = "Doughnut Chart", IconName = IconName.CircleFill, },
             new (){ Id = "401", Text = "Doughnut", Href = "/charts/doughnut-chart", IconName = IconName.Circle, ParentId = "4", Match = NavLinkMatch.All },

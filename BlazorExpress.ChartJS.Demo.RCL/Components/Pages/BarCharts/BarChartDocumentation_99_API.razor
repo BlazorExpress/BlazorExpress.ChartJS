@@ -1,0 +1,83 @@
+@attribute [Route(pageUrl)]
+
+<PageHeroSection PageUrl="@pageUrl"
+                 Title="@title"
+                 Heading="@heading"
+                 Description="@description"
+                 ImageUrl="@imageUrl" />
+
+<SectionHeading Size="HeadingSize.H4" Text="Parameters" PageUrl="@pageUrl" HashTagName="parameters" />
+<DocxTable TItem="BarChart" DocType="DocType.Parameters">
+    <DocxTRow TItem="BarChart" PropertyName="@nameof(BarChart.Height)" DefaultValue="null" Required="false" Description="Gets or sets chart container height." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChart" PropertyName="@nameof(BarChart.HeightUnit)" DefaultValue="Unit.Px" Required="false" Description="Gets or sets chart container height unit of measure." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChart" PropertyName="@nameof(BarChart.Width)" DefaultValue="null" Required="false" Description="Gets or sets chart container width." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChart" PropertyName="@nameof(BarChart.WidthUnit)" DefaultValue="Unit.Px" Required="false" Description="Gets or sets chart container width unit of measure." AddedVersion="1.0.0" />
+</DocxTable>
+
+<SectionHeading Size="HeadingSize.H4" Text="Methods" PageUrl="@pageUrl" HashTagName="methods" />
+<DocxTable TItem="BarChart" DocType="DocType.Methods">
+    <DocxTRow TItem="BarChart" MethodName="AddDataAsync(ChartData chartData, string dataLabel, IChartDatasetData data)" ReturnType="Task<ChartData>" Description="Adds data to chart." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChart" MethodName="AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data)" ReturnType="Task<ChartData>" Description="Adds dataset to chart." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChart" MethodName="AddDatasetAsync(ChartData chartData, IChartDataset chartDataset, IChartOptions chartOptions)" ReturnType="Task<ChartData>" Description="Adds dataset to chart." AddedVersion="1.10.0" />
+    <DocxTRow TItem="BarChart" MethodName="InitializeAsync(ChartData chartData, IChartOptions chartOptions, string[]? plugins = null)" ReturnType="Task" Description="Initialize the chat." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChart" MethodName="ResizeAsync(int width, int height, Unit widthUnit = Unit.Px, Unit heightUnit = Unit.Px)" ReturnType="Task" Description="Resize the chart." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChart" MethodName="UpdateAsync(ChartData chartData, IChartOptions chartOptions)" ReturnType="Task" Description="Update the chart." AddedVersion="1.0.0" />
+</DocxTable>
+
+<SectionHeading Size="HeadingSize.H4" Text="ChartData Members" PageUrl="@pageUrl" HashTagName="chartdata-Members" />
+<DocxTable TItem="ChartData" DocType="DocType.Properties">
+    <DocxTRow TItem="ChartData" PropertyName="@nameof(ChartData.Datasets)" PropertyType="List<IChartDataset>" DefaultValue="null" Required="true" Description="Gets or sets the Datasets." AddedVersion="1.0.0" />
+    <DocxTRow TItem="ChartData" PropertyName="@nameof(ChartData.Labels)" PropertyType="List<string>" DefaultValue="Unit.Px" Required="true" Description="Gets or sets the Labels." AddedVersion="1.0.0" />
+</DocxTable>
+
+<SectionHeading Size="HeadingSize.H4" Text="BarChartDataset Members" PageUrl="@pageUrl" HashTagName="barchart-dataset-members" />
+<BlazorBootstrap.Callout Color="CalloutColor.Info">
+    <code>BarChartDataset</code> implements <code>IChartDataset</code>.
+</BlazorBootstrap.Callout>
+<DocxTable TItem="BarChartDataset" DocType="DocType.Properties">
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.BackgroundColor)" PropertyType="List<string>" DefaultValue="null" Required="false" Description="Get or sets the background color." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.BarPercentage)" DefaultValue="0.8" Required="false" Description="Percent (0-1) of the available width each bar should be within the category width. 1.0 will take the whole category width and put the bars right next to each other." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.BorderColor)" PropertyType="List<string>" DefaultValue="null" Required="false" Description="Get or sets the border color." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.BorderRadius)" DefaultValue="0" Required="false" Description="Gets or sets the border radius." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.BorderWidth)" PropertyType="List<double>" DefaultValue="null" Required="false" Description="Gets or sets the border width." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.CategoryPercentage)" DefaultValue="0.8" Required="false" Description="Percent (0-1) of the available width each category should be within the sample width." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.Clip)" DefaultValue="null" Required="false" Description="How to clip relative to chartArea. Positive value allows overflow, negative value clips that many pixels inside chartArea. 0 = clip at chartArea. Clipping can also be configured per side: <code>clip: {left:5, top:false, right:-2, bottom:0}</code>" AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.Datalabels)" PropertyType="BarChartDatasetDataLabels" DefaultValue="" Required="false" Description="Get or sets the data labels" AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.Data)" PropertyType="List<double>" DefaultValue="null" Required="false" Description="Get or sets the Data." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.Hidden)" DefaultValue="false" Required="false" Description="	Configures the visibility state of the dataset. Set it to true, to hide the dataset from the chart." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.HoverBackgroundColor)" PropertyType="List<string>" DefaultValue="null" Required="true" Description="Get or sets the HoverBackgroundColor." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.HoverBorderColor)" PropertyType="List<string>" DefaultValue="null" Required="true" Description="Get or sets the HoverBorderColor." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.HoverBorderWidth)" PropertyType="List<string>" DefaultValue="null" Required="true" Description="Get or sets the HoverBorderWidth." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.Label)" DefaultValue="null" Required="false" Description="The label for the dataset which appears in the legend and tooltips." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.Type)" DefaultValue="null" Required="false" Description="Get or sets the chart type." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.XAxisID)" DefaultValue="null" Required="false" Description="The ID of the x axis to plot this dataset on." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.YAxisID)" DefaultValue="null" Required="false" Description="The ID of the y axis to plot this dataset on." AddedVersion="1.0.0" />
+</DocxTable>
+
+<SectionHeading Size="HeadingSize.H4" Text="BarChartDatasetDataLabels Members" PageUrl="@pageUrl" HashTagName="barchart-dataset-data-labels-members" />
+<DocxTable TItem="BarChartDatasetDataLabels" DocType="DocType.Properties">
+    <DocxTRow TItem="BarChartDatasetDataLabels" PropertyName="@nameof(BarChartDatasetDataLabels.Align)" DefaultValue="center" Required="false" Description="Gets or sets the align." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartDatasetDataLabels" PropertyName="@nameof(BarChartDatasetDataLabels.Anchor)" DefaultValue="center" Required="false" Description="Gets or sets the anchor." AddedVersion="1.0.0" />
+</DocxTable>
+
+<SectionHeading Size="HeadingSize.H4" Text="BarChartOptions Members" PageUrl="@pageUrl" HashTagName="barchart-options-members" />
+<BlazorBootstrap.Callout Color="CalloutColor.Info">
+    <code>BarChartOptions</code> implements <code>ChartOptions</code>.
+</BlazorBootstrap.Callout>
+<DocxTable TItem="BarChartOptions" DocType="DocType.Properties">
+    <DocxTRow TItem="BarChartOptions" PropertyName="@nameof(BarChartOptions.IndexAxis)" DefaultValue="x" Required="false" Description="The base axis of the chart. 'x' for vertical charts and 'y' for horizontal charts." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartOptions" PropertyName="@nameof(BarChartOptions.Interaction)" PropertyType="Interaction" DefaultValue="" Required="false" Description="Gets or sets the Interaction." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartOptions" PropertyName="@nameof(BarChartOptions.Layout)" PropertyType="ChartLayout" DefaultValue="" Required="false" Description="Gets or sets the ChartLayout." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartOptions" PropertyName="@nameof(BarChartOptions.Locale)" DefaultValue="null" Required="false" Description="Gets or sets the locale. By default, the chart is using the default locale of the platform which is running on." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartOptions" PropertyName="@nameof(BarChartOptions.Plugins)" PropertyType="BarChartPlugins" DefaultValue="" Required="false" Description="	Gets or sets the Plugins." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartOptions" PropertyName="@nameof(BarChartOptions.Responsive)" DefaultValue="false" Required="false" Description="Gets or sets the Responsive." AddedVersion="1.0.0" />
+    <DocxTRow TItem="BarChartOptions" PropertyName="@nameof(BarChartOptions.Scales)" PropertyType="Scales" DefaultValue="" Required="false" Description="Gets or sets the Scales." AddedVersion="1.0.0" />
+</DocxTable>
+
+@code {
+    private const string pageUrl = "/charts/bar-chart/api-documentation";
+    private const string title = "Blazor Bar Chart - API Documentation";
+    private const string heading = "Blazor Bar Chart - API Documentation";
+    private const string description = "This documentation provides a comprehensive reference for the Blazor Bar Chart component, guiding you through its functionalities and configuration options.";
+    private const string imageUrl = "https://i.imgur.com/IX3bajc.png";
+}
