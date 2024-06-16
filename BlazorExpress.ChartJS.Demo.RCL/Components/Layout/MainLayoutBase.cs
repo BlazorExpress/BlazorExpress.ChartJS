@@ -17,21 +17,21 @@ public class MainLayoutBase : LayoutComponentBase
     internal Sidebar sidebar = default!;
     internal IEnumerable<NavItem> navItems = default!;
 
-    [Inject] public IConfiguration Configuration { get; set; } = default!;
+    [Inject] public IConfiguration _configuration { get; set; } = default!;
 
     protected override void OnInitialized()
     {
-        version = $"v{Configuration["version"]}"; // example: v0.6.1
-        homeUrl = $"{Configuration["urls:homeUrl"]}";
-        docsUrl = $"{Configuration["urls:docs"]}";
-        blogUrl = $"{Configuration["urls:blog"]}";
-        githubUrl = $"{Configuration["urls:github"]}";
-        twitterUrl = $"{Configuration["urls:twitter"]}";
-        linkedInUrl = $"{Configuration["urls:linkedin"]}";
-        openCollectiveUrl = $"{Configuration["urls:opencollective"]}";
-        githubIssuesUrl = $"{Configuration["urls:github_issues"]}";
-        githubDiscussionsUrl = $"{Configuration["urls:github_discussions"]}";
-        stackoverflowUrl = $"{Configuration["urls:stackoverflow"]}";
+        version = $"v{_configuration["version"]}"; // example: v0.6.1
+        homeUrl = $"{_configuration["urls:homeUrl"]}";
+        docsUrl = $"{_configuration["urls:docs"]}";
+        blogUrl = $"{_configuration["urls:blog"]}";
+        githubUrl = $"{_configuration["urls:github"]}";
+        twitterUrl = $"{_configuration["urls:twitter"]}";
+        linkedInUrl = $"{_configuration["urls:linkedin"]}";
+        openCollectiveUrl = $"{_configuration["urls:opencollective"]}";
+        githubIssuesUrl = $"{_configuration["urls:github_issues"]}";
+        githubDiscussionsUrl = $"{_configuration["urls:github_discussions"]}";
+        stackoverflowUrl = $"{_configuration["urls:stackoverflow"]}";
         base.OnInitialized();
     }
 
