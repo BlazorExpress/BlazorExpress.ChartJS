@@ -71,15 +71,15 @@ public class Interaction
 
     private void SetMode(InteractionMode interactionMode) =>
         ChartInteractionMode = interactionMode switch
-        {
-            InteractionMode.Dataset => "dataset",
-            InteractionMode.Index => "index",
-            InteractionMode.Nearest => "nearest",
-            InteractionMode.Point => "point",
-            InteractionMode.X => "x",
-            InteractionMode.Y => "y",
-            _ => ""
-        };
+                               {
+                                   InteractionMode.Dataset => "dataset",
+                                   InteractionMode.Index => "index",
+                                   InteractionMode.Nearest => "nearest",
+                                   InteractionMode.Point => "point",
+                                   InteractionMode.X => "x",
+                                   InteractionMode.Y => "y",
+                                   _ => ""
+                               };
 
     #endregion
 
@@ -365,12 +365,12 @@ public class ChartAxesTicks
 
     private void SetTicksAlignment(TicksAlignment interactionMode) =>
         Alignment = interactionMode switch
-        {
-            TicksAlignment.Center => "center",
-            TicksAlignment.Start => "start",
-            TicksAlignment.End => "end",
-            _ => null
-        };
+                    {
+                        TicksAlignment.Center => "center",
+                        TicksAlignment.Start => "start",
+                        TicksAlignment.End => "end",
+                        _ => null
+                    };
 
     #endregion
 
@@ -479,12 +479,12 @@ public class ChartAxesTitle
 
     private void SetTitleAlignment(TitleAlignment interactionMode) =>
         Alignment = interactionMode switch
-        {
-            TitleAlignment.Center => "center", // default
-            TitleAlignment.Start => "start",
-            TitleAlignment.End => "end",
-            _ => null
-        };
+                    {
+                        TitleAlignment.Center => "center", // default
+                        TitleAlignment.Start => "start",
+                        TitleAlignment.End => "end",
+                        _ => null
+                    };
 
     #endregion
 

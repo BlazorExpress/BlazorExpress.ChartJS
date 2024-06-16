@@ -4,11 +4,11 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
 {
     #region Fields and Constants
 
+    internal ChartType chartType;
+
     private bool isAsyncDisposed;
 
     private bool isDisposed;
-
-    internal ChartType chartType;
 
     #endregion
 
@@ -41,6 +41,25 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
     public virtual async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data) => await Task.FromResult(chartData);
 
     public virtual async Task<ChartData> AddDatasetAsync(ChartData chartData, IChartDataset chartDataset, IChartOptions chartOptions) => await Task.FromResult(chartData);
+
+    /// <inheritdoc />
+    /// <seealso href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable?view=net-6.0" />
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    /// <inheritdoc />
+    /// <seealso
+    ///     href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-disposeasync#implement-both-dispose-and-async-dispose-patterns" />
+    public async ValueTask DisposeAsync()
+    {
+        await DisposeAsyncCore(true).ConfigureAwait(false);
+
+        Dispose(false);
+        GC.SuppressFinalize(this);
+    }
 
     //public async Task Clear() { }
 
@@ -103,6 +122,34 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
         }
     }
 
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!isDisposed)
+        {
+            if (disposing)
+            {
+                // cleanup
+            }
+
+            isDisposed = true;
+        }
+    }
+
+    protected virtual ValueTask DisposeAsyncCore(bool disposing)
+    {
+        if (!isAsyncDisposed)
+        {
+            if (disposing)
+            {
+                // cleanup
+            }
+
+            isAsyncDisposed = true;
+        }
+
+        return ValueTask.CompletedTask;
+    }
+
     protected string GetChartType() =>
         chartType switch
         {
@@ -152,58 +199,11 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
         return data;
     }
 
-    /// <inheritdoc />
-    /// <seealso href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable?view=net-6.0" />
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    /// <inheritdoc />
-    /// <seealso
-    ///     href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-disposeasync#implement-both-dispose-and-async-dispose-patterns" />
-    public async ValueTask DisposeAsync()
-    {
-        await DisposeAsyncCore(true).ConfigureAwait(false);
-
-        Dispose(false);
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!isDisposed)
-        {
-            if (disposing)
-            {
-                // cleanup
-            }
-
-            isDisposed = true;
-        }
-    }
-
-    protected virtual ValueTask DisposeAsyncCore(bool disposing)
-    {
-        if (!isAsyncDisposed)
-        {
-            if (disposing)
-            {
-                // cleanup
-            }
-
-            isAsyncDisposed = true;
-        }
-
-        return ValueTask.CompletedTask;
-    }
-
     #endregion
 
     #region Properties, Indexers
 
-    [Parameter(CaptureUnmatchedValues = true)]
+    [Parameter(CaptureUnmatchedValues = true)] 
     public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
 
     [Parameter] public string? Class { get; set; }

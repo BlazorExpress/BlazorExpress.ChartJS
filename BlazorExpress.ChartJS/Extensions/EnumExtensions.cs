@@ -2,6 +2,8 @@
 
 public static class EnumExtensions
 {
+    #region Methods
+
     public static string ToCssString(this Unit unit) =>
         unit switch
         {
@@ -16,4 +18,6 @@ public static class EnumExtensions
             Unit.Vw => "vw",
             _ => string.Empty
         };
+
+    #endregion
 }

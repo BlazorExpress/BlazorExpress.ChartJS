@@ -2,7 +2,11 @@
 
 public partial class PieChart : ChartComponentBase
 {
+    #region Fields and Constants
+
     private const string _jsObjectName = "window.blazorexpress.chartjs.pie";
+
+    #endregion
 
     #region Constructors
 

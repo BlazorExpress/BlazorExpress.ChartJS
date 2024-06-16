@@ -2,7 +2,11 @@
 
 public partial class LineChart : ChartComponentBase
 {
+    #region Fields and Constants
+
     private const string _jsObjectName = "window.blazorexpress.chartjs.line";
+
+    #endregion
 
     #region Constructors
 

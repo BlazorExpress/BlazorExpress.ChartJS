@@ -9,5 +9,5 @@ public enum ChartType
     Pie,
     PolarArea,
     Radar,
-    Scatter,
+    Scatter
 }

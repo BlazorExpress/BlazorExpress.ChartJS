@@ -2,7 +2,11 @@
 
 public partial class BarChart : ChartComponentBase
 {
+    #region Fields and Constants
+
     private const string _jsObjectName = "window.blazorexpress.chartjs.bar";
+
+    #endregion
 
     #region Constructors
 

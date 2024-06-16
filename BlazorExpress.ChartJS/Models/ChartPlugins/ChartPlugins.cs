@@ -11,14 +11,14 @@ public class ChartPlugins
 
     /// <summary>
     /// The chart title defines text to draw at the top of the chart.
-    /// <see href="https://www.chartjs.org/docs/latest/configuration/title.html"/> 
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/title.html" />
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ChartPluginsTitle? Title { get; set; } = new();
 
     /// <summary>
     /// Tooltip for the element.
-    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html"/>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html" />
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ChartPluginsTooltip? Tooltip { get; set; }
@@ -41,7 +41,8 @@ public class ChartPluginsLegend
     public bool Display { get; set; } = true;
 
     /// <summary>
-    /// If <see langword="true" />, Marks that this box should take the full width/height of the canvas (moving other boxes). This is unlikely to need to be changed in day-to-day use.
+    /// If <see langword="true" />, Marks that this box should take the full width/height of the canvas (moving other boxes).
+    /// This is unlikely to need to be changed in day-to-day use.
     /// </summary>
     public bool FullSize { get; set; } = true;
 
@@ -79,7 +80,8 @@ public class ChartPluginsLegend
     public bool Rtl { get; set; } = false;
 
     /// <summary>
-    /// This will force the text direction 'rtl' or 'ltr' on the canvas for rendering the legend, regardless of the css specified on the canvas
+    /// This will force the text direction 'rtl' or 'ltr' on the canvas for rendering the legend, regardless of the css
+    /// specified on the canvas
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? TextDirection { get; set; }
@@ -95,6 +97,8 @@ public class ChartPluginsLegend
 
 public class ChartPluginsLegendTitle
 {
+    #region Properties, Indexers
+
     /// <summary>
     /// Color of the legend. Default value is 'black'.
     /// </summary>
@@ -117,6 +121,8 @@ public class ChartPluginsLegendTitle
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Text { get; set; }
+
+    #endregion
 }
 
 /// <summary>
@@ -125,17 +131,7 @@ public class ChartPluginsLegendTitle
 /// </summary>
 public class ChartPluginsLegendLabels
 {
-    /// <summary>
-    /// Width of coloured box.
-    /// </summary>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public int? BoxWidth { get; set; }
-
-    /// <summary>
-    /// Height of the coloured box
-    /// </summary>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public int? BoxHeight { get; set; }
+    #region Properties, Indexers
 
     /// <summary>
     /// Override the borderRadius to use.
@@ -144,13 +140,24 @@ public class ChartPluginsLegendLabels
     public int? BorderRadius { get; set; }
 
     /// <summary>
+    /// Height of the coloured box
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public int? BoxHeight { get; set; }
+
+    /// <summary>
+    /// Width of coloured box.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public int? BoxWidth { get; set; }
+
+    /// <summary>
     /// Color of label and the strikethrough.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Color { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public ChartFont? Font { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public ChartFont? Font { get; set; }
 
     /// <summary>
     /// Padding between rows of colored boxes.
@@ -159,27 +166,29 @@ public class ChartPluginsLegendLabels
     public int? Padding { get; set; }
 
     /// <summary>
-    /// If specified, this style of point is used for the legend. Only used if <see cref="UsePointStyle"/>> is true.
+    /// If specified, this style of point is used for the legend. Only used if <see cref="UsePointStyle" />> is true.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? PointStyle { get; set; }
 
     /// <summary>
-    /// If <see cref="UsePointStyle"/> is <see langword="true" />, the width of the point style used for the legend.
+    /// If <see cref="UsePointStyle" /> is <see langword="true" />, the width of the point style used for the legend.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? PointStyleWidth { get; set; }
 
     /// <summary>
-    /// Label borderRadius will match corresponding <see cref="BorderRadius"/>.
+    /// Label borderRadius will match corresponding <see cref="BorderRadius" />.
     /// </summary>
     public bool UseBorderRadius { get; set; } = false;
 
     /// <summary>
-    /// If <see langword="true"/>, Label style will match corresponding point style (size is based on pointStyleWidth or the minimum value between <see cref="BoxWidth"/> and <see cref="Font"/> -> Size).
+    /// If <see langword="true" />, Label style will match corresponding point style (size is based on pointStyleWidth or the
+    /// minimum value between <see cref="BoxWidth" /> and <see cref="Font" /> -> Size).
     /// </summary>
     public bool UsePointStyle { get; set; } = false;
 
+    #endregion
 }
 
 /// <summary>
@@ -196,6 +205,7 @@ public class ChartPluginsTitle
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Align { get; set; } = "center";
+
     /// <summary>
     /// Color of text.
     /// </summary>

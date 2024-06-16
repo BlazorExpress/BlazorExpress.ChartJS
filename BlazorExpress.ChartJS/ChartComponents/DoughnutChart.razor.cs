@@ -2,7 +2,11 @@
 
 public partial class DoughnutChart : ChartComponentBase
 {
+    #region Fields and Constants
+
     private const string _jsObjectName = "window.blazorexpress.chartjs.doughnut";
+
+    #endregion
 
     #region Constructors
 
