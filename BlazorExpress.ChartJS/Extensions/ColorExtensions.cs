@@ -2,6 +2,8 @@
 
 public static class ColorExtensions
 {
+    #region Methods
+
     public static Color ToColor(this string hex)
     {
         return ColorTranslator.FromHtml(hex);
@@ -26,4 +28,6 @@ public static class ColorExtensions
     {
         return $"RGB({c.R}, {c.G}, {c.B})";
     }
+
+    #endregion
 }

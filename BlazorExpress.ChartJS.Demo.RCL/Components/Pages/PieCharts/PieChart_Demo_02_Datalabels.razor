@@ -1,4 +1,5 @@
-﻿<PieChart @ref="pieChart" Width="600" />
+﻿@using BlazorExpress.ChartJS.Enums
+<PieChart @ref="pieChart" Width="600" />
 
 <div class="mt-5">
     <button class="btn btn-primary btn-sm" @onclick="async () => await RandomizeAsync()"> Randomize </button>
@@ -98,11 +99,11 @@
             var dataset = GetRandomPieChartDataset();
 
             if (index == 0)
-                dataset.Datalabels.Anchor = "end";
+                dataset.Datalabels.Anchor = Anchor.End;
             else if (index == numberOfDatasets - 1)
-                dataset.Datalabels.Anchor = "end";
+                dataset.Datalabels.Anchor = Anchor.End;
             else
-                dataset.Datalabels.Anchor = "center";
+                dataset.Datalabels.Anchor = Anchor.Center;
 
             datasets.Add(dataset);
         }

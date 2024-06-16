@@ -18,10 +18,10 @@
         <td class="text-center">
             @if (Required)
             {
-                <i class="bi bi-check-circle-fill text-danger text-opacity-75"></i>
+                <i class="bi bi-check-circle-fill text-success text-opacity-75"></i>
             }
         </td>
-        <td>@Description</td>
+        <td>@((MarkupString)Description!)</td>
         <td>@AddedVersion</td>
     </tr>
 }

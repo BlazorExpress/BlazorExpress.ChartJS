@@ -5,8 +5,8 @@
 
 <MetaTags PageUrl="@PageUrl" Title="@Title" Description="@Description" ImageUrl="@ImageUrl" />
 
-<h1>@Heading</h1>
+<h1>@((MarkupString)Heading!)</h1>
 
-<div class="lead mb-3">@Description</div>
+<div class="lead mb-3">@((MarkupString)Description!)</div>
 
 @* <CarbonAds /> *@

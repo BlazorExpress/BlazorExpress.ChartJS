@@ -1,4 +1,6 @@
-﻿namespace BlazorExpress.ChartJS;
+﻿using BlazorExpress.ChartJS.Enums;
+
+namespace BlazorExpress.ChartJS;
 
 public class LineChartDataset : ChartDataset
 {
@@ -15,8 +17,7 @@ public class LineChartDataset : ChartDataset
     /// </summary>
     public double BorderDashOffset { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public LineChartDatasetDataLabels Datalabels { get; set; } = new();
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public LineChartDatasetDataLabels Datalabels { get; set; } = new();
 
     /// <summary>
     /// Both line and radar charts support a fill option on the dataset object
@@ -112,13 +113,13 @@ public class LineChartDataset : ChartDataset
     // https://www.chartjs.org/docs/latest/api/interfaces/LineControllerDatasetOptions.html#segment
 
     /// <summary>
-    /// If <see langword="false"/>, the lines between points are not drawn.
+    /// If <see langword="false" />, the lines between points are not drawn.
     /// </summary>
     public bool ShowLine { get; set; } = true;
 
     /// <summary>
-    /// If <see langword="true"/>, lines will be drawn between points with no or null data.
-    /// If <see langword="false"/>, points with null data will create a break in the line.
+    /// If <see langword="true" />, lines will be drawn between points with no or null data.
+    /// If <see langword="false" />, points with null data will create a break in the line.
     /// Can also be a number specifying the maximum gap length to span.
     /// The unit of the value depends on the scale used.
     /// </summary>
@@ -130,7 +131,7 @@ public class LineChartDataset : ChartDataset
     public bool Stepped { get; set; }
 
     /// <summary>
-    /// Bezier curve tension of the line. Set to 0 to draw straightlines.
+    /// Bezier curve tension of the line. Set to 0 to draw straight lines.
     /// This option is ignored if monotone cubic interpolation is used.
     /// </summary>
     public double Tension { get; set; } = 0.2;
@@ -152,19 +153,64 @@ public class LineChartDataset : ChartDataset
 
 public class LineChartDatasetDataLabels
 {
+    #region Fields and Constants
+
+    private Alignment alignment;
+
+    private Anchor anchor;
+
+    #endregion
+
     #region Properties, Indexers
 
     /// <summary>
-    /// Gets or sets the data label alignment.
-    /// Possible values: start, center, and end.
+    /// Gets or sets the data labels alignment. 
     /// </summary>
-    public string? Align { get; set; } = "start";
+    /// <remarks>
+    /// Default value is <see cref="Alignment.Center"/>.
+    /// </remarks>
+    [JsonIgnore]
+    public Alignment Alignment
+    {
+        get => alignment;
+        set
+        {
+            alignment = value;
+            DataLabelsAlignment = value.ToAlignmentString();
+        }
+    }
 
     /// <summary>
-    /// Gets or sets the data label anchor.
+    /// Gets or sets the data labels anchor.
+    /// </summary>
+    /// <remarks>
+    /// Default value is <see cref="Anchor.None"/>.
+    /// </remarks>
+    [JsonIgnore]
+    public Anchor Anchor
+    {
+        get => anchor;
+        set
+        {
+            anchor = value;
+            DataLabelsAnchor = value.ToAnchorString();
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the data labels alignment.
     /// Possible values: start, center, and end.
     /// </summary>
-    public string? Anchor { get; set; } = "start";
+    [JsonPropertyName("align")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? DataLabelsAlignment { get; private set; }
+
+    /// <summary>
+    /// Gets or sets the data labels anchor.
+    /// Possible values: start, center, and end.
+    /// </summary>
+    [JsonPropertyName("anchor")]
+    public string? DataLabelsAnchor { get; private set; }
 
     #endregion
 }

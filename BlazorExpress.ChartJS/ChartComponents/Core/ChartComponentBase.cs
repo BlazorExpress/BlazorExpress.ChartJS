@@ -4,11 +4,11 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
 {
     #region Fields and Constants
 
+    internal ChartType _chartType;
+
     private bool isAsyncDisposed;
 
     private bool isDisposed;
-
-    internal ChartType chartType;
 
     #endregion
 
@@ -42,6 +42,25 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
 
     public virtual async Task<ChartData> AddDatasetAsync(ChartData chartData, IChartDataset chartDataset, IChartOptions chartOptions) => await Task.FromResult(chartData);
 
+    /// <inheritdoc />
+    /// <seealso href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable?view=net-6.0" />
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    /// <inheritdoc />
+    /// <seealso
+    ///     href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-disposeasync#implement-both-dispose-and-async-dispose-patterns" />
+    public async ValueTask DisposeAsync()
+    {
+        await DisposeAsyncCore(true).ConfigureAwait(false);
+
+        Dispose(false);
+        GC.SuppressFinalize(this);
+    }
+
     //public async Task Clear() { }
 
     /// <summary>
@@ -56,9 +75,9 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
         {
             var _data = GetChartDataObject(chartData);
 
-            if (chartType == ChartType.Bar)
+            if (_chartType == ChartType.Bar)
                 await JSRuntime.InvokeVoidAsync("window.blazorChart.bar.initialize", Id, GetChartType(), _data, (BarChartOptions)chartOptions, plugins);
-            else if (chartType == ChartType.Line)
+            else if (_chartType == ChartType.Line)
                 await JSRuntime.InvokeVoidAsync("window.blazorChart.line.initialize", Id, GetChartType(), _data, (LineChartOptions)chartOptions, plugins);
             else
                 await JSRuntime.InvokeVoidAsync("window.blazorChart.initialize", Id, GetChartType(), _data, chartOptions, plugins);
@@ -94,17 +113,45 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
         {
             var _data = GetChartDataObject(chartData);
 
-            if (chartType == ChartType.Bar)
+            if (_chartType == ChartType.Bar)
                 await JSRuntime.InvokeVoidAsync("window.blazorChart.bar.update", Id, GetChartType(), _data, (BarChartOptions)chartOptions);
-            else if (chartType == ChartType.Line)
+            else if (_chartType == ChartType.Line)
                 await JSRuntime.InvokeVoidAsync("window.blazorChart.line.update", Id, GetChartType(), _data, (LineChartOptions)chartOptions);
             else
                 await JSRuntime.InvokeVoidAsync("window.blazorChart.update", Id, GetChartType(), _data, chartOptions);
         }
     }
 
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!isDisposed)
+        {
+            if (disposing)
+            {
+                // cleanup
+            }
+
+            isDisposed = true;
+        }
+    }
+
+    protected virtual ValueTask DisposeAsyncCore(bool disposing)
+    {
+        if (!isAsyncDisposed)
+        {
+            if (disposing)
+            {
+                // cleanup
+            }
+
+            isAsyncDisposed = true;
+        }
+
+        return ValueTask.CompletedTask;
+    }
+
     protected string GetChartType() =>
-        chartType switch
+        _chartType switch
         {
             ChartType.Bar => "bar",
             ChartType.Bubble => "bubble",
@@ -152,58 +199,11 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
         return data;
     }
 
-    /// <inheritdoc />
-    /// <seealso href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable?view=net-6.0" />
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    /// <inheritdoc />
-    /// <seealso
-    ///     href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-disposeasync#implement-both-dispose-and-async-dispose-patterns" />
-    public async ValueTask DisposeAsync()
-    {
-        await DisposeAsyncCore(true).ConfigureAwait(false);
-
-        Dispose(false);
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!isDisposed)
-        {
-            if (disposing)
-            {
-                // cleanup
-            }
-
-            isDisposed = true;
-        }
-    }
-
-    protected virtual ValueTask DisposeAsyncCore(bool disposing)
-    {
-        if (!isAsyncDisposed)
-        {
-            if (disposing)
-            {
-                // cleanup
-            }
-
-            isAsyncDisposed = true;
-        }
-
-        return ValueTask.CompletedTask;
-    }
-
     #endregion
 
     #region Properties, Indexers
 
-    [Parameter(CaptureUnmatchedValues = true)]
+    [Parameter(CaptureUnmatchedValues = true)] 
     public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
 
     [Parameter] public string? Class { get; set; }
