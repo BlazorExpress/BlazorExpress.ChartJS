@@ -11,19 +11,21 @@
 <div class="mb-3">
     Looking to quickly add <b>BlazorExpress.ChartJS</b> to your project? Use NuGet package manager.
 </div>
-<Snippet LanguageCode="LanguageCode.PowerShell" FilePath="~\Components\Pages\GettingStarted\NET8_01_WebAssembly\Getting_Started_Snippet_01_Install.txt" />
+<div class="p-2 text-bg-dark rounded">
+    Install-Package BlazorExpress.ChartJS -Version @version
+</div>
 
 <SectionHeading Size="HeadingSize.H4" Text="Add script references" PageUrl="@pageUrl" HashTagName="add-script-references" />
 <div class="mb-3">
     Insert the following references into the <b>body</b> section of the <b>wwwroot/index.html</b> file, immediately after the <b>_framework/blazor.webassembly.js</b> reference:
 </div>
-<Snippet LanguageCode="LanguageCode.JavaScript" FilePath="~\Components\Pages\GettingStarted\NET8_01_WebAssembly\Getting_Started_Snippet_02_Scripts.html" />
+<Snippet LanguageCode="LanguageCode.JavaScript" FilePath="~\Components\Pages\GettingStarted\NET8_01_WebAssembly\Getting_Started_Snippet_01_Scripts.html" />
 
 <SectionHeading Size="HeadingSize.H4" Text="Register services" PageUrl="@pageUrl" HashTagName="register-services" />
 <div class="mb-3">
     Register tag helpers in <b>_Imports.razor</b>.
 </div>
-<Snippet LanguageCode="LanguageCode.Razor" FilePath="~\Components\Pages\GettingStarted\NET8_01_WebAssembly\Getting_Started_Snippet_03_Register.txt" />
+<Snippet LanguageCode="LanguageCode.Razor" FilePath="~\Components\Pages\GettingStarted\NET8_01_WebAssembly\Getting_Started_Snippet_02_Register.txt" />
 
 @code {
     private const string pageUrl = "/charts/getting-started";
@@ -32,14 +34,20 @@
     private const string heading = "Getting started - Blazor WebAssembly (.NET 8)";
     private const string description = "Get started with the Enterprise-class Component library built on the Blazor and Chart.js JavaScript library.";
     private const string imageUrl = "https://i.imgur.com/xEPhAsW.png";
+    private string version = default!;
 
     [Inject]
     private NavigationManager _navigationManager { get; set; } = default!;
+
+    [Inject]
+    private IConfiguration _configuration { get; set; } = default!;
 
     protected override void OnInitialized()
     {
         try
         {
+            version = _configuration["version"]!;
+
             if (_navigationManager.Uri.Replace(_navigationManager.BaseUri, "").Contains("charts/getting-started"))
                 _navigationManager.NavigateTo(pageUrl2);
         }
