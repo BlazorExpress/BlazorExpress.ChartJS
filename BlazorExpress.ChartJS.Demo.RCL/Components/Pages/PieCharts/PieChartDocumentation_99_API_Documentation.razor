@@ -48,7 +48,7 @@
     <DocxTRow TItem="PieChartDataset" PropertyName="@nameof(PieChartDataset.HoverBorderColor)" PropertyType="List<string>" DefaultValue="null" Required="true" Description="Get or sets the HoverBorderColor." AddedVersion="1.0.0" />
     <DocxTRow TItem="PieChartDataset" PropertyName="@nameof(PieChartDataset.HoverBorderWidth)" PropertyType="List<string>" DefaultValue="null" Required="true" Description="Get or sets the HoverBorderWidth." AddedVersion="1.0.0" />
     <DocxTRow TItem="PieChartDataset" PropertyName="@nameof(PieChartDataset.Label)" DefaultValue="null" Required="false" Description="The label for the dataset which appears in the legend and tooltips." AddedVersion="1.0.0" />
-    <DocxTRow TItem="PieChartDataset" PropertyName="@nameof(PieChartDataset.Type)" DefaultValue="null" Required="false" Description="Get or sets the chart type." AddedVersion="1.0.0" />
+    <DocxTRow TItem="PieChartDataset" PropertyName="@nameof(PieChartDataset.Type)" DefaultValue="null" Required="true" Description="Get or sets the chart type." AddedVersion="1.0.0" />
 </DocxTable>
 
 <SectionHeading Size="HeadingSize.H4" Text="PieChartDatasetDataLabels Members" PageUrl="@pageUrl" HashTagName="piechart-dataset-data-labels-members" />
@@ -63,7 +63,7 @@
 </BlazorBootstrap.Callout>
 <DocxTable TItem="PieChartOptions" DocType="DocType.Properties">
     <DocxTRow TItem="PieChartOptions" PropertyName="@nameof(PieChartOptions.Locale)" DefaultValue="null" Required="false" Description="Gets or sets the locale. By default, the chart is using the default locale of the platform which is running on." AddedVersion="1.0.0" />
-    <DocxTRow TItem="PieChartOptions" PropertyName="@nameof(PieChartOptions.Plugins)" PropertyType="BarChartPlugins" DefaultValue="" Required="false" Description="	Gets or sets the Plugins." AddedVersion="1.0.0" />
+    <DocxTRow TItem="PieChartOptions" PropertyName="@nameof(PieChartOptions.Plugins)" PropertyType="PieChartPlugins" DefaultValue="" Required="false" Description="	Gets or sets the Plugins." AddedVersion="1.0.0" />
     <DocxTRow TItem="PieChartOptions" PropertyName="@nameof(PieChartOptions.Responsive)" DefaultValue="false" Required="false" Description="Gets or sets the Responsive." AddedVersion="1.0.0" />
 </DocxTable>
 
