@@ -4,7 +4,7 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
 {
     #region Fields and Constants
 
-    internal ChartType chartType;
+    internal ChartType _chartType;
 
     private bool isAsyncDisposed;
 
@@ -75,9 +75,9 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
         {
             var _data = GetChartDataObject(chartData);
 
-            if (chartType == ChartType.Bar)
+            if (_chartType == ChartType.Bar)
                 await JSRuntime.InvokeVoidAsync("window.blazorChart.bar.initialize", Id, GetChartType(), _data, (BarChartOptions)chartOptions, plugins);
-            else if (chartType == ChartType.Line)
+            else if (_chartType == ChartType.Line)
                 await JSRuntime.InvokeVoidAsync("window.blazorChart.line.initialize", Id, GetChartType(), _data, (LineChartOptions)chartOptions, plugins);
             else
                 await JSRuntime.InvokeVoidAsync("window.blazorChart.initialize", Id, GetChartType(), _data, chartOptions, plugins);
@@ -113,9 +113,9 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
         {
             var _data = GetChartDataObject(chartData);
 
-            if (chartType == ChartType.Bar)
+            if (_chartType == ChartType.Bar)
                 await JSRuntime.InvokeVoidAsync("window.blazorChart.bar.update", Id, GetChartType(), _data, (BarChartOptions)chartOptions);
-            else if (chartType == ChartType.Line)
+            else if (_chartType == ChartType.Line)
                 await JSRuntime.InvokeVoidAsync("window.blazorChart.line.update", Id, GetChartType(), _data, (LineChartOptions)chartOptions);
             else
                 await JSRuntime.InvokeVoidAsync("window.blazorChart.update", Id, GetChartType(), _data, chartOptions);
@@ -151,7 +151,7 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
     }
 
     protected string GetChartType() =>
-        chartType switch
+        _chartType switch
         {
             ChartType.Bar => "bar",
             ChartType.Bubble => "bubble",

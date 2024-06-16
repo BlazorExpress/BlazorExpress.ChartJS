@@ -37,19 +37,19 @@
 
     private async Task ChangeTicksAlignmentToStart()
     {
-        lineChartOptions.Scales.X!.Ticks!.TicksAlignment = TicksAlignment.Start;
+        lineChartOptions.Scales.X!.Ticks!.Alignment = Alignment.Start;
         await lineChart.UpdateAsync(chartData, lineChartOptions);
     }
 
     private async Task ChangeTicksAlignmentToCenter()
     {
-        lineChartOptions.Scales.X!.Ticks!.TicksAlignment = TicksAlignment.Center;
+        lineChartOptions.Scales.X!.Ticks!.Alignment = Alignment.Center;
         await lineChart.UpdateAsync(chartData, lineChartOptions);
     }
 
     private async Task ChangeTicksAlignmentToEnd()
     {
-        lineChartOptions.Scales.X!.Ticks!.TicksAlignment = TicksAlignment.End;
+        lineChartOptions.Scales.X!.Ticks!.Alignment = Alignment.End;
         await lineChart.UpdateAsync(chartData, lineChartOptions);
     }
 

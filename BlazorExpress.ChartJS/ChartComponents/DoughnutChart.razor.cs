@@ -12,7 +12,7 @@ public partial class DoughnutChart : ChartComponentBase
 
     public DoughnutChart()
     {
-        chartType = ChartType.Doughnut;
+        _chartType = ChartType.Doughnut;
     }
 
     #endregion

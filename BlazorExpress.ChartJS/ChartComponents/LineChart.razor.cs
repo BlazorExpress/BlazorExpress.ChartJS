@@ -12,7 +12,7 @@ public partial class LineChart : ChartComponentBase
 
     public LineChart()
     {
-        chartType = ChartType.Line;
+        _chartType = ChartType.Line;
     }
 
     #endregion

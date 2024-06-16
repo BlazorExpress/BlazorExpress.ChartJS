@@ -12,7 +12,7 @@ public partial class BarChart : ChartComponentBase
 
     public BarChart()
     {
-        chartType = ChartType.Bar;
+        _chartType = ChartType.Bar;
     }
 
     #endregion

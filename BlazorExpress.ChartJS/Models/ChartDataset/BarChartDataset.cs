@@ -1,4 +1,6 @@
-﻿namespace BlazorExpress.ChartJS;
+﻿using BlazorExpress.ChartJS.Enums;
+
+namespace BlazorExpress.ChartJS;
 
 public class BarChartDataset : ChartDataset
 {
@@ -26,8 +28,7 @@ public class BarChartDataset : ChartDataset
     /// </summary>
     public double CategoryPercentage { get; set; } = 0.8;
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public BarChartDatasetDataLabels Datalabels { get; set; } = new();
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public BarChartDatasetDataLabels Datalabels { get; set; } = new();
 
     /// <summary>
     /// The label for the dataset which appears in the legend and tooltips.
@@ -58,10 +59,64 @@ public class BarChartDataset : ChartDataset
 
 public class BarChartDatasetDataLabels
 {
-    #region Properties, Indexers
+    #region Fields and Constants
 
-    public string? Align { get; set; } = "center";
-    public string? Anchor { get; set; } = "center";
+    private Alignment alignment;
+
+    private Anchor anchor;
+
+    #endregion
+
+    #region Properties, Indexers
+    
+    /// <summary>
+    /// Gets or sets the data labels alignment. 
+    /// </summary>
+    /// <remarks>
+    /// Default value is <see cref="Alignment.Center"/>.
+    /// </remarks>
+    [JsonIgnore]
+    public Alignment Alignment
+    {
+        get => alignment;
+        set
+        {
+            alignment = value;
+            DataLabelsAlignment = value.ToAlignmentString();
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the data labels anchor.
+    /// </summary>
+    /// <remarks>
+    /// Default value is <see cref="Anchor.None"/>.
+    /// </remarks>
+    [JsonIgnore]
+    public Anchor Anchor
+    {
+        get => anchor;
+        set
+        {
+            anchor = value;
+            DataLabelsAnchor = value.ToAnchorString();
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the data labels alignment.
+    /// Possible values: start, center, and end.
+    /// </summary>
+    [JsonPropertyName("align")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? DataLabelsAlignment { get; private set; }
+
+    /// <summary>
+    /// Gets or sets the data labels anchor.
+    /// Possible values: start, center, and end.
+    /// </summary>
+    [JsonPropertyName("anchor")]
+    public string? DataLabelsAnchor { get; private set; }
 
     #endregion
 }

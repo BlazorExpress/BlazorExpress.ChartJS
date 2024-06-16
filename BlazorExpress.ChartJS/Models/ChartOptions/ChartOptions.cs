@@ -67,22 +67,6 @@ public class Interaction
 
     #endregion
 
-    #region Methods
-
-    private void SetMode(InteractionMode interactionMode) =>
-        ChartInteractionMode = interactionMode switch
-                               {
-                                   InteractionMode.Dataset => "dataset",
-                                   InteractionMode.Index => "index",
-                                   InteractionMode.Nearest => "nearest",
-                                   InteractionMode.Point => "point",
-                                   InteractionMode.X => "x",
-                                   InteractionMode.Y => "y",
-                                   _ => ""
-                               };
-
-    #endregion
-
     #region Properties, Indexers
 
     /// <summary>
@@ -106,21 +90,11 @@ public class Interaction
         set
         {
             mode = value;
-            SetMode(value);
+            ChartInteractionMode = value.ToInteractionModeString();
         }
     }
 
     #endregion
-}
-
-public enum InteractionMode
-{
-    Dataset,
-    Index,
-    Nearest,
-    Point,
-    X,
-    Y
 }
 
 public class Scales
@@ -335,20 +309,6 @@ public class ChartAxesGrid
     #endregion
 }
 
-public enum TicksAlignment
-{
-    Center, // default
-    Start,
-    End
-}
-
-public enum TitleAlignment
-{
-    Center, // default
-    Start,
-    End
-}
-
 /// <summary>
 /// Chart axes tick styling
 /// <see href="https://www.chartjs.org/docs/latest/samples/scale-options/ticks.html" />
@@ -357,28 +317,22 @@ public class ChartAxesTicks
 {
     #region Fields and Constants
 
-    private TicksAlignment ticksAlignment;
-
-    #endregion
-
-    #region Methods
-
-    private void SetTicksAlignment(TicksAlignment interactionMode) =>
-        Alignment = interactionMode switch
-                    {
-                        TicksAlignment.Center => "center",
-                        TicksAlignment.Start => "start",
-                        TicksAlignment.End => "end",
-                        _ => null
-                    };
+    private Alignment alignment;
 
     #endregion
 
     #region Properties, Indexers
 
-    [JsonPropertyName("align")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? Alignment { get; private set; }
+    [JsonIgnore]
+    public Alignment Alignment
+    {
+        get => alignment;
+        set
+        {
+            alignment = value;
+            TicksAlignment = value.ToAlignmentString();
+        }
+    }
 
     /// <summary>
     /// Color of label backdrops
@@ -433,16 +387,9 @@ public class ChartAxesTicks
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? TextStrokeWidth { get; set; }
 
-    [JsonIgnore]
-    public TicksAlignment TicksAlignment
-    {
-        get => ticksAlignment;
-        set
-        {
-            ticksAlignment = value;
-            SetTicksAlignment(value);
-        }
-    }
+    [JsonPropertyName("align")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? TicksAlignment { get; private set; }
 
     #endregion
 }
@@ -471,32 +418,22 @@ public class ChartAxesTitle
 {
     #region Fields and Constants
 
-    private TitleAlignment titleAlignment;
-
-    #endregion
-
-    #region Methods
-
-    private void SetTitleAlignment(TitleAlignment interactionMode) =>
-        Alignment = interactionMode switch
-                    {
-                        TitleAlignment.Center => "center", // default
-                        TitleAlignment.Start => "start",
-                        TitleAlignment.End => "end",
-                        _ => null
-                    };
+    private Alignment alignment;
 
     #endregion
 
     #region Properties, Indexers
 
-    /// <summary>
-    /// Alignment of the title.
-    /// Options are: 'start', 'center', and 'end'
-    /// </summary>
-    [JsonPropertyName("align")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? Alignment { get; private set; }
+    [JsonIgnore]
+    public Alignment Alignment
+    {
+        get => alignment;
+        set
+        {
+            alignment = value;
+            TitleAlignment = value.ToAlignmentString();
+        }
+    }
 
     /// <summary>
     /// Color of text.
@@ -517,16 +454,13 @@ public class ChartAxesTitle
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public string? Text { get; set; }
 
-    [JsonIgnore]
-    public TitleAlignment TitleAlignment
-    {
-        get => titleAlignment;
-        set
-        {
-            titleAlignment = value;
-            SetTitleAlignment(value);
-        }
-    }
+    /// <summary>
+    /// Alignment of the title.
+    /// Options are: 'start', 'center', and 'end'
+    /// </summary>
+    [JsonPropertyName("align")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? TitleAlignment { get; private set; }
 
     #endregion
 }

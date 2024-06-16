@@ -1,4 +1,6 @@
-﻿namespace BlazorExpress.ChartJS;
+﻿using BlazorExpress.ChartJS.Enums;
+
+namespace BlazorExpress.ChartJS;
 
 public class LineChartDataset : ChartDataset
 {
@@ -15,8 +17,7 @@ public class LineChartDataset : ChartDataset
     /// </summary>
     public double BorderDashOffset { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public LineChartDatasetDataLabels Datalabels { get; set; } = new();
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public LineChartDatasetDataLabels Datalabels { get; set; } = new();
 
     /// <summary>
     /// Both line and radar charts support a fill option on the dataset object
@@ -152,19 +153,64 @@ public class LineChartDataset : ChartDataset
 
 public class LineChartDatasetDataLabels
 {
+    #region Fields and Constants
+
+    private Alignment alignment;
+
+    private Anchor anchor;
+
+    #endregion
+
     #region Properties, Indexers
 
     /// <summary>
-    /// Gets or sets the data label alignment.
-    /// Possible values: start, center, and end.
+    /// Gets or sets the data labels alignment. 
     /// </summary>
-    public string? Align { get; set; } = "start";
+    /// <remarks>
+    /// Default value is <see cref="Alignment.Center"/>.
+    /// </remarks>
+    [JsonIgnore]
+    public Alignment Alignment
+    {
+        get => alignment;
+        set
+        {
+            alignment = value;
+            DataLabelsAlignment = value.ToAlignmentString();
+        }
+    }
 
     /// <summary>
-    /// Gets or sets the data label anchor.
+    /// Gets or sets the data labels anchor.
+    /// </summary>
+    /// <remarks>
+    /// Default value is <see cref="Anchor.None"/>.
+    /// </remarks>
+    [JsonIgnore]
+    public Anchor Anchor
+    {
+        get => anchor;
+        set
+        {
+            anchor = value;
+            DataLabelsAnchor = value.ToAnchorString();
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the data labels alignment.
     /// Possible values: start, center, and end.
     /// </summary>
-    public string? Anchor { get; set; } = "start";
+    [JsonPropertyName("align")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? DataLabelsAlignment { get; private set; }
+
+    /// <summary>
+    /// Gets or sets the data labels anchor.
+    /// Possible values: start, center, and end.
+    /// </summary>
+    [JsonPropertyName("anchor")]
+    public string? DataLabelsAnchor { get; private set; }
 
     #endregion
 }

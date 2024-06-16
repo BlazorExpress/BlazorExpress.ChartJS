@@ -12,7 +12,7 @@ public partial class PieChart : ChartComponentBase
 
     public PieChart()
     {
-        chartType = ChartType.Pie;
+        _chartType = ChartType.Pie;
     }
 
     #endregion
