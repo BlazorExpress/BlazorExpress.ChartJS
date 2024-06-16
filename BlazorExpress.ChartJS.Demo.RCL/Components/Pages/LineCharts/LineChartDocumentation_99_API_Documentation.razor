@@ -6,78 +6,100 @@
                  Description="@description"
                  ImageUrl="@imageUrl" />
 
+<img src="https://i.imgur.com/8b7jH0D.png" class="img-fluid" alt="Blazor Line Chart - API Documentation" />
+
 <SectionHeading Size="HeadingSize.H4" Text="Parameters" PageUrl="@pageUrl" HashTagName="parameters" />
-<DocxTable TItem="BarChart" DocType="DocType.Parameters">
-    <DocxTRow TItem="BarChart" PropertyName="@nameof(BarChart.Height)" DefaultValue="null" Required="false" Description="Gets or sets chart container height." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChart" PropertyName="@nameof(BarChart.HeightUnit)" DefaultValue="Unit.Px" Required="false" Description="Gets or sets chart container height unit of measure." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChart" PropertyName="@nameof(BarChart.Width)" DefaultValue="null" Required="false" Description="Gets or sets chart container width." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChart" PropertyName="@nameof(BarChart.WidthUnit)" DefaultValue="Unit.Px" Required="false" Description="Gets or sets chart container width unit of measure." AddedVersion="1.0.0" />
+<DocxTable TItem="LineChart" DocType="DocType.Parameters">
+    <DocxTRow TItem="LineChart" PropertyName="@nameof(LineChart.Height)" DefaultValue="null" Required="false" Description="Gets or sets chart container height." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChart" PropertyName="@nameof(LineChart.HeightUnit)" DefaultValue="Unit.Px" Required="false" Description="Gets or sets chart container height unit of measure." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChart" PropertyName="@nameof(LineChart.Width)" DefaultValue="null" Required="false" Description="Gets or sets chart container width." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChart" PropertyName="@nameof(LineChart.WidthUnit)" DefaultValue="Unit.Px" Required="false" Description="Gets or sets chart container width unit of measure." AddedVersion="1.0.0" />
 </DocxTable>
 
 <SectionHeading Size="HeadingSize.H4" Text="Methods" PageUrl="@pageUrl" HashTagName="methods" />
-<DocxTable TItem="BarChart" DocType="DocType.Methods">
-    <DocxTRow TItem="BarChart" MethodName="AddDataAsync(ChartData chartData, string dataLabel, IChartDatasetData data)" ReturnType="Task<ChartData>" Description="Adds data to chart." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChart" MethodName="AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data)" ReturnType="Task<ChartData>" Description="Adds dataset to chart." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChart" MethodName="AddDatasetAsync(ChartData chartData, IChartDataset chartDataset, IChartOptions chartOptions)" ReturnType="Task<ChartData>" Description="Adds dataset to chart." AddedVersion="1.10.0" />
-    <DocxTRow TItem="BarChart" MethodName="InitializeAsync(ChartData chartData, IChartOptions chartOptions, string[]? plugins = null)" ReturnType="Task" Description="Initialize the chat." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChart" MethodName="ResizeAsync(int width, int height, Unit widthUnit = Unit.Px, Unit heightUnit = Unit.Px)" ReturnType="Task" Description="Resize the chart." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChart" MethodName="UpdateAsync(ChartData chartData, IChartOptions chartOptions)" ReturnType="Task" Description="Update the chart." AddedVersion="1.0.0" />
+<DocxTable TItem="LineChart" DocType="DocType.Methods">
+    <DocxTRow TItem="LineChart" MethodName="AddDataAsync(ChartData chartData, string dataLabel, IChartDatasetData data)" ReturnType="Task<ChartData>" Description="Adds data to chart." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChart" MethodName="AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data)" ReturnType="Task<ChartData>" Description="Adds dataset to chart." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChart" MethodName="AddDatasetAsync(ChartData chartData, IChartDataset chartDataset, IChartOptions chartOptions)" ReturnType="Task<ChartData>" Description="Adds dataset to chart." AddedVersion="1.10.0" />
+    <DocxTRow TItem="LineChart" MethodName="InitializeAsync(ChartData chartData, IChartOptions chartOptions, string[]? plugins = null)" ReturnType="Task" Description="Initialize the chat." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChart" MethodName="ResizeAsync(int width, int height, Unit widthUnit = Unit.Px, Unit heightUnit = Unit.Px)" ReturnType="Task" Description="Resize the chart." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChart" MethodName="UpdateAsync(ChartData chartData, IChartOptions chartOptions)" ReturnType="Task" Description="Update the chart." AddedVersion="1.0.0" />
 </DocxTable>
 
 <SectionHeading Size="HeadingSize.H4" Text="ChartData Members" PageUrl="@pageUrl" HashTagName="chartdata-Members" />
 <DocxTable TItem="ChartData" DocType="DocType.Properties">
     <DocxTRow TItem="ChartData" PropertyName="@nameof(ChartData.Datasets)" PropertyType="List<IChartDataset>" DefaultValue="null" Required="true" Description="Gets or sets the Datasets." AddedVersion="1.0.0" />
-    <DocxTRow TItem="ChartData" PropertyName="@nameof(ChartData.Labels)" PropertyType="List<string>" DefaultValue="Unit.Px" Required="true" Description="Gets or sets the Labels." AddedVersion="1.0.0" />
+    <DocxTRow TItem="ChartData" PropertyName="@nameof(ChartData.Labels)" PropertyType="List<string>" DefaultValue="null" Required="true" Description="Gets or sets the Labels." AddedVersion="1.0.0" />
 </DocxTable>
 
-<SectionHeading Size="HeadingSize.H4" Text="BarChartDataset Members" PageUrl="@pageUrl" HashTagName="barchart-dataset-members" />
+<SectionHeading Size="HeadingSize.H4" Text="LineChartDataset Members" PageUrl="@pageUrl" HashTagName="linechart-dataset-members" />
 <BlazorBootstrap.Callout Color="CalloutColor.Info">
-    <code>BarChartDataset</code> implements <code>IChartDataset</code>.
+    <code>LineChartDataset</code> implements <code>IChartDataset</code>.
 </BlazorBootstrap.Callout>
-<DocxTable TItem="BarChartDataset" DocType="DocType.Properties">
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.BackgroundColor)" PropertyType="List<string>" DefaultValue="null" Required="false" Description="Get or sets the background color." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.BarPercentage)" DefaultValue="0.8" Required="false" Description="Percent (0-1) of the available width each bar should be within the category width. 1.0 will take the whole category width and put the bars right next to each other." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.BorderColor)" PropertyType="List<string>" DefaultValue="null" Required="false" Description="Get or sets the border color." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.BorderRadius)" DefaultValue="0" Required="false" Description="Gets or sets the border radius." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.BorderWidth)" PropertyType="List<double>" DefaultValue="null" Required="false" Description="Gets or sets the border width." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.CategoryPercentage)" DefaultValue="0.8" Required="false" Description="Percent (0-1) of the available width each category should be within the sample width." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.Clip)" DefaultValue="null" Required="false" Description="How to clip relative to chartArea. Positive value allows overflow, negative value clips that many pixels inside chartArea. 0 = clip at chartArea. Clipping can also be configured per side: <code>clip: {left:5, top:false, right:-2, bottom:0}</code>" AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.Datalabels)" PropertyType="BarChartDatasetDataLabels" DefaultValue="" Required="false" Description="Get or sets the data labels" AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.Data)" PropertyType="List<double>" DefaultValue="null" Required="false" Description="Get or sets the Data." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.Hidden)" DefaultValue="false" Required="false" Description="	Configures the visibility state of the dataset. Set it to true, to hide the dataset from the chart." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.HoverBackgroundColor)" PropertyType="List<string>" DefaultValue="null" Required="true" Description="Get or sets the HoverBackgroundColor." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.HoverBorderColor)" PropertyType="List<string>" DefaultValue="null" Required="true" Description="Get or sets the HoverBorderColor." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.HoverBorderWidth)" PropertyType="List<string>" DefaultValue="null" Required="true" Description="Get or sets the HoverBorderWidth." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.Label)" DefaultValue="null" Required="false" Description="The label for the dataset which appears in the legend and tooltips." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.Type)" DefaultValue="null" Required="false" Description="Get or sets the chart type." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.XAxisID)" DefaultValue="null" Required="false" Description="The ID of the x axis to plot this dataset on." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDataset" PropertyName="@nameof(BarChartDataset.YAxisID)" DefaultValue="null" Required="false" Description="The ID of the y axis to plot this dataset on." AddedVersion="1.0.0" />
+<DocxTable TItem="LineChartDataset" DocType="DocType.Properties">
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.BackgroundColor)" PropertyType="List<string>" DefaultValue="null" Required="false" Description="Get or sets the background color." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.BorderColor)" PropertyType="List<string>" DefaultValue="null" Required="false" Description="Get or sets the border color." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.BorderDash)" PropertyType="List<int>" DefaultValue="null" Required="false" Description="Gets or sets the line dash." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.BorderDashOffset)" DefaultValue="0.0" Required="false" Description="Gets or sets the line dash offset." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.BorderWidth)" PropertyType="List<double>" DefaultValue="null" Required="false" Description="Gets or sets the border width." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.Clip)" DefaultValue="null" Required="false" Description="How to clip relative to chartArea. Positive value allows overflow, negative value clips that many pixels inside chartArea. 0 = clip at chartArea. Clipping can also be configured per side: <code>clip: {left:5, top:false, right:-2, bottom:0}</code>" AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.Data)" PropertyType="List<double>" DefaultValue="null" Required="false" Description="Get or sets the Data." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.Datalabels)" PropertyType="LineChartDatasetDataLabels" DefaultValue="" Required="false" Description="Get or sets the data labels." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.Fill)" DefaultValue="false" Required="false" Description="Both line and radar charts support a fill option on the dataset object which can be used to create area between two datasets or a dataset and a boundary, i.e. the scale origin, start or end." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.Hidden)" DefaultValue="false" Required="false" Description="Configures the visibility state of the dataset. Set it to true, to hide the dataset from the chart." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.HoverBackgroundColor)" PropertyType="List<string>" DefaultValue="null" Required="true" Description="Get or sets the HoverBackgroundColor." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.HoverBorderColor)" PropertyType="List<string>" DefaultValue="null" Required="true" Description="Get or sets the HoverBorderColor." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.HoverBorderDash)" PropertyType="List<int>" DefaultValue="null" Required="false" Description="Get or sets the HoverBorderDash." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.HoverBorderWidth)" PropertyType="List<double>" DefaultValue="null" Required="true" Description="Get or sets the HoverBorderWidth." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.Label)" DefaultValue="null" Required="false" Description="The label for the dataset which appears in the legend and tooltips." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.PointBackgroundColor)" PropertyType="List<string>" DefaultValue="new List<string>{ 'rgba(0, 0, 0, 0.1)' }" Required="false" Description="The fill color for points." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.PointBorderColor)" PropertyType="List<string>" DefaultValue="new List<string>{ 'rgba(0, 0, 0, 0.1)' }" Required="false" Description="The border color for points." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.PointBorderWidth)" PropertyType="List<double>" DefaultValue="new List<double>{ 1 }" Required="false" Description="The width of the point border in pixels." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.PointHitRadius)" PropertyType="List<double>" DefaultValue="new List<double>{ 1 }" Required="false" Description="The pixel size of the non-displayed point that reacts to mouse events." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.PointHoverBackgroundColor)" PropertyType="List<string>" DefaultValue="null" Required="false" Description="Point background color when hovered." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.PointHoverBorderColor)" PropertyType="List<string>" DefaultValue="null" Required="false" Description="Point border color when hovered." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.PointHoverBorderWidth)" PropertyType="List<double>" DefaultValue="new List<double>{ 1 }" Required="false" Description="Border width of point when hovered." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.PointHitRadius)" PropertyType="List<double>" DefaultValue="new List<double>{ 1 }" Required="false" Description="The pixel size of the non-displayed point that reacts to mouse events." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.PointHoverBackgroundColor)" PropertyType="List<string>" DefaultValue="null" Required="false" Description="Point background color when hovered." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.PointHoverBorderColor)" PropertyType="List<string>" DefaultValue="null" Required="false" Description="Point border color when hovered." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.PointHoverBorderWidth)" PropertyType="List<double>" DefaultValue="new List<double>{ 1 }" Required="false" Description="Border width of point when hovered." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.PointHoverRadius)" PropertyType="List<int>" DefaultValue="new List<int>{ 1 }" Required="false" Description="The radius of the point when hovered." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.PointRadius)" PropertyType="List<int>" DefaultValue="new List<int>{ 1 }" Required="false" Description="The radius of the point shape. If set to 0, the point is not rendered." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.PointRotation)" PropertyType="List<int>" DefaultValue="new List<int>{ 1 }" Required="false" Description="The rotation of the point in degrees." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.PointStyle)" PropertyType="List<string>" DefaultValue="new List<string> { 'circle' }" Required="false" Description="Style of the point. Use 'circle', 'cross', 'crossRot', 'dash', 'line', 'rect', 'rectRounded', 'rectRot', 'star', and 'triangle' to style the point." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.ShowLine)" PropertyType="bool" DefaultValue="true" Required="false" Description="If false, the lines between points are not drawn." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.SpanGaps)" PropertyType="bool" DefaultValue="false" Required="false" Description="If true, lines will be drawn between points with no or null data. If false, points with null data will create a break in the line. Can also be a number specifying the maximum gap length to span. The unit of the value depends on the scale used." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.Stepped)" PropertyType="bool" DefaultValue="false" Required="false" Description="true to show the line as a stepped line (tension will be ignored)." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.Tension)" DefaultValue="0.2" Required="false" Description="Bezier curve tension of the line. Set to 0 to draw straightlines. This option is ignored if monotone cubic interpolation is used." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.Type)" DefaultValue="null" Required="true" Description="Get or sets the chart type." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.XAxisID)" DefaultValue="null" Required="false" Description="The ID of the x axis to plot this dataset on." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDataset" PropertyName="@nameof(LineChartDataset.YAxisID)" DefaultValue="null" Required="false" Description="The ID of the y axis to plot this dataset on." AddedVersion="1.0.0" />
 </DocxTable>
 
-<SectionHeading Size="HeadingSize.H4" Text="BarChartDatasetDataLabels Members" PageUrl="@pageUrl" HashTagName="barchart-dataset-data-labels-members" />
-<DocxTable TItem="BarChartDatasetDataLabels" DocType="DocType.Properties">
-    <DocxTRow TItem="BarChartDatasetDataLabels" PropertyName="@nameof(BarChartDatasetDataLabels.Align)" DefaultValue="center" Required="false" Description="Gets or sets the align." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartDatasetDataLabels" PropertyName="@nameof(BarChartDatasetDataLabels.Anchor)" DefaultValue="center" Required="false" Description="Gets or sets the anchor." AddedVersion="1.0.0" />
+<SectionHeading Size="HeadingSize.H4" Text="LineChartDatasetDataLabels Members" PageUrl="@pageUrl" HashTagName="linechart-dataset-data-labels-members" />
+<DocxTable TItem="LineChartDatasetDataLabels" DocType="DocType.Properties">
+    <DocxTRow TItem="LineChartDatasetDataLabels" PropertyName="@nameof(LineChartDatasetDataLabels.Align)" DefaultValue="start" Required="false" Description="Gets or sets the align." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartDatasetDataLabels" PropertyName="@nameof(LineChartDatasetDataLabels.Anchor)" DefaultValue="start" Required="false" Description="Gets or sets the anchor." AddedVersion="1.0.0" />
 </DocxTable>
 
-<SectionHeading Size="HeadingSize.H4" Text="BarChartOptions Members" PageUrl="@pageUrl" HashTagName="barchart-options-members" />
+<SectionHeading Size="HeadingSize.H4" Text="LineChartOptions Members" PageUrl="@pageUrl" HashTagName="linechart-options-members" />
 <BlazorBootstrap.Callout Color="CalloutColor.Info">
-    <code>BarChartOptions</code> implements <code>ChartOptions</code>.
+    <code>LineChartOptions</code> implements <code>ChartOptions</code>.
 </BlazorBootstrap.Callout>
-<DocxTable TItem="BarChartOptions" DocType="DocType.Properties">
-    <DocxTRow TItem="BarChartOptions" PropertyName="@nameof(BarChartOptions.IndexAxis)" DefaultValue="x" Required="false" Description="The base axis of the chart. 'x' for vertical charts and 'y' for horizontal charts." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartOptions" PropertyName="@nameof(BarChartOptions.Interaction)" PropertyType="Interaction" DefaultValue="" Required="false" Description="Gets or sets the Interaction." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartOptions" PropertyName="@nameof(BarChartOptions.Layout)" PropertyType="ChartLayout" DefaultValue="" Required="false" Description="Gets or sets the ChartLayout." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartOptions" PropertyName="@nameof(BarChartOptions.Locale)" DefaultValue="null" Required="false" Description="Gets or sets the locale. By default, the chart is using the default locale of the platform which is running on." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartOptions" PropertyName="@nameof(BarChartOptions.Plugins)" PropertyType="BarChartPlugins" DefaultValue="" Required="false" Description="	Gets or sets the Plugins." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartOptions" PropertyName="@nameof(BarChartOptions.Responsive)" DefaultValue="false" Required="false" Description="Gets or sets the Responsive." AddedVersion="1.0.0" />
-    <DocxTRow TItem="BarChartOptions" PropertyName="@nameof(BarChartOptions.Scales)" PropertyType="Scales" DefaultValue="" Required="false" Description="Gets or sets the Scales." AddedVersion="1.0.0" />
+<DocxTable TItem="LineChartOptions" DocType="DocType.Properties">
+    <DocxTRow TItem="LineChartOptions" PropertyName="@nameof(LineChartOptions.IndexAxis)" DefaultValue="x" Required="false" Description="The base axis of the chart. 'x' for vertical charts and 'y' for horizontal charts." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartOptions" PropertyName="@nameof(LineChartOptions.Interaction)" PropertyType="Interaction" DefaultValue="" Required="false" Description="Gets or sets the Interaction." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartOptions" PropertyName="@nameof(LineChartOptions.Layout)" PropertyType="ChartLayout" DefaultValue="" Required="false" Description="Gets or sets the ChartLayout." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartOptions" PropertyName="@nameof(LineChartOptions.Locale)" DefaultValue="null" Required="false" Description="Gets or sets the locale. By default, the chart is using the default locale of the platform which is running on." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartOptions" PropertyName="@nameof(LineChartOptions.Plugins)" PropertyType="LineChartPlugins" DefaultValue="" Required="false" Description="	Gets or sets the Plugins." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartOptions" PropertyName="@nameof(LineChartOptions.Responsive)" DefaultValue="false" Required="false" Description="Gets or sets the Responsive." AddedVersion="1.0.0" />
+    <DocxTRow TItem="LineChartOptions" PropertyName="@nameof(LineChartOptions.Scales)" PropertyType="Scales" DefaultValue="" Required="false" Description="Gets or sets the Scales." AddedVersion="1.0.0" />
 </DocxTable>
 
 @code {
     private const string pageUrl = "/charts/line-chart/api-documentation";
-    private const string title = "Blazor Bar Chart - API Documentation";
-    private const string heading = "Blazor Bar Chart - API Documentation";
+    private const string title = "Blazor Line Chart - API Documentation";
+    private const string heading = "Blazor Line Chart - API Documentation";
     private const string description = "This documentation provides a comprehensive reference for the Blazor Line Chart component, guiding you through its functionalities and configuration options.";
     private const string imageUrl = "https://i.imgur.com/IX3bajc.png";
 }

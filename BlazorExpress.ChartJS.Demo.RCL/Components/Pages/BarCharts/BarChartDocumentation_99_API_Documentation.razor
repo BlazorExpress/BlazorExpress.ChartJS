@@ -6,6 +6,8 @@
                  Description="@description"
                  ImageUrl="@imageUrl" />
 
+<img src="https://i.imgur.com/IX3bajc.png" class="img-fluid" alt="Blazor Bar Chart - API Documentation" />
+
 <SectionHeading Size="HeadingSize.H4" Text="Parameters" PageUrl="@pageUrl" HashTagName="parameters" />
 <DocxTable TItem="BarChart" DocType="DocType.Parameters">
     <DocxTRow TItem="BarChart" PropertyName="@nameof(BarChart.Height)" DefaultValue="null" Required="false" Description="Gets or sets chart container height." AddedVersion="1.0.0" />
@@ -27,7 +29,7 @@
 <SectionHeading Size="HeadingSize.H4" Text="ChartData Members" PageUrl="@pageUrl" HashTagName="chartdata-Members" />
 <DocxTable TItem="ChartData" DocType="DocType.Properties">
     <DocxTRow TItem="ChartData" PropertyName="@nameof(ChartData.Datasets)" PropertyType="List<IChartDataset>" DefaultValue="null" Required="true" Description="Gets or sets the Datasets." AddedVersion="1.0.0" />
-    <DocxTRow TItem="ChartData" PropertyName="@nameof(ChartData.Labels)" PropertyType="List<string>" DefaultValue="Unit.Px" Required="true" Description="Gets or sets the Labels." AddedVersion="1.0.0" />
+    <DocxTRow TItem="ChartData" PropertyName="@nameof(ChartData.Labels)" PropertyType="List<string>" DefaultValue="null" Required="true" Description="Gets or sets the Labels." AddedVersion="1.0.0" />
 </DocxTable>
 
 <SectionHeading Size="HeadingSize.H4" Text="BarChartDataset Members" PageUrl="@pageUrl" HashTagName="barchart-dataset-members" />
