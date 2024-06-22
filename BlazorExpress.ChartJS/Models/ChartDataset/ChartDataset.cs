@@ -19,33 +19,6 @@ public class ChartDataset : IChartDataset
     #region Properties, Indexers
 
     /// <summary>
-    /// Get or sets the BackgroundColor.
-    /// </summary>
-    /// <remarks>
-    /// Default value is <see langword="null"/>.
-    /// </remarks>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<string>? BackgroundColor { get; set; }
-
-    /// <summary>
-    /// Get or sets the BorderColor.
-    /// </summary>
-    /// <remarks>
-    /// Default value is <see langword="null"/>.
-    /// </remarks>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<string>? BorderColor { get; set; }
-
-    /// <summary>
-    /// Width of the border, number for all sides, object to specify width for each side specifically.
-    /// </summary>
-    /// <remarks>
-    /// Default value is <see langword="null"/>.
-    /// </remarks>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<double>? BorderWidth { get; set; }
-
-    /// <summary>
     /// How to clip relative to chartArea. Positive value allows overflow, negative value clips that many pixels inside
     /// chartArea. 0 = clip at chartArea.
     /// Clipping can also be configured per side: clip: {left: 5, top: false, right: -2, bottom: 0}
@@ -66,7 +39,7 @@ public class ChartDataset : IChartDataset
     public List<double>? Data { get; set; }
 
     /// <summary>
-    /// Configures the visibility state of the dataset. Set it to true, to hide the dataset from the chart.
+    /// Configures the visibility state of the dataset. Set it to <see langword="true"/>, to hide the dataset from the chart.
     /// </summary>
     /// <remarks>
     /// Default value is <see langword="false"/>.
@@ -74,37 +47,10 @@ public class ChartDataset : IChartDataset
     public bool Hidden { get; set; }
 
     /// <summary>
-    /// The bar background color when hovered.
-    /// </summary>
-    /// <remarks>
-    /// Default value is <see langword="null"/>.
-    /// </remarks>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<string>? HoverBackgroundColor { get; set; }
-
-    /// <summary>
-    /// The bar border color when hovered.
-    /// </summary>
-    /// <remarks>
-    /// Default value is <see langword="null"/>.
-    /// </remarks>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<string>? HoverBorderColor { get; set; }
-
-    /// <summary>
-    /// The bar border width when hovered (in pixels).
-    /// </summary>
-    /// <remarks>
-    /// Default value is <see langword="null"/>.
-    /// </remarks>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<double>? HoverBorderWidth { get; set; }
-
-    /// <summary>
     /// The label for the dataset which appears in the legend and tooltips.
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="null"/>.
+    /// Default value is <see cref="string.Empty" />.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Label { get; set; }
@@ -121,6 +67,9 @@ public class ChartDataset : IChartDataset
     /// Default value is 0.
     /// </remarks>
     public int Order { get; set; }
+
+    //Stack
+    //https://www.chartjs.org/docs/latest/general/data-structures.html#dataset-configuration
 
     /// <summary>
     /// Gets or sets the chart type.

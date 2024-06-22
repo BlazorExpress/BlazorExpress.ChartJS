@@ -4,10 +4,20 @@
 /// The bar chart allows a number of properties to be specified for each dataset. 
 /// These are used to set display properties for a specific dataset.
 /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#dataset-properties" />
+/// <seealso href="https://www.chartjs.org/docs/latest/charts/bar.html#general" />
 /// </summary>
 public class BarChartDataset : ChartDataset
 {
     #region Properties, Indexers
+
+    /// <summary>
+    /// The bar background color.
+    /// </summary>
+    /// <remarks>
+    /// Default value is 'rgba(0, 0, 0, 0.1)'.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<string>? BackgroundColor { get; set; }
 
     /// <summary>
     /// Percent (0-1) of the available width each bar should be within the category width.
@@ -19,21 +29,40 @@ public class BarChartDataset : ChartDataset
     public double BarPercentage { get; set; } = 0.9;
 
     /// <summary>
-    /// Border thickness
+    /// It is applied to the width of each bar, in pixels. 
+    /// When this is enforced, barPercentage and categoryPercentage are ignored.
     /// </summary>
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public int? BarThickness { get; set; }
+    public double? BarThickness { get; set; }
+
+    /// <summary>
+    /// The bar border color.
+    /// </summary>
+    /// <remarks>
+    /// Default value is 'rgba(0, 0, 0, 0.1)'.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<string>? BorderColor { get; set; }
 
     /// <summary>
     /// Border radius
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="null"/>.
+    /// Default value is 0.
     /// </remarks>
     public List<double>? BorderRadius { get; set; }
+
+    /// <summary>
+    /// Gets or sets the border width (in pixels).
+    /// </summary>
+    /// <remarks>
+    /// Default value is 0.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<double>? BorderWidth { get; set; }
 
     //BorderSkipped
     //https://www.chartjs.org/docs/latest/api/interfaces/BarControllerDatasetOptions.html#borderskipped
@@ -60,13 +89,40 @@ public class BarChartDataset : ChartDataset
     public bool Grouped { get; set; } = true;
 
     /// <summary>
-    /// The bar border radius when hovered (in pixels).
+    /// The bar background color when hovered.
     /// </summary>
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<string>? HoverBackgroundColor { get; set; }
+
+    /// <summary>
+    /// The bar border color when hovered.
+    /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="null"/>.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<string>? HoverBorderColor { get; set; }
+
+    /// <summary>
+    /// The bar border radius when hovered (in pixels).
+    /// </summary>
+    /// <remarks>
+    /// Default value is 0.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? HoverBorderRadius { get; set; }
+
+    /// <summary>
+    /// The bar border width when hovered (in pixels).
+    /// </summary>
+    /// <remarks>
+    /// Default value is 1.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<double>? HoverBorderWidth { get; set; }
 
     /// <summary>
     /// The base axis of the chart. 'x' for vertical charts and 'y' for horizontal charts.
@@ -102,7 +158,7 @@ public class BarChartDataset : ChartDataset
     //https://www.chartjs.org/docs/latest/configuration/elements.html#point-styles
 
     /// <summary>
-    /// If true, null or undefined values will not be used for spacing calculations when determining bar size.
+    /// If <see langword="true"/>, null or undefined values will not be used for spacing calculations when determining bar size.
     /// </summary>
     /// <remarks>
     /// Default value is <see langword="false"/>.
@@ -116,7 +172,7 @@ public class BarChartDataset : ChartDataset
     /// The ID of the x axis to plot this dataset on.
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="null"/>.
+    /// Default value is first x axis.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? XAxisID { get; set; }
@@ -125,7 +181,7 @@ public class BarChartDataset : ChartDataset
     /// The ID of the y axis to plot this dataset on.
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="null"/>.
+    /// Default value is first y axis.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? YAxisID { get; set; }

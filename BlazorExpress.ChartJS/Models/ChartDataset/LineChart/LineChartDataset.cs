@@ -5,6 +5,24 @@ public class LineChartDataset : ChartDataset
     #region Properties, Indexers
 
     /// <summary>
+    /// Get or sets the background color.
+    /// </summary>
+    /// <remarks>
+    /// Default value is 'rgba(0, 0, 0, 0.1)'.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<string>? BackgroundColor { get; set; }
+
+    /// <summary>
+    /// Get or sets the border color.
+    /// </summary>
+    /// <remarks>
+    /// Default value is 'rgba(0, 0, 0, 0.1)'.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<string>? BorderColor { get; set; }
+
+    /// <summary>
     /// Line dash.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -15,7 +33,19 @@ public class LineChartDataset : ChartDataset
     /// </summary>
     public double BorderDashOffset { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public LineChartDatasetDataLabels Datalabels { get; set; } = new();
+    /// <summary>
+    /// Gets or sets the border width (in pixels).
+    /// </summary>
+    /// <remarks>
+    /// Default value is 0.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<double>? BorderWidth { get; set; }
+
+
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
+    public LineChartDatasetDataLabels Datalabels { get; set; } = new();
 
     /// <summary>
     /// Both line and radar charts support a fill option on the dataset object
@@ -25,10 +55,37 @@ public class LineChartDataset : ChartDataset
     public bool Fill { get; set; }
 
     /// <summary>
+    /// The bar/arc background color when hovered.
+    /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="null"/>.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<string>? HoverBackgroundColor { get; set; }
+
+    /// <summary>
+    /// The bar/arc border color when hovered.
+    /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="null"/>.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<string>? HoverBorderColor { get; set; }
+
+    /// <summary>
     /// Hover line dash.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<int>? HoverBorderDash { get; set; }
+
+    /// <summary>
+    /// The bar border width when hovered (in pixels).
+    /// </summary>
+    /// <remarks>
+    /// Default value is 1.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<double>? HoverBorderWidth { get; set; }
 
     /// <summary>
     /// The fill color for points.
