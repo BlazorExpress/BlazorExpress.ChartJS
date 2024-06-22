@@ -1,4 +1,4 @@
-﻿namespace BlazorExpress.ChartJS.Enums;
+﻿namespace BlazorExpress.ChartJS;
 
 public enum Anchor
 {

@@ -1,0 +1,27 @@
+﻿@attribute [Route(pageUrl)]
+
+<PageHeroSection PageUrl="@pageUrl"
+                 Title="@title"
+                 Heading="@heading"
+                 Description="@description"
+                 ImageUrl="@imageUrl" />
+
+<Prerequisites PageUrl="@pageUrl" />
+
+<SectionHeading Size="HeadingSize.H4" Text="How it works" PageUrl="@pageUrl" HashTagName="how-it-works" />
+<div class="mb-3">
+    In the following example, a categorical 12-color palette is used.
+</div>
+<BlazorBootstrap.Callout Heading="TIP" Color="CalloutColor.Success">
+    For data visualization, you can use the predefined palettes <code>ColorUtility.CategoricalTwelveColors</code> for a 12-color palette and <code>ColorUtility.CategoricalSixColors</code> for a 6-color palette.
+    These palettes offer a range of distinct and visually appealing colors that can be applied to represent different categories or data elements in your visualizations.
+</BlazorBootstrap.Callout>
+<Demo Type="typeof(PolarAreaChart_Demo_01_Examples)" Tabs="true" />
+
+@code {
+    private const string pageUrl = "/charts/polar-area-chart";
+    private const string title = "Blazor Polar Area Chart";
+    private const string heading = "Blazor Polar Area Chart";
+    private const string description = "A Blazor polar area charts are similar to pie charts, but each segment has the same angle - the radius of the segment differs depending on the value.";
+    private const string imageUrl = "https://i.imgur.com/ieBupT2.png"; //  TODO: update this
+}

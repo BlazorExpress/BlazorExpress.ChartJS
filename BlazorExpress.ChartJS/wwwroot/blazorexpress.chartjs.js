@@ -534,6 +534,7 @@ window.blazorexpress.chartjs.pie = {
             }
         }
 
+        // https://www.chartjs.org/docs/latest/configuration/#configuration-object-structure
         const config = {
             type: type,
             data: data,

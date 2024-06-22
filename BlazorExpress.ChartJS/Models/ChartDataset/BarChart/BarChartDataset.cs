@@ -1,7 +1,10 @@
-﻿using BlazorExpress.ChartJS.Enums;
+﻿namespace BlazorExpress.ChartJS;
 
-namespace BlazorExpress.ChartJS;
-
+/// <summary>
+/// The bar chart allows a number of properties to be specified for each dataset. 
+/// These are used to set display properties for a specific dataset.
+/// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#dataset-properties" />
+/// </summary>
 public class BarChartDataset : ChartDataset
 {
     #region Properties, Indexers
@@ -10,15 +13,20 @@ public class BarChartDataset : ChartDataset
     /// Percent (0-1) of the available width each bar should be within the category width.
     /// 1.0 will take the whole category width and put the bars right next to each other.
     /// </summary>
-    public double BarPercentage { get; set; } = 0.8;
+    /// <remarks>Default value is 0.9.</remarks>
+    public double BarPercentage { get; set; } = 0.9;
+
+    /// <summary>
+    /// Border thickness
+    /// </summary>
+    /// <remarks>Default value is <see langword="null"/>.</remarks>
+    public int? BarThickness { get; set; }
 
     /// <summary>
     /// Border radius
     /// </summary>
+    /// <remarks>Default value is 0.</remarks>
     public int BorderRadius { get; set; }
-
-    //BarThickness
-    //https://www.chartjs.org/docs/latest/api/interfaces/BarControllerDatasetOptions.html#barthickness
 
     //BorderSkipped
     //https://www.chartjs.org/docs/latest/api/interfaces/BarControllerDatasetOptions.html#borderskipped
@@ -28,19 +36,29 @@ public class BarChartDataset : ChartDataset
     /// </summary>
     public double CategoryPercentage { get; set; } = 0.8;
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public BarChartDatasetDataLabels Datalabels { get; set; } = new();
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
+    public BarChartDatasetDataLabels Datalabels { get; set; } = new();
+
+    //Grouped
+    //https://www.chartjs.org/docs/latest/api/interfaces/BarControllerDatasetOptions.html#grouped
 
     /// <summary>
-    /// The label for the dataset which appears in the legend and tooltips.
+    /// The base axis of the chart. 'x' for vertical charts and 'y' for horizontal charts.
     /// </summary>
+    /// <remarks>
+    /// Default value is 'x'.
+    /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? Label { get; set; }
+    public string IndexAxis { get; set; } = "x";
 
     //MaxBarThickness
     //https://www.chartjs.org/docs/latest/api/interfaces/BarControllerDatasetOptions.html#maxbarthickness
 
     //MinBarLength
     //https://www.chartjs.org/docs/latest/api/interfaces/BarControllerDatasetOptions.html#minbarlength
+
+    //Stack
+    //https://www.chartjs.org/docs/latest/api/interfaces/BarControllerDatasetOptions.html#stack
 
     /// <summary>
     /// The ID of the x axis to plot this dataset on.

@@ -1,6 +1,4 @@
-﻿using BlazorExpress.ChartJS.Enums;
-
-namespace BlazorExpress.ChartJS;
+﻿namespace BlazorExpress.ChartJS;
 
 public class LineChartDataset : ChartDataset
 {
@@ -27,21 +25,10 @@ public class LineChartDataset : ChartDataset
     public bool Fill { get; set; }
 
     /// <summary>
-    /// Configures the visibility state of the dataset. Set it to true, to hide the dataset from the chart.
-    /// </summary>
-    public new bool Hidden { get; set; }
-
-    /// <summary>
     /// Hover line dash.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<int>? HoverBorderDash { get; set; }
-
-    /// <summary>
-    /// The label for the dataset which appears in the legend and tooltips.
-    /// </summary>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? Label { get; set; }
 
     /// <summary>
     /// The fill color for points.

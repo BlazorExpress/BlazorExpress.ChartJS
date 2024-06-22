@@ -2,6 +2,9 @@
 
 public interface IChartDataset { }
 
+/// <summary>
+/// <See href="https://www.chartjs.org/docs/latest/general/data-structures.html#dataset-configuration" />
+/// </summary>
 public class ChartDataset : IChartDataset
 {
     #region Constructors
@@ -18,6 +21,7 @@ public class ChartDataset : IChartDataset
     /// <summary>
     /// Get or sets the BackgroundColor.
     /// </summary>
+    /// <remarks>Default value is <see langword="null"/>.</remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? BackgroundColor { get; set; }
 
@@ -28,7 +32,7 @@ public class ChartDataset : IChartDataset
     public List<string>? BorderColor { get; set; }
 
     /// <summary>
-    /// Get or sets the BorderWidth.
+    /// Width of the border, number for all sides, object to specify width for each side specifically.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? BorderWidth { get; set; }
@@ -70,9 +74,20 @@ public class ChartDataset : IChartDataset
     public List<double>? HoverBorderWidth { get; set; }
 
     /// <summary>
+    /// The label for the dataset which appears in the legend and tooltips.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Label { get; set; }
+
+    /// <summary>
     /// Get unique object id.
     /// </summary>
     public Guid Oid { get; private set; }
+
+    /// <summary>
+    /// The drawing order of dataset. Also affects order for stacking, tooltip and legend.
+    /// </summary>
+    public int Order { get; set; }
 
     /// <summary>
     /// Gets or sets the chart type.

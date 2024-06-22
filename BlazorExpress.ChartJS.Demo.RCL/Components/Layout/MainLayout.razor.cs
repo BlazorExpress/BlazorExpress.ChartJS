@@ -7,7 +7,7 @@ public partial class MainLayout : MainLayoutBase
         navItems ??= new List<NavItem>
         {
             new (){ Id = "1", Text = "Overview", Href = "/charts/overview", IconName = IconName.HouseDoorFill },
-            
+
             new (){ Id = "2", Text = "Getting Started", IconName = IconName.Rulers },
             new (){ Id = "201", Text = "Blazor WebAssembly (.NET 8)", Href = "/charts/getting-started/blazor-webassembly-net-8", IconName = IconName.BrowserEdge, ParentId = "2" },
             new (){ Id = "202", Text = "Blazor WebApp Server (.NET 8)", Href = "/charts/getting-started/blazor-webapp-server-global-net-8", IconName = IconName.Pc, ParentId = "2", },
@@ -38,6 +38,11 @@ public partial class MainLayout : MainLayoutBase
             new (){ Id = "601", Text = "Pie", Href = "/charts/pie-chart", IconName = IconName.PieChart, ParentId = "6", Match = NavLinkMatch.All },
             new (){ Id = "602", Text = "Data labels", Href = "/charts/pie-chart/data-labels", IconName = IconName.Bookmarks, ParentId = "6", Match = NavLinkMatch.All },
             new (){ Id = "603", Text = "Legend position", Href = "/charts/pie-chart/legend", IconName = IconName.Signpost, ParentId = "6", Match = NavLinkMatch.All },
+
+            new (){ Id = "7", Text = "Polar Area Chart", IconName = IconName.PieChartFill },
+            //new (){ Id = "700", Text = "API Documentation", Href = "/charts/pie-chart/api-documentation", IconName = IconName.FileText, ParentId = "7", },
+            new (){ Id = "701", Text = "Polar Area", Href = "/charts/polar-area-chart", IconName = IconName.PieChart, ParentId = "7", Match = NavLinkMatch.All },
+
         };
 
         return navItems;

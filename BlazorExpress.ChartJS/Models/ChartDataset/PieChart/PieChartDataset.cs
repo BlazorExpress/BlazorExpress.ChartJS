@@ -1,18 +1,11 @@
-﻿using BlazorExpress.ChartJS.Enums;
-
-namespace BlazorExpress.ChartJS;
+﻿namespace BlazorExpress.ChartJS;
 
 public class PieChartDataset : ChartDataset
 {
     #region Properties, Indexers
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public PieChartDatasetDataLabels Datalabels { get; set; } = new();
-
-    /// <summary>
-    /// The label for the dataset which appears in the legend and tooltips.
-    /// </summary>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? Label { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
+    public PieChartDatasetDataLabels Datalabels { get; set; } = new();
 
     #endregion
 }
