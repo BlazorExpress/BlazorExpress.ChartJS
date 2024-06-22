@@ -10,53 +10,72 @@ public class LineChartDataset : ChartDataset
     #region Properties, Indexers
 
     /// <summary>
-    /// Get or sets the background color.
+    /// Get or sets the line fill color.
     /// </summary>
     /// <remarks>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
     /// </remarks>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? BackgroundColor { get; set; }
-
-    //borderCapStyle
+    public string BackgroundColor { get; set; } = "rgba(0, 0, 0, 0.1)";
 
     /// <summary>
-    /// Get or sets the border color.
+    /// Cap style of the line.
+    /// Supported values are 'butt', 'round', and 'square'.
+    /// </summary>
+    /// <remarks>
+    /// Default value is 'butt'.
+    /// </remarks>
+    public string BorderCapStyle { get; set; } = "butt";
+
+    /// <summary>
+    /// Get or sets the line color.
     /// </summary>
     /// <remarks>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
     /// </remarks>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? BorderColor { get; set; }
+    public string BorderColor { get; set; } = "rgba(0, 0, 0, 0.1)";
 
     /// <summary>
-    /// Line dash.
+    /// Gets or sets the length and spacing of dashes.
     /// </summary>
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public int? BorderDash { get; set; }
+    public List<double>? BorderDash { get; set; }
 
     /// <summary>
-    /// Line dash offset.
+    /// Offset for line dashes.
     /// </summary>
     /// <remarks>
     /// Default value is 0.0.
     /// </remarks>
     public double BorderDashOffset { get; set; }
 
-    //borderJoinStyle
+    /// <summary>
+    /// Line joint style. 
+    /// There are three possible values for this property: 'round', 'bevel', and 'miter'.
+    /// </summary>
+    /// <remarks>
+    /// Default value is 'miter'.
+    /// </remarks>
+    public string BorderJoinStyle { get; set; } = "miter";
 
     /// <summary>
-    /// Gets or sets the border width (in pixels).
+    /// Gets or sets the line width (in pixels).
     /// </summary>
     /// <remarks>
     /// Default value is 3.
     /// </remarks>
-    public double BorderWidth { get; set; }
+    public double BorderWidth { get; set; } = 3;
 
-    //cubicInterpolationMode
+    /// <summary>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#cubicinterpolationmode" />.
+    /// Supported values are 'default', and 'monotone'.
+    /// </summary>
+    /// <remarks>
+    /// Default value is 'default'.
+    /// </remarks>
+    public string CubicInterpolationMode { get; set; } = "default";
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
     public LineChartDatasetDataLabels Datalabels { get; set; } = new(); // TODO: add the reference link
