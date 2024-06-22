@@ -8,7 +8,7 @@
 
 @code {
     private PolarAreaChart pieChart = default!;
-    private PieChartOptions pieChartOptions = default!;
+    private PolarAreaChartOptions pieChartOptions = default!;
     private ChartData chartData = default!;
     private string[]? backgroundColors;
 
@@ -45,7 +45,7 @@
 
         foreach (var dataset in chartData.Datasets)
         {
-            if (dataset is PieChartDataset pieChartDataset
+            if (dataset is PolarAreaChartDataset pieChartDataset
                 && pieChartDataset is not null
                 && pieChartDataset.Data is not null)
             {
@@ -86,8 +86,8 @@
         var data = new List<IChartDatasetData>();
         foreach (var dataset in chartData.Datasets)
         {
-            if (dataset is PieChartDataset pieChartDataset)
-                data.Add(new PieChartDatasetData(pieChartDataset.Label, random.Next(0, 100), backgroundColors![dataLabelsCount]));
+            if (dataset is PolarAreaChartDataset pieChartDataset)
+                data.Add(new PolarAreaChartDatasetData(pieChartDataset.Label, random.Next(0, 100), backgroundColors![dataLabelsCount]));
         }
 
         chartData = await pieChart.AddDataAsync(chartData, GetNextDataLabel(), data);
@@ -109,7 +109,7 @@
         return datasets;
     }
 
-    private PieChartDataset GetRandomPieChartDataset()
+    private PolarAreaChartDataset GetRandomPieChartDataset()
     {
         datasetsCount += 1;
         return new() { Label = $"Team {datasetsCount}", Data = GetRandomData(), BackgroundColor = GetRandomBackgroundColors() };

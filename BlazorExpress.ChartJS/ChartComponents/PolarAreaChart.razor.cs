@@ -4,7 +4,7 @@ public partial class PolarAreaChart : ChartComponentBase
 {
     #region Fields and Constants
 
-    private const string _jsObjectName = "window.blazorexpress.chartjs.polar";
+    private const string _jsObjectName = "window.blazorexpress.chartjs.polarArea";
 
     #endregion
 
@@ -31,8 +31,8 @@ public partial class PolarAreaChart : ChartComponentBase
             throw new ArgumentNullException(nameof(data));
 
         foreach (var dataset in chartData.Datasets)
-            if (dataset is BarChartDataset barChartDataset && barChartDataset.Label == dataLabel)
-                if (data is BarChartDatasetData barChartDatasetData)
+            if (dataset is PolarAreaChartDataset barChartDataset && barChartDataset.Label == dataLabel)
+                if (data is PolarAreaChartDatasetData barChartDatasetData)
                     barChartDataset.Data?.Add(barChartDatasetData.Data);
 
         await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetData", Id, dataLabel, data);
@@ -72,15 +72,15 @@ public partial class PolarAreaChart : ChartComponentBase
         chartData.Labels.Add(dataLabel);
 
         foreach (var dataset in chartData.Datasets)
-            if (dataset is BarChartDataset barChartDataset)
+            if (dataset is PolarAreaChartDataset barChartDataset)
             {
-                var chartDatasetData = data.FirstOrDefault(x => x is BarChartDatasetData barChartDatasetData && barChartDatasetData.DatasetLabel == barChartDataset.Label);
+                var chartDatasetData = data.FirstOrDefault(x => x is PolarAreaChartDatasetData barChartDatasetData && barChartDatasetData.DatasetLabel == barChartDataset.Label);
 
-                if (chartDatasetData is BarChartDatasetData barChartDatasetData)
+                if (chartDatasetData is PolarAreaChartDatasetData barChartDatasetData)
                     barChartDataset.Data?.Add(barChartDatasetData.Data);
             }
 
-        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetsData", Id, dataLabel, data?.Select(x => (BarChartDatasetData)x));
+        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetsData", Id, dataLabel, data?.Select(x => (PolarAreaChartDatasetData)x));
 
         return chartData;
     }
@@ -96,10 +96,10 @@ public partial class PolarAreaChart : ChartComponentBase
         if (chartDataset is null)
             throw new ArgumentNullException(nameof(chartDataset));
 
-        if (chartDataset is BarChartDataset)
+        if (chartDataset is PolarAreaChartDataset)
         {
             chartData.Datasets.Add(chartDataset);
-            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDataset", Id, (BarChartDataset)chartDataset);
+            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDataset", Id, (PolarAreaChartDataset)chartDataset);
         }
 
         return chartData;
@@ -109,9 +109,9 @@ public partial class PolarAreaChart : ChartComponentBase
     {
         if (chartData is not null && chartData.Datasets is not null)
         {
-            var datasets = chartData.Datasets.OfType<BarChartDataset>();
+            var datasets = chartData.Datasets.OfType<PolarAreaChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.initialize", Id, GetChartType(), data, (BarChartOptions)chartOptions, plugins);
+            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.initialize", Id, GetChartType(), data, (PolarAreaChartOptions)chartOptions, plugins);
         }
     }
 
@@ -119,9 +119,9 @@ public partial class PolarAreaChart : ChartComponentBase
     {
         if (chartData is not null && chartData.Datasets is not null)
         {
-            var datasets = chartData.Datasets.OfType<BarChartDataset>();
+            var datasets = chartData.Datasets.OfType<PolarAreaChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.update", Id, GetChartType(), data, (BarChartOptions)chartOptions);
+            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.update", Id, GetChartType(), data, (PolarAreaChartOptions)chartOptions);
         }
     }
 
