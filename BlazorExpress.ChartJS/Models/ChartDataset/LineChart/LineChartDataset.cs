@@ -80,12 +80,17 @@ public class LineChartDataset : ChartDataset
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
     public LineChartDatasetDataLabels Datalabels { get; set; } = new(); // TODO: add the reference link
 
-    //drawActiveElementsOnTop - list
+    /// <summary>
+    /// Draw the active points of a dataset over the other points of the dataset.
+    /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="null"/>.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<bool>? DrawActiveElementsOnTop { get; set; }
 
     /// <summary>
-    /// Both line and radar charts support a fill option on the dataset object
-    /// which can be used to create area between two datasets or a dataset and
-    /// a boundary, i.e. the scale origin, start or end.
+    /// How to fill the area under the line.
     /// </summary>
     /// <remarks>
     /// Default value is <see langword="false"/>.
@@ -93,7 +98,7 @@ public class LineChartDataset : ChartDataset
     public bool Fill { get; set; }
 
     /// <summary>
-    /// The bar/arc background color when hovered.
+    /// The line fill color when hovered.
     /// </summary>
     /// <remarks>
     /// Default value is <see langword="null"/>.
@@ -101,10 +106,17 @@ public class LineChartDataset : ChartDataset
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? HoverBackgroundColor { get; set; }
 
-    //hoverBorderCapStyle
+    /// <summary>
+    /// Cap style of the line when hovered.
+    /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="null"/>.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? HoverBorderCapStyle { get; set; }
 
     /// <summary>
-    /// The bar/arc border color when hovered.
+    /// The line color when hovered.
     /// </summary>
     /// <remarks>
     /// Default value is <see langword="null"/>.
@@ -113,17 +125,34 @@ public class LineChartDataset : ChartDataset
     public string? HoverBorderColor { get; set; }
 
     /// <summary>
-    /// Hover line dash.
+    /// Gets or sets the length and spacing of dashes when hovered.
     /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="null"/>.
+    /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<int>? HoverBorderDash { get; set; } // TODO: validate the data type
-
-    //hoverBorderDashOffset
-
-    //hoverBorderJoinStyle
+    public List<double>? HoverBorderDash { get; set; }
 
     /// <summary>
-    /// The bar border width when hovered (in pixels).
+    /// Offset for line dashes when hovered.
+    /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="null"/>.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public double? HoverBorderDashOffset { get; set; }
+
+    /// <summary>
+    /// Line joint style. 
+    /// There are three possible values for this property: 'round', 'bevel', and 'miter'.
+    /// </summary>
+    /// <remarks>
+    /// Default value is 'miter'.
+    /// </remarks>
+    public string HoverBorderJoinStyle { get; set; } = "miter";
+
+    /// <summary>
+    /// The bar border width when hovered (in pixels) when hovered.
     /// </summary>
     /// <remarks>
     /// Default value is <see langword="null"/>.
@@ -131,7 +160,13 @@ public class LineChartDataset : ChartDataset
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? HoverBorderWidth { get; set; }
 
-    //indexAxis
+    /// <summary>
+    /// The base axis of the dataset. 'x' for horizontal lines and 'y' for vertical lines.
+    /// </summary>
+    /// <remarks>
+    /// Default value is 'x'.
+    /// </remarks>
+    public string IndexAxis { get; set; } = "x";
 
     /// <summary>
     /// The fill color for points.
@@ -139,8 +174,7 @@ public class LineChartDataset : ChartDataset
     /// <remarks>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
     /// </remarks>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<string>? PointBackgroundColor { get; set; } //= new() { "rgba(0, 0, 0, 0.1)" };
+    public string PointBackgroundColor { get; set; } = "rgba(0, 0, 0, 0.1)";
 
     /// <summary>
     /// The border color for points.
@@ -148,69 +182,93 @@ public class LineChartDataset : ChartDataset
     /// <remarks>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
     /// </remarks>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<string>? PointBorderColor { get; set; } //= new() { "rgba(0, 0, 0, 0.1)" };
+    public string PointBorderColor { get; set; } = "rgba(0, 0, 0, 0.1)";
 
     /// <summary>
     /// The width of the point border in pixels.
     /// </summary>
-    public List<double> PointBorderWidth { get; set; } = new() { 1 };
+    /// <remarks>
+    /// Default value is 1.
+    /// </remarks>
+    public double PointBorderWidth { get; set; } = 1;
 
     /// <summary>
     /// The pixel size of the non-displayed point that reacts to mouse events.
     /// </summary>
-    public List<double> PointHitRadius { get; set; } = new() { 1 };
+    /// <remarks>
+    /// Default value is 1.
+    /// </remarks>
+    public double PointHitRadius { get; set; } = 1;
 
     /// <summary>
     /// Point background color when hovered.
     /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="null"/>.
+    /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<string>? PointHoverBackgroundColor { get; set; }
+    public string? PointHoverBackgroundColor { get; set; }
 
     /// <summary>
     /// Point border color when hovered.
     /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="null"/>.
+    /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<string>? PointHoverBorderColor { get; set; }
+    public string? PointHoverBorderColor { get; set; }
 
     /// <summary>
     /// Border width of point when hovered.
     /// </summary>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<double> PointHoverBorderWidth { get; set; } = new() { 1 };
+    /// <remarks>
+    /// Default value is 1.
+    /// </remarks>
+    public double PointHoverBorderWidth { get; set; } = 1;
 
     /// <summary>
     /// The radius of the point when hovered.
     /// </summary>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<int> PointHoverRadius { get; set; } = new() { 1 }; // Default: 4
+    /// <remarks>
+    /// Default value is 4.
+    /// </remarks>
+    public double PointHoverRadius { get; set; } = 4;
 
     /// <summary>
     /// The radius of the point shape. If set to 0, the point is not rendered.
-    /// Default: 3
     /// </summary>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<int> PointRadius { get; set; } = new() { 1 }; // Default: 3
+    /// <remarks>
+    /// Default value is 3.
+    /// </remarks>
+    public double PointRadius { get; set; } = 3;
 
     /// <summary>
     /// The rotation of the point in degrees.
     /// </summary>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<int> PointRotation { get; set; } = new() { 0 };
+    /// <remarks>
+    /// Default value is 0.
+    /// </remarks>
+    public double PointRotation { get; set; } = 0;
 
     /// <summary>
     /// Style of the point.
-    /// Use 'circle', 'cross', 'crossRot', 'dash', 'line', 'rect', 'rectRounded', 'rectRot', 'star', and 'triangle' to style
+    /// Supported values are 'circle', 'cross', 'crossRot', 'dash', 'line', 'rect', 'rectRounded', 'rectRot', 'star', and 'triangle' to style.
     /// the point.
     /// </summary>
-    public List<string> PointStyle { get; set; } = new() { "circle" };
+    /// <remarks>
+    /// Default value is 'circle'.
+    /// </remarks>
+    public string PointStyle { get; set; } = "circle";
 
-    // Segment
-    // https://www.chartjs.org/docs/latest/api/interfaces/LineControllerDatasetOptions.html#segment
+    //segment
+    //https://www.chartjs.org/docs/latest/charts/line.html#segment
 
     /// <summary>
     /// If <see langword="false" />, the lines between points are not drawn.
     /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="true"/>.
+    /// </remarks>
     public bool ShowLine { get; set; } = true;
 
     /// <summary>
@@ -219,28 +277,47 @@ public class LineChartDataset : ChartDataset
     /// Can also be a number specifying the maximum gap length to span.
     /// The unit of the value depends on the scale used.
     /// </summary>
-    public bool SpanGaps { get; set; }
+    /// <remarks>
+    /// Default value is <see langword="null"/>.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public bool? SpanGaps { get; set; }
+
+    //stack
+    //https://www.chartjs.org/docs/latest/charts/line.html#general
 
     /// <summary>
     /// true to show the line as a stepped line (tension will be ignored).
     /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="false"/>.
+    /// </remarks>
     public bool Stepped { get; set; }
 
     /// <summary>
     /// Bezier curve tension of the line. Set to 0 to draw straight lines.
     /// This option is ignored if monotone cubic interpolation is used.
     /// </summary>
-    public double Tension { get; set; } = 0.2;
+    /// <remarks>
+    /// Default value is 0.
+    /// </remarks>
+    public double Tension { get; set; }
 
     /// <summary>
     /// The ID of the x axis to plot this dataset on.
     /// </summary>
+    /// <remarks>
+    /// Default value is 'first x axis'.
+    /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? XAxisID { get; set; }
 
     /// <summary>
     /// The ID of the y axis to plot this dataset on.
     /// </summary>
+    /// <remarks>
+    /// Default value is 'first y axis'.
+    /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? YAxisID { get; set; }
 
