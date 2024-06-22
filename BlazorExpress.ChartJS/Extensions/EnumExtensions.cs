@@ -1,6 +1,4 @@
-﻿using BlazorExpress.ChartJS.Enums;
-
-namespace BlazorExpress.ChartJS;
+﻿namespace BlazorExpress.ChartJS;
 
 public static class EnumExtensions
 {
