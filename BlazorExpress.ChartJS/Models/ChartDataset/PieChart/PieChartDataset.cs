@@ -93,7 +93,7 @@ public class PieChartDataset : ChartDataset
     public double? Circumference { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
-    public PieChartDatasetDataLabels Datalabels { get; set; } = new();
+    public PieChartDatasetDataLabels Datalabels { get; set; } = new(); // TODO: add the reference link
 
     /// <summary>
     /// Arc background color when hovered.

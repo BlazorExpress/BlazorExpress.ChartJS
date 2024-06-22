@@ -1,5 +1,10 @@
 ﻿namespace BlazorExpress.ChartJS;
 
+/// <summary>
+/// The line chart allows a number of properties to be specified for each dataset. 
+/// These are used to set display properties for a specific dataset. 
+/// <see href="https://www.chartjs.org/docs/latest/charts/line.html#dataset-properties" />.
+/// </summary>
 public class LineChartDataset : ChartDataset
 {
     #region Properties, Indexers
@@ -11,7 +16,9 @@ public class LineChartDataset : ChartDataset
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<string>? BackgroundColor { get; set; }
+    public string? BackgroundColor { get; set; }
+
+    //borderCapStyle
 
     /// <summary>
     /// Get or sets the border color.
@@ -20,38 +27,50 @@ public class LineChartDataset : ChartDataset
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<string>? BorderColor { get; set; }
+    public string? BorderColor { get; set; }
 
     /// <summary>
     /// Line dash.
     /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="null"/>.
+    /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<int>? BorderDash { get; set; }
+    public int? BorderDash { get; set; }
 
     /// <summary>
     /// Line dash offset.
     /// </summary>
+    /// <remarks>
+    /// Default value is 0.0.
+    /// </remarks>
     public double BorderDashOffset { get; set; }
+
+    //borderJoinStyle
 
     /// <summary>
     /// Gets or sets the border width (in pixels).
     /// </summary>
     /// <remarks>
-    /// Default value is 0.
+    /// Default value is 3.
     /// </remarks>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<double>? BorderWidth { get; set; }
+    public double BorderWidth { get; set; }
 
-
+    //cubicInterpolationMode
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
-    public LineChartDatasetDataLabels Datalabels { get; set; } = new();
+    public LineChartDatasetDataLabels Datalabels { get; set; } = new(); // TODO: add the reference link
+
+    //drawActiveElementsOnTop - list
 
     /// <summary>
     /// Both line and radar charts support a fill option on the dataset object
     /// which can be used to create area between two datasets or a dataset and
     /// a boundary, i.e. the scale origin, start or end.
     /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="false"/>.
+    /// </remarks>
     public bool Fill { get; set; }
 
     /// <summary>
@@ -61,7 +80,9 @@ public class LineChartDataset : ChartDataset
     /// Default value is <see langword="null"/>.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<string>? HoverBackgroundColor { get; set; }
+    public string? HoverBackgroundColor { get; set; }
+
+    //hoverBorderCapStyle
 
     /// <summary>
     /// The bar/arc border color when hovered.
@@ -70,34 +91,46 @@ public class LineChartDataset : ChartDataset
     /// Default value is <see langword="null"/>.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<string>? HoverBorderColor { get; set; }
+    public string? HoverBorderColor { get; set; }
 
     /// <summary>
     /// Hover line dash.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<int>? HoverBorderDash { get; set; }
+    public List<int>? HoverBorderDash { get; set; } // TODO: validate the data type
+
+    //hoverBorderDashOffset
+
+    //hoverBorderJoinStyle
 
     /// <summary>
     /// The bar border width when hovered (in pixels).
     /// </summary>
     /// <remarks>
-    /// Default value is 1.
+    /// Default value is <see langword="null"/>.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<double>? HoverBorderWidth { get; set; }
+    public double? HoverBorderWidth { get; set; }
+
+    //indexAxis
 
     /// <summary>
     /// The fill color for points.
     /// </summary>
+    /// <remarks>
+    /// Default value is 'rgba(0, 0, 0, 0.1)'.
+    /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<string> PointBackgroundColor { get; set; } = new() { "rgba(0, 0, 0, 0.1)" };
+    public List<string>? PointBackgroundColor { get; set; } //= new() { "rgba(0, 0, 0, 0.1)" };
 
     /// <summary>
     /// The border color for points.
     /// </summary>
+    /// <remarks>
+    /// Default value is 'rgba(0, 0, 0, 0.1)'.
+    /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<string> PointBorderColor { get; set; } = new() { "rgba(0, 0, 0, 0.1)" };
+    public List<string>? PointBorderColor { get; set; } //= new() { "rgba(0, 0, 0, 0.1)" };
 
     /// <summary>
     /// The width of the point border in pixels.
