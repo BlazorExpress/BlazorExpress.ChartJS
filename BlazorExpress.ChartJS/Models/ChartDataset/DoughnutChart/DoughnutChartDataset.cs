@@ -62,7 +62,7 @@ public class DoughnutChartDataset : ChartDataset
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
-    public string? BorderJoinStyle { get; set; } // TODO: change this to enum
+    public List<string>? BorderJoinStyle { get; set; } // TODO: change this to enum
 
     /// <summary>
     /// It is applied to all corners of the arc (outerStart, outerEnd, innerStart, innerRight).
@@ -110,24 +110,88 @@ public class DoughnutChartDataset : ChartDataset
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? HoverBorderColor { get; set; }
 
-    //hoverBorderDash
-    //hoverBorderDashOffset
-    //hoverBorderJoinStyle
+    /// <summary>
+    /// Arc border length and spacing of dashes when hovered. 
+    /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="null"/>.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<double>? HoverBorderDash { get; set; }
+
+    /// <summary>
+    /// Arc border offset for line dashes when hovered.
+    /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="null"/>.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public double? HoverBorderDashOffset { get; set; }
+
+    /// <summary>
+    /// Arc border join style when hovered.
+    /// Supported values are 'round', 'bevel', 'miter'.
+    /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="null"/>.
+    /// </remarks>
+    public List<string>? HoverBorderJoinStyle { get; set; } // TODO: change this to enum
 
     /// <summary>
     /// Arc border width when hovered (in pixels).
     /// </summary>
     /// <remarks>
-    /// Default value is 1.
+    /// Default value is <see langword="null"/>.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? HoverBorderWidth { get; set; }
 
-    //hoverOffset
-    //offset
-    //rotation
-    //spacing
-    //weight
+    /// <summary>
+    /// Arc offset when hovered (in pixels).
+    /// </summary>
+    /// <remarks>
+    /// Default value is 0.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<double>? HoverOffset { get; set; }
+
+    /// <summary>
+    /// Arc offset (in pixels).
+    /// </summary>
+    /// <remarks>
+    /// Default value is 0.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<double>? Offset { get; set; }
+
+    /// <summary>
+    /// Per-dataset override for the starting angle to draw arcs from.
+    /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="null"/>.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public double? Rotation { get; set; }
+
+    /// <summary>
+    /// Fixed arc offset (in pixels). Similar to <see cref="Offset" /> but applies to all arcs.
+    /// </summary>
+    /// <remarks>
+    /// Default value is 0.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public double Spacing { get; set; }
+
+    /// <summary>
+    /// The relative thickness of the dataset. 
+    /// Providing a value for weight will cause the pie or doughnut dataset to be drawn 
+    /// with a thickness relative to the sum of all the dataset weight values.
+    /// </summary>
+    /// <remarks>
+    /// Default value is 1.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public double Weight { get; set; } = 1;
 
     #endregion
 }
