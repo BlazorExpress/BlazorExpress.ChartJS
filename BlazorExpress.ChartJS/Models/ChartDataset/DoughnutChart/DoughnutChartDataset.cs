@@ -62,6 +62,7 @@ public class DoughnutChartDataset : ChartDataset
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? BorderJoinStyle { get; set; } // TODO: change this to enum
 
     /// <summary>
@@ -70,6 +71,7 @@ public class DoughnutChartDataset : ChartDataset
     /// <remarks>
     /// Default value is 0.
     /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? BorderRadius { get; set; }
 
     /// <summary>
@@ -87,6 +89,7 @@ public class DoughnutChartDataset : ChartDataset
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? Circumference { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
@@ -135,6 +138,7 @@ public class DoughnutChartDataset : ChartDataset
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? HoverBorderJoinStyle { get; set; } // TODO: change this to enum
 
     /// <summary>
@@ -179,7 +183,6 @@ public class DoughnutChartDataset : ChartDataset
     /// <remarks>
     /// Default value is 0.
     /// </remarks>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double Spacing { get; set; }
 
     /// <summary>
@@ -190,7 +193,6 @@ public class DoughnutChartDataset : ChartDataset
     /// <remarks>
     /// Default value is 1.
     /// </remarks>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double Weight { get; set; } = 1;
 
     #endregion
