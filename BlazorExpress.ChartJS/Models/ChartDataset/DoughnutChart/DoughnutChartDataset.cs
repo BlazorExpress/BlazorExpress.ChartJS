@@ -10,7 +10,7 @@ public class DoughnutChartDataset : ChartDataset
     #region Properties, Indexers
 
     /// <summary>
-    /// Get or sets the background color.
+    /// Arc background color.
     /// </summary>
     /// <remarks>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
@@ -19,7 +19,7 @@ public class DoughnutChartDataset : ChartDataset
     public List<string>? BackgroundColor { get; set; }
 
     /// <summary>
-    /// Supported values for BorderAlign are 'center' and 'inner'.
+    /// Supported values are 'center' and 'inner'.
     /// When 'center' is set, the borders of arcs next to each other will overlap. 
     /// When 'inner' is set, it is guaranteed that all borders will not overlap.
     /// </summary>
@@ -27,13 +27,13 @@ public class DoughnutChartDataset : ChartDataset
     /// Default value is 'center'.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<string>? BorderAlign { get; set; } = new(1) { "center" };
+    public List<string>? BorderAlign { get; set; } // TODO: change this to enum
 
     /// <summary>
-    /// Get or sets the border color.
+    /// Arc border color.
     /// </summary>
     /// <remarks>
-    /// Default value is 'rgba(0, 0, 0, 0.1)'.
+    /// Default value is '#fff'.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? BorderColor { get; set; }
@@ -79,7 +79,7 @@ public class DoughnutChartDataset : ChartDataset
     /// Default value is 2.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public new List<double>? BorderWidth { get; set; }
+    public List<double>? BorderWidth { get; set; }
 
     /// <summary>
     /// Per-dataset override for the sweep that the arcs cover.
@@ -89,15 +89,11 @@ public class DoughnutChartDataset : ChartDataset
     /// </remarks>
     public double? Circumference { get; set; }
 
-
-
-
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
     public DoughnutChartDatasetDataLabels Datalabels { get; set; } = new(); // TODO: add the reference link
 
-
     /// <summary>
-    /// The bar/arc background color when hovered.
+    /// Arc background color when hovered.
     /// </summary>
     /// <remarks>
     /// Default value is <see langword="null"/>.
@@ -106,7 +102,7 @@ public class DoughnutChartDataset : ChartDataset
     public List<string>? HoverBackgroundColor { get; set; }
 
     /// <summary>
-    /// The bar/arc border color when hovered.
+    /// Arc border color when hovered.
     /// </summary>
     /// <remarks>
     /// Default value is <see langword="null"/>.
@@ -114,14 +110,24 @@ public class DoughnutChartDataset : ChartDataset
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? HoverBorderColor { get; set; }
 
+    //hoverBorderDash
+    //hoverBorderDashOffset
+    //hoverBorderJoinStyle
+
     /// <summary>
-    /// The bar border width when hovered (in pixels).
+    /// Arc border width when hovered (in pixels).
     /// </summary>
     /// <remarks>
     /// Default value is 1.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? HoverBorderWidth { get; set; }
+
+    //hoverOffset
+    //offset
+    //rotation
+    //spacing
+    //weight
 
     #endregion
 }
