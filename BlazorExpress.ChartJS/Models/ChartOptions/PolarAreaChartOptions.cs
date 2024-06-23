@@ -6,5 +6,7 @@ public class PolarAreaChartOptions : ChartOptions
 
     public PieChartPlugins Plugins { get; set; } = new();
 
+    public Scales? Scales { get; set; }
+
     #endregion
 }

@@ -73,6 +73,7 @@
         lineChartOptions.Responsive = true;
         lineChartOptions.Interaction = new Interaction { Mode = InteractionMode.Index };
 
+        lineChartOptions.Scales = new();
         lineChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "2019", Display = true };
         lineChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Visitors", Display = true };
 

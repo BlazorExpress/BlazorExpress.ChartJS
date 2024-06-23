@@ -20,7 +20,7 @@ public class LineChartOptions : ChartOptions
 
     public LineChartPlugins Plugins { get; set; } = new();
 
-    public Scales Scales { get; set; } = new();
+    public Scales? Scales { get; set; }
 
     #endregion
 

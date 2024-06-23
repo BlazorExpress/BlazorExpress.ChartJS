@@ -21,6 +21,7 @@
         chartData = new ChartData { Labels = GetDefaultDataLabels(6), Datasets = GetDefaultDataSets(3) };
         lineChartOptions = new() { Responsive = true, Interaction = new Interaction { Mode = InteractionMode.Index } };
 
+        lineChartOptions.Scales = new();
         // set ticks color
         lineChartOptions.Scales.X!.Ticks = new ChartAxesTicks { Color = "red" };
         lineChartOptions.Scales.Y!.Ticks = new ChartAxesTicks { Color = ColorUtility.CategoricalTwelveColors[4] };

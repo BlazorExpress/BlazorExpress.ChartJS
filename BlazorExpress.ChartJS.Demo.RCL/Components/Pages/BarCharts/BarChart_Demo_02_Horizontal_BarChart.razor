@@ -27,6 +27,7 @@
         barChartOptions.Interaction = new Interaction { Mode = InteractionMode.Y };
         barChartOptions.IndexAxis = "y";
 
+        barChartOptions.Scales = new();
         barChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Visitors", Display = true };
         barChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Browser", Display = true };
 

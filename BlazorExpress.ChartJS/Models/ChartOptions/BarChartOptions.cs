@@ -20,7 +20,8 @@ public class BarChartOptions : ChartOptions
 
     public BarChartPlugins Plugins { get; set; } = new();
 
-    public Scales Scales { get; set; } = new();
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Scales? Scales { get; set; }
 
     #endregion
 
