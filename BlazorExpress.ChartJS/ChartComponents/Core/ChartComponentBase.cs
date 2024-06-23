@@ -185,14 +185,14 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
             foreach (var dataset in chartData.Datasets)
                 if (dataset is BarChartDataset)
                     datasets.Add((BarChartDataset)dataset);
-                else if (dataset is BubbleChartDataset)
-                    datasets.Add((BubbleChartDataset)dataset);
                 else if (dataset is DoughnutChartDataset)
                     datasets.Add((DoughnutChartDataset)dataset);
                 else if (dataset is LineChartDataset)
                     datasets.Add((LineChartDataset)dataset);
                 else if (dataset is PieChartDataset)
                     datasets.Add((PieChartDataset)dataset);
+                else if (dataset is PolarAreaChartDataset)
+                    datasets.Add((PolarAreaChartDataset)dataset);
 
         var data = new { chartData?.Labels, Datasets = datasets };
 

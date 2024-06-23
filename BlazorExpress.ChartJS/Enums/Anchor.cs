@@ -3,7 +3,7 @@
 public enum Anchor
 {
     None,
-    Center, // default
     Start,
+    Center, // default
     End
 }

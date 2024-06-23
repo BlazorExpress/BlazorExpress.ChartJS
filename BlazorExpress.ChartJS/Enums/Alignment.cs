@@ -2,7 +2,8 @@
 
 public enum Alignment
 {
-    Center, // default
+    None,
     Start,
+    Center, // default
     End
 }
