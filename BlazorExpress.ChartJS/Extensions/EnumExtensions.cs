@@ -1,6 +1,4 @@
-﻿using BlazorExpress.ChartJS.Enums;
-
-namespace BlazorExpress.ChartJS;
+﻿namespace BlazorExpress.ChartJS;
 
 public static class EnumExtensions
 {
@@ -9,8 +7,8 @@ public static class EnumExtensions
     public static string? ToAlignmentString(this Alignment alignment) =>
         alignment switch
         {
-            Alignment.Center => "center", // default
             Alignment.Start => "start",
+            Alignment.Center or Alignment.None => "center", // default
             Alignment.End => "end",
             _ => null
         };
@@ -18,8 +16,8 @@ public static class EnumExtensions
     public static string? ToAnchorString(this Anchor anchor) =>
         anchor switch
         {
-            Anchor.Center => "center", // default
             Anchor.Start => "start",
+            Anchor.Center or Anchor.None => "center", // default
             Anchor.End => "end",
             _ => null
         };

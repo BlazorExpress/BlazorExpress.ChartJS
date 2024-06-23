@@ -1,9 +1,9 @@
-﻿namespace BlazorExpress.ChartJS.Enums;
+﻿namespace BlazorExpress.ChartJS;
 
 public enum Anchor
 {
     None,
-    Center, // default
     Start,
+    Center, // default
     End
 }

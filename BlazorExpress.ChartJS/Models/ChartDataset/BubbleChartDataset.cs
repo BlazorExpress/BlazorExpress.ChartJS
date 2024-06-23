@@ -18,8 +18,6 @@ public class BubbleChartDataset : ChartDataset
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public new string? HoverBorderWidth { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public string? Label { get; set; }
-
     public int Radius { get; set; } = 3;
 
     #endregion

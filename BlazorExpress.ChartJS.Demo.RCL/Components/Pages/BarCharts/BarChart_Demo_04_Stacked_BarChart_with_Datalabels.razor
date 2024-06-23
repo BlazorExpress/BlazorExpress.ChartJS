@@ -19,6 +19,7 @@
                 BackgroundColor = new List<string> { colors[0] },
                 BorderColor = new List<string> { colors[0] },
                 BorderWidth = new List<double> { 0 },
+                IndexAxis = "y",
             };
         datasets.Add(dataset1);
 
@@ -29,6 +30,7 @@
                 BackgroundColor = new List<string> { colors[1] },
                 BorderColor = new List<string> { colors[1] },
                 BorderWidth = new List<double> { 0 },
+                IndexAxis = "y",
             };
         datasets.Add(dataset2);
 
@@ -39,6 +41,7 @@
                 BackgroundColor = new List<string> { colors[2] },
                 BorderColor = new List<string> { colors[2] },
                 BorderWidth = new List<double> { 0 },
+                IndexAxis = "y",
             };
         datasets.Add(dataset3);
 
@@ -53,6 +56,7 @@
         barChartOptions.Interaction = new Interaction { Mode = InteractionMode.Y };
         barChartOptions.IndexAxis = "y";
 
+        barChartOptions.Scales = new();
         barChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Visitors", Display = true };
         barChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Browser", Display = true };
 
