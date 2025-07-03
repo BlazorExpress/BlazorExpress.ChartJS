@@ -13,50 +13,46 @@
         var datasets = new List<IChartDataset>();
 
         var dataset1 = new BarChartDataset()
-            {
-                Label = "Windows",
-                Data = new List<double> { 28000, 8000, 2000, 17000 },
-                BackgroundColor = new List<string> { colors[0] },
-                BorderColor = new List<string> { colors[0] },
-                BorderWidth = new List<double> { 0 },
-                IndexAxis = "y",
-            };
+        {
+            Label = "Windows",
+            Data = new List<double?> { 28000, 8000, 2000, 17000 },
+            BackgroundColor = new List<string> { colors[0] },
+            BorderColor = new List<string> { colors[0] },
+            BorderWidth = new List<double> { 0 },
+        };
         datasets.Add(dataset1);
 
         var dataset2 = new BarChartDataset()
-            {
-                Label = "macOS",
-                Data = new List<double> { 8000, 10000, 14000, 8000 },
-                BackgroundColor = new List<string> { colors[1] },
-                BorderColor = new List<string> { colors[1] },
-                BorderWidth = new List<double> { 0 },
-                IndexAxis = "y",
-            };
+        {
+            Label = "macOS",
+            Data = new List<double?> { 8000, 10000, 14000, 8000 },
+            BackgroundColor = new List<string> { colors[1] },
+            BorderColor = new List<string> { colors[1] },
+            BorderWidth = new List<double> { 0 },
+        };
         datasets.Add(dataset2);
 
         var dataset3 = new BarChartDataset()
-            {
-                Label = "Other",
-                Data = new List<double> { 28000, 10000, 14000, 8000 },
-                BackgroundColor = new List<string> { colors[2] },
-                BorderColor = new List<string> { colors[2] },
-                BorderWidth = new List<double> { 0 },
-                IndexAxis = "y",
-            };
+        {
+            Label = "Other",
+            Data = new List<double?> { 28000, 10000, 14000, 8000 },
+            BackgroundColor = new List<string> { colors[2] },
+            BorderColor = new List<string> { colors[2] },
+            BorderWidth = new List<double> { 0 },
+        };
         datasets.Add(dataset3);
 
         chartData = new ChartData
-            {
-                Labels = labels,
-                Datasets = datasets
-            };
+        {
+            Labels = labels,
+            Datasets = datasets
+        };
 
         barChartOptions = new();
         barChartOptions.Responsive = true;
         barChartOptions.Interaction = new Interaction { Mode = InteractionMode.Y };
         barChartOptions.IndexAxis = "y";
 
-        barChartOptions.Scales = new();
         barChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Visitors", Display = true };
         barChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Browser", Display = true };
 

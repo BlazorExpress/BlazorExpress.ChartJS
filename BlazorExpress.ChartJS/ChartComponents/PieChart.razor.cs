@@ -25,7 +25,7 @@ public partial class PieChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
+            throw new ArgumentNullException(nameof(chartData.Datasets));
 
         if (data is null)
             throw new ArgumentNullException(nameof(data));
@@ -34,7 +34,7 @@ public partial class PieChart : ChartComponentBase
             if (dataset is PieChartDataset pieChartDataset && pieChartDataset.Label == dataLabel)
                 if (data is PieChartDatasetData pieChartDatasetData)
                 {
-                    pieChartDataset.Data?.Add(pieChartDatasetData.Data);
+                    pieChartDataset.Data?.Add(pieChartDatasetData.Data as double?);
                     pieChartDataset.BackgroundColor?.Add(pieChartDatasetData.BackgroundColor!);
                 }
 
@@ -49,10 +49,10 @@ public partial class PieChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
+            throw new ArgumentNullException(nameof(chartData.Datasets));
 
         if (chartData.Labels is null)
-            throw new ArgumentException("chartData.Labels must not be null", nameof(chartData));
+            throw new ArgumentNullException(nameof(chartData.Labels));
 
         if (dataLabel is null)
             throw new ArgumentNullException(nameof(dataLabel));
@@ -81,7 +81,7 @@ public partial class PieChart : ChartComponentBase
 
                 if (chartDatasetData is PieChartDatasetData pieChartDatasetData)
                 {
-                    pieChartDataset.Data?.Add(pieChartDatasetData.Data);
+                    pieChartDataset.Data?.Add(pieChartDatasetData.Data as double?);
                     pieChartDataset.BackgroundColor?.Add(pieChartDatasetData.BackgroundColor!);
                 }
             }

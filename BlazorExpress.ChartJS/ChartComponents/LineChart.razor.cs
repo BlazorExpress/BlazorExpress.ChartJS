@@ -25,7 +25,7 @@ public partial class LineChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
+            throw new ArgumentNullException(nameof(chartData.Datasets));
 
         if (data is null)
             throw new ArgumentNullException(nameof(data));
@@ -33,7 +33,7 @@ public partial class LineChart : ChartComponentBase
         foreach (var dataset in chartData.Datasets)
             if (dataset is LineChartDataset lineChartDataset && lineChartDataset.Label == dataLabel)
                 if (data is LineChartDatasetData lineChartDatasetData)
-                    lineChartDataset.Data?.Add(lineChartDatasetData.Data);
+                    lineChartDataset.Data?.Add(lineChartDatasetData.Data as double?);
 
         await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetData", Id, dataLabel, data);
 
@@ -61,7 +61,7 @@ public partial class LineChart : ChartComponentBase
             throw new ArgumentNullException(nameof(data));
 
         if (!data.Any())
-            throw new Exception($"{nameof(data)} cannot be empty.");
+            throw new ArgumentException($"{nameof(data)} cannot be empty.", nameof(data));
 
         if (chartData.Datasets.Count != data.Count)
             throw new InvalidDataException("The chart dataset count and the new data points count do not match.");
@@ -77,7 +77,7 @@ public partial class LineChart : ChartComponentBase
                 var chartDatasetData = data.FirstOrDefault(x => x is LineChartDatasetData lineChartDatasetData && lineChartDatasetData.DatasetLabel == lineChartDataset.Label);
 
                 if (chartDatasetData is LineChartDatasetData lineChartDatasetData)
-                    lineChartDataset.Data?.Add(lineChartDatasetData.Data);
+                    lineChartDataset.Data?.Add(lineChartDatasetData.Data as double?);
             }
 
         await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetsData", Id, dataLabel, data?.Select(x => (LineChartDatasetData)x));

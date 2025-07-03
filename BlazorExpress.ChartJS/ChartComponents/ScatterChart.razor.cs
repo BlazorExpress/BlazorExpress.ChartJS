@@ -1,39 +1,40 @@
 ﻿namespace BlazorExpress.ChartJS;
 
-public partial class PolarAreaChart : ChartComponentBase
+public partial class ScatterChart : ChartComponentBase
 {
     #region Fields and Constants
 
-    private const string _jsObjectName = "window.blazorexpress.chartjs.polarArea";
+    private const string _jsObjectName = "window.blazorChart.scatter";
 
     #endregion
 
     #region Constructors
 
-    public PolarAreaChart()
+    public ScatterChart()
     {
-        _chartType = ChartType.PolarArea;
+        _chartType = ChartType.Scatter;
     }
 
     #endregion
 
     #region Methods
 
+    // TODO: May be this method is not required
     public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IChartDatasetData data)
     {
         if (chartData is null)
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
+            throw new ArgumentNullException(nameof(chartData.Datasets));
 
         if (data is null)
             throw new ArgumentNullException(nameof(data));
 
         foreach (var dataset in chartData.Datasets)
-            if (dataset is PolarAreaChartDataset barChartDataset && barChartDataset.Label == dataLabel)
-                if (data is PolarAreaChartDatasetData barChartDatasetData)
-                    barChartDataset.Data?.Add(barChartDatasetData.Data as double?);
+            if (dataset is ScatterChartDataset scatterChartDataset && scatterChartDataset.Label == dataLabel)
+                if (data is ScatterChartDatasetData scatterChartDatasetData && scatterChartDatasetData.Data is ScatterChartDataPoint scatterChartDataPoint)
+                    scatterChartDataset.Data?.Add(scatterChartDataPoint);
 
         await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetData", Id, dataLabel, data);
 
@@ -61,7 +62,7 @@ public partial class PolarAreaChart : ChartComponentBase
             throw new ArgumentNullException(nameof(data));
 
         if (!data.Any())
-            throw new Exception($"{nameof(data)} cannot be empty.");
+            throw new ArgumentException($"{nameof(data)} cannot be empty.", nameof(data));
 
         if (chartData.Datasets.Count != data.Count)
             throw new InvalidDataException("The chart dataset count and the new data points count do not match.");
@@ -72,15 +73,15 @@ public partial class PolarAreaChart : ChartComponentBase
         chartData.Labels.Add(dataLabel);
 
         foreach (var dataset in chartData.Datasets)
-            if (dataset is PolarAreaChartDataset barChartDataset)
+            if (dataset is ScatterChartDataset scatterChartDataset)
             {
-                var chartDatasetData = data.FirstOrDefault(x => x is PolarAreaChartDatasetData barChartDatasetData && barChartDatasetData.DatasetLabel == barChartDataset.Label);
+                var chartDatasetData = data.FirstOrDefault(x => x is ScatterChartDatasetData scatterChartDatasetData && scatterChartDatasetData.DatasetLabel == scatterChartDataset.Label);
 
-                if (chartDatasetData is PolarAreaChartDatasetData barChartDatasetData)
-                    barChartDataset.Data?.Add(barChartDatasetData.Data as double?);
+                if (chartDatasetData is ScatterChartDatasetData scatterChartDatasetData && scatterChartDatasetData.Data is ScatterChartDataPoint scatterChartDataPoint)
+                    scatterChartDataset.Data?.Add(scatterChartDataPoint);
             }
 
-        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetsData", Id, dataLabel, data?.Select(x => (PolarAreaChartDatasetData)x));
+        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetsData", Id, dataLabel, data?.Select(x => (ScatterChartDatasetData)x));
 
         return chartData;
     }
@@ -96,10 +97,10 @@ public partial class PolarAreaChart : ChartComponentBase
         if (chartDataset is null)
             throw new ArgumentNullException(nameof(chartDataset));
 
-        if (chartDataset is PolarAreaChartDataset)
+        if (chartDataset is ScatterChartDataset)
         {
             chartData.Datasets.Add(chartDataset);
-            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDataset", Id, (PolarAreaChartDataset)chartDataset);
+            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDataset", Id, (ScatterChartDataset)chartDataset);
         }
 
         return chartData;
@@ -107,22 +108,34 @@ public partial class PolarAreaChart : ChartComponentBase
 
     public override async Task InitializeAsync(ChartData chartData, IChartOptions chartOptions, string[]? plugins = null)
     {
-        if (chartData is not null && chartData.Datasets is not null)
-        {
-            var datasets = chartData.Datasets.OfType<PolarAreaChartDataset>();
-            var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.initialize", Id, GetChartType(), data, (PolarAreaChartOptions)chartOptions, plugins);
-        }
+        if (chartData is null)
+            throw new ArgumentNullException(nameof(chartData));
+
+        if (chartData.Datasets is null)
+            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
+
+        if (chartOptions is null)
+            throw new ArgumentNullException(nameof(chartOptions));
+
+        var datasets = chartData.Datasets.OfType<ScatterChartDataset>();
+        var data = new { chartData.Labels, Datasets = datasets };
+        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.initialize", Id, GetChartType(), data, (ScatterChartOptions)chartOptions, plugins);
     }
 
     public override async Task UpdateAsync(ChartData chartData, IChartOptions chartOptions)
     {
-        if (chartData is not null && chartData.Datasets is not null)
-        {
-            var datasets = chartData.Datasets.OfType<PolarAreaChartDataset>();
-            var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.update", Id, GetChartType(), data, (PolarAreaChartOptions)chartOptions);
-        }
+        if (chartData is null)
+            throw new ArgumentNullException(nameof(chartData));
+
+        if (chartData.Datasets is null)
+            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
+
+        if (chartOptions is null)
+            throw new ArgumentNullException(nameof(chartOptions));
+
+        var datasets = chartData.Datasets.OfType<ScatterChartDataset>();
+        var data = new { chartData.Labels, Datasets = datasets };
+        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.update", Id, GetChartType(), data, (ScatterChartOptions)chartOptions);
     }
 
     #endregion

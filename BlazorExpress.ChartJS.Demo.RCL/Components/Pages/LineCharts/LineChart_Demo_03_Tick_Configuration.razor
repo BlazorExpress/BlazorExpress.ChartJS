@@ -21,7 +21,6 @@
         chartData = new ChartData { Labels = GetDefaultDataLabels(6), Datasets = GetDefaultDataSets(3) };
         lineChartOptions = new() { Responsive = true, Interaction = new Interaction { Mode = InteractionMode.Index } };
 
-        lineChartOptions.Scales = new();
         // set ticks color
         lineChartOptions.Scales.X!.Ticks = new ChartAxesTicks { Color = "red" };
         lineChartOptions.Scales.Y!.Ticks = new ChartAxesTicks { Color = ColorUtility.CategoricalTwelveColors[4] };
@@ -38,19 +37,19 @@
 
     private async Task ChangeTicksAlignmentToStart()
     {
-        lineChartOptions.Scales.X!.Ticks!.Alignment = Alignment.Start;
+        lineChartOptions.Scales.X!.Ticks!.TicksAlignment = TicksAlignment.Start;
         await lineChart.UpdateAsync(chartData, lineChartOptions);
     }
 
     private async Task ChangeTicksAlignmentToCenter()
     {
-        lineChartOptions.Scales.X!.Ticks!.Alignment = Alignment.Center;
+        lineChartOptions.Scales.X!.Ticks!.TicksAlignment = TicksAlignment.Center;
         await lineChart.UpdateAsync(chartData, lineChartOptions);
     }
 
     private async Task ChangeTicksAlignmentToEnd()
     {
-        lineChartOptions.Scales.X!.Ticks!.Alignment = Alignment.End;
+        lineChartOptions.Scales.X!.Ticks!.TicksAlignment = TicksAlignment.End;
         await lineChart.UpdateAsync(chartData, lineChartOptions);
     }
 
@@ -75,22 +74,22 @@
         datasetsCount += 1;
 
         return new LineChartDataset
-            {
-                Label = $"Team {datasetsCount}",
-                Data = GetRandomData(),
-                BackgroundColor = c.ToRgbString(),
-                BorderColor = c.ToRgbString(),
-                BorderWidth = 2,
-                HoverBorderWidth = 4,
-                PointBackgroundColor = c.ToRgbString(),
-                PointRadius = 0, // hide points
-                PointHoverRadius = 4
-            };
+        {
+            Label = $"Team {datasetsCount}",
+            Data = GetRandomData(),
+            BackgroundColor = c.ToRgbString(),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2,
+            HoverBorderWidth = 4,
+            // PointBackgroundColor = c.ToRgbString(),
+            // PointRadius = 0, // hide points
+            // PointHoverRadius = 4,
+        };
     }
 
-    private List<double> GetRandomData()
+    private List<double?> GetRandomData()
     {
-        var data = new List<double>();
+        var data = new List<double?>();
         for (var index = 0; index < labelsCount; index++)
         {
             data.Add(random.Next(200));
@@ -117,5 +116,4 @@
     }
 
     #endregion Data Preparation
-
 }

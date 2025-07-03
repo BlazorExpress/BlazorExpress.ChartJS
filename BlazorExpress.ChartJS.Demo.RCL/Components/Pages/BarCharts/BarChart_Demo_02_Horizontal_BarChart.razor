@@ -11,13 +11,12 @@
         var datasets = new List<IChartDataset>();
 
         var dataset1 = new BarChartDataset()
-            {
-                Data = new List<double> { 55000, 15000, 18000, 21000 },
-                BackgroundColor = new List<string> { ColorUtility.CategoricalTwelveColors[0] },
-                BorderColor = new List<string> { ColorUtility.CategoricalTwelveColors[0] },
-                BorderWidth = new List<double> { 0 },
-                IndexAxis = "y",
-            };
+        {
+            Data = new List<double?> { 55000, 15000, 18000, 21000 },
+            BackgroundColor = new List<string> { ColorUtility.CategoricalTwelveColors[0] },
+            BorderColor = new List<string> { ColorUtility.CategoricalTwelveColors[0] },
+            BorderWidth = new List<double> { 0 },
+        };
         datasets.Add(dataset1);
 
         chartData = new ChartData { Labels = labels, Datasets = datasets };
@@ -27,7 +26,6 @@
         barChartOptions.Interaction = new Interaction { Mode = InteractionMode.Y };
         barChartOptions.IndexAxis = "y";
 
-        barChartOptions.Scales = new();
         barChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Visitors", Display = true };
         barChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Browser", Display = true };
 

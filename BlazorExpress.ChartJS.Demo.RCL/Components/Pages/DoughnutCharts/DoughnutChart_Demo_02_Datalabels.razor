@@ -32,6 +32,58 @@
         await base.OnAfterRenderAsync(firstRender);
     }
 
+    private async Task RandomizeAsync()
+    {
+        if (chartData is null || chartData.Datasets is null || !chartData.Datasets.Any()) return;
+
+        var newDatasets = new List<IChartDataset>();
+
+        foreach (var dataset in chartData.Datasets)
+        {
+            if (dataset is DoughnutChartDataset doughnutChartDataset
+                && doughnutChartDataset is not null
+                && doughnutChartDataset.Data is not null)
+            {
+                var count = doughnutChartDataset.Data.Count;
+
+                var newData = new List<double?>();
+                for (var i = 0; i < count; i++)
+                {
+                    newData.Add(random.Next(0, 100));
+                }
+
+                doughnutChartDataset.Data = newData;
+                newDatasets.Add(doughnutChartDataset);
+            }
+        }
+
+        chartData.Datasets = newDatasets;
+
+        await doughnutChart.UpdateAsync(chartData: chartData, chartOptions: doughnutChartOptions);
+    }
+
+    private async Task AddDataAsync()
+    {
+        if (dataLabelsCount >= 12)
+            return;
+
+        if (chartData is null || chartData.Datasets is null)
+            return;
+
+        var data = new List<IChartDatasetData>();
+        foreach (var dataset in chartData.Datasets)
+        {
+            if (dataset is DoughnutChartDataset doughnutChartDataset)
+            {
+                data.Add(new DoughnutChartDatasetData(doughnutChartDataset.Label, random.Next(0, 100), backgroundColors![dataLabelsCount]));
+            }
+        }
+
+        chartData = await doughnutChart.AddDataAsync(chartData, GetNextDataLabel(), data);
+
+        dataLabelsCount += 1;
+    }
+
     #region Data Preparation
 
     private List<IChartDataset> GetDefaultDataSets(int numberOfDatasets)
@@ -61,9 +113,9 @@
         return new() { Label = $"Team {datasetsCount}", Data = GetRandomData(), BackgroundColor = GetRandomBackgroundColors() };
     }
 
-    private List<double> GetRandomData()
+    private List<double?> GetRandomData()
     {
-        var data = new List<double>();
+        var data = new List<double?>();
         for (var index = 0; index < dataLabelsCount; index++)
         {
             data.Add(random.Next(0, 100));

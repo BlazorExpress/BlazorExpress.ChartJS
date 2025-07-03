@@ -25,7 +25,7 @@ public partial class DoughnutChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
+            throw new ArgumentNullException(nameof(chartData.Datasets));
 
         if (data is null)
             throw new ArgumentNullException(nameof(data));
@@ -34,7 +34,7 @@ public partial class DoughnutChart : ChartComponentBase
             if (dataset is DoughnutChartDataset doughnutChartDataset && doughnutChartDataset.Label == dataLabel)
                 if (data is DoughnutChartDatasetData doughnutChartDatasetData)
                 {
-                    doughnutChartDataset.Data?.Add(doughnutChartDatasetData.Data);
+                    doughnutChartDataset.Data?.Add(doughnutChartDatasetData.Data as double?);
                     doughnutChartDataset.BackgroundColor?.Add(doughnutChartDatasetData.BackgroundColor!);
                 }
 
@@ -49,10 +49,10 @@ public partial class DoughnutChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
+            throw new ArgumentNullException(nameof(chartData.Datasets));
 
         if (chartData.Labels is null)
-            throw new ArgumentException("chartData.Labels must not be null", nameof(chartData));
+            throw new ArgumentNullException(nameof(chartData.Labels));
 
         if (dataLabel is null)
             throw new ArgumentNullException(nameof(dataLabel));
@@ -81,7 +81,7 @@ public partial class DoughnutChart : ChartComponentBase
 
                 if (chartDatasetData is DoughnutChartDatasetData doughnutChartDatasetData)
                 {
-                    doughnutChartDataset.Data?.Add(doughnutChartDatasetData.Data);
+                    doughnutChartDataset.Data?.Add(doughnutChartDatasetData.Data as double?);
                     doughnutChartDataset.BackgroundColor?.Add(doughnutChartDatasetData.BackgroundColor!);
                 }
             }
@@ -97,7 +97,7 @@ public partial class DoughnutChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
+            throw new ArgumentNullException(nameof(chartData.Datasets));
 
         if (chartDataset is null)
             throw new ArgumentNullException(nameof(chartDataset));
