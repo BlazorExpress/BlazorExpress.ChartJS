@@ -22,6 +22,24 @@ public static class EnumExtensions
             _ => null
         };
 
+    public static string? ToChartDatasetDataLabelAlignmentString(this Alignment alignment) =>
+        alignment switch
+        {
+            Alignment.Start => "start",
+            Alignment.Center or Alignment.None => "center", // default
+            Alignment.End => "end",
+            _ => null
+        };
+
+    public static string? ToChartDatasetDataLabelAnchorString(this Anchor anchor) =>
+        anchor switch
+        {
+            Anchor.Start => "start",
+            Anchor.Center or Anchor.None => "center", // default
+            Anchor.End => "end",
+            _ => null
+        };
+
     public static string ToCssString(this Unit unit) =>
         unit switch
         {

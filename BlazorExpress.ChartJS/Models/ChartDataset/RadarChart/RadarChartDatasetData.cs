@@ -1,14 +1,14 @@
 ﻿namespace BlazorExpress.ChartJS;
 
-public record PolarAreaChartDatasetData : ChartDatasetData
+public record RadarChartDatasetData : ChartDatasetData
 {
     #region Constructors
 
-    public PolarAreaChartDatasetData(
-        string? datasetLabel, 
-        double data, 
-        string? backgroundColor,
-        string? borderColor) : base(datasetLabel, data)
+    public RadarChartDatasetData(
+        string? datasetLabel,
+        double data,
+        string? backgroundColor = null,
+        string? borderColor = null) : base(datasetLabel, data)
     {
         BackgroundColor = backgroundColor;
         BorderColor = borderColor;
@@ -19,7 +19,6 @@ public record PolarAreaChartDatasetData : ChartDatasetData
     #region Properties, Indexers
 
     public string? BackgroundColor { get; init; }
-
     public string? BorderColor { get; init; }
 
     #endregion

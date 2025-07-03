@@ -15,7 +15,7 @@
     <Description>An open-source, production-ready Blazor charts component library built on the Blazor and Chart.js JavaScript library.</Description>
     <Authors>Vikram Reddy</Authors>
     <!--<Company>your_company</Company>-->
-    <Copyright>Copyright © 2024 Blazor Express</Copyright>
+    <Copyright>Copyright © 2025 Blazor Express</Copyright>
 
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>

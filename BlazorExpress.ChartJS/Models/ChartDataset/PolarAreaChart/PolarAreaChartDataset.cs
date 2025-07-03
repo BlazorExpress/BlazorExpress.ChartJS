@@ -1,6 +1,6 @@
 ﻿namespace BlazorExpress.ChartJS;
 
-public class PolarAreaChartDataset : ChartDataset
+public class PolarAreaChartDataset : ChartDataset<double?>
 {
     #region Properties, Indexers
 

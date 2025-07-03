@@ -5,7 +5,7 @@
 /// These are used to set display properties for a specific dataset.
 /// <see href="https://www.chartjs.org/docs/latest/charts/doughnut.html#dataset-properties" />.
 /// </summary>
-public class PieChartDataset : ChartDataset
+public class PieChartDataset : ChartDataset<double?>
 {
     #region Properties, Indexers
 

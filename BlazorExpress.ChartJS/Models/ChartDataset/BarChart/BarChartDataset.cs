@@ -6,7 +6,7 @@
 /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#dataset-properties" />
 /// <seealso href="https://www.chartjs.org/docs/latest/charts/bar.html#general" />
 /// </summary>
-public class BarChartDataset : ChartDataset
+public class BarChartDataset : ChartDataset<double?>
 {
     #region Properties, Indexers
 
@@ -79,12 +79,13 @@ public class BarChartDataset : ChartDataset
     public BarChartDatasetDataLabels Datalabels { get; set; } = new(); // TODO: add the reference link
 
     /// <summary>
-    /// Should the bars be grouped on index axis. 
-    /// When true, all the datasets at same index value will be placed next to each other centering on that index value. 
-    /// When false, each bar is placed on its actual index-axis value.
+    /// Should the bars be grouped on index axis.
+    /// When <see langword="true" />, all the datasets at same index value will be placed next to each other centering on that
+    /// index value.
+    /// When <see langword="false" />, each bar is placed on its actual index-axis value.
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="true"/>.
+    /// Default value is <see langword="true" />.
     /// </remarks>
     public bool Grouped { get; set; } = true;
 
@@ -126,12 +127,13 @@ public class BarChartDataset : ChartDataset
 
     /// <summary>
     /// The base axis of the chart. 'x' for vertical charts and 'y' for horizontal charts.
+    /// Supported values are 'x' and 'y'.
     /// </summary>
     /// <remarks>
-    /// Default value is 'x'.
+    /// Default value is <see langword="null" />.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string IndexAxis { get; set; } = "x";
+    public string? IndexAxis { get; set; }
 
     //InflateAmount
     //https://www.chartjs.org/docs/latest/charts/bar.html#inflateamount

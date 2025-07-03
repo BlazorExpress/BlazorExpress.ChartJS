@@ -1,123 +1,14 @@
 ﻿namespace BlazorExpress.ChartJS;
 
 /// <summary>
-/// The line chart allows a number of properties to be specified for each dataset. 
-/// These are used to set display properties for a specific dataset. 
-/// <see href="https://www.chartjs.org/docs/latest/charts/line.html#dataset-properties" />.
+/// Scatter charts are based on basic line charts with the x-axis changed to a linear axis.
+/// To use a scatter chart, data must be passed as objects containing X and Y properties.
+/// <see href="https://www.chartjs.org/docs/latest/charts/scatter.html#dataset-properties" />.
+/// The scatter chart supports all the same properties as the line chart.
+/// By default, the scatter chart will override the showLine property of the line chart to <see langword="false" />.
 /// </summary>
-public class LineChartDataset : ChartDataset<double?>
+public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
 {
-    #region Methods
-
-    /// <summary>
-    /// Fill between this dataset and the other dataset, specified by absolute index (zero based) or relative index.
-    /// </summary>
-    /// <param name="index">The index of the dataset to fill to</param>
-    /// <param name="relativeIndex">Whether the specified index is relative or absolute (zero based)</param>
-    /// <returns>The dataset, for method chaining</returns>
-    /// <exception cref="ArgumentException">If the relative index is zero.</exception>
-    public LineChartDataset FillToDataset(int index, bool relativeIndex = false)
-    {
-        if (relativeIndex && index == 0)
-            throw new ArgumentException("The relative index must be non-zero.");
-
-        Fill = relativeIndex ? index.ToString("+0;-0", CultureInfo.InvariantCulture) : index;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Fill between this dataset and the other dataset, specified by passing a dataset in the same chart.
-    /// </summary>
-    /// <param name="chartData">The chart data of the chart both datasets live in.</param>
-    /// <param name="dataset">The other dataset to fill to.</param>
-    /// <param name="relativeIndex">Whether to specify the fill index relative ("+/-n" string) or absolute (as zero-based int)</param>
-    /// <returns>The dataset, for method chaining</returns>
-    /// <exception cref="ArgumentException">If any of the datasets is not in the chart data, or if both datasets are the same.</exception>
-    public LineChartDataset FillToDataset(ChartData chartData, IChartDataset dataset, bool relativeIndex = false)
-    {
-        var index = chartData?.Datasets?.IndexOf(dataset) ?? -1;
-
-        if (index < 0)
-            throw new ArgumentException("The dataset is not in the chart data.");
-
-        if (relativeIndex)
-        {
-            var myIndex = relativeIndex ? chartData.Datasets.IndexOf(this) : 0;
-
-            if (myIndex < 0)
-                throw new ArgumentException("The dataset is not in the chart data.");
-
-            if (myIndex == index)
-                throw new ArgumentException("The dataset is the same as this dataset.");
-
-            Fill = (index - myIndex).ToString("+0;-0", CultureInfo.InvariantCulture);
-        }
-        else
-        {
-            Fill = index;
-        }
-
-        return this;
-    }
-
-    /// <summary>
-    /// Fills between the current dataset and the top of the chart (fill: 'end').
-    /// </summary>
-    /// <returns>The dataset, for method chaining</returns>
-    public LineChartDataset FillToEnd()
-    {
-        Fill = "end";
-
-        return this;
-    }
-
-    /// <summary>
-    /// Fills between the current dataset and the origin. For legacy reasons, this is the same as fill: true.
-    /// </summary>
-    /// <returns>The dataset, for method chaining</returns>
-    public LineChartDataset FillToOrigin()
-    {
-        Fill = "origin";
-
-        return this;
-    }
-
-    /// <summary>
-    /// Fill to the line below the current dataset (fill: 'stack').
-    /// </summary>
-    /// <returns>The dataset, for method chaining</returns>
-    public LineChartDataset FillToStackedValueBelow()
-    {
-        Fill = "stack";
-
-        return this;
-    }
-
-    /// <summary>
-    /// Fills between the current dataset and the start (fill: 'start').
-    /// </summary>
-    /// <returns>The dataset, for method chaining</returns>
-    public LineChartDataset FillToStart()
-    {
-        Fill = "start";
-
-        return this;
-    }
-
-    /// <summary>
-    /// Fill to the line of the given constant value.
-    /// </summary>
-    /// <param name="value">The value to fill to</param>
-    /// <returns>The dataset, for method chaining</returns>
-    public LineChartDataset FillToValue(double value)
-    {
-        Fill = new { value };
-
-        return this;
-    }
-
-    #endregion
     #region Properties, Indexers
 
     /// <summary>
@@ -149,7 +40,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// Gets or sets the length and spacing of dashes.
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="null"/>.
+    /// Default value is <see langword="null" />.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? BorderDash { get; set; }
@@ -163,7 +54,7 @@ public class LineChartDataset : ChartDataset<double?>
     public double BorderDashOffset { get; set; }
 
     /// <summary>
-    /// Line joint style. 
+    /// Line joint style.
     /// There are three possible values for this property: 'round', 'bevel', and 'miter'.
     /// </summary>
     /// <remarks>
@@ -188,14 +79,14 @@ public class LineChartDataset : ChartDataset<double?>
     /// </remarks>
     public string CubicInterpolationMode { get; set; } = "default";
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public LineChartDatasetDataLabels Datalabels { get; set; } = new(); // TODO: add the reference link
 
     /// <summary>
     /// Draw the active points of a dataset over the other points of the dataset.
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="null"/>.
+    /// Default value is <see langword="null" />.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<bool>? DrawActiveElementsOnTop { get; set; }
@@ -204,15 +95,15 @@ public class LineChartDataset : ChartDataset<double?>
     /// How to fill the area under the line.
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="false"/>.
+    /// Default value is <see langword="false" />.
     /// </remarks>
-    public object Fill { get; set; } = false;
+    public bool Fill { get; set; }
 
     /// <summary>
     /// The line fill color when hovered.
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="null"/>.
+    /// Default value is <see langword="null" />.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? HoverBackgroundColor { get; set; }
@@ -221,7 +112,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// Cap style of the line when hovered.
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="null"/>.
+    /// Default value is <see langword="null" />.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? HoverBorderCapStyle { get; set; }
@@ -230,7 +121,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// The line color when hovered.
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="null"/>.
+    /// Default value is <see langword="null" />.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? HoverBorderColor { get; set; }
@@ -239,7 +130,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// Gets or sets the length and spacing of dashes when hovered.
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="null"/>.
+    /// Default value is <see langword="null" />.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? HoverBorderDash { get; set; }
@@ -248,13 +139,13 @@ public class LineChartDataset : ChartDataset<double?>
     /// Offset for line dashes when hovered.
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="null"/>.
+    /// Default value is <see langword="null" />.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? HoverBorderDashOffset { get; set; }
 
     /// <summary>
-    /// Line joint style. 
+    /// Line joint style.
     /// There are three possible values for this property: 'round', 'bevel', and 'miter'.
     /// </summary>
     /// <remarks>
@@ -266,7 +157,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// The bar border width when hovered (in pixels) when hovered.
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="null"/>.
+    /// Default value is <see langword="null" />.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? HoverBorderWidth { get; set; }
@@ -372,7 +263,8 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// Style of the point.
-    /// Supported values are 'circle', 'cross', 'crossRot', 'dash', 'line', 'rect', 'rectRounded', 'rectRot', 'star', and 'triangle' to style.
+    /// Supported values are 'circle', 'cross', 'crossRot', 'dash', 'line', 'rect', 'rectRounded', 'rectRot', 'star', and
+    /// 'triangle' to style.
     /// the point.
     /// </summary>
     /// <remarks>
@@ -386,11 +278,12 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// If <see langword="false" />, the lines between points are not drawn.
+    /// By default, the scatter chart will override the showLine property of the line chart to false.
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="true"/>.
+    /// Default value is <see langword="false" />.
     /// </remarks>
-    public bool ShowLine { get; set; } = true;
+    public bool ShowLine { get; } = false;
 
     /// <summary>
     /// If <see langword="true" />, lines will be drawn between points with no or null data.
@@ -399,7 +292,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// The unit of the value depends on the scale used.
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="null"/>.
+    /// Default value is <see langword="null" />.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? SpanGaps { get; set; }
@@ -411,7 +304,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// true to show the line as a stepped line (tension will be ignored).
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="false"/>.
+    /// Default value is <see langword="false" />.
     /// </remarks>
     public bool Stepped { get; set; }
 
@@ -445,66 +338,4 @@ public class LineChartDataset : ChartDataset<double?>
     #endregion
 }
 
-public class LineChartDatasetDataLabels
-{
-    #region Fields and Constants
-
-    private Alignment alignment;
-
-    private Anchor anchor;
-
-    #endregion
-
-    #region Properties, Indexers
-
-    /// <summary>
-    /// Gets or sets the data labels alignment. 
-    /// </summary>
-    /// <remarks>
-    /// Default value is <see cref="Alignment.Center"/>.
-    /// </remarks>
-    [JsonIgnore]
-    public Alignment Alignment
-    {
-        get => alignment;
-        set
-        {
-            alignment = value;
-            DataLabelsAlignment = value.ToAlignmentString();
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets the data labels anchor.
-    /// </summary>
-    /// <remarks>
-    /// Default value is <see cref="Anchor.None"/>.
-    /// </remarks>
-    [JsonIgnore]
-    public Anchor Anchor
-    {
-        get => anchor;
-        set
-        {
-            anchor = value;
-            DataLabelsAnchor = value.ToAnchorString();
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets the data labels alignment.
-    /// Possible values: start, center, and end.
-    /// </summary>
-    [JsonPropertyName("align")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? DataLabelsAlignment { get; private set; }
-
-    /// <summary>
-    /// Gets or sets the data labels anchor.
-    /// Possible values: start, center, and end.
-    /// </summary>
-    [JsonPropertyName("anchor")]
-    public string? DataLabelsAnchor { get; private set; }
-
-    #endregion
-}
+public class ScatterChartDatasetDataLabels : ChartDatasetDataLabels { }

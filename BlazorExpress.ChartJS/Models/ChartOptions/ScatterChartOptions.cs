@@ -1,6 +1,6 @@
 ﻿namespace BlazorExpress.ChartJS;
 
-public class LineChartOptions : ChartOptions
+public class ScatterChartOptions : ChartOptions
 {
     #region Properties, Indexers
 
@@ -12,7 +12,7 @@ public class LineChartOptions : ChartOptions
     /// The base axis of the dataset. 'x' for horizontal lines and 'y' for vertical lines.
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="null"/>.
+    /// Default value is 'x'.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? IndexAxis { get; set; }
@@ -21,7 +21,7 @@ public class LineChartOptions : ChartOptions
 
     public ChartLayout Layout { get; set; } = new();
 
-    public LineChartPlugins Plugins { get; set; } = new();
+    public ScatterChartPlugins Plugins { get; set; } = new();
 
     public Scales Scales { get; set; } = new();
 

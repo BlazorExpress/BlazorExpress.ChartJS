@@ -5,7 +5,7 @@ public interface IChartDataset { }
 /// <summary>
 /// <See href="https://www.chartjs.org/docs/latest/general/data-structures.html#dataset-configuration" />
 /// </summary>
-public class ChartDataset : IChartDataset
+public class ChartDataset<TData> : IChartDataset
 {
     #region Constructors
 
@@ -36,7 +36,7 @@ public class ChartDataset : IChartDataset
     /// Default value is <see langword="null"/>.
     /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<double>? Data { get; set; }
+    public List<TData>? Data { get; set; }
 
     /// <summary>
     /// Configures the visibility state of the dataset. Set it to <see langword="true"/>, to hide the dataset from the chart.
