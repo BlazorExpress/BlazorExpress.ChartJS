@@ -2,6 +2,7 @@
 
 public enum DocType
 {
+    None,
     Enum,
     Events,
     Methods,
