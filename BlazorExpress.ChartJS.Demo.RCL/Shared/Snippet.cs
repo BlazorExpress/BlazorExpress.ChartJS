@@ -1,6 +1,4 @@
-﻿using BlazorExpress.ChartJS.Demo.RCL.Extensions;
-
-namespace BlazorExpress.ChartJS.Demo.RCL;
+﻿namespace BlazorExpress.ChartJS.Demo.RCL;
 
 public class Snippet : ComponentBase
 {

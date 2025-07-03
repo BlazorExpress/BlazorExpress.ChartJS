@@ -1,6 +1,6 @@
 ﻿namespace BlazorExpress.ChartJS.Demo.RCL;
 
-public partial class Demo : ComponentBase
+public partial class Demo : BlazorBootstrapComponentBase
 {
     #region Fields and Constants
 

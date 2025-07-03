@@ -5,6 +5,18 @@
 /// </summary>
 public static class EnumExtensions
 {
+    public static string? ToHeadingCssClass(this HeadingSize headingSize) =>
+        headingSize switch
+        {
+            HeadingSize.H1 => "h1",
+            HeadingSize.H2 => "h2",
+            HeadingSize.H3 => "h3",
+            HeadingSize.H4 => "h4",
+            HeadingSize.H5 => "h5",
+            HeadingSize.H6 => "h6",
+            _ => null
+        };
+
     public static string? ToLanguageCssClass(this LanguageCode languageCode) =>
         languageCode switch
         {

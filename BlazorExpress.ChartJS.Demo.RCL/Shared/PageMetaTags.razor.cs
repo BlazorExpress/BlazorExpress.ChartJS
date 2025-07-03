@@ -1,6 +1,6 @@
 ﻿namespace BlazorExpress.ChartJS.Demo.RCL;
 
-public partial class MetaTags : ComponentBase
+public partial class PageMetaTags : BlazorBootstrapComponentBase
 {
     private string homeUrl = default!;
 
