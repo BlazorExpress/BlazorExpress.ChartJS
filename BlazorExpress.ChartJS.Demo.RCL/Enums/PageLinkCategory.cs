@@ -10,21 +10,9 @@ public enum PageLinkCategory
     [Description("Getting Started")]
     GettingStarted,
 
-    [Description("Features")]
-    Features,
+    [Description("Charts")]
+    Charts,
 
-    [Description("Icons")]
-    Icons,
-
-    [Description("Elements")]
-    Elements,
-
-    [Description("Form")]
-    Form,
-
-    [Description("Components")]
-    Components,
-
-    [Description("Layout")]
-    Layout
+    [Description("Utils")]
+    Utils
 }

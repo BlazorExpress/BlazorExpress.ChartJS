@@ -1,56 +1,80 @@
 @attribute [Route(pageUrl)]
-@attribute [Route(pageUrl2)]
 
-<PageTitle>@title | BlazorExpress.ChartJS Components</PageTitle>
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
-<PageMetaTags PageUrl="@pageUrl" Title="@title" Description="@description" ImageUrl="@imageUrl" />
-
-<h1>Blazor Charts</h1>
-<div class="lead mb-3">
-    Blazor Express charts are well-designed chart components on top of <b>Chart.js</b> to visualize data. It contains a rich UI gallery of charts that cater to all charting scenarios. Its high performance helps render large amounts of data quickly.
+<div class="be-bulma-masthead has-text-centered">
+    <div class="container is-max-desktop mb-4">
+        <div class="mb-6">
+            <div class="pt-6 mb-6">
+                <Tag Color="TagColor.Warning" Size="TagSize.Medium">New in @version</Tag>
+                <span class="is-size-6 text-muted">@releaseShortDescription</span>
+            </div>
+            <div style="justify-items: center;">
+                <Image Src="@StringConstants.StaticAssets_Icons_Logo_png"
+                       Dimension="ImageDimension.Is128x128"
+                       alt="BlazorExpress Logo" />
+            </div>
+        </div>
+        <Hero Class="mb-6">
+            <HeroTitle class="mb-4">
+                @((MarkupString)pageTitle)
+            </HeroTitle>
+            <HeroSubTitle Class="has-text-dark">
+                @((MarkupString)pageDescription)
+            </HeroSubTitle>
+        </Hero>
+        <div class="mb-4">
+            <a href="https://www.nuget.org/packages/BlazorExpress.Bulma/"><img alt="Nuget" src="https://img.shields.io/nuget/v/Blazor.Bootstrap"></a>
+            <span class="px-1"></span>
+            <a href="https://www.nuget.org/packages/BlazorExpress.Bulma/"><img alt="Nuget" src="https://img.shields.io/nuget/dt/Blazor.Bootstrap"></a>
+        </div>
+    </div>
 </div>
 
-@* <CarbonAds /> *@
+<div class="container is-max-desktop mb-4">
+    <IndexComponentLinks Title="All Components" Category="@PageLinkCategory.All" />
 
-<Section Size="HeadingSize.H4" Text="Chart Types" PageUrl="@pageUrl" HashTagName="chart-types" />
-<div class="mb-2">At this moment we are supporting four blazor chart types.</div>
-<ol>
-    <li><a href="/charts/bar-chart">Bar Chart</a></li>
-    <li><a href="/charts/doughnut-chart">Doughnut Chart</a></li>
-    <li><a href="/charts/line-chart">Line Chart</a></li>
-    <li><a href="/charts/pie-chart">Pie Chart</a></li>
-    <li><a href="/charts/polar-area-chart">Polar Area Chart</a></li>
-</ol>
+    <IndexComponentLinks Title="Utils" Category="@PageLinkCategory.Utils" />
 
-<BlazorBootstrap.Callout Color="BlazorBootstrap.CalloutColor.Info">
-    We will add Bubble Chart, Radar Chart, Scatter Chart, and Mixed Chart support in the subsequent versions.
-</BlazorBootstrap.Callout>
-
-<Section Size="HeadingSize.H4" Text="Charts Setup" PageUrl="@pageUrl" HashTagName="charts-setup" />
-<div class="mb-3">
-    Refer to the <a href="/charts/getting-started">getting started guide</a> for setting up charts.
+    <Message Class="mb-4" Color="MessageColor.Success">
+        <MessageBody>
+            <div class="is-size-5 has-text-weight-semibold mb-2"><BootstrapIcon Name="BootstrapIconName.Lightbulb" /> DO YOU KNOW?</div>
+            <div>
+                This demo website is built using the <strong><a href="@nugetUrl" target="_blank">BlazorExpress Bulma</a></strong> library and published on the Azure Web App.
+                See our source code on <a href="@githubUrl" target="_blank">GitHub</a>.
+            </div>
+        </MessageBody>
+    </Message>
 </div>
 
 @code {
     private const string pageUrl = "/";
-    private const string pageUrl2 = "/charts/overview";
-    private const string title = "Blazor Chart Components";
-    private const string heading = "Blazor Charts";
-    private const string description = "Blazor Express charts are well-designed chart components on top of Chart.js to visualize data. It contains a rich UI gallery of charts that cater to all charting scenarios. Its high performance helps render large amounts of data quickly.";
-    private const string imageUrl = "https://i.imgur.com/C5ObC3A.png";
+    private const string pageTitle = "BlazorExpress Bulma Components <br /> Fast, Free & Open Source";
+    private const string pageDescription = "Get started with BlazorExpress Bulma. Build high-performance, responsive Blazor apps quickly with our free, open-source UI library. Developers, build in minutes!";
+    private const string metaTitle = "BlazorExpress Bulma Components: Fast, Free & Open Source";
+    private const string metaDescription = "Get started with BlazorExpress Bulma. Build high-performance, responsive Blazor apps quickly with our free, open-source UI library. Developers, build in minutes!";
+    private const string imageUrl = "https://i.imgur.com/FGgEMp6.jpg"; // TODO: update
 
-    [Inject] private NavigationManager _navigationManager { get; set; } = default!;
+    private string version = default!;
+    private string releaseShortDescription = default!;
+    private string githubUrl = default!;
+    private string nugetUrl = default!;
+
+    private HashSet<PageLink> allComponentsLinks = null!;
+    private HashSet<PageLink> formComponentsLinks = null!;
+    private HashSet<PageLink> iconComponentsLinks = null!;
+
+    [Inject] public IConfiguration Configuration { get; set; } = default!;
 
     protected override void OnInitialized()
     {
-        try
-        {
-            if (_navigationManager.Uri.Replace(_navigationManager.BaseUri, "").Equals(""))
-                _navigationManager.NavigateTo(pageUrl2);
-        }
-        catch
-        {
-            // do nothing
-        }
+        version = $"v{Configuration["version"]}"; // example: v0.6.1
+        releaseShortDescription = Configuration["release:short_description"]!;
+        githubUrl = $"{Configuration["urls:github"]}";
+        nugetUrl = $"{Configuration["urls:nuget"]}";
+
+        allComponentsLinks = PageLinkUtil.GetDemosLinks().Where(link => link.IsActive && link.Text != "Introduction").ToHashSet();
+        formComponentsLinks = PageLinkUtil.GetDemosLinks().Where(link => link.IsActive && link.Categories.Contains(PageLinkCategory.Form)).ToHashSet();
+        iconComponentsLinks = PageLinkUtil.GetDemosLinks().Where(link => link.IsActive && link.Categories.Contains(PageLinkCategory.Icons)).ToHashSet();
     }
 }
