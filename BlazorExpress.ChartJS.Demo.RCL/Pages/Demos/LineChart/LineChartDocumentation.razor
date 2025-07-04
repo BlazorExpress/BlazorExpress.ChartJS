@@ -20,6 +20,21 @@
 <div class="my-3"></div>
 <Demo Type="typeof(LineChart_Demo_01_B_Examples)" Tabs="true" />
 
+<Section Size="HeadingSize.H4" Text="Data labels" PageUrl="@pageUrl" HashTagName="data-labels" />
+<Demo Type="typeof(LineChart_Demo_02_Datalabels)" Tabs="true" />
+
+
+<Section Size="HeadingSize.H4" Text="Tick Configuration" PageUrl="@pageUrl" HashTagName="tick-configuration" />
+<Demo Type="typeof(LineChart_Demo_03_Tick_Configuration)" Tabs="true" />
+
+<Section Size="HeadingSize.H4" Text="Locale" PageUrl="@pageUrl" HashTagName="locale" />
+<div class="my-3">
+    By default, the chart is using the default locale of the platform on which it is running.
+    In the following example, you will see the chart in the <b>German</b> locale (<b>de_DE</b>).
+</div>
+<Demo Type="typeof(LineChart_Demo_04_Locale)" Tabs="true" />
+
+
 @code {
     private const string pageUrl = "/charts/line-chart";
     private const string title = "Blazor Line Chart";

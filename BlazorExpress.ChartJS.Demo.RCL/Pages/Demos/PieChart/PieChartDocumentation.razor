@@ -18,6 +18,15 @@
 </BlazorBootstrap.Callout>
 <Demo Type="typeof(PieChart_Demo_01_Examples)" Tabs="true" />
 
+<Section Size="HeadingSize.H4" Text="Data labels" PageUrl="@pageUrl" HashTagName="data-labels" />
+<Demo Type="typeof(PieChart_Demo_02_Datalabels)" Tabs="true" />
+
+<Section Size="HeadingSize.H4" Text="Change legend position" PageUrl="@pageUrl" HashTagName="change-legend-position" />
+<div class="mb-3">
+    This sample demonstrates how to change the position of the chart legend.
+</div>
+<Demo Type="typeof(PieChart_Demo_03_Change_Legend_Position)" Tabs="true" />
+
 @code {
     private const string pageUrl = "/charts/pie-chart";
     private const string title = "Blazor Pie Chart";

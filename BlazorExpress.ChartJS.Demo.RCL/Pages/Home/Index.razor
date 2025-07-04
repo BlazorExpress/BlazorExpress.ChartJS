@@ -60,9 +60,9 @@
     private string githubUrl = default!;
     private string nugetUrl = default!;
 
-    private HashSet<PageLink> allComponentsLinks = null!;
-    private HashSet<PageLink> formComponentsLinks = null!;
-    private HashSet<PageLink> iconComponentsLinks = null!;
+    // private HashSet<PageLink> allComponentsLinks = null!;
+    // private HashSet<PageLink> formComponentsLinks = null!;
+    // private HashSet<PageLink> iconComponentsLinks = null!;
 
     [Inject] public IConfiguration Configuration { get; set; } = default!;
 
@@ -73,8 +73,8 @@
         githubUrl = $"{Configuration["urls:github"]}";
         nugetUrl = $"{Configuration["urls:nuget"]}";
 
-        allComponentsLinks = PageLinkUtil.GetDemosLinks().Where(link => link.IsActive && link.Text != "Introduction").ToHashSet();
-        formComponentsLinks = PageLinkUtil.GetDemosLinks().Where(link => link.IsActive && link.Categories.Contains(PageLinkCategory.Form)).ToHashSet();
-        iconComponentsLinks = PageLinkUtil.GetDemosLinks().Where(link => link.IsActive && link.Categories.Contains(PageLinkCategory.Icons)).ToHashSet();
+        // allComponentsLinks = PageLinkUtil.GetDemosLinks().Where(link => link.IsActive && link.Text != "Introduction").ToHashSet();
+        // formComponentsLinks = PageLinkUtil.GetDemosLinks().Where(link => link.IsActive && link.Categories.Contains(PageLinkCategory.Form)).ToHashSet();
+        // iconComponentsLinks = PageLinkUtil.GetDemosLinks().Where(link => link.IsActive && link.Categories.Contains(PageLinkCategory.Icons)).ToHashSet();
     }
 }
