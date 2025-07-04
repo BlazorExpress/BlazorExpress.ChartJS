@@ -1,0 +1,28 @@
+﻿@attribute [Route(pageUrl)]
+
+<PageHeroSection PageUrl="@pageUrl"
+                 Title="@title"
+                 Heading="@heading"
+                 Description="@description"
+                 ImageUrl="@imageUrl" />
+
+<Prerequisites PageUrl="@pageUrl" />
+
+<Section Size="HeadingSize.H4" Text="How it works" PageUrl="@pageUrl" HashTagName="how-it-works" />
+<div class="mb-3">
+    In the following example, a categorical 12-color palette is used.
+</div>
+<BlazorBootstrap.Callout Heading="TIP" Color="CalloutColor.Success">
+    For data visualization, you can use the predefined palettes <code>ColorUtility.CategoricalTwelveColors</code> for a 12-color palette and <code>ColorUtility.CategoricalSixColors</code> for a 6-color palette.
+    These palettes offer a range of distinct and visually appealing colors that can be applied to represent different categories or data elements in your visualizations.
+</BlazorBootstrap.Callout>
+
+<Demo Type="typeof(ScatterChart_Demo_01_Examples)" Tabs="true" />
+
+@code {
+    private const string pageUrl = "/charts/scatter-chart";
+    private const string title = "Blazor Scatter Chart";
+    private const string heading = "Blazor Scatter Chart";
+    private const string description = "A Blazor Bootstrap scatter chart components are based on basic line charts with the x-axis changed to a linear axis. To use a scatter chart, data must be passed as objects containing X and Y properties.";
+    private const string imageUrl = "https://i.imgur.com/MSFDsSo.png";
+}
