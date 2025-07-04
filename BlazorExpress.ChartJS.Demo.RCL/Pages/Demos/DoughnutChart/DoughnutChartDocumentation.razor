@@ -1,31 +1,56 @@
 @attribute [Route(pageUrl)]
 @layout DemosMainLayout
 
-<PageHeroSection PageUrl="@pageUrl"
-                 Title="@title"
-                 Heading="@heading"
-                 Description="@description"
-                 ImageUrl="@imageUrl" />
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<PageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</PageHero>
+
+<DocsLink Href="@RouteConstants.Docs_DoughnutChart" />
 
 <Prerequisites PageUrl="@pageUrl" />
 
-<Section Size="HeadingSize.H4" Text="How it works" PageUrl="@pageUrl" HashTagName="how-it-works" />
-<div class="mb-3">
-    In the following example, a categorical 12-color palette is used.
-</div>
-<BlazorBootstrap.Callout Heading="TIP" Color="CalloutColor.Success">
-    For data visualization, you can use the predefined palettes <code>ColorUtility.CategoricalTwelveColors</code> for a 12-color palette and <code>ColorUtility.CategoricalSixColors</code> for a 6-color palette.
-    These palettes offer a range of distinct and visually appealing colors that can be applied to represent different categories or data elements in your visualizations.
-</BlazorBootstrap.Callout>
-<Demo Type="typeof(DoughnutChart_Demo_01_Examples)" Tabs="true" />
+<Section Class="p-0" Size="HeadingSize.H4" Name="How it works" PageUrl="@pageUrl" Link="how-it-works">
+    <Block>
+        The <strong>Doughnut Chart</strong> component provides a simple way to visualize categorical data as proportional segments of a circle. 
+        <br /><br />
+        <strong>How to use:</strong>
+        <ul>
+            <li>Add the <code>DoughnutChart</code> component to your page.</li>
+            <li>Define your data and labels using the chart's data model.</li>
+            <li>Customize appearance and behavior using the <code>Options</code> property (e.g., colors, legend, tooltips).</li>
+            <li>Bind your data and options to the component.</li>
+            <li>Refer to the demo code below for a working example and further customization options.</li>
+        </ul>
+        This demo shows how to configure a basic doughnut chart, assign data, and adjust chart options for your scenario.
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_01_Examples)" Tabs="true" />
+</Section>
 
-<Section Size="HeadingSize.H4" Text="Data labels" PageUrl="@pageUrl" HashTagName="data-labels" />
-<Demo Type="typeof(DoughnutChart_Demo_02_Datalabels)" Tabs="true" />
+<Section Class="p-0" Size="HeadingSize.H4" Name="Data labels" PageUrl="@pageUrl" Link="data-labels">
+    <Block>
+        The <strong>Doughnut Chart</strong> component supports data labels, allowing you to display values or category names directly on each segment of the chart.
+        <br /><br />
+        <strong>How to use:</strong>
+        <ul>
+            <li>Enable data labels by configuring the chart's plugin options, such as <code>Options.Plugins.Datalabels.Display = true</code>.</li>
+            <li>You can customize the label content, formatting, and position using the available plugin settings.</li>
+            <li>Assign your data and labels as usual to the chart's data model.</li>
+            <li>Refer to the demo code below for a working example and further configuration options.</li>
+        </ul>
+        Data labels make it easier for users to interpret the chart by showing relevant information directly on each doughnut segment.
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_02_Datalabels)" Tabs="true" />
+</Section>
 
 @code {
-    private const string pageUrl = "/charts/doughnut-chart";
-    private const string title = "Blazor Doughnut Chart";
-    private const string heading = "Blazor Doughnut Chart";
-    private const string description = "A Blazor donut chart component is a circular chart that shows the proportional values of different categories. It is similar to a pie chart, but the center of the donut chart is hollow. This makes it easier to see the individual values of each category.";
-    private const string imageUrl = "https://i.imgur.com/xEPhAsW.png";
+    private const string pageUrl = RouteConstants.Demos_DoughnutChart;
+    private const string pageTitle = "Doughnut Chart";
+    private const string pageDescription = "Explore interactive Blazor Doughnut Chart demos with real-world examples. Learn how to visualize data, customize chart options, and implement data labels using the Blazor Doughnut Chart component.";
+    private const string metaTitle = "Blazor Doughnut Chart Demo & Examples";
+    private const string metaDescription = "Explore interactive Blazor Doughnut Chart demos with real-world examples. Learn how to visualize data, customize chart options, and implement data labels using the Blazor Doughnut Chart component.";
+    private const string imageUrl = "https://i.imgur.com/xEPhAsW.png"; // TODO: Update with the actual image URL for the Doughnut Chart demo
 }
