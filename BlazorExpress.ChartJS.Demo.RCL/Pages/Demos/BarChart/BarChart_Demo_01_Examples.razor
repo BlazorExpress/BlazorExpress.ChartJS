@@ -1,11 +1,11 @@
 <BarChart @ref="barChart" Width="600" />
 
 <div class="mt-5">
-    <button class="btn btn-primary btn-sm mb-1" @onclick="async () => await RandomizeAsync()"> Randomize </button>
-    <button class="btn btn-primary btn-sm mb-1" @onclick="async () => await AddDatasetAsync()"> Add Dataset </button>
-    <button class="btn btn-primary btn-sm mb-1" @onclick="async () => await AddDataAsync()">Add Data</button>
-    <button class="btn btn-primary btn-sm mb-1" @onclick="async () => await ShowHorizontalBarChartAsync()">Horizontal Bar Chart</button>
-    <button class="btn btn-primary btn-sm" @onclick="async () => await ShowVerticalBarChartAsync()">Vertical Bar Chart</button>
+    <Button Color="ButtonColor.Primary" @onclick="async () => await RandomizeAsync()"> Randomize </Button>
+    <Button Color="ButtonColor.Link" @onclick="async () => await AddDatasetAsync()"> Add Dataset </Button>
+    <Button Color="ButtonColor.Info" @onclick="async () => await AddDataAsync()">Add Data</Button>
+    <Button Color="ButtonColor.Success" @onclick="async () => await ShowHorizontalBarChartAsync()">Horizontal Bar Chart</Button>
+    <Button Color="ButtonColor.Warning" @onclick="async () => await ShowVerticalBarChartAsync()">Vertical Bar Chart</Button>
 </div>
 
 @code {

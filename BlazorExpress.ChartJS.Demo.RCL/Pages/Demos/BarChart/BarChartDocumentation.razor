@@ -27,19 +27,27 @@
     <Demo Type="typeof(BarChart_Demo_01_Examples)" Tabs="true" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Horizontal bar chart" PageUrl="@pageUrl" Link="horizontal-bar-chart">
 <Demo Type="typeof(BarChart_Demo_02_Horizontal_BarChart)" />
+</Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Stacked bar chart" PageUrl="@pageUrl" Link="stacked-bar-chart">
 <Demo Type="typeof(BarChart_Demo_03_Stacked_BarChart)" />
+</Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Stacked bar chart with data labels" PageUrl="@pageUrl" Link="stacked-bar-chart-with-data-labels">
 <Demo Type="typeof(BarChart_Demo_04_Stacked_BarChart_with_Datalabels)" />
+</Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Locale" PageUrl="@pageUrl" Link="locale">
 <Demo Type="typeof(BarChart_Demo_05_Locale)" />
+</Section>
 
 @code {
     private const string pageUrl = RouteConstants.Demos_BarChart;
     private const string pageTitle = "Bar Chart";
-    private const string pageDescription = "The <code>Bar Chart</code> component is a simple spacer tool. It allows sibling HTML elements to have a consistent margin between them.";
+    private const string pageDescription = "The <code>Bar Chart</code> component displays data values as vertical bars, making it easy to compare multiple data sets or visualize trends over time.";
     private const string metaTitle = "Blazor Bar Chart";
-    private const string metaDescription = "A Blazor bar chart component is used to represent data values as vertical bars. It is sometimes used to show trend data and to compare multiple data sets side by side.";
+    private const string metaDescription = "The Bar Chart component displays data values as vertical bars, making it easy to compare multiple data sets or visualize trends over time.";
     private const string imageUrl = "https://i.imgur.com/IX3bajc.png"; // TODO: update
 }
