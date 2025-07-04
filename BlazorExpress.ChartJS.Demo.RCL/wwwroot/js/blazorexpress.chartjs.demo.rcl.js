@@ -17,6 +17,7 @@ async function copyToClipboard(text, dotNetHelper) {
 
 function highlightCode() {
     if (Prism) {
+        Prism.plugins.customClass.prefix('prism-');
         Prism.highlightAll();
     }
 };

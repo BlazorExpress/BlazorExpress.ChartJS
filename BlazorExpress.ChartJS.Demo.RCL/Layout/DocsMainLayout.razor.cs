@@ -46,7 +46,7 @@ public partial class DocsMainLayout : MainLayoutBase
         groups.Add(new LinkGroup
         {
             Name = "Charts",
-            CssClass = "is-size-7 has-text-weight-bold has-text-warning",
+            CssClass = "is-size-7 has-text-weight-bold has-text-danger",
             Links = [
                 new Link { Href = RouteConstants.Docs_BarChart, Text = "Bar chart" },
                 new Link { Href = RouteConstants.Docs_DoughnutChart, Text = "Doughnut chart" },

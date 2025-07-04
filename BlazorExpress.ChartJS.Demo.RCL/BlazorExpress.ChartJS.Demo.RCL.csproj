@@ -23,8 +23,9 @@
   <Target Name="EmbedDemos" BeforeTargets="PrepareForBuild">
     <!-- Embed demo source code into the assembly to display the source code at runtime. -->
     <ItemGroup>
-      <EmbeddedResource Include="Components\**\*Demo*.razor" />
-      <EmbeddedResource Include="Components\**\*Snippet*" />
+      <EmbeddedResource Include="Pages\**\*Demo*.razor" />
+      <EmbeddedResource Include="Pages\**\*Doc*.razor" />
+      <EmbeddedResource Include="Pages\**\*Snippet*" />
     </ItemGroup>
   </Target>
 
