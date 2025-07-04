@@ -38,76 +38,33 @@ public partial class DocsMainLayout : MainLayoutBase
             Name = "FEATURES",
             CssClass = "is-size-7 has-text-weight-bold has-text-warning",
             Links = [
-                new Link { Href = RouteConstants.Docs_Skeletons_Documentation, Text = "Skeletons" }
+                new Link { Href = RouteConstants.Docs_GettingStarted, Text = "Getting started" }
             ]
         });
 
-        // ICONS
+        // CHARTS
         groups.Add(new LinkGroup
         {
-            Name = "ICONS",
-            CssClass = "is-size-7 has-text-weight-bold has-text-info",
+            Name = "Charts",
+            CssClass = "is-size-7 has-text-weight-bold has-text-warning",
             Links = [
-                new Link { Href = RouteConstants.Docs_BootstrapIcons_Documentation, Text = "Bootstrap Icons" },
-                new Link { Href = RouteConstants.Docs_GoogleFontIcons_Documentation, Text = "Google Font Icons" }
+                new Link { Href = RouteConstants.Docs_BarChart, Text = "Bar chart" },
+                new Link { Href = RouteConstants.Docs_DoughnutChart, Text = "Doughnut chart" },
+                new Link { Href = RouteConstants.Docs_LineChart, Text = "Line chart" },
+                new Link { Href = RouteConstants.Docs_PieChart, Text = "Pie chart" },
+                new Link { Href = RouteConstants.Docs_PolarAreaChart, Text = "PolarArea chart" },
+                new Link { Href = RouteConstants.Docs_RadarChart, Text = "Radar chart" },
+                new Link { Href = RouteConstants.Docs_ScatterChart, Text = "Scatter chart" }
             ]
         });
 
-        // ELEMENTS
+        // UTILS
         groups.Add(new LinkGroup
         {
-            Name = "ELEMENTS",
-            CssClass = "is-size-7 has-text-weight-bold has-text-primary",
+            Name = "UTILS",
+            CssClass = "is-size-7 has-text-weight-bold has-text-danger",
             Links = [
-                new Link { Href = RouteConstants.Docs_Block_Documentation, Text = "Block" },
-                new Link { Href = RouteConstants.Docs_Box_Documentation, Text = "Box" },
-                new Link { Href = RouteConstants.Docs_Button_Documentation, Text = "Button" },
-                new Link { Href = RouteConstants.Docs_DeleteButton_Documentation, Text = "Delete Button" },
-                new Link { Href = RouteConstants.Docs_Image_Documentation, Text = "Image" },
-                new Link { Href = RouteConstants.Docs_Notification_Documentation, Text = "Notification" },
-                new Link { Href = RouteConstants.Docs_ProgressBar_Documentation, Text = "Progress Bar" },
-                new Link { Href = RouteConstants.Docs_Tags_Documentation, Text = "Tags" },
-            ]
-        });
-
-        // FORM
-        groups.Add(new LinkGroup
-        {
-            Name = "FORM",
-            CssClass = "is-size-7 has-text-weight-bold has-text-primary",
-            Links = [
-                new Link { Href = RouteConstants.Docs_Form_DateInput_Documentation , Text = "Date Input" },
-                new Link { Href = RouteConstants.Docs_Form_EnumInput_Documentation , Text = "Enum Input" },
-                new Link { Href = RouteConstants.Docs_Form_OTPInput_Documentation , Text = "OTP Input" },
-                new Link { Href = RouteConstants.Docs_Form_TextInput_Documentation , Text = "Text Input" },
-            ]
-        });
-
-        // COMPONENTS
-        groups.Add(new LinkGroup
-        {
-            Name = "COMPONENTS",
-            CssClass = "is-size-7 has-text-weight-bold has-text-dark",
-            Links = [
-                new Link { Href = RouteConstants.Docs_Breadcrumb_Documentation, Text = "Breadcrumb" },
-                new Link { Href = RouteConstants.Docs_ConfirmDialog_Documentation, Text = "Confirm Dialog" },
-                new Link { Href = RouteConstants.Docs_GoogleMaps_Documentation, Text = "Google Maps" },
-                new Link { Href = RouteConstants.Docs_Grid_Documentation, Text = "Grid" },
-                new Link { Href = RouteConstants.Docs_Message_Documentation, Text = "Message" },
-                new Link { Href = RouteConstants.Docs_Modal_Documentation, Text = "Modal" },
-                new Link { Href = RouteConstants.Docs_Pagination_Documentation, Text = "Pagination" },
-                new Link { Href = RouteConstants.Docs_ScriptLoader_Documentation, Text = "Script Loader" },
-                new Link { Href = RouteConstants.Docs_Tabs_Documentation, Text = "Tabs" }
-            ]
-        });        
-
-        // LAYOUT
-        groups.Add(new LinkGroup
-        {
-            Name = "LAYOUT",
-            CssClass = "is-size-7 has-text-weight-bold has-text-success",
-            Links = [
-                new Link { Href = RouteConstants.Docs_Hero_Documentation, Text = "Hero" }
+                new Link { Href = RouteConstants.Demos_ColorUtils, Text = "Color Utils" },
             ]
         });
 
