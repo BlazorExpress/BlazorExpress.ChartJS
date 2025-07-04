@@ -1,14 +1,14 @@
 ﻿namespace BlazorExpress.ChartJS.Demo.RCL;
 
-public partial class PageMetaTags : BlazorBootstrapComponentBase
+public partial class PageMetaTags : BulmaComponentBase
 {
     private string homeUrl = default!;
 
     #region Members
 
-    private string siteName => "Blazor Express - ChartJS";
+    private string siteName => "BlazorExpress Bulma";
 
-    private string title => $"{Title} | {siteName}";
+    private string title => $"{Title} | BlazorExpress Bulma: An enterprise-grade open-source component library from the Blazor Express team.";
 
     private string url => $"{homeUrl}{PageUrl}";
 

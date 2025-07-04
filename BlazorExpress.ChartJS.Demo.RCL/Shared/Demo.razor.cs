@@ -1,16 +1,16 @@
 ﻿namespace BlazorExpress.ChartJS.Demo.RCL;
 
-public partial class Demo : BlazorBootstrapComponentBase
+public partial class Demo : BulmaComponentBase
 {
     #region Fields and Constants
 
-    private IconColor clipboardTooltipIconColor = IconColor.Dark;
-
-    private IconName clipboardTooltipIconName = IconName.Clipboard;
-
     private string? clipboardTooltipTitle = "Copy to clipboard";
 
-    private string? snippet;
+    private string? clipboardTooltipIconName = "bi bi-clipboard";
+
+    private string? codeSnippet;
+
+    private float codeSnippetWidth;
 
     /// <summary>
     /// A reference to this component instance for use in JavaScript calls.
@@ -23,8 +23,10 @@ public partial class Demo : BlazorBootstrapComponentBase
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-            await JS.InvokeVoidAsync("highlightCode");
+        if (firstRender && !IsFirstRenderComplete)
+        {
+            await JSRuntime.InvokeVoidAsync("highlightCode");
+        }
 
         await base.OnAfterRenderAsync(firstRender);
     }
@@ -37,11 +39,11 @@ public partial class Demo : BlazorBootstrapComponentBase
 
     protected override async Task OnParametersSetAsync()
     {
-        if (snippet is null)
+        if (codeSnippet is null)
         {
-            var resourceFullName = Type.FullName + ".razor";
+            var resourceName = Type.FullName + ".razor";
 
-            using (var stream = Type.Assembly.GetManifestResourceStream(resourceFullName)!)
+            using (var stream = Type.Assembly.GetManifestResourceStream(resourceName)!)
             {
                 try
                 {
@@ -50,7 +52,7 @@ public partial class Demo : BlazorBootstrapComponentBase
 
                     using (var reader = new StreamReader(stream))
                     {
-                        snippet = await reader.ReadToEndAsync();
+                        codeSnippet = await reader.ReadToEndAsync();
                     }
                 }
                 catch (Exception ex)
@@ -78,9 +80,7 @@ public partial class Demo : BlazorBootstrapComponentBase
     public void OnCopySuccessJS()
     {
         clipboardTooltipTitle = "Copied!";
-        clipboardTooltipIconName = IconName.Check2;
-        clipboardTooltipIconColor = IconColor.Success;
-
+        clipboardTooltipIconName = "bi bi-check2 has-text-primary";
         StateHasChanged();
     }
 
@@ -91,19 +91,19 @@ public partial class Demo : BlazorBootstrapComponentBase
     public void ResetCopyStatusJS()
     {
         clipboardTooltipTitle = "Copy to clipboard";
-        clipboardTooltipIconName = IconName.Clipboard;
-        clipboardTooltipIconColor = IconColor.Dark;
-
+        clipboardTooltipIconName = "bi bi-clipboard";
         StateHasChanged();
     }
 
-    private async Task CopyToClipboardAsync() => await JS.InvokeVoidAsync("copyToClipboard", snippet, objRef);
+    private async Task CopyToClipboardAsync()
+        => await JSRuntime.InvokeVoidAsync("copyToClipboard", codeSnippet, objRef);
 
     #endregion
 
     #region Properties, Indexers
 
-    [Inject] protected IJSRuntime JS { get; set; } = default!;
+    protected override string? ClassNames
+        => BuildClassNames(Class, ("be-bulma-doc-example", true));
 
     [Parameter] public LanguageCode LanguageCode { get; set; } = LanguageCode.Razor;
 

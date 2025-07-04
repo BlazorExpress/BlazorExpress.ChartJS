@@ -1,10 +1,10 @@
 ﻿namespace BlazroExpress.ChartJS.Demo.RCL;
 
-public partial class Section : BlazorBootstrapComponentBase
+public partial class Section : BulmaComponentBase
 {
     #region Members
 
-    private string? headerClassNames => $"{Size.ToHeadingCssClass()} mt-4 mb-3";
+    private string? headerClassNames => $"{Size.ToTitleSizeClass()} mt-4 mb-3";
 
     private string link => $"{PageUrl}#{Link}".Trim().ToLower();
 
@@ -14,8 +14,11 @@ public partial class Section : BlazorBootstrapComponentBase
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await Task.Delay(200);
-        await JSRuntime.InvokeVoidAsync("navigateToHeading");
+        if (firstRender && IsFirstRenderComplete)
+        {
+            await Task.Delay(200);
+            await JSRuntime.InvokeVoidAsync("navigateToHeading");
+        }
 
         await base.OnAfterRenderAsync(firstRender);
     }
@@ -29,12 +32,11 @@ public partial class Section : BlazorBootstrapComponentBase
 
     #region Properties, Indexers
 
-    //protected override string? ClassNames
-    //    => BuildClassNames(
-    //        Class,
-    //        (BootstrapClass.Section, true),
-    //        (BulmaCssClass.IsMobile, IsMobile));
-    // TODO: Uncomment when needed
+    protected override string? ClassNames
+        => BuildClassNames(
+            Class,
+            (BulmaCssClass.Section, true),
+            (BulmaCssClass.IsMobile, IsMobile));
 
     /// <summary>
     /// Gets or sets the child content.
@@ -48,11 +50,11 @@ public partial class Section : BlazorBootstrapComponentBase
     [Parameter]
     public bool IsMobile { get; set; } = true;
 
-    [Parameter] public string Link { get; set; } = default!;
+    [Parameter] public string? Link { get; set; }
 
-    [Parameter] public string Name { get; set; } = default!;
+    [Parameter] public string? Name { get; set; }
 
-    [Parameter] public string PageUrl { get; set; } = default!;
+    [Parameter] public string? PageUrl { get; set; }
 
     [Parameter] public HeadingSize Size { get; set; }
 

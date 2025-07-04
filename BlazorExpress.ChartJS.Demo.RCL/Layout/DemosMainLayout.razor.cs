@@ -1,9 +1,9 @@
 ﻿namespace BlazorExpress.ChartJS.Demo.RCL;
 
-public partial class MainLayout : MainLayoutBase
+public partial class DemosMainLayout : MainLayoutBase
 {
     #region Fields and Constants
-
+    
     private bool isSidebarVisible = false;
     private HashSet<LinkGroup> linkGroups = new();
     private Menu menuRef = default!;
@@ -87,6 +87,7 @@ public partial class MainLayout : MainLayoutBase
             CssClass = "is-size-7 has-text-weight-bold has-text-primary",
             Links = [
                 new Link { Href = RouteConstants.Demos_Form_DateInput_Documentation , Text = "Date Input" },
+                new Link { Href = RouteConstants.Demos_Form_EnumInput_Documentation , Text = "Enum Input" },
                 new Link { Href = RouteConstants.Demos_Form_OTPInput_Documentation , Text = "OTP Input" },
                 new Link { Href = RouteConstants.Demos_Form_TextInput_Documentation , Text = "Text Input" },
             ]
@@ -98,6 +99,7 @@ public partial class MainLayout : MainLayoutBase
             Name = "COMPONENTS",
             CssClass = "is-size-7 has-text-weight-bold has-text-dark",
             Links = [
+                new Link { Href = RouteConstants.Demos_Breadcrumb_Documentation, Text = "Breadcrumb" },
                 new Link { Href = RouteConstants.Demos_ConfirmDialog_Documentation, Text = "Confirm Dialog" },
                 new Link { Href = RouteConstants.Demos_GoogleMaps_Documentation, Text = "Google Maps" },
                 new Link { Href = RouteConstants.Demos_Grid_Documentation, Text = "Grid" },
@@ -107,7 +109,7 @@ public partial class MainLayout : MainLayoutBase
                 new Link { Href = RouteConstants.Demos_ScriptLoader_Documentation, Text = "Script Loader" },
                 new Link { Href = RouteConstants.Demos_Tabs_Documentation, Text = "Tabs" }
             ]
-        });
+        });        
 
         // LAYOUT
         groups.Add(new LinkGroup
@@ -122,6 +124,18 @@ public partial class MainLayout : MainLayoutBase
         return groups;
     }
 
+    private Task SetAutoTheme() => SetTheme("system");
+
+    private Task SetDarkTheme() => SetTheme("dark");
+
+    private Task SetLightTheme() => SetTheme("light");
+
+    private async Task SetTheme(string themeName) => await JS.InvokeVoidAsync("setTheme", themeName);
+
+    private void ToggleSidebarSection()
+    {
+        @menuRef.Toggle();
+    }
 
     #endregion
 }

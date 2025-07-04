@@ -1,42 +1,38 @@
-@using BlazorBootstrap
 @namespace BlazorExpress.ChartJS.Demo.RCL
 @inherits MainLayoutBase
 
-<div class="bb-page">
-
-    <Sidebar Href="/"
-             ImageSrc="logo-180.png"
-             Title="BlazorExpress.ChartJS"
-             BadgeText="@Version"
-             DataProvider="SidebarDataProvider"
-             Style="--bb-sidebar-width: 300px !important;"/>
-
-    <main class="bb-scrollbar">
-        <div class="content my-4 my-md-4 px-4">
-            @Body
-
-            <Callout Class="text-center text-bold skippy border-0" HideHeading="true">
-                <a href="@GithubUrl" class="text-decoration-none">
+<BulmaLayout>
+    <HeaderSection>
+        <BulmaNavbar BrandImgSrc="_content/BlazorExpress.Bulma.Demo.RCL/icons/logo.png"
+                     BrandImgAltText="Blazor Express Logo"
+                     ApplicationName="BlazorExpress.Bulma" />
+    </HeaderSection>
+    <ContentSection>
+        @Body
+        <div class="container is-max-desktop mb-4">
+            <Notification Class="has-text-centered" Color="NotificationColor.Link" HideDeleteButton="true">
+                <a href="//github.com/BlazorExpress/BlazorExpress.Bulma" class="be-bulma-text-decoration-none">
                     <i class="bi bi-star-fill"></i>
-                    <span>If you like BlazorExpress.ChartJS, give it a star on GitHub!</span>
+                    <span>If you like BlazorExpress.Bulma, give it a star on GitHub!</span>
                     <i class="bi bi-star-fill"></i>
                 </a>
-            </Callout>
+            </Notification>
+            <MainLayoutBaseFooter Version="@Version"
+                                  DotNetVersion="@DotNetVersion"
+                                  DocsUrl="@DocsUrl"
+                                  BlogUrl="@BlogUrl"
+                                  GithubUrl="@GithubUrl"
+                                  NugetUrl="@NuGetUrl"
+                                  TwitterUrl="@TwitterUrl"
+                                  LinkedInUrl="@LinkedInUrl"
+                                  OpenCollectiveUrl="@OpenCollectiveUrl"
+                                  GithubIssuesUrl="@GithubIssuesUrl"
+                                  GithubDiscussionsUrl="@GithubDiscussionsUrl"
+                                  StackoverflowUrl="@StackoverflowUrl" />
         </div>
-
-        <MainLayoutBaseFooter Version="@Version"
-                              HomeUrl="@HomeUrl"
-                              DocsUrl="@DocsUrl"
-                              BlogUrl="@BlogUrl"
-                              GithubUrl="@GithubUrl"
-                              TwitterUrl="@TwitterUrl"
-                              LinkedInUrl="@LinkedInUrl"
-                              OpenCollectiveUrl="@OpenCollectiveUrl"
-                              GithubIssuesUrl="@GithubIssuesUrl"
-                              GithubDiscussionsUrl="@GithubDiscussionsUrl"
-                              StackoverflowUrl="@StackoverflowUrl" />
-
-    </main>
-</div>
-
-<MainLayoutBaseServices />
+    </ContentSection>
+    <FooterSection>
+        <div class="container is-max-desktop mb-4">
+        </div>
+    </FooterSection>
+</BulmaLayout>

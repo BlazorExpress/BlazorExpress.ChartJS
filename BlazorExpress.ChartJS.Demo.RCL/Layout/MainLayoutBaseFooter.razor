@@ -1,46 +1,57 @@
 @namespace BlazorExpress.ChartJS.Demo.RCL
 @inherits ComponentBase
 
-<div class="bd-footer pt-4 pt-md-5 mt-5 pb-2 pb-md-3 bg-light">
-    <div class="container px-4 px-md-3">
-        <div class="row">
-            <div class="col-lg-4 mb-3">
-                <a class="d-inline-flex align-items-center mb-2 link-dark text-decoration-none" href="@HomeUrl" aria-label="Bootstrap">
-                    <img src="logo-180.png" width="32" height="32" class="d-block me-2" alt="Blazor Bootstrap">
-                    <span class="fs-5">BlazorExpress.ChartJS</span>
-                </a>
-                <ul class="list-unstyled small text-muted">
-                    <li class="mb-2">Designed and built with all the love in the world by the <strong><a href="@GithubUrl">BlazorExpress.ChartJS</a></strong> team with the help of our contributors.</li>
-                    <li class="mb-2">Code licensed <a href="https://github.com/BlazorExpress/BlazorExpress.ChartJS/blob/main/LICENSE" target="_blank" rel="license noopener">Apache License 2.0</a>.</li>
-                    <li class="mb-2">Currently @Version.</li>
-                </ul>
+<footer class="footer pb-6">
+    <div class="columns">
+        <div class="column">
+            <div class="is-flex is-flex-direction-row is-align-items-center mb-2">
+                <div class="mr-2">
+                    <Image Src="@StringConstants.StaticAssets_Icons_Logo_png"
+                           Dimension="ImageDimension.Is32x32"
+                           alt="BlazorExpress Logo" />
+                </div>
+                <div class="is-size-4">BlazorExpress.Bulma</div>
             </div>
-            <div class="col-6 col-lg-2 offset-lg-1 mb-3">
-                <h5>Links</h5>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><a href="/">Home</a></li>
-                    @* <li class="mb-2"><a href="@DocsUrl" target="_blank" rel="noopener">Docs</a></li>
-                    <li class="mb-2"><a href="@BlogUrl" target="_blank" rel="noopener">Blog</a></li> *@
-                    <li class="mb-2"><a href="@GithubUrl" target="_blank" rel="noopener">GitHub</a></li>
-                </ul>
+            <div class="is-size-6 mb-2">
+                Designed and built with <i class="bi bi-heart-fill has-text-danger"></i> by the <b>BlazorExpress</b> team and our contributors.
             </div>
-            <div class="col-6 col-lg-2 mb-3">
-                <h5>Guides</h5>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><a href="/charts/getting-started/blazor-webassembly-net-8">Getting started</a></li>
-                    <li class="mb-2"><a href="/charts/getting-started/blazor-webassembly-net-8#install-nuget-package">Install Nuget</a></li>
-                    @* <li class="mb-2"><a href="#" target="_blank">Starter templates</a></li> *@
-                </ul>
+            <div class="is-size-6 mb-2">
+                <b>Apache License 2.0</b>.
             </div>
-            <div class="col-6 col-lg-2 mb-3">
-                <h5>Community</h5>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><a href="@GithubIssuesUrl" target="_blank" rel="noopener">Issues</a></li>
-                    <li class="mb-2"><a href="@GithubDiscussionsUrl" target="_blank" rel="noopener">Discussions</a></li>
-                    @* <li class="mb-2"><a href="@StackoverflowUrl" target="_blank" rel="noopener">Stack Overflow</a></li> *@
-                </ul>
+            <div class="is-size-6 mb-2">
+                Currently <b>@Version</b>.
             </div>
-            <div class="col-6 col-lg-2 mb-3"></div>
+            <div class="is-size-6 mb-2">
+                Powered by <b>@DotNetVersion</b>.
+            </div>
+        </div>
+        <div class="column is-hidden-mobile"></div>
+        <div class="column">
+            <p class="is-size-5">Links</p>
+            <ul class="menu-list">
+                <li><a href="/">Home</a></li>
+                <li><a href="@RouteConstants.Demos_Getting_Started_Introduction">Demos</a></li>
+                <li><a href="@RouteConstants.Docs_Skeletons_Documentation">Docs</a></li>
+                <li><a href="/">Blog</a></li>
+                <li><a href="@GithubUrl" target="_blank">GitHub</a></li>
+            </ul>
+        </div>
+        <div class="column">
+            <p class="is-size-5">Guides</p>
+            <ul class="menu-list">
+                <li><a href="@RouteConstants.Demos_Getting_Started_Introduction">Getting started</a></li>
+                <li><a href="/">Install NuGet package</a></li>
+                <li><a href="/">Starter templates</a></li>
+            </ul>
+        </div>
+        <div class="column">
+            <p class="is-size-5">Community</p>
+            <ul class="menu-list">
+                <li><a href="@GithubIssuesUrl" target="_blank">Issues</a></li>
+                <li><a href="@GithubDiscussionsUrl" target="_blank">Discussions</a></li>
+                <li><a href="@OpenCollectiveUrl" target="_blank">Open Collective</a></li>
+                <li><a href="@StackoverflowUrl" target="_blank">Stack Overflow</a></li>
+            </ul>
         </div>
     </div>
-</div>
+</footer>

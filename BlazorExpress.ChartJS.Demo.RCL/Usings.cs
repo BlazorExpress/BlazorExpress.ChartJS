@@ -1,4 +1,4 @@
-﻿global using BlazorBootstrap;
+﻿global using BlazorExpress.Bulma;
 global using BlazorExpress.ChartJS.Demo.RCL;
 global using Microsoft.AspNetCore.Components;
 global using Microsoft.AspNetCore.Components.Rendering;

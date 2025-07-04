@@ -1,0 +1,77 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+@inherits MainLayoutBase
+
+<BulmaLayout>
+
+    <HeaderSection>
+        <BulmaNavbar BrandImgSrc="_content/BlazorExpress.Bulma.Demo.RCL/icons/logo.png"
+                     BrandImgAltText="Blazor Express Logo"
+                     ApplicationName="BlazorExpress.Bulma" />
+    </HeaderSection>
+
+    <SidebarSection>
+        <Menu @ref="menuRef" Class="be-bulma-page-menu" IsScrollable="true">
+            @foreach (var group in linkGroups)
+            {
+                <MenuLabel Class="@group.CssClass">@group.Name</MenuLabel>
+                if (group.Links?.Any() ?? false)
+                {
+                    <MenuList>
+                        @foreach (var link in group.Links)
+                        {
+                            <MenuItem>
+                                @if (link.Links?.Any() ?? false) // level 2 links
+                                {
+                                    <NavLink ActiveClass="is-active">@link.Text</NavLink>
+                                    <MenuList>
+                                        @foreach (var cLink in link.Links)
+                                        {
+                                            <MenuItem>
+                                                <NavLink href="@cLink.Href" Match="@cLink.Match" ActiveClass="is-active">@cLink.Text</NavLink>
+                                            </MenuItem>
+                                        }
+                                    </MenuList>
+                                }
+                                else
+                                {
+                                    <NavLink href="@link.Href" Match="@link.Match" ActiveClass="is-active">@link.Text</NavLink>
+                                }
+                            </MenuItem>
+                        }
+                    </MenuList>
+                }
+            }
+        </Menu>
+    </SidebarSection>
+
+    <ContentSection>
+        <div class="p-5">
+            <Button Class="bi bi-box-arrow-right menu-toggle-button ml-1 mt-0 mb-1" @onclick="ToggleSidebarSection" />
+            @Body
+            <Notification Class="has-text-centered" Color="NotificationColor.Link" HideDeleteButton="true">
+                <a href="//github.com/BlazorExpress/BlazorExpress.Bulma" class="be-bulma-text-decoration-none">
+                    <i class="bi bi-star-fill"></i>
+                    <span>If you like BlazorExpress.Bulma, give it a star on GitHub!</span>
+                    <i class="bi bi-star-fill"></i>
+                </a>
+            </Notification>
+            <MainLayoutBaseFooter Version="@Version"
+                                  DotNetVersion="@DotNetVersion"
+                                  DocsUrl="@DocsUrl"
+                                  BlogUrl="@BlogUrl"
+                                  GithubUrl="@GithubUrl"
+                                  NugetUrl="@NuGetUrl"
+                                  TwitterUrl="@TwitterUrl"
+                                  LinkedInUrl="@LinkedInUrl"
+                                  OpenCollectiveUrl="@OpenCollectiveUrl"
+                                  GithubIssuesUrl="@GithubIssuesUrl"
+                                  GithubDiscussionsUrl="@GithubDiscussionsUrl"
+                                  StackoverflowUrl="@StackoverflowUrl" />
+        </div>
+    </ContentSection>
+
+    <FooterSection>
+        <div class="container is-max-desktop mb-4">
+        </div>
+    </FooterSection>
+</BulmaLayout>

@@ -1,0 +1,22 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+@inherits BulmaComponentBase
+
+@if (TitleTemplate is not null)
+{
+    <h1 class="title is-1">@TitleTemplate</h1>
+}
+else
+{
+    <h1 class="title is-1">@Title</h1>
+}
+<hr class="be-bulma-doc-hr be-bulma-doc-hr-title" />
+@if (SubTitleTemplate is not null)
+{
+    <h2 class="subtitle be-bulma-doc-subtitle">@SubTitleTemplate</h2>
+}
+else if (string.IsNullOrWhiteSpace(SubTitle))
+{
+    <h2 class="subtitle be-bulma-subtitle">@SubTitle</h2>
+}
+
+@* <CarbonAds /> *@
