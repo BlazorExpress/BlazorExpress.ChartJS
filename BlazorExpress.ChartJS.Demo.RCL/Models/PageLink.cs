@@ -10,4 +10,5 @@ public class PageLink
     public HashSet<PageLinkCategory> Categories { get; set; } = new();
     public PageLinkStatus Status { get; set; }
     public bool IsActive { get; set; }
+    public bool ExcludedFromHomePage { get; set; } = false;
 }

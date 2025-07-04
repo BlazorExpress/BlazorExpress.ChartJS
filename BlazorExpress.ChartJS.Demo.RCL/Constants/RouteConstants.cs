@@ -2,6 +2,8 @@
 
 public static class RouteConstants
 {
+    public const string Home_Prefix = "/";
+
     public const string Blog_Prefix = "/blog";
     public const string Docs_Prefix = "/docs";
     public const string Demos_Prefix = "/demos";

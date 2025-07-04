@@ -1,3 +1,6 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+@inherits BulmaComponentBase
+
 <div class="has-text-centered mb-4">
     <h2 class="is-size-3 has-text-weight-semibold">@Title</h2>
 </div>
@@ -49,7 +52,7 @@
     protected override void OnInitialized()
     {
         componentsLinks = PageLinkUtil.GetDemosLinks()
-        .Where(link => link.Categories.Contains(Category) && link.IsActive && link.Text != "Introduction")
+        .Where(link => link.Categories.Contains(Category) && link.IsActive && !link.ExcludedFromHomePage)
         .ToHashSet();
     }
 }

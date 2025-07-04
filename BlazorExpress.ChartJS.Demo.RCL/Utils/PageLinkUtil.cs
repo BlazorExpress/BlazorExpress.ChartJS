@@ -8,7 +8,7 @@ public static class PageLinkUtil
         var links = new HashSet<PageLink>();
 
         index += 1;
-        links.Add(new PageLink { Id = index, IconName = BootstrapIconName.None, Href = RouteConstants.Docs_GettingStarted, Text = "Getting Started", Categories = new() { PageLinkCategory.All, PageLinkCategory.GettingStarted }, Status = PageLinkStatus.None, IsActive = true });
+        links.Add(new PageLink { Id = index, IconName = BootstrapIconName.None, Href = RouteConstants.Docs_GettingStarted, Text = "Getting Started", Categories = new() { PageLinkCategory.All, PageLinkCategory.GettingStarted }, Status = PageLinkStatus.None, IsActive = true, ExcludedFromHomePage = true });
 
         index += 1;
         links.Add(new PageLink { Id = index, IconName = BootstrapIconName.Box, Href = RouteConstants.Demos_BarChart, Text = "Bar Chart", Categories = new() { PageLinkCategory.All, PageLinkCategory.Charts }, Status = PageLinkStatus.New, IsActive = true });

@@ -4,9 +4,9 @@
 <BulmaLayout>
 
     <HeaderSection>
-        <BulmaNavbar BrandImgSrc="_content/BlazorExpress.Bulma.Demo.RCL/icons/logo.png"
+        <BulmaNavbar BrandImgSrc="@StringConstants.StaticAssets_Icons_Logo_png"
                      BrandImgAltText="Blazor Express Logo"
-                     ApplicationName="BlazorExpress.Bulma" />
+                     ApplicationName="@StringConstants.NugetPackageName" />
     </HeaderSection>
 
     <SidebarSection>
@@ -49,9 +49,9 @@
             <Button Class="bi bi-box-arrow-right menu-toggle-button ml-1 mt-0 mb-1" @onclick="ToggleSidebarSection" />
             @Body
             <Notification Class="has-text-centered mt-3" Color="NotificationColor.Link" HideDeleteButton="true">
-                <a href="//github.com/BlazorExpress/BlazorExpress.Bulma" class="be-bulma-text-decoration-none">
+                <a href="@GithubUrl" class="be-bulma-text-decoration-none" target="_blank">
                     <i class="bi bi-star-fill"></i>
-                    <span>If you like BlazorExpress.Bulma, give it a star on GitHub!</span>
+                    <span>If you like @StringConstants.NugetPackageName, give it a star on GitHub!</span>
                     <i class="bi bi-star-fill"></i>
                 </a>
             </Notification>

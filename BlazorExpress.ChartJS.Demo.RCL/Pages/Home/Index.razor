@@ -24,23 +24,23 @@
             </HeroSubTitle>
         </Hero>
         <div class="mb-4">
-            <a href="https://www.nuget.org/packages/BlazorExpress.Bulma/"><img alt="Nuget" src="https://img.shields.io/nuget/v/Blazor.Bootstrap"></a>
+            <a href="@nugetUrl"><img alt="Nuget" src="https://img.shields.io/nuget/v/Blazor.Bootstrap"></a>
             <span class="px-1"></span>
-            <a href="https://www.nuget.org/packages/BlazorExpress.Bulma/"><img alt="Nuget" src="https://img.shields.io/nuget/dt/Blazor.Bootstrap"></a>
+            <a href="@nugetUrl"><img alt="Nuget" src="https://img.shields.io/nuget/dt/Blazor.Bootstrap"></a>
         </div>
     </div>
 </div>
 
 <div class="container is-max-desktop mb-4">
-    <IndexComponentLinks Title="All Components" Category="@PageLinkCategory.All" />
+    <PageLinks Title="All Components" Category="@PageLinkCategory.All" />
 
-    <IndexComponentLinks Title="Utils" Category="@PageLinkCategory.Utils" />
+    <PageLinks Title="Utils" Category="@PageLinkCategory.Utils" />
 
     <Message Class="mb-4" Color="MessageColor.Success">
         <MessageBody>
             <div class="is-size-5 has-text-weight-semibold mb-2"><BootstrapIcon Name="BootstrapIconName.Lightbulb" /> DO YOU KNOW?</div>
             <div>
-                This demo website is built using the <strong><a href="@nugetUrl" target="_blank">BlazorExpress Bulma</a></strong> library and published on the Azure Web App.
+                This demo website is built using the <strong><a href="@nugetUrl" target="_blank">BlazorExpress.Bulma</a></strong> library and published on the Azure Web App.
                 See our source code on <a href="@githubUrl" target="_blank">GitHub</a>.
             </div>
         </MessageBody>
@@ -49,20 +49,16 @@
 
 @code {
     private const string pageUrl = "/";
-    private const string pageTitle = "BlazorExpress Bulma Components <br /> Fast, Free & Open Source";
-    private const string pageDescription = "Get started with BlazorExpress Bulma. Build high-performance, responsive Blazor apps quickly with our free, open-source UI library. Developers, build in minutes!";
-    private const string metaTitle = "BlazorExpress Bulma Components: Fast, Free & Open Source";
-    private const string metaDescription = "Get started with BlazorExpress Bulma. Build high-performance, responsive Blazor apps quickly with our free, open-source UI library. Developers, build in minutes!";
+    private const string pageTitle = $"{StringConstants.NugetPackageName} Components <br /> Fast, Free & Open Source";
+    private const string pageDescription = $"Get started with {StringConstants.NugetPackageDisplayName}. Build high-performance, responsive Blazor apps quickly with our free, open-source UI library. Developers, build in minutes!";
+    private const string metaTitle = $"{StringConstants.NugetPackageName} Components: Fast, Free & Open Source";
+    private const string metaDescription = $"Get started with {StringConstants.NugetPackageDisplayName}. Build high-performance, responsive Blazor apps quickly with our free, open-source UI library. Developers, build in minutes!";
     private const string imageUrl = "https://i.imgur.com/FGgEMp6.jpg"; // TODO: update
 
     private string version = default!;
     private string releaseShortDescription = default!;
     private string githubUrl = default!;
     private string nugetUrl = default!;
-
-    // private HashSet<PageLink> allComponentsLinks = null!;
-    // private HashSet<PageLink> formComponentsLinks = null!;
-    // private HashSet<PageLink> iconComponentsLinks = null!;
 
     [Inject] public IConfiguration Configuration { get; set; } = default!;
 
@@ -72,9 +68,5 @@
         releaseShortDescription = Configuration["release:short_description"]!;
         githubUrl = $"{Configuration["urls:github"]}";
         nugetUrl = $"{Configuration["urls:nuget"]}";
-
-        // allComponentsLinks = PageLinkUtil.GetDemosLinks().Where(link => link.IsActive && link.Text != "Introduction").ToHashSet();
-        // formComponentsLinks = PageLinkUtil.GetDemosLinks().Where(link => link.IsActive && link.Categories.Contains(PageLinkCategory.Form)).ToHashSet();
-        // iconComponentsLinks = PageLinkUtil.GetDemosLinks().Where(link => link.IsActive && link.Categories.Contains(PageLinkCategory.Icons)).ToHashSet();
     }
 }
