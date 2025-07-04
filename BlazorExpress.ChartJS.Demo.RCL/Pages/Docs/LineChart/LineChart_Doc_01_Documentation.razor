@@ -14,14 +14,18 @@
 <DemoLink Href="@RouteConstants.Demos_LineChart" />
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="Parameters" PageUrl="@pageUrl" Link="parameters">
-    <DocxTable TItem="Block" DocType="DocType.Parameters" />
+    <DocxTable TItem="LineChart" DocType="DocType.Parameters" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Methods" PageUrl="@pageUrl" Link="methods">
+    <DocxTable TItem="LineChart" DocType="DocType.Methods" />
 </Section>
 
 @code {
     private const string pageUrl = RouteConstants.Docs_LineChart;
     private const string pageTitle = "Line Chart";
-    private const string pageDescription = "This documentation provides a comprehensive reference for the <code>Block</code> component, guiding you through its configuration options.";
-    private const string metaTitle = "Blazor Line Chart Component";
-    private const string metaDescription = "This documentation provides a comprehensive reference for the Block component, guiding you through its configuration options.";
-    private const string imageUrl = "https://i.imgur.com/FGgEMp6.jpg"; // TODO: update
+    private const string pageDescription = "Comprehensive API documentation for the Blazor <code>Line Chart</code> component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
+    private const string metaTitle = "Blazor Line Chart API Reference & Configuration Guide";
+    private const string metaDescription = "Comprehensive API documentation for the Blazor Line Chart component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
+    private const string imageUrl = "https://i.imgur.com/FGgEMp6.jpg"; // TODO: update with actual image URL
 }
