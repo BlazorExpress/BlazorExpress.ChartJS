@@ -1,41 +1,48 @@
 @attribute [Route(pageUrl)]
+@layout DocsMainLayout
 
-<PageHeroSection PageUrl="@pageUrl"
-                 Title="@title"
-                 Heading="@heading"
-                 Description="@description"
-                 ImageUrl="@imageUrl" />
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
-<Section Size="HeadingSize.H3" Text="Client Project" PageUrl="@pageUrl" HashTagName="client-project" />
+<PageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</PageHero>
 
-<Section Size="HeadingSize.H4" Text="Install Nuget Package" PageUrl="@pageUrl" HashTagName="install-nuget-package" />
-<div class="mb-3">
-    Looking to quickly add <b>BlazorExpress.ChartJS</b> to your project? Use NuGet package manager.
-</div>
-<div class="p-2 text-bg-dark rounded">
-    Install-Package BlazorExpress.ChartJS -Version @version
-</div>
+<Section Class="p-0" Size="HeadingSize.H3" Name="Client Project" PageUrl="@pageUrl" Link="client-project" />
 
-<Section Size="HeadingSize.H4" Text="Register services" PageUrl="@pageUrl" HashTagName="register-services" />
-<div class="mb-3">
-    Register tag helpers in <b>_Imports.razor</b>.
-</div>
-<Snippet LanguageCode="LanguageCode.Razor" FilePath="~\Components\Pages\GettingStarted\NET8_02_WebApp_Server_Global\Getting_Started_Snippet_02_Register.txt" />
+<Section Class="p-0" Size="HeadingSize.H4" Name="Install Nuget Package" PageUrl="@pageUrl" Link="install-nuget-package">
+    <div class="mb-3">
+        Looking to quickly add <b>BlazorExpress.ChartJS</b> to your project? Use NuGet package manager.
+    </div>
+    <div class="p-2 text-bg-dark rounded">
+        Install-Package BlazorExpress.ChartJS -Version @version
+    </div>
+</Section>
 
-<Section Size="HeadingSize.H3" Text="Server Project" PageUrl="@pageUrl" HashTagName="server-project" />
+<Section Class="p-0" Size="HeadingSize.H4" Name="Register services" PageUrl="@pageUrl" Link="register-services">
+    <div class="mb-3">
+        Register tag helpers in <b>_Imports.razor</b>.
+    </div>
+    <Snippet LanguageCode="LanguageCode.Razor" FilePath="~\Components\Pages\GettingStarted\NET8_02_WebApp_Server_Global\Getting_Started_Snippet_02_Register.txt" />
+</Section>
 
-<Section Size="HeadingSize.H4" Text="Add script references" PageUrl="@pageUrl" HashTagName="add-script-references" />
-<div class="mb-3">
-    Insert the following references into the <b>body</b> section of the <b>Components/App.razor</b> file, immediately after the <b>_framework/blazor.web.js</b> reference:
-</div>
-<Snippet LanguageCode="LanguageCode.JavaScript" FilePath="~\Components\Pages\GettingStarted\NET8_02_WebApp_Server_Global\Getting_Started_Snippet_01_Scripts.html" />
+<Section Class="p-0" Size="HeadingSize.H3" Name="Server Project" PageUrl="@pageUrl" Link="server-project" />
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Add script references" PageUrl="@pageUrl" Link="add-script-references">
+    <div class="mb-3">
+        Insert the following references into the <b>body</b> section of the <b>Components/App.razor</b> file, immediately after the <b>_framework/blazor.web.js</b> reference:
+    </div>
+    <Snippet LanguageCode="LanguageCode.JavaScript" FilePath="~\Components\Pages\GettingStarted\NET8_02_WebApp_Server_Global\Getting_Started_Snippet_01_Scripts.html" />
+</Section>
 
 @code {
     private const string pageUrl = RouteConstants.Docs_GettingStarted_Blazor_WebApp_NET_8_Interactive_Render_Mode_Auto_Global_Location;
-    private const string title = "Getting started - Blazor WebApp (.NET 8) - Interactive render mode Auto - Global location";
-    private const string heading = "Getting started - Blazor WebApp (.NET 8) - Interactive render mode Auto - Global location";
-    private const string description = "Get started with the Enterprise-class Component library built on the Blazor and Chart.js JavaScript library.";
-    private const string imageUrl = "https://i.imgur.com/C5ObC3A.png";
+    private const string pageTitle = "Getting started - Blazor WebApp (.NET 8) - Interactive render mode Auto - Global location";
+    private const string pageDescription = "Getting started - Blazor WebApp (.NET 8) - Interactive render mode Auto - Global location";
+    private const string metaTitle = "Getting started - Blazor WebAssembly (.NET 8)";
+    private const string metaDescription = "Get started with the Enterprise-class Component library built on the Blazor and Chart.js JavaScript library.";
+    private const string imageUrl = "https://i.imgur.com/C5ObC3A.png"; // TODO: update with actual image URL
     private string version = default!;
 
     [Inject]
