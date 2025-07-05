@@ -1,0 +1,60 @@
+@attribute [Route(pageUrl)]
+@attribute [Route(pageUrl2)]
+@layout DemosMainLayout
+
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<PageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</PageHero>
+
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>.NET Version</th>
+                <th>Project Type</th>
+                <th>Documentation Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>.NET 8</td>
+                <td>Blazor WebAssembly (.NET 8)</td>
+                <td><DocsLink Text="Project Setup Guide" Href="@RouteConstants.Docs_GettingStarted_Blazor_WebAssembly_NET8" /></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>.NET 8</td>
+                <td>Blazor WebApp (.NET 8) - Interactive render mode Server - Global location</td>
+                <td><DocsLink Text="Project Setup Guide" Href="@RouteConstants.Docs_GettingStarted_Blazor_WebApp_NET_8_Interactive_Render_Mode_Server_Global_Location" /></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>.NET 8</td>
+                <td>Blazor WebApp (.NET 8) - Interactive render mode Auto - Global location</td>
+                <td><DocsLink Text="Project Setup Guide" Href="@RouteConstants.Docs_GettingStarted_Blazor_WebApp_NET_8_Interactive_Render_Mode_Auto_Global_Location" /></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>.NET 8</td>
+                <td>MAUI Blazor Hybrid App (.NET 8)</td>
+                <td><DocsLink Text="Project Setup Guide" Href="#" /></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private const string pageUrl = RouteConstants.Demos_GettingStarted_Introduction;
+    private const string pageUrl2 = RouteConstants.Demos_Prefix;
+    private const string pageTitle = "Getting started with BlazorExpress.ChartJS";
+    private const string pageDescription = "Explore practical Blazor ChartJS demos with step-by-step examples. Learn how to create interactive charts in your Blazor projects.";
+    private const string metaTitle = "Blazor ChartJS Demo – Getting Started with Interactive Chart Examples";
+    private const string metaDescription = "Explore practical Blazor ChartJS demos with step-by-step examples. Learn how to create interactive charts in your Blazor projects.";
+    private const string imageUrl = "https://i.imgur.com/IX3bajc.png"; // TODO: update with the actual image URL for the Bar Chart demo
+}

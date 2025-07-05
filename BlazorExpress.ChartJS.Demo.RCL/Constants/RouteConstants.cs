@@ -1,4 +1,6 @@
-﻿namespace BlazorExpress.ChartJS.Demo.RCL;
+﻿using Microsoft.VisualBasic;
+
+namespace BlazorExpress.ChartJS.Demo.RCL;
 
 public static class RouteConstants
 {
@@ -12,6 +14,9 @@ public static class RouteConstants
 
     // Getting Started
     public const string Docs_GettingStarted = Docs_Prefix + "/getting-started";
+    public const string Docs_GettingStarted_Blazor_WebAssembly_NET8 = Docs_Prefix + "/blazor-webassembly-net-8";
+    public const string Docs_GettingStarted_Blazor_WebApp_NET_8_Interactive_Render_Mode_Server_Global_Location = Docs_Prefix + "/blazor-webapp-server-global-net-8";
+    public const string Docs_GettingStarted_Blazor_WebApp_NET_8_Interactive_Render_Mode_Auto_Global_Location = Docs_Prefix + "/blazor-webapp-auto-global-net-8";
 
     // Charts
     public const string Docs_BarChart = Docs_Prefix + "/bar-chart";
@@ -29,6 +34,10 @@ public static class RouteConstants
     #endregion
 
     #region Demos
+
+    // Getting Started
+    public const string Demos_Getting_Started_Prefix = Demos_Prefix + "/getting-started";
+    public const string Demos_GettingStarted_Introduction = Demos_Getting_Started_Prefix + "/introduction";
 
     // Charts
     public const string Demos_BarChart = Demos_Prefix + "/bar-chart";

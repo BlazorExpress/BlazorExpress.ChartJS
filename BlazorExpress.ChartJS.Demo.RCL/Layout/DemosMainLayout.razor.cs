@@ -32,11 +32,21 @@ public partial class DemosMainLayout : MainLayoutBase
     {
         var groups = new HashSet<LinkGroup>();
 
+        // GETTING STARTED
+        groups.Add(new LinkGroup
+        {
+            Name = "Getting Started",
+            CssClass = "is-size-7 has-text-weight-bold has-text-danger",
+            Links = [
+                new Link { Href = RouteConstants.Demos_GettingStarted_Introduction, Text = "Introduction" },
+            ]
+        });
+
         // CHARTS
         groups.Add(new LinkGroup
         {
             Name = "Charts",
-            CssClass = "is-size-7 has-text-weight-bold has-text-danger",
+            CssClass = "is-size-7 has-text-weight-bold has-text-warning",
             Links = [
                 new Link { Href = RouteConstants.Demos_BarChart, Text = "Bar chart" },
                 new Link { Href = RouteConstants.Demos_DoughnutChart, Text = "Doughnut chart" },
@@ -52,7 +62,7 @@ public partial class DemosMainLayout : MainLayoutBase
         groups.Add(new LinkGroup
         {
             Name = "UTILS",
-            CssClass = "is-size-7 has-text-weight-bold has-text-danger",
+            CssClass = "is-size-7 has-text-weight-bold has-text-info",
             Links = [
                 new Link { Href = RouteConstants.Demos_ColorUtils, Text = "Color Utils" },
             ]

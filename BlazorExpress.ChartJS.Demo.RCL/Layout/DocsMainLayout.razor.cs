@@ -32,11 +32,11 @@ public partial class DocsMainLayout : MainLayoutBase
     {
         var groups = new HashSet<LinkGroup>();
 
-        // FEATURES
+        // GETTING STARTED
         groups.Add(new LinkGroup
         {
-            Name = "FEATURES",
-            CssClass = "is-size-7 has-text-weight-bold has-text-warning",
+            Name = "Getting Started",
+            CssClass = "is-size-7 has-text-weight-bold has-text-danger",
             Links = [
                 new Link { Href = RouteConstants.Docs_GettingStarted, Text = "Getting started" }
             ]
@@ -46,7 +46,7 @@ public partial class DocsMainLayout : MainLayoutBase
         groups.Add(new LinkGroup
         {
             Name = "Charts",
-            CssClass = "is-size-7 has-text-weight-bold has-text-danger",
+            CssClass = "is-size-7 has-text-weight-bold has-text-warning",
             Links = [
                 new Link { Href = RouteConstants.Docs_BarChart, Text = "Bar chart" },
                 new Link { Href = RouteConstants.Docs_DoughnutChart, Text = "Doughnut chart" },
@@ -62,7 +62,7 @@ public partial class DocsMainLayout : MainLayoutBase
         groups.Add(new LinkGroup
         {
             Name = "UTILS",
-            CssClass = "is-size-7 has-text-weight-bold has-text-danger",
+            CssClass = "is-size-7 has-text-weight-bold has-text-info",
             Links = [
                 new Link { Href = RouteConstants.Demos_ColorUtils, Text = "Color Utils" },
             ]
