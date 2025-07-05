@@ -125,13 +125,7 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
         if (chartData is not null && chartData.Datasets is not null && chartData.Datasets.Any())
         {
             var _data = GetChartDataObject(chartData);
-
-            if (_chartType == ChartType.Bar)
-                await JSRuntime.InvokeVoidAsync("window.blazorChart.bar.initialize", Id, GetChartType(), _data, (BarChartOptions)chartOptions, plugins);
-            else if (_chartType == ChartType.Line)
-                await JSRuntime.InvokeVoidAsync("window.blazorChart.line.initialize", Id, GetChartType(), _data, (LineChartOptions)chartOptions, plugins);
-            else
-                await JSRuntime.InvokeVoidAsync("window.blazorChart.initialize", Id, GetChartType(), _data, chartOptions, plugins);
+            await JSRuntime.InvokeVoidAsync(ChartInterop.Initialize, Id, GetChartType(), _data, chartOptions, plugins);
         }
     }
 
@@ -150,7 +144,7 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
     {
         var widthWithUnit = $"width:{width.ToString(CultureInfo.InvariantCulture)}{widthUnit.ToCssString()}";
         var heightWithUnit = $"height:{height.ToString(CultureInfo.InvariantCulture)}{heightUnit.ToCssString()}";
-        await JSRuntime.InvokeVoidAsync("window.blazorChart.resize", Id, widthWithUnit, heightWithUnit);
+        await JSRuntime.InvokeVoidAsync(ChartInterop.Resize, Id, widthWithUnit, heightWithUnit);
     }
 
     /// <summary>
@@ -160,17 +154,11 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
     /// <param name="chartOptions"></param>
     public virtual async Task UpdateAsync(ChartData chartData, IChartOptions chartOptions)
     {
-        if (chartData is not null && chartData.Datasets is not null && chartData.Datasets.Any())
-        {
-            var _data = GetChartDataObject(chartData);
+        if (chartData is null || chartData.Datasets is null || !chartData.Datasets.Any())
+            return;
 
-            if (_chartType == ChartType.Bar)
-                await JSRuntime.InvokeVoidAsync("window.blazorChart.bar.update", Id, GetChartType(), _data, (BarChartOptions)chartOptions);
-            else if (_chartType == ChartType.Line)
-                await JSRuntime.InvokeVoidAsync("window.blazorChart.line.update", Id, GetChartType(), _data, (LineChartOptions)chartOptions);
-            else
-                await JSRuntime.InvokeVoidAsync("window.blazorChart.update", Id, GetChartType(), _data, chartOptions);
-        }
+        var _data = GetChartDataObject(chartData);
+        await JSRuntime.InvokeVoidAsync(ChartInterop.Update, Id, GetChartType(), _data, chartOptions);
     }
 
     protected virtual void Dispose(bool disposing)
