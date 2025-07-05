@@ -1,38 +1,58 @@
 ﻿@attribute [Route(pageUrl)]
+@layout DemosMainLayout
 
-<PageHeroSection PageUrl="@pageUrl"
-                 Title="@title"
-                 Heading="@heading"
-                 Description="@description"
-                 ImageUrl="@imageUrl" />
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<PageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</PageHero>
+
+<DocsLink Href="@RouteConstants.Docs_ScatterChart" />
 
 <Prerequisites PageUrl="@pageUrl" />
 
-<Section Size="HeadingSize.H4" Text="How it works" PageUrl="@pageUrl" HashTagName="how-it-works" />
-<div class="mb-3">
-    In the following example, a categorical 12-color palette is used.
-</div>
-<BlazorBootstrap.Callout Heading="TIP" Color="CalloutColor.Success">
-    For data visualization, you can use the predefined palettes <code>ColorUtility.CategoricalTwelveColors</code> for a 12-color palette and <code>ColorUtility.CategoricalSixColors</code> for a 6-color palette.
-    These palettes offer a range of distinct and visually appealing colors that can be applied to represent different categories or data elements in your visualizations.
-</BlazorBootstrap.Callout>
+<Section Class="p-0" Size="HeadingSize.H4" Name="How it works" PageUrl="@pageUrl" Link="how-it-works">
+    <Block>
+        The <strong>Scatter Chart</strong> component visualizes individual data points as (X, Y) coordinates, making it ideal for displaying relationships or distributions between two numeric variables.
+        <br /><br />
+        <strong>How to use:</strong>
+        <ul>
+            <li>Add the <code>ScatterChart</code> component to your page and set its dimensions (e.g., <code>Width="560"</code>, <code>Height="480"</code>).</li>
+            <li>Prepare your chart data by creating one or more <code>ScatterChartDataset</code> objects, each containing a list of <code>ScatterChartDataPoint</code> instances with X and Y values.</li>
+            <li>Customize the appearance of each dataset using properties like <code>BackgroundColor</code>, <code>BorderColor</code>, and <code>BorderWidth</code>.</li>
+            <li>Configure chart options using the <code>ScatterChartOptions</code> object as needed.</li>
+            <li>Initialize the chart in <code>OnAfterRenderAsync</code> by calling <code>scatterChart.InitializeAsync(chartData, scatterChartOptions)</code>.</li>
+            <li>Refer to the demo code below for practical examples of data preparation, dataset customization, and chart initialization.</li>
+        </ul>
+        This demo shows how to set up a scatter chart, bind your data, and customize the chart's appearance to fit your application's needs.
+    </Block>
+    <Demo Type="typeof(ScatterChart_Demo_01_Examples)" Tabs="true" />
+</Section>
 
-<Demo Type="typeof(ScatterChart_Demo_01_Examples)" Tabs="true" />
-
-<Section Size="HeadingSize.H4" Text="How it works" PageUrl="@pageUrl" HashTagName="how-it-works" />
-<div class="mb-3">
-    In the following example, a categorical 12-color palette is used.
-</div>
-<BlazorBootstrap.Callout Heading="TIP" Color="CalloutColor.Success">
-    For data visualization, you can use the predefined palettes <code>ColorUtility.CategoricalTwelveColors</code> for a 12-color palette and <code>ColorUtility.CategoricalSixColors</code> for a 6-color palette.
-    These palettes offer a range of distinct and visually appealing colors that can be applied to represent different categories or data elements in your visualizations.
-</BlazorBootstrap.Callout>
-<Demo Type="typeof(ScatterChart_Demo_02_Dynamic_Data)" Tabs="true" />
+<Section Class="p-0" Size="HeadingSize.H4" Name="Dynamic data" PageUrl="@pageUrl" Link="dynamic-data">
+    <Block>
+        The <strong>Scatter Chart</strong> component supports dynamic data updates, allowing you to add, remove, or modify data points and datasets at runtime. This is useful for visualizing real-time data or enabling interactive data exploration.
+        <br /><br />
+        <strong>How to use:</strong>
+        <ul>
+            <li>Add the <code>ScatterChart</code> component to your page and set its <code>Width</code> and <code>Height</code> as needed.</li>
+            <li>Prepare your chart data using one or more <code>ScatterChartDataset</code> objects, each containing a list of <code>ScatterChartDataPoint</code> (with X and Y values).</li>
+            <li>Implement methods to update your data dynamically, such as adding new points, randomizing values, or modifying existing datasets.</li>
+            <li>After updating the data, call <code>scatterChart.UpdateAsync(chartData, scatterChartOptions)</code> to refresh the chart and reflect the changes.</li>
+            <li>Refer to the demo code below for practical examples of dynamic data manipulation and chart updates in a Blazor application.</li>
+        </ul>
+        This demo demonstrates how to work with dynamic data in a scatter chart, enabling interactive and real-time data visualizations in your Blazor projects.
+    </Block>
+    <Demo Type="typeof(ScatterChart_Demo_02_Dynamic_Data)" Tabs="true" />
+</Section>
 
 @code {
-    private const string pageUrl = "/charts/scatter-chart";
-    private const string title = "Blazor Scatter Chart";
-    private const string heading = "Blazor Scatter Chart";
-    private const string description = "A Blazor Bootstrap scatter chart components are based on basic line charts with the x-axis changed to a linear axis. To use a scatter chart, data must be passed as objects containing X and Y properties.";
-    private const string imageUrl = "https://i.imgur.com/MSFDsSo.png";
+    private const string pageUrl = RouteConstants.Demos_ScatterChart;
+    private const string pageTitle = "Scatter Chart";
+    private const string pageDescription = "The <code>Blazor Scatter Chart</code> component displays data values as vertical bars, making it easy to compare multiple data sets or visualize trends over time.";
+    private const string metaTitle = "Blazor Scatter Chart";
+    private const string metaDescription = "The Blazor Scatter Chart component displays data values as vertical bars, making it easy to compare multiple data sets or visualize trends over time.";
+    private const string imageUrl = "https://i.imgur.com/IX3bajc.png"; // TODO: update with the actual image URL for the Bar Chart demo
 }

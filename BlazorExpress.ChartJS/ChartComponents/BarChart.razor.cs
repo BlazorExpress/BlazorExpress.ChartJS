@@ -2,12 +2,6 @@
 
 public partial class BarChart : ChartComponentBase
 {
-    #region Fields and Constants
-
-    private const string _jsObjectName = "window.blazorexpress.chartjs.bar";
-
-    #endregion
-
     #region Constructors
 
     public BarChart()
@@ -35,7 +29,7 @@ public partial class BarChart : ChartComponentBase
                 if (data is BarChartDatasetData barChartDatasetData)
                     barChartDataset.Data?.Add(barChartDatasetData.Data as double?);
 
-        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetData", Id, dataLabel, data);
+        await JSRuntime.InvokeVoidAsync(BarChartInterop.AddDatasetData, Id, dataLabel, data);
 
         return chartData;
     }
@@ -80,7 +74,7 @@ public partial class BarChart : ChartComponentBase
                     barChartDataset.Data?.Add(barChartDatasetData.Data as double?);
             }
 
-        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetsData", Id, dataLabel, data?.Select(x => (BarChartDatasetData)x));
+        await JSRuntime.InvokeVoidAsync(BarChartInterop.AddDatasetsData, Id, dataLabel, data?.Select(x => (BarChartDatasetData)x));
 
         return chartData;
     }
@@ -99,7 +93,7 @@ public partial class BarChart : ChartComponentBase
         if (chartDataset is BarChartDataset)
         {
             chartData.Datasets.Add(chartDataset);
-            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDataset", Id, (BarChartDataset)chartDataset);
+            await JSRuntime.InvokeVoidAsync(BarChartInterop.AddDataset, Id, (BarChartDataset)chartDataset);
         }
 
         return chartData;
@@ -111,7 +105,7 @@ public partial class BarChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<BarChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.initialize", Id, GetChartType(), data, (BarChartOptions)chartOptions, plugins);
+            await JSRuntime.InvokeVoidAsync(BarChartInterop.Initialize, Id, GetChartType(), data, (BarChartOptions)chartOptions, plugins);
         }
     }
 
@@ -121,7 +115,7 @@ public partial class BarChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<BarChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.update", Id, GetChartType(), data, (BarChartOptions)chartOptions);
+            await JSRuntime.InvokeVoidAsync(BarChartInterop.Update, Id, GetChartType(), data, (BarChartOptions)chartOptions);
         }
     }
 

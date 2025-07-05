@@ -39,9 +39,9 @@ public class ChartOptions : IChartOptions
     /// <see href="https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options" />.    ///
     /// </summary>
     /// <remarks>
-    /// Default value is <see langword="false" />.
+    /// Default value is <see langword="true" />.
     /// </remarks>
-    public bool Responsive { get; set; }
+    public bool Responsive { get; set; } = true;
 
     #endregion
 }

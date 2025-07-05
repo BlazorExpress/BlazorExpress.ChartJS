@@ -2,12 +2,6 @@
 
 public partial class DoughnutChart : ChartComponentBase
 {
-    #region Fields and Constants
-
-    private const string _jsObjectName = "window.blazorexpress.chartjs.doughnut";
-
-    #endregion
-
     #region Constructors
 
     public DoughnutChart()
@@ -38,7 +32,7 @@ public partial class DoughnutChart : ChartComponentBase
                     doughnutChartDataset.BackgroundColor?.Add(doughnutChartDatasetData.BackgroundColor!);
                 }
 
-        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetData", Id, dataLabel, data);
+        await JSRuntime.InvokeVoidAsync(DoughnutChartInterop.AddDatasetData, Id, dataLabel, data);
 
         return chartData;
     }
@@ -86,7 +80,7 @@ public partial class DoughnutChart : ChartComponentBase
                 }
             }
 
-        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetsData", Id, dataLabel, data?.Select(x => (DoughnutChartDatasetData)x));
+        await JSRuntime.InvokeVoidAsync(DoughnutChartInterop.AddDatasetsData, Id, dataLabel, data?.Select(x => (DoughnutChartDatasetData)x));
 
         return chartData;
     }
@@ -105,7 +99,7 @@ public partial class DoughnutChart : ChartComponentBase
         if (chartDataset is DoughnutChartDataset doughnutChartDataset)
         {
             chartData.Datasets.Add(doughnutChartDataset);
-            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDataset", Id, doughnutChartDataset);
+            await JSRuntime.InvokeVoidAsync(DoughnutChartInterop.AddDataset, Id, doughnutChartDataset);
         }
 
         return chartData;
@@ -117,7 +111,7 @@ public partial class DoughnutChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<DoughnutChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.initialize", Id, GetChartType(), data, (DoughnutChartOptions)chartOptions, plugins);
+            await JSRuntime.InvokeVoidAsync(DoughnutChartInterop.Initialize, Id, GetChartType(), data, (DoughnutChartOptions)chartOptions, plugins);
         }
     }
 
@@ -127,7 +121,7 @@ public partial class DoughnutChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<DoughnutChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.update", Id, GetChartType(), data, (DoughnutChartOptions)chartOptions);
+            await JSRuntime.InvokeVoidAsync(DoughnutChartInterop.Update, Id, GetChartType(), data, (DoughnutChartOptions)chartOptions);
         }
     }
 

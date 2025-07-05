@@ -1,11 +1,12 @@
 ﻿﻿<ScatterChart @ref="scatterChart" />
 
+
 <div class="mt-5">
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await RandomizeAsync()"> Randomize </Button>
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await AddDatasetAsync()"> Add Dataset </Button>
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await AddDataAsync()"> Add Data </Button>
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await ShowHorizontalLineChartAsync()"> Horizontal Line Chart </Button>
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await ShowVerticalLineChartAsync()"> Vertical Line Chart </Button>
+    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="RandomizeAsync"> Randomize </Button>
+    <Button Color="ButtonColor.Link" Size="ButtonSize.Small" @onclick="AddDatasetAsync"> Add Dataset </Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="AddDataAsync"> Add Data </Button>
+    <Button Color="ButtonColor.Success" Size="ButtonSize.Small" @onclick="ShowHorizontalLineChartAsync"> Horizontal Line Chart </Button>
+    <Button Color="ButtonColor.Warning" Size="ButtonSize.Small" @onclick="ShowVerticalLineChartAsync"> Vertical Line Chart </Button>
 </div>
 
 @code {
@@ -21,8 +22,9 @@
     protected override void OnInitialized()
     {
         chartData = new ChartData { Labels = GetDefaultDataLabels(6), Datasets = GetDefaultDataSets(3) };
-        scatterChartOptions = new() { 
-            Responsive = true, 
+        scatterChartOptions = new()
+        {
+            Responsive = true,
             Interaction = new Interaction { Mode = InteractionMode.Index },
         };
     }
@@ -125,16 +127,16 @@
         datasetsCount += 1;
 
         return new ScatterChartDataset
-            {
-                Label = $"Team {datasetsCount}",
-                Data = GetRandomData(),
-                BackgroundColor = c.ToRgbaString(), // RGBA
-                BorderColor = c.ToRgbString(), // RGB
-                BorderWidth = 2,
-                Fill = true,
-                HoverBorderWidth = 4,
-                PointHoverRadius = new List<double>{6},
-            };
+        {
+            Label = $"Team {datasetsCount}",
+            Data = GetRandomData(),
+            BackgroundColor = c.ToRgbaString(), // RGBA
+            BorderColor = c.ToRgbString(), // RGB
+            BorderWidth = 2,
+            Fill = true,
+            HoverBorderWidth = 4,
+            PointHoverRadius = new List<double> { 6 },
+        };
     }
 
     private List<ScatterChartDataPoint?> GetRandomData()

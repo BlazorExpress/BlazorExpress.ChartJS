@@ -2,12 +2,6 @@
 
 public partial class ScatterChart : ChartComponentBase
 {
-    #region Fields and Constants
-
-    private const string _jsObjectName = "window.blazorChart.scatter";
-
-    #endregion
-
     #region Constructors
 
     public ScatterChart()
@@ -36,7 +30,7 @@ public partial class ScatterChart : ChartComponentBase
                 if (data is ScatterChartDatasetData scatterChartDatasetData && scatterChartDatasetData.Data is ScatterChartDataPoint scatterChartDataPoint)
                     scatterChartDataset.Data?.Add(scatterChartDataPoint);
 
-        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetData", Id, dataLabel, data);
+        await JSRuntime.InvokeVoidAsync(ScatterChartInterop.AddDatasetData, Id, dataLabel, data);
 
         return chartData;
     }
@@ -81,7 +75,7 @@ public partial class ScatterChart : ChartComponentBase
                     scatterChartDataset.Data?.Add(scatterChartDataPoint);
             }
 
-        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetsData", Id, dataLabel, data?.Select(x => (ScatterChartDatasetData)x));
+        await JSRuntime.InvokeVoidAsync(ScatterChartInterop.AddDatasetsData, Id, dataLabel, data?.Select(x => (ScatterChartDatasetData)x));
 
         return chartData;
     }
@@ -100,7 +94,7 @@ public partial class ScatterChart : ChartComponentBase
         if (chartDataset is ScatterChartDataset)
         {
             chartData.Datasets.Add(chartDataset);
-            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDataset", Id, (ScatterChartDataset)chartDataset);
+            await JSRuntime.InvokeVoidAsync(ScatterChartInterop.AddDataset, Id, (ScatterChartDataset)chartDataset);
         }
 
         return chartData;
@@ -119,7 +113,7 @@ public partial class ScatterChart : ChartComponentBase
 
         var datasets = chartData.Datasets.OfType<ScatterChartDataset>();
         var data = new { chartData.Labels, Datasets = datasets };
-        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.initialize", Id, GetChartType(), data, (ScatterChartOptions)chartOptions, plugins);
+        await JSRuntime.InvokeVoidAsync(ScatterChartInterop.Initialize, Id, GetChartType(), data, (ScatterChartOptions)chartOptions, plugins);
     }
 
     public override async Task UpdateAsync(ChartData chartData, IChartOptions chartOptions)
@@ -135,7 +129,7 @@ public partial class ScatterChart : ChartComponentBase
 
         var datasets = chartData.Datasets.OfType<ScatterChartDataset>();
         var data = new { chartData.Labels, Datasets = datasets };
-        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.update", Id, GetChartType(), data, (ScatterChartOptions)chartOptions);
+        await JSRuntime.InvokeVoidAsync(ScatterChartInterop.Update, Id, GetChartType(), data, (ScatterChartOptions)chartOptions);
     }
 
     #endregion

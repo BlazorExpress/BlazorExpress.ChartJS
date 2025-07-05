@@ -2,12 +2,6 @@
 
 public partial class LineChart : ChartComponentBase
 {
-    #region Fields and Constants
-
-    private const string _jsObjectName = "window.blazorexpress.chartjs.line";
-
-    #endregion
-
     #region Constructors
 
     public LineChart()
@@ -35,7 +29,7 @@ public partial class LineChart : ChartComponentBase
                 if (data is LineChartDatasetData lineChartDatasetData)
                     lineChartDataset.Data?.Add(lineChartDatasetData.Data as double?);
 
-        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetData", Id, dataLabel, data);
+        await JSRuntime.InvokeVoidAsync(LineChartInterop.AddDatasetData, Id, dataLabel, data);
 
         return chartData;
     }
@@ -80,7 +74,7 @@ public partial class LineChart : ChartComponentBase
                     lineChartDataset.Data?.Add(lineChartDatasetData.Data as double?);
             }
 
-        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDatasetsData", Id, dataLabel, data?.Select(x => (LineChartDatasetData)x));
+        await JSRuntime.InvokeVoidAsync(LineChartInterop.AddDatasetsData, Id, dataLabel, data?.Select(x => (LineChartDatasetData)x));
 
         return chartData;
     }
@@ -99,7 +93,7 @@ public partial class LineChart : ChartComponentBase
         if (chartDataset is LineChartDataset)
         {
             chartData.Datasets.Add(chartDataset);
-            await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.addDataset", Id, (LineChartDataset)chartDataset);
+            await JSRuntime.InvokeVoidAsync(LineChartInterop.AddDataset, Id, (LineChartDataset)chartDataset);
         }
 
         return chartData;
@@ -118,7 +112,7 @@ public partial class LineChart : ChartComponentBase
 
         var datasets = chartData.Datasets.OfType<LineChartDataset>();
         var data = new { chartData.Labels, Datasets = datasets };
-        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.initialize", Id, GetChartType(), data, (LineChartOptions)chartOptions, plugins);
+        await JSRuntime.InvokeVoidAsync(LineChartInterop.Initialize, Id, GetChartType(), data, (LineChartOptions)chartOptions, plugins);
     }
 
     public override async Task UpdateAsync(ChartData chartData, IChartOptions chartOptions)
@@ -134,7 +128,7 @@ public partial class LineChart : ChartComponentBase
 
         var datasets = chartData.Datasets.OfType<LineChartDataset>();
         var data = new { chartData.Labels, Datasets = datasets };
-        await JSRuntime.InvokeVoidAsync($"{_jsObjectName}.update", Id, GetChartType(), data, (LineChartOptions)chartOptions);
+        await JSRuntime.InvokeVoidAsync(LineChartInterop.Update, Id, GetChartType(), data, (LineChartOptions)chartOptions);
     }
 
     #endregion

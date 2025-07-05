@@ -30,6 +30,57 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
         base.OnInitialized();
     }
 
+    public static string BuildClassNames(params (string? cssClass, bool when)[] cssClassList)
+    {
+        var list = new HashSet<string>();
+
+        if (cssClassList is not null && cssClassList.Any())
+            foreach (var (cssClass, when) in cssClassList)
+                if (!string.IsNullOrWhiteSpace(cssClass) && when)
+                    list.Add(cssClass);
+
+        if (list.Any())
+            return string.Join(" ", list);
+
+        return string.Empty;
+    }
+
+    public static string BuildClassNames(string? userDefinedCssClass, params (string? cssClass, bool when)[] cssClassList)
+    {
+        var list = new HashSet<string>();
+
+        if (cssClassList is not null && cssClassList.Any())
+            foreach (var (cssClass, when) in cssClassList)
+                if (!string.IsNullOrWhiteSpace(cssClass) && when)
+                    list.Add(cssClass);
+
+        if (!string.IsNullOrWhiteSpace(userDefinedCssClass))
+            list.Add(userDefinedCssClass.Trim());
+
+        if (list.Any())
+            return string.Join(" ", list);
+
+        return string.Empty;
+    }
+
+    public static string BuildStyleNames(string? userDefinedCssStyle, params (string? cssStyle, bool when)[] cssStyleList)
+    {
+        var list = new HashSet<string>();
+
+        if (cssStyleList is not null && cssStyleList.Any())
+            foreach (var (cssStyle, when) in cssStyleList)
+                if (!string.IsNullOrWhiteSpace(cssStyle) && when)
+                    list.Add(cssStyle);
+
+        if (!string.IsNullOrWhiteSpace(userDefinedCssStyle))
+            list.Add(userDefinedCssStyle.Trim());
+
+        if (list.Any())
+            return string.Join(';', list);
+
+        return string.Empty;
+    }
+
     //public async Task Stop() { }
 
     //public async Task ToBase64Image() { }
@@ -164,18 +215,14 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
             _ => "line" // default
         };
 
-    private string GetChartContainerSizeAsStyle()
-    {
-        var style = "";
+    protected string ContainerClassNames => ContainerClass!;
 
-        if (Width > 0)
-            style += $"width:{Width.Value.ToString(CultureInfo.InvariantCulture)}{WidthUnit.ToCssString()};";
-
-        if (Height > 0)
-            style += $"height:{Height.Value.ToString(CultureInfo.InvariantCulture)}{HeightUnit.ToCssString()};";
-
-        return style;
-    }
+    protected string ContainerStyleNames =>
+        BuildStyleNames(
+            ContainerStyle,
+            (Width.HasValue && Width.Value > 0 ? $"width:{Width.Value.ToString(CultureInfo.InvariantCulture)}{WidthUnit.ToCssString()};" : null, Width.HasValue && Width.Value > 0),
+            (Height.HasValue && Height.Value > 0 ? $"height:{Height.Value.ToString(CultureInfo.InvariantCulture)}{HeightUnit.ToCssString()};" : null, Height.HasValue && Height.Value > 0)
+        );
 
     private object GetChartDataObject(ChartData chartData)
     {
@@ -193,6 +240,10 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
                     datasets.Add((PieChartDataset)dataset);
                 else if (dataset is PolarAreaChartDataset)
                     datasets.Add((PolarAreaChartDataset)dataset);
+                else if (dataset is RadarChartDataset)
+                    datasets.Add((RadarChartDataset)dataset);
+                else if (dataset is ScatterChartDataset)
+                    datasets.Add((ScatterChartDataset)dataset);
 
         var data = new { chartData?.Labels, Datasets = datasets };
 
@@ -203,12 +254,18 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
 
     #region Properties, Indexers
 
-    [Parameter(CaptureUnmatchedValues = true)] 
+    [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
 
     [Parameter] public string? Class { get; set; }
 
-    internal string ContainerStyle => GetChartContainerSizeAsStyle();
+    protected virtual string? ClassNames => Class;
+
+    [Parameter]
+    public string? ContainerClass { get; set; }
+
+    [Parameter]
+    public string? ContainerStyle { get; set; }
 
     public ElementReference Element { get; set; }
 
@@ -232,13 +289,21 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
     [Parameter]
     public Unit HeightUnit { get; set; } = Unit.Px;
 
-    [Parameter] public string? Id { get; set; }
+    [Parameter]
+    public string? Id { get; set; }
+
+    [Parameter]
+    public bool IsContainerFluid { get; set; }
 
     protected bool IsRenderComplete { get; private set; }
 
-    [Inject] protected IJSRuntime JSRuntime { get; set; } = default!;
+    [Inject]
+    protected IJSRuntime JSRuntime { get; set; } = default!;
 
-    [Parameter] public string? Style { get; set; }
+    [Parameter]
+    public string? Style { get; set; }
+
+    protected virtual string? StyleNames => Style;
 
     /// <summary>
     /// Get or sets chart container width.

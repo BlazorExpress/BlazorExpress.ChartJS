@@ -1,9 +1,9 @@
 ﻿<RadarChart @ref="radarChart" Width="600" />
 
 <div class="mt-5">
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await RandomizeAsync()"> Randomize </Button>
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await AddDatasetAsync()"> Add Dataset </Button>
-    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await AddDataAsync()"> Add Data </Button>
+    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="RandomizeAsync"> Randomize </Button>
+    <Button Color="ButtonColor.Link" Size="ButtonSize.Small" @onclick="AddDatasetAsync"> Add Dataset </Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="AddDataAsync"> Add Data </Button>
 </div>
 
 @code {
