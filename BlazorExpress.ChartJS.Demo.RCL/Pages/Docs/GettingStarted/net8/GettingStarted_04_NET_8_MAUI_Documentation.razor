@@ -1,0 +1,108 @@
+@attribute [Route(pageUrl)]
+@layout DocsMainLayout
+
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<PageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</PageHero>
+
+<div class="content">
+    <h2>1. Using dotnet Templates</h2>
+    <p>
+        The fastest way to get started is with the official <b>BlazorExpress.Bulma</b> project template.
+    </p>
+    <ol>
+        <li>
+            <b>Install the template:</b>
+            <pre><code>dotnet new install BlazorExpress.Bulma.Templates</code></pre>
+        </li>
+        <li>
+            <b>Create a new project:</b>
+            <pre><code>dotnet new blazorexpress-bulma -n MyBlazorApp</code></pre>
+        </li>
+        <li>
+            <b>Run your app:</b>
+            <pre><code>cd MyBlazorApp
+dotnet run</code></pre>
+        </li>
+    </ol>
+    <p>
+        The template sets up everything you need, including Bulma CSS, required services, and sample components.
+    </p>
+
+    <h2>2. Manual Install</h2>
+    <p>
+        To add <b>BlazorExpress.Bulma</b> to an existing Blazor project:
+    </p>
+    <ol>
+        <li>
+            <b>Add the NuGet package:</b>
+            <pre><code>dotnet add package BlazorExpress.Bulma</code></pre>
+        </li>
+        <li>
+            <b>Add Bulma and BlazorExpress.Bulma CSS to your <code>wwwroot/index.html</code> (Blazor WASM) or <code>_Host.cshtml</code> (Blazor Server):</b>
+            <pre><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css"&gt;
+&lt;link rel="stylesheet" href="_content/BlazorExpress.Bulma/css/blazorexpress.bulma.css"&gt;
+</code></pre>
+        </li>
+        <li>
+            <b>Add BlazorExpress.Bulma JS:</b>
+            <pre><code>&lt;script src="_content/BlazorExpress.Bulma/js/blazorexpress.bulma.js"&gt;&lt;/script&gt;
+</code></pre>
+        </li>
+        <li>
+            <b>Add <code>_Imports.razor</code> references:</b>
+            <p>
+                To use BlazorExpress.Bulma components in your pages without fully qualified names, add the following to your <code>_Imports.razor</code>:
+            </p>
+            <pre><code>
+@using BlazorExpress.Bulma
+            </code></pre>
+            <p>
+                Add any other namespaces as needed for your project.
+            </p>
+        </li>
+    </ol>
+
+    <h2>3. Register Services</h2>
+    <p>
+        In your <code>Program.cs</code>, register any required services. For most scenarios, no extra registration is needed, but if the library introduces services, add them as follows:
+    </p>
+    <pre><code class="language-csharp">
+// Program.cs
+using BlazorExpress.Bulma;
+
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
+// ... your existing setup
+
+// Register BlazorExpress.Bulma services (if required)
+builder.Services.AddBlazorExpressBulma();
+
+await builder.Build().RunAsync();
+</code></pre>
+    <p>
+        <b>Note:</b> If <code>AddBlazorExpressBulma()</code> is not available, check the <a href="https://github.com/BlazorExpress/BlazorExpress.Bulma" target="_blank">official documentation</a> for the latest setup instructions.
+    </p>
+
+    <h2>References</h2>
+    <ul>
+        <li>
+            <a href="https://github.com/BlazorExpress/BlazorExpress.Bulma" target="_blank">BlazorExpress.Bulma GitHub Repository</a>
+        </li>
+        <li>
+            <a href="https://www.nuget.org/packages/BlazorExpress.Bulma/" target="_blank">NuGet Package</a>
+        </li>
+    </ul>
+</div>
+
+@code {
+    private const string pageUrl = RouteConstants.Docs_Getting_Started_MAUI_NET_8;
+    private const string pageTitle = "Getting started - MAUI Blazor Hybrid App (.NET 8)";
+    private const string pageDescription = "Learn how to quickly set up <code>BlazorExpress.Bulma</code> in your Blazor project using dotnet templates or manual installation, and how to register required services.";
+    private const string metaTitle = "Getting started - MAUI Blazor Hybrid App (.NET 8)";
+    private const string metaDescription = "Step-by-step guide to using BlazorExpress.Bulma: dotnet templates, manual install, and service registration for Blazor apps.";
+    private const string imageUrl = "https://i.imgur.com/FGgEMp6.jpg"; // TODO: update
+}

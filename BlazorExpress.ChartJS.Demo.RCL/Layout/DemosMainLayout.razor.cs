@@ -32,16 +32,6 @@ public partial class DemosMainLayout : MainLayoutBase
     {
         var groups = new HashSet<LinkGroup>();
 
-        // GETTING STARTED
-        groups.Add(new LinkGroup
-        {
-            Name = "Getting Started",
-            CssClass = "is-size-7 has-text-weight-bold has-text-danger",
-            Links = [
-                new Link { Href = RouteConstants.Demos_GettingStarted_Introduction, Text = "Introduction" },
-            ]
-        });
-
         // CHARTS
         groups.Add(new LinkGroup
         {

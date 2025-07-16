@@ -35,10 +35,14 @@ public partial class DocsMainLayout : MainLayoutBase
         // GETTING STARTED
         groups.Add(new LinkGroup
         {
-            Name = "Getting Started",
+            Name = "GETTING STARTED",
             CssClass = "is-size-7 has-text-weight-bold has-text-danger",
             Links = [
-                new Link { Href = RouteConstants.Docs_GettingStarted, Text = "Getting started" }
+                new Link { Href = RouteConstants.Docs_Getting_Started_Introduction, Text = "Introduction" },
+                new Link { Href = RouteConstants.Docs_Getting_Started_Blazor_WebAssembly_NET8, Text = "Blazor WebAssembly (.NET 8)" },
+                new Link { Href = RouteConstants.Docs_Getting_Started_Blazor_WebApp_NET_8_Interactive_Render_Mode_Server_Global_Location, Text = "Blazor WebApp (.NET 8) Server" },
+                //new Link { Href = RouteConstants.Docs_Getting_Started_WebApp_Auto_NET_8, Text = "Blazor WebApp (.NET 8) Auto" },
+                //new Link { Href = RouteConstants.Docs_Getting_Started_MAUI_NET_8, Text = "MAUI Blazor Hybrid App (.NET 8)" },
             ]
         });
 
