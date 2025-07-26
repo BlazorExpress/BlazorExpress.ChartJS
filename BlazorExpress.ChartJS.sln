@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorExpress.ChartJS.Demo.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorExpress.ChartJS.Demo.WebAssembly", "BlazorExpress.ChartJS.Demo.WebAssembly\BlazorExpress.ChartJS.Demo.WebAssembly.csproj", "{7064944C-CF0A-4D64-AF1B-1F57EFBDA108}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demos", "demos", "{1B73E52F-BE4E-4EF2-B8E5-A795BA44FF5F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +34,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F618FB87-B86A-4A57-950A-9DD032E090CB} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B719B79F-9D20-4D39-96EB-7386B40EE693} = {1B73E52F-BE4E-4EF2-B8E5-A795BA44FF5F}
+		{7064944C-CF0A-4D64-AF1B-1F57EFBDA108} = {1B73E52F-BE4E-4EF2-B8E5-A795BA44FF5F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3AC9875-2CDD-4111-B39A-FFBF5066FFFF}
