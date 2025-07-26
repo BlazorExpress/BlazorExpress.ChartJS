@@ -1,6 +1,6 @@
 ﻿namespace BlazorExpress.ChartJS.Demo.RCL;
 
-public static class PageLinkUtil
+public static class DemoPageLinkUtil
 {
     public static HashSet<PageLink> GetDemosLinks()
     {
@@ -32,7 +32,7 @@ public static class PageLinkUtil
         links.Add(new PageLink { Id = index, IconName = BootstrapIconName.GraphUpArrow, Href = DemoRouteConstants.Demos_ScatterChart, Text = "Scatter Chart", Categories = new() { DemoPageLinkCategory.All, DemoPageLinkCategory.Charts }, Status = PageLinkStatus.None, IsActive = true });
 
         index += 1;
-        links.Add(new PageLink { Id = index, IconName = BootstrapIconName.Palette2, Href = DemoRouteConstants.Demos_ScatterChart, Text = "Color Utils", Categories = new() { DemoPageLinkCategory.All, DemoPageLinkCategory.Utils }, Status = PageLinkStatus.None, IsActive = true });
+        links.Add(new PageLink { Id = index, IconName = BootstrapIconName.Palette2, Href = DemoRouteConstants.Demos_ColorUtils, Text = "Color Utils", Categories = new() { DemoPageLinkCategory.All, DemoPageLinkCategory.Utils }, Status = PageLinkStatus.None, IsActive = true });
 
         return links;
     }

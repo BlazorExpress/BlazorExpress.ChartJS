@@ -1,4 +1,5 @@
 @attribute [Route(pageUrl)]
+@attribute [Route(pageUrl2)]
 @layout DemosMainLayout
 
 <PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
@@ -92,6 +93,7 @@
 
 @code {
     private const string pageUrl = DemoRouteConstants.Demos_BarChart;
+    private const string pageUrl2 = DemoRouteConstants.Demos_Prefix;
     private const string pageTitle = "Bar Chart";
     private const string pageDescription = "The <code>Blazor Bar Chart</code> component displays data values as vertical bars, making it easy to compare multiple data sets or visualize trends over time.";
     private const string metaTitle = "Blazor Bar Chart";
