@@ -5,7 +5,7 @@ public interface IChartOptions { }
 /// <summary>
 /// Represents the base configuration options for all chart types.
 /// <para>
-///     See <see href="https://www.chartjs.org/docs/latest/general/options.html" /> for more information.
+/// See <see href="https://www.chartjs.org/docs/latest/general/options.html" /> for more information.
 /// </para>
 /// </summary>
 public class ChartOptions : IChartOptions
@@ -17,27 +17,31 @@ public class ChartOptions : IChartOptions
 
     /// <summary>
     /// Gets or sets the locale for the chart.
-    /// By default, the chart uses the default locale of the platform it is running on.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="null" />.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Gets or sets the locale for the chart. By default, the chart uses the default locale of the platform it is running on.")]
+    [Description("Gets or sets the locale for the chart.")]
+    //[ParameterTypeName("string?")]
+    [Parameter]
     public string? Locale { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether to maintain the original canvas aspect ratio (width / height) when resizing.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="true" />.
-    /// See <see href="https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options" />.
-    /// </remarks>
+    /// </para>
+    /// <para>
+    /// See <see href="https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options" /> for more information.
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(true)]
     [Description("Gets or sets a value indicating whether to maintain the original canvas aspect ratio (width / height) when resizing.")]
+    [Parameter]
     public bool MaintainAspectRatio { get; set; } = true;
 
     //onResize
@@ -48,14 +52,17 @@ public class ChartOptions : IChartOptions
 
     /// <summary>
     /// Gets or sets a value indicating whether the chart canvas should resize when its container does.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="true" />.
-    /// See <see href="https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options" />.
-    /// </remarks>
+    /// </para>
+    /// <para>
+    /// See <see href="https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options" /> for more information.
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(true)]
     [Description("Gets or sets a value indicating whether the chart canvas should resize when its container does.")]
+    [Parameter]
     public bool Responsive { get; set; } = true;
 
     #endregion
@@ -63,23 +70,34 @@ public class ChartOptions : IChartOptions
 
 /// <summary>
 /// Namespace: options.layout, the global options for the chart layout is defined in Chart.defaults.layout.
-/// <see href="https://www.chartjs.org/docs/latest/configuration/layout.html#layout" />.
+/// <see href="https://www.chartjs.org/docs/latest/configuration/layout.html#layout" /> for more information.
 /// </summary>
 public class ChartLayout
 {
     #region Properties, Indexers
 
     /// <summary>
-    /// Apply automatic padding so visible elements are completely drawn.
-    /// </summary>
-    /// <remarks>
+    /// Gets or sets a value indicating whether to apply automatic padding so visible elements are completely drawn.
+    /// <para>
     /// Default value is <see langword="true" />.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(true)]
+    [Description("Gets or sets a value indicating whether to apply automatic padding so visible elements are completely drawn.")]
+    [Parameter]
     public bool AutoPadding { get; set; } = true;
 
     /// <summary>
-    /// The padding to add inside the chart.
+    /// Gets or sets the padding to add inside the chart.
+    /// <para>
+    /// Default value is 0.
+    /// </para>
     /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(0)]
+    [Description("Gets or sets the padding to add inside the chart.")]
+    [Parameter]
     public int Padding { get; set; } = 0;
 
     #endregion
