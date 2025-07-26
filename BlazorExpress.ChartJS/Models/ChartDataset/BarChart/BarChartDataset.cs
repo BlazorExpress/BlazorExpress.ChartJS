@@ -11,56 +11,78 @@ public class BarChartDataset : ChartDataset<double?>
     #region Properties, Indexers
 
     /// <summary>
-    /// The bar background color.
+    /// Gets or sets the bar background color.
+    /// <para>
+    /// Default value is <c>rgba(0, 0, 0, 0.1)</c>.
+    /// </para>
     /// </summary>
-    /// <remarks>
-    /// Default value is 'rgba(0, 0, 0, 0.1)'.
-    /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("rgba(0, 0, 0, 0.1)")]
+    [Description("Gets or sets the bar background color.")]
+    [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? BackgroundColor { get; set; }
 
     /// <summary>
-    /// Percent (0-1) of the available width each bar should be within the category width.
+    /// Gets or sets the percent (0-1) of the available width each bar should be within the category width.
     /// 1.0 will take the whole category width and put the bars right next to each other.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 0.9.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(0.9)]
+    [Description("Gets or sets the percent (0-1) of the available width each bar should be within the category width.")]
     public double BarPercentage { get; set; } = 0.9;
 
     /// <summary>
-    /// It is applied to the width of each bar, in pixels. 
-    /// When this is enforced, barPercentage and categoryPercentage are ignored.
+    /// Gets or sets the width of each bar, in pixels. When this is enforced, barPercentage and categoryPercentage are ignored.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
     /// </summary>
-    /// <remarks>
-    /// Default value is <see langword="null"/>.
-    /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the width of each bar, in pixels. When this is enforced, barPercentage and categoryPercentage are ignored.")]
+    [ParameterTypeName("double?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? BarThickness { get; set; }
 
     /// <summary>
-    /// The bar border color.
+    /// Gets or sets the bar border color.
+    /// <para>
+    /// Default value is <c>rgba(0, 0, 0, 0.1)</c>.
+    /// </para>
     /// </summary>
-    /// <remarks>
-    /// Default value is 'rgba(0, 0, 0, 0.1)'.
-    /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("rgba(0, 0, 0, 0.1)")]
+    [Description("Gets or sets the bar border color.")]
+    [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? BorderColor { get; set; }
 
     /// <summary>
-    /// Border radius
-    /// </summary>
-    /// <remarks>
+    /// Gets or sets the border radius.
+    /// <para>
     /// Default value is 0.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(0)]
+    [Description("Gets or sets the border radius.")]
+    [ParameterTypeName("List<double>?")]
     public List<double>? BorderRadius { get; set; }
 
     /// <summary>
     /// Gets or sets the border width (in pixels).
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 0.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(0)]
+    [Description("Gets or sets the border width (in pixels).")]
+    [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? BorderWidth { get; set; }
 
@@ -68,70 +90,105 @@ public class BarChartDataset : ChartDataset<double?>
     //https://www.chartjs.org/docs/latest/api/interfaces/BarControllerDatasetOptions.html#borderskipped
 
     /// <summary>
-    /// Percent (0-1) of the available width each category should be within the sample width.
-    /// </summary>
-    /// <remarks>
+    /// Gets or sets the percent (0-1) of the available width each category should be within the sample width.
+    /// <para>
     /// Default value is 0.8.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(0.8)]
+    [Description("Gets or sets the percent (0-1) of the available width each category should be within the sample width.")]
     public double CategoryPercentage { get; set; } = 0.8;
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
-    public BarChartDatasetDataLabels Datalabels { get; set; } = new(); // TODO: add the reference link
+    /// <summary>
+    /// Gets or sets the data labels configuration for the bar chart dataset.
+    /// <para>
+    /// Default value is a new <see cref="BarChartDatasetDataLabels" /> instance.
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the data labels configuration for the bar chart dataset.")]
+    [ParameterTypeName("BarChartDatasetDataLabels")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public BarChartDatasetDataLabels Datalabels { get; set; } = new();
 
     /// <summary>
-    /// Should the bars be grouped on index axis.
-    /// When <see langword="true" />, all the datasets at same index value will be placed next to each other centering on that
-    /// index value.
+    /// Gets or sets a value indicating whether the bars should be grouped on the index axis.
+    /// When <see langword="true" />, all the datasets at the same index value will be placed next to each other centering on that index value.
     /// When <see langword="false" />, each bar is placed on its actual index-axis value.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="true" />.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(true)]
+    [Description("Gets or sets a value indicating whether the bars should be grouped on the index axis.")]
     public bool Grouped { get; set; } = true;
 
     /// <summary>
-    /// The bar background color when hovered.
+    /// Gets or sets the bar background color when hovered.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
     /// </summary>
-    /// <remarks>
-    /// Default value is <see langword="null"/>.
-    /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the bar background color when hovered.")]
+    [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? HoverBackgroundColor { get; set; }
 
     /// <summary>
-    /// The bar border color when hovered.
+    /// Gets or sets the bar border color when hovered.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
     /// </summary>
-    /// <remarks>
-    /// Default value is <see langword="null"/>.
-    /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the bar border color when hovered.")]
+    [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? HoverBorderColor { get; set; }
 
     /// <summary>
-    /// The bar border radius when hovered (in pixels).
-    /// </summary>
-    /// <remarks>
+    /// Gets or sets the bar border radius when hovered (in pixels).
+    /// <para>
     /// Default value is 0.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(0)]
+    [Description("Gets or sets the bar border radius when hovered (in pixels).")]
+    [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? HoverBorderRadius { get; set; }
 
     /// <summary>
-    /// The bar border width when hovered (in pixels).
-    /// </summary>
-    /// <remarks>
+    /// Gets or sets the bar border width when hovered (in pixels).
+    /// <para>
     /// Default value is 1.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(1)]
+    [Description("Gets or sets the bar border width when hovered (in pixels).")]
+    [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? HoverBorderWidth { get; set; }
 
     /// <summary>
-    /// The base axis of the chart. 'x' for vertical charts and 'y' for horizontal charts.
+    /// Gets or sets the base axis of the chart. 'x' for vertical charts and 'y' for horizontal charts.
     /// Supported values are 'x' and 'y'.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="null" />.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the base axis of the chart. 'x' for vertical charts and 'y' for horizontal charts. Supported values are 'x' and 'y'.")]
+    [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? IndexAxis { get; set; }
 
@@ -139,20 +196,28 @@ public class BarChartDataset : ChartDataset<double?>
     //https://www.chartjs.org/docs/latest/charts/bar.html#inflateamount
 
     /// <summary>
-    /// Set this to ensure that bars are not sized thicker than this.
+    /// Gets or sets the maximum bar thickness to ensure that bars are not sized thicker than this.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
     /// </summary>
-    /// <remarks>
-    /// Default value is <see langword="null"/>.
-    /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the maximum bar thickness to ensure that bars are not sized thicker than this.")]
+    [ParameterTypeName("double?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? MaxBarThickness { get; set; }
 
     /// <summary>
-    /// Set this to ensure that bars have a minimum length in pixels.
+    /// Gets or sets the minimum bar length in pixels.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
     /// </summary>
-    /// <remarks>
-    /// Default value is <see langword="null"/>.
-    /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the minimum bar length in pixels.")]
+    [ParameterTypeName("double?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? MinBarLength { get; set; }
 
@@ -160,31 +225,42 @@ public class BarChartDataset : ChartDataset<double?>
     //https://www.chartjs.org/docs/latest/configuration/elements.html#point-styles
 
     /// <summary>
-    /// If <see langword="true"/>, null or undefined values will not be used for spacing calculations when determining bar size.
+    /// Gets or sets a value indicating whether null or undefined values will not be used for spacing calculations when determining bar size.
+    /// <para>
+    /// Default value is <see langword="false" />.
+    /// </para>
     /// </summary>
-    /// <remarks>
-    /// Default value is <see langword="false"/>.
-    /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(false)]
+    [Description("Gets or sets a value indicating whether null or undefined values will not be used for spacing calculations when determining bar size.")]
     public bool SkipNull { get; set; }
 
     //Stack
     //https://www.chartjs.org/docs/latest/charts/bar.html#general
 
     /// <summary>
-    /// The ID of the x axis to plot this dataset on.
-    /// </summary>
-    /// <remarks>
+    /// Gets or sets the ID of the x axis to plot this dataset on.
+    /// <para>
     /// Default value is first x axis.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the ID of the x axis to plot this dataset on.")]
+    [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? XAxisID { get; set; }
 
     /// <summary>
-    /// The ID of the y axis to plot this dataset on.
-    /// </summary>
-    /// <remarks>
+    /// Gets or sets the ID of the y axis to plot this dataset on.
+    /// <para>
     /// Default value is first y axis.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the ID of the y axis to plot this dataset on.")]
+    [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? YAxisID { get; set; }
 
@@ -202,13 +278,16 @@ public class BarChartDatasetDataLabels
     #endregion
 
     #region Properties, Indexers
-    
+
     /// <summary>
     /// Gets or sets the data labels alignment. 
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see cref="Alignment.Center"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(Alignment.Center)]
+    [Description("Gets or sets the data labels alignment.")]
     [JsonIgnore]
     public Alignment Alignment
     {
@@ -222,10 +301,13 @@ public class BarChartDatasetDataLabels
 
     /// <summary>
     /// Gets or sets the data labels anchor.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see cref="Anchor.None"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(Anchor.None)]
+    [Description("Gets or sets the data labels anchor.")]
     [JsonIgnore]
     public Anchor Anchor
     {
@@ -240,10 +322,14 @@ public class BarChartDatasetDataLabels
     /// <summary>
     /// Gets or sets the data labels alignment.
     /// Possible values: start, center, and end.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="null"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the data labels alignment. Possible values: start, center, and end.")]
+    [ParameterTypeName("string?")]
     [JsonPropertyName("align")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? DataLabelsAlignment { get; private set; }
@@ -251,10 +337,15 @@ public class BarChartDatasetDataLabels
     /// <summary>
     /// Gets or sets the data labels anchor.
     /// Possible values: start, center, and end.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="null"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the data labels anchor. Possible values: start, center, and end.")]
+    [ParameterTypeName("string?")]
+    [Parameter]
     [JsonPropertyName("anchor")]
     public string? DataLabelsAnchor { get; private set; }
 
