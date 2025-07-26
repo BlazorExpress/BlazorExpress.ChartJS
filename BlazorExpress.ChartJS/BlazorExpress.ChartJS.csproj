@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BlazorExpress.Core" Version="0.0.4" />
+    <PackageReference Include="BlazorExpress.Core" Version="0.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.17" />
   </ItemGroup>
 
