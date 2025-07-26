@@ -10,7 +10,7 @@
                 <span class="is-size-6 text-muted">@releaseShortDescription</span>
             </div>
             <div style="justify-items: center;">
-                <Image Src="@StringConstants.StaticAssets_Icons_Logo_png"
+                <Image Src="@DemoStringConstants.StaticAssets_Icons_Logo_png"
                        Dimension="ImageDimension.Is128x128"
                        alt="BlazorExpress Logo" />
             </div>
@@ -32,19 +32,21 @@
 </div>
 
 <div class="container is-max-desktop mb-4">
-    <PageLinks Title="All Components" Category="@PageLinkCategory.All" />
+    <IndexComponentLinks Title="All Components" Category="@DemoPageLinkCategory.All" />
 
-    <PageLinks Title="Utils" Category="@PageLinkCategory.Utils" />
+    <IndexComponentLinks Title="Form Components" Category="@DemoPageLinkCategory.Utils" />
 
     <DoYouKnow />
+
+    <StarOnGitHub />
 </div>
 
 @code {
     private const string pageUrl = "/";
-    private const string pageTitle = $"{StringConstants.NugetPackageName} Components <br /> Fast, Free & Open Source";
-    private const string pageDescription = $"Get started with {StringConstants.NugetPackageDisplayName}. Build high-performance, responsive Blazor apps quickly with our free, open-source UI library. Developers, build in minutes!";
-    private const string metaTitle = $"{StringConstants.NugetPackageName} Components: Fast, Free & Open Source";
-    private const string metaDescription = $"Get started with {StringConstants.NugetPackageDisplayName}. Build high-performance, responsive Blazor apps quickly with our free, open-source UI library. Developers, build in minutes!";
+    private const string pageTitle = $"{DemoStringConstants.NugetPackageName} Components <br /> Fast, Free & Open Source";
+    private const string pageDescription = $"Get started with {DemoStringConstants.NugetPackageDisplayName}. Build high-performance, responsive Blazor apps quickly with our free, open-source UI library. Developers, build in minutes!";
+    private const string metaTitle = $"{DemoStringConstants.NugetPackageName} Components: Fast, Free & Open Source";
+    private const string metaDescription = $"Get started with {DemoStringConstants.NugetPackageDisplayName}. Build high-performance, responsive Blazor apps quickly with our free, open-source UI library. Developers, build in minutes!";
     private const string imageUrl = "https://i.imgur.com/FGgEMp6.jpg"; // TODO: update
 
     private string version = default!;

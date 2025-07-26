@@ -11,7 +11,7 @@
 
 @* <img src="https://i.imgur.com/IX3bajc.png" class="img-fluid" alt="Blazor Bar Chart - API Documentation" /> *@
 
-<DemoLink Href="@RouteConstants.Demos_BarChart" />
+<DemoLink Href="@DemoRouteConstants.Demos_BarChart" />
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="Parameters" PageUrl="@pageUrl" Link="parameters">
     <DocxTable TItem="BarChart" DocType="DocType.Parameters" />
@@ -38,7 +38,7 @@
 </Section>
 
 @code {
-    private const string pageUrl = RouteConstants.Docs_BarChart;
+    private const string pageUrl = DemoRouteConstants.Docs_BarChart;
     private const string pageTitle = "Bar Chart";
     private const string pageDescription = "Comprehensive API documentation for the Blazor <code>Bar Chart</code> component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
     private const string metaTitle = "Blazor Bar Chart API Reference & Configuration Guide";

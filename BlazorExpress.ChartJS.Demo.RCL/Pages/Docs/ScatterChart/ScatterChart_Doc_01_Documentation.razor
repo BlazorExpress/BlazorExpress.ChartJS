@@ -11,14 +11,14 @@
 
 @* <img src="https://i.imgur.com/IX3bajc.png" class="img-fluid" alt="Blazor Bar Chart - API Documentation" /> *@
 
-<DemoLink Href="@RouteConstants.Demos_ScatterChart" />
+<DemoLink Href="@DemoRouteConstants.Demos_ScatterChart" />
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="Parameters" PageUrl="@pageUrl" Link="parameters">
     <DocxTable TItem="Block" DocType="DocType.Parameters" />
 </Section>
 
 @code {
-    private const string pageUrl = RouteConstants.Docs_ScatterChart;
+    private const string pageUrl = DemoRouteConstants.Docs_ScatterChart;
     private const string pageTitle = "Scatter Chart";
     private const string pageDescription = "This documentation provides a comprehensive reference for the <code>Block</code> component, guiding you through its configuration options.";
     private const string metaTitle = "Blazor Scatter Chart Component";

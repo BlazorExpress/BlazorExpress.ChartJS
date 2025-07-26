@@ -38,7 +38,7 @@ public partial class BlogMainLayout : MainLayoutBase
             Name = "Getting Started",
             CssClass = "is-size-7 has-text-weight-bold has-text-danger",
             Links = [
-                new Link { Href = RouteConstants.Docs_GettingStarted, Text = "Getting started" }
+                new Link { Href = DemoRouteConstants.Docs_Getting_Started_Prefix, Text = "Getting started" }
             ]
         });
 
@@ -48,13 +48,13 @@ public partial class BlogMainLayout : MainLayoutBase
             Name = "Charts",
             CssClass = "is-size-7 has-text-weight-bold has-text-warning",
             Links = [
-                new Link { Href = RouteConstants.Docs_BarChart, Text = "Bar chart" },
-                new Link { Href = RouteConstants.Docs_DoughnutChart, Text = "Doughnut chart" },
-                new Link { Href = RouteConstants.Docs_LineChart, Text = "Line chart" },
-                new Link { Href = RouteConstants.Docs_PieChart, Text = "Pie chart" },
-                new Link { Href = RouteConstants.Docs_PolarAreaChart, Text = "PolarArea chart" },
-                new Link { Href = RouteConstants.Docs_RadarChart, Text = "Radar chart" },
-                new Link { Href = RouteConstants.Docs_ScatterChart, Text = "Scatter chart" }
+                new Link { Href = DemoRouteConstants.Docs_BarChart, Text = "Bar chart" },
+                new Link { Href = DemoRouteConstants.Docs_DoughnutChart, Text = "Doughnut chart" },
+                new Link { Href = DemoRouteConstants.Docs_LineChart, Text = "Line chart" },
+                new Link { Href = DemoRouteConstants.Docs_PieChart, Text = "Pie chart" },
+                new Link { Href = DemoRouteConstants.Docs_PolarAreaChart, Text = "PolarArea chart" },
+                new Link { Href = DemoRouteConstants.Docs_RadarChart, Text = "Radar chart" },
+                new Link { Href = DemoRouteConstants.Docs_ScatterChart, Text = "Scatter chart" }
             ]
         });
 
@@ -64,7 +64,7 @@ public partial class BlogMainLayout : MainLayoutBase
             Name = "UTILS",
             CssClass = "is-size-7 has-text-weight-bold has-text-info",
             Links = [
-                new Link { Href = RouteConstants.Demos_ColorUtils, Text = "Color Utils" },
+                new Link { Href = DemoRouteConstants.Demos_ColorUtils, Text = "Color Utils" },
             ]
         });
 

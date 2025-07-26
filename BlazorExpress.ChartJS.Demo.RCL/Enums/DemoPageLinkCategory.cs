@@ -2,7 +2,7 @@
 
 namespace BlazorExpress.ChartJS.Demo.RCL;
 
-public enum PageLinkCategory
+public enum DemoPageLinkCategory
 {
     [Description("All")]
     All,

@@ -1,6 +1,6 @@
 ﻿namespace BlazorExpress.ChartJS.Demo.RCL;
 
-public static class RouteConstants
+public static class DemoRouteConstants
 {
     public const string Home_Prefix = "/";
 

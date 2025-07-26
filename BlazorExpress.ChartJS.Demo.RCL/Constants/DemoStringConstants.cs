@@ -1,6 +1,6 @@
 ﻿namespace BlazorExpress.ChartJS.Demo.RCL;
 
-public static class StringConstants
+public static class DemoStringConstants
 {
     #region Fields and Constants
 

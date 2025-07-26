@@ -38,9 +38,9 @@ public partial class DocsMainLayout : MainLayoutBase
             Name = "GETTING STARTED",
             CssClass = "is-size-7 has-text-weight-bold has-text-danger",
             Links = [
-                new Link { Href = RouteConstants.Docs_Getting_Started_Introduction, Text = "Introduction" },
-                new Link { Href = RouteConstants.Docs_Getting_Started_Blazor_WebAssembly_NET8, Text = "Blazor WebAssembly (.NET 8)" },
-                new Link { Href = RouteConstants.Docs_Getting_Started_Blazor_WebApp_NET_8_Interactive_Render_Mode_Server_Global_Location, Text = "Blazor WebApp (.NET 8) Server" },
+                new Link { Href = DemoRouteConstants.Docs_Getting_Started_Introduction, Text = "Introduction" },
+                new Link { Href = DemoRouteConstants.Docs_Getting_Started_Blazor_WebAssembly_NET8, Text = "Blazor WebAssembly (.NET 8)" },
+                new Link { Href = DemoRouteConstants.Docs_Getting_Started_Blazor_WebApp_NET_8_Interactive_Render_Mode_Server_Global_Location, Text = "Blazor WebApp (.NET 8) Server" },
                 //new Link { Href = RouteConstants.Docs_Getting_Started_WebApp_Auto_NET_8, Text = "Blazor WebApp (.NET 8) Auto" },
                 //new Link { Href = RouteConstants.Docs_Getting_Started_MAUI_NET_8, Text = "MAUI Blazor Hybrid App (.NET 8)" },
             ]
@@ -52,13 +52,13 @@ public partial class DocsMainLayout : MainLayoutBase
             Name = "Charts",
             CssClass = "is-size-7 has-text-weight-bold has-text-warning",
             Links = [
-                new Link { Href = RouteConstants.Docs_BarChart, Text = "Bar chart" },
-                new Link { Href = RouteConstants.Docs_DoughnutChart, Text = "Doughnut chart" },
-                new Link { Href = RouteConstants.Docs_LineChart, Text = "Line chart" },
-                new Link { Href = RouteConstants.Docs_PieChart, Text = "Pie chart" },
-                new Link { Href = RouteConstants.Docs_PolarAreaChart, Text = "PolarArea chart" },
-                new Link { Href = RouteConstants.Docs_RadarChart, Text = "Radar chart" },
-                new Link { Href = RouteConstants.Docs_ScatterChart, Text = "Scatter chart" }
+                new Link { Href = DemoRouteConstants.Docs_BarChart, Text = "Bar chart" },
+                new Link { Href = DemoRouteConstants.Docs_DoughnutChart, Text = "Doughnut chart" },
+                new Link { Href = DemoRouteConstants.Docs_LineChart, Text = "Line chart" },
+                new Link { Href = DemoRouteConstants.Docs_PieChart, Text = "Pie chart" },
+                new Link { Href = DemoRouteConstants.Docs_PolarAreaChart, Text = "PolarArea chart" },
+                new Link { Href = DemoRouteConstants.Docs_RadarChart, Text = "Radar chart" },
+                new Link { Href = DemoRouteConstants.Docs_ScatterChart, Text = "Scatter chart" }
             ]
         });
 
@@ -68,7 +68,7 @@ public partial class DocsMainLayout : MainLayoutBase
             Name = "UTILS",
             CssClass = "is-size-7 has-text-weight-bold has-text-info",
             Links = [
-                new Link { Href = RouteConstants.Demos_ColorUtils, Text = "Color Utils" },
+                new Link { Href = DemoRouteConstants.Demos_ColorUtils, Text = "Color Utils" },
             ]
         });
 

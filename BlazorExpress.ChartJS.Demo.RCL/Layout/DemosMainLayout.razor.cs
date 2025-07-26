@@ -38,13 +38,13 @@ public partial class DemosMainLayout : MainLayoutBase
             Name = "Charts",
             CssClass = "is-size-7 has-text-weight-bold has-text-warning",
             Links = [
-                new Link { Href = RouteConstants.Demos_BarChart, Text = "Bar chart" },
-                new Link { Href = RouteConstants.Demos_DoughnutChart, Text = "Doughnut chart" },
-                new Link { Href = RouteConstants.Demos_LineChart, Text = "Line chart" },
-                new Link { Href = RouteConstants.Demos_PieChart, Text = "Pie chart" },
-                new Link { Href = RouteConstants.Demos_PolarAreaChart, Text = "PolarArea chart" },
-                new Link { Href = RouteConstants.Demos_RadarChart, Text = "Radar chart" },
-                new Link { Href = RouteConstants.Demos_ScatterChart, Text = "Scatter chart" }
+                new Link { Href = DemoRouteConstants.Demos_BarChart, Text = "Bar chart" },
+                new Link { Href = DemoRouteConstants.Demos_DoughnutChart, Text = "Doughnut chart" },
+                new Link { Href = DemoRouteConstants.Demos_LineChart, Text = "Line chart" },
+                new Link { Href = DemoRouteConstants.Demos_PieChart, Text = "Pie chart" },
+                new Link { Href = DemoRouteConstants.Demos_PolarAreaChart, Text = "PolarArea chart" },
+                new Link { Href = DemoRouteConstants.Demos_RadarChart, Text = "Radar chart" },
+                new Link { Href = DemoRouteConstants.Demos_ScatterChart, Text = "Scatter chart" }
             ]
         });
 
@@ -54,7 +54,7 @@ public partial class DemosMainLayout : MainLayoutBase
             Name = "UTILS",
             CssClass = "is-size-7 has-text-weight-bold has-text-info",
             Links = [
-                new Link { Href = RouteConstants.Demos_ColorUtils, Text = "Color Utils" },
+                new Link { Href = DemoRouteConstants.Demos_ColorUtils, Text = "Color Utils" },
             ]
         });
 
