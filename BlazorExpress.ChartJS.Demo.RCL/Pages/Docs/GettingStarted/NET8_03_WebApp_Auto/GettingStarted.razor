@@ -1,4 +1,4 @@
-@attribute [Route(pageUrl)]
+@* @attribute [Route(pageUrl)]
 @layout DocsMainLayout
 
 <PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
@@ -24,7 +24,7 @@
     <div class="mb-3">
         Register tag helpers in <b>_Imports.razor</b>.
     </div>
-    <Snippet LanguageCode="LanguageCode.Razor" FilePath="~\Components\Pages\GettingStarted\NET8_02_WebApp_Server_Global\Getting_Started_Snippet_02_Register.txt" />
+    <CodeChunk LanguageCode="LanguageCode.Razor" FilePath="~\Components\Pages\GettingStarted\NET8_02_WebApp_Server_Global\Getting_Started_Snippet_02_Register.txt" />
 </Section>
 
 <Section Class="p-0" Size="HeadingSize.H3" Name="Server Project" PageUrl="@pageUrl" Link="server-project" />
@@ -33,7 +33,7 @@
     <div class="mb-3">
         Insert the following references into the <b>body</b> section of the <b>Components/App.razor</b> file, immediately after the <b>_framework/blazor.web.js</b> reference:
     </div>
-    <Snippet LanguageCode="LanguageCode.JavaScript" FilePath="~\Components\Pages\GettingStarted\NET8_02_WebApp_Server_Global\Getting_Started_Snippet_01_Scripts.html" />
+    <CodeChunk LanguageCode="LanguageCode.JavaScript" FilePath="~\Components\Pages\GettingStarted\NET8_02_WebApp_Server_Global\Getting_Started_Snippet_01_Scripts.html" />
 </Section>
 
 @code {
@@ -59,4 +59,4 @@
             // do nothing
         }
     }
-}
+} *@
