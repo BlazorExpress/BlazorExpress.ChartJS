@@ -48,7 +48,7 @@
     protected override void OnInitialized()
     {
         componentsLinks = DemoPageLinkUtil.GetDemosLinks()
-        .Where(link => link.Categories.Contains(Category) && link.IsActive && link.Text != "Getting Started")
+        .Where(link => link.Categories.Contains(Category) && link.IsActive && !link.ExcludedFromHomePage)
         .ToHashSet();
     }
 }

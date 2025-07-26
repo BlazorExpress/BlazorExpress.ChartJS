@@ -47,20 +47,20 @@ public partial class DocsMainLayout : MainLayoutBase
         });
 
         // CHARTS
-        groups.Add(new LinkGroup
-        {
-            Name = "Charts",
-            CssClass = "is-size-7 has-text-weight-bold has-text-warning",
-            Links = [
-                new Link { Href = DemoRouteConstants.Docs_BarChart, Text = "Bar chart" },
-                new Link { Href = DemoRouteConstants.Docs_DoughnutChart, Text = "Doughnut chart" },
-                new Link { Href = DemoRouteConstants.Docs_LineChart, Text = "Line chart" },
-                new Link { Href = DemoRouteConstants.Docs_PieChart, Text = "Pie chart" },
-                new Link { Href = DemoRouteConstants.Docs_PolarAreaChart, Text = "PolarArea chart" },
-                new Link { Href = DemoRouteConstants.Docs_RadarChart, Text = "Radar chart" },
-                new Link { Href = DemoRouteConstants.Docs_ScatterChart, Text = "Scatter chart" }
-            ]
-        });
+        //groups.Add(new LinkGroup
+        //{
+        //    Name = "Charts",
+        //    CssClass = "is-size-7 has-text-weight-bold has-text-warning",
+        //    Links = [
+        //        new Link { Href = DemoRouteConstants.Docs_BarChart, Text = "Bar chart" },
+        //        new Link { Href = DemoRouteConstants.Docs_DoughnutChart, Text = "Doughnut chart" },
+        //        new Link { Href = DemoRouteConstants.Docs_LineChart, Text = "Line chart" },
+        //        new Link { Href = DemoRouteConstants.Docs_PieChart, Text = "Pie chart" },
+        //        new Link { Href = DemoRouteConstants.Docs_PolarAreaChart, Text = "PolarArea chart" },
+        //        new Link { Href = DemoRouteConstants.Docs_RadarChart, Text = "Radar chart" },
+        //        new Link { Href = DemoRouteConstants.Docs_ScatterChart, Text = "Scatter chart" }
+        //    ]
+        //});
 
         // UTILS
         groups.Add(new LinkGroup
