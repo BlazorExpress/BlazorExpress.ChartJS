@@ -1,6 +1,12 @@
 ﻿namespace BlazorExpress.ChartJS;
 
-public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDisposable
+/// <summary>
+/// Base class for Chart components.
+/// <para>
+///     <see href="https://www.chartjs.org/docs/latest/" />
+/// </para>
+/// </summary>
+public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposable, IAsyncDisposable
 {
     #region Fields and Constants
 
@@ -14,73 +20,6 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
 
     #region Methods
 
-    /// <inheritdoc />
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        IsRenderComplete = true;
-
-        await base.OnAfterRenderAsync(firstRender);
-    }
-
-    /// <inheritdoc />
-    protected override void OnInitialized()
-    {
-        Id ??= IdUtility.GetNextId();
-
-        base.OnInitialized();
-    }
-
-    public static string BuildClassNames(params (string? cssClass, bool when)[] cssClassList)
-    {
-        var list = new HashSet<string>();
-
-        if (cssClassList is not null && cssClassList.Any())
-            foreach (var (cssClass, when) in cssClassList)
-                if (!string.IsNullOrWhiteSpace(cssClass) && when)
-                    list.Add(cssClass);
-
-        if (list.Any())
-            return string.Join(" ", list);
-
-        return string.Empty;
-    }
-
-    public static string BuildClassNames(string? userDefinedCssClass, params (string? cssClass, bool when)[] cssClassList)
-    {
-        var list = new HashSet<string>();
-
-        if (cssClassList is not null && cssClassList.Any())
-            foreach (var (cssClass, when) in cssClassList)
-                if (!string.IsNullOrWhiteSpace(cssClass) && when)
-                    list.Add(cssClass);
-
-        if (!string.IsNullOrWhiteSpace(userDefinedCssClass))
-            list.Add(userDefinedCssClass.Trim());
-
-        if (list.Any())
-            return string.Join(" ", list);
-
-        return string.Empty;
-    }
-
-    public static string BuildStyleNames(string? userDefinedCssStyle, params (string? cssStyle, bool when)[] cssStyleList)
-    {
-        var list = new HashSet<string>();
-
-        if (cssStyleList is not null && cssStyleList.Any())
-            foreach (var (cssStyle, when) in cssStyleList)
-                if (!string.IsNullOrWhiteSpace(cssStyle) && when)
-                    list.Add(cssStyle);
-
-        if (!string.IsNullOrWhiteSpace(userDefinedCssStyle))
-            list.Add(userDefinedCssStyle.Trim());
-
-        if (list.Any())
-            return string.Join(';', list);
-
-        return string.Empty;
-    }
-
     //public async Task Stop() { }
 
     //public async Task ToBase64Image() { }
@@ -92,25 +31,6 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
     public virtual async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data) => await Task.FromResult(chartData);
 
     public virtual async Task<ChartData> AddDatasetAsync(ChartData chartData, IChartDataset chartDataset, IChartOptions chartOptions) => await Task.FromResult(chartData);
-
-    /// <inheritdoc />
-    /// <seealso href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable?view=net-6.0" />
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    /// <inheritdoc />
-    /// <seealso
-    ///     href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-disposeasync#implement-both-dispose-and-async-dispose-patterns" />
-    public async ValueTask DisposeAsync()
-    {
-        await DisposeAsyncCore(true).ConfigureAwait(false);
-
-        Dispose(false);
-        GC.SuppressFinalize(this);
-    }
 
     //public async Task Clear() { }
 
@@ -159,34 +79,6 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
 
         var _data = GetChartDataObject(chartData);
         await JSRuntime.InvokeVoidAsync(ChartInterop.Update, Id, GetChartType(), _data, chartOptions);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!isDisposed)
-        {
-            if (disposing)
-            {
-                // cleanup
-            }
-
-            isDisposed = true;
-        }
-    }
-
-    protected virtual ValueTask DisposeAsyncCore(bool disposing)
-    {
-        if (!isAsyncDisposed)
-        {
-            if (disposing)
-            {
-                // cleanup
-            }
-
-            isAsyncDisposed = true;
-        }
-
-        return ValueTask.CompletedTask;
     }
 
     protected string GetChartType() =>
@@ -242,74 +134,93 @@ public abstract class ChartComponentBase : ComponentBase, IDisposable, IAsyncDis
 
     #region Properties, Indexers
 
-    [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
-
-    [Parameter] public string? Class { get; set; }
-
-    protected virtual string? ClassNames => Class;
-
+    /// <summary>
+    /// Gets or sets the CSS class name for the container element.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the CSS class name for the container element.")]
     [Parameter]
     public string? ContainerClass { get; set; }
 
+    /// <summary>
+    /// Gets or sets the CSS style string applied to the container element.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the CSS style string applied to the container element.")]
     [Parameter]
     public string? ContainerStyle { get; set; }
-
-    public ElementReference Element { get; set; }
 
     /// <summary>
     /// Gets or sets chart container height.
     /// The default unit of measure is <see cref="Unit.Px" />.
     /// To change the unit of measure see <see cref="HeightUnit" />.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
     /// </summary>
-    /// <remarks>
-    /// Default value is null.
-    /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets chart container height.")]
     [Parameter]
     public int? Height { get; set; }
 
     /// <summary>
     /// Gets or sets chart container height unit of measure.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see cref="Unit.Px" />.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(Unit.Px)]
+    [Description("Gets or sets chart container height unit of measure.")]
     [Parameter]
     public Unit HeightUnit { get; set; } = Unit.Px;
 
-    [Parameter]
-    public string? Id { get; set; }
-
+    /// <summary>
+    /// Gets or sets a value indicating whether the container is fluid.
+    /// <para>
+    /// Default value is <see langword="false" />.
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(false)]
+    [Description("Gets or sets a value indicating whether the container is fluid.")]
     [Parameter]
     public bool IsContainerFluid { get; set; }
 
     protected bool IsRenderComplete { get; private set; }
 
-    [Inject]
-    protected IJSRuntime JSRuntime { get; set; } = default!;
-
-    [Parameter]
-    public string? Style { get; set; }
-
-    protected virtual string? StyleNames => Style;
-
     /// <summary>
-    /// Get or sets chart container width.
+    /// Gets or sets chart container width.
     /// The default unit of measure is <see cref="Unit.Px" />.
     /// To change the unit of measure see <see cref="WidthUnit" />.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
     /// </summary>
-    /// <remarks>
-    /// Default value is null.
-    /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets chart container width.")]
     [Parameter]
     public int? Width { get; set; }
 
     /// <summary>
     /// Gets or sets chart container width unit of measure.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see cref="Unit.Px" />.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(Unit.Px)]
+    [Description("Gets or sets chart container width unit of measure.")]
     [Parameter]
     public Unit WidthUnit { get; set; } = Unit.Px;
 
