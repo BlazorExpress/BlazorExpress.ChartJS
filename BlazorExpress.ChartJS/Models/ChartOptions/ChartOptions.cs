@@ -3,7 +3,10 @@
 public interface IChartOptions { }
 
 /// <summary>
-///     <see href="https://www.chartjs.org/docs/latest/general/options.html" />
+/// Represents the base configuration options for all chart types.
+/// <para>
+///     See <see href="https://www.chartjs.org/docs/latest/general/options.html" /> for more information.
+/// </para>
 /// </summary>
 public class ChartOptions : IChartOptions
 {
@@ -13,19 +16,28 @@ public class ChartOptions : IChartOptions
     //https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options
 
     /// <summary>
-    /// Gets or sets the locale.
-    /// By default, the chart is using the default locale of the platform which is running on.
+    /// Gets or sets the locale for the chart.
+    /// By default, the chart uses the default locale of the platform it is running on.
     /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="null" />.
+    /// </remarks>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the locale for the chart. By default, the chart uses the default locale of the platform it is running on.")]
     public string? Locale { get; set; }
 
     /// <summary>
-    /// Maintain the original canvas aspect ratio (width / height) when resizing.
-    /// <see href="https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options" />.
+    /// Gets or sets a value indicating whether to maintain the original canvas aspect ratio (width / height) when resizing.
     /// </summary>
     /// <remarks>
     /// Default value is <see langword="true" />.
+    /// See <see href="https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options" />.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(true)]
+    [Description("Gets or sets a value indicating whether to maintain the original canvas aspect ratio (width / height) when resizing.")]
     public bool MaintainAspectRatio { get; set; } = true;
 
     //onResize
@@ -35,12 +47,15 @@ public class ChartOptions : IChartOptions
     //https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options
 
     /// <summary>
-    /// Resizes the chart canvas when its container does.
-    /// <see href="https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options" />.    ///
+    /// Gets or sets a value indicating whether the chart canvas should resize when its container does.
     /// </summary>
     /// <remarks>
     /// Default value is <see langword="true" />.
+    /// See <see href="https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options" />.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(true)]
+    [Description("Gets or sets a value indicating whether the chart canvas should resize when its container does.")]
     public bool Responsive { get; set; } = true;
 
     #endregion
