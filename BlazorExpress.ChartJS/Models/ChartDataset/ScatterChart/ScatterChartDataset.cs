@@ -337,5 +337,3 @@ public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
 
     #endregion
 }
-
-public class ScatterChartDatasetDataLabels : ChartDatasetDataLabels { }

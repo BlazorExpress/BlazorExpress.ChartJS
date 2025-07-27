@@ -267,5 +267,3 @@ public class RadarChartDataset : ChartDataset<double?>
 
     #endregion
 }
-
-public class RadarChartDatasetDataLabels : ChartDatasetDataLabels { }
