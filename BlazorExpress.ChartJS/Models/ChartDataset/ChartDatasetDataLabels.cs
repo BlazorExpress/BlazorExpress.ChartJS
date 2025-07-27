@@ -18,10 +18,13 @@ public class ChartDatasetDataLabels
 
     /// <summary>
     /// Gets or sets the data labels alignment. 
+    /// <para>
+    /// Default value is <see cref="Alignment.Center"/>.
+    /// </para>
     /// </summary>
-    /// <remarks>
-    /// Default value is <see cref="Alignment.None"/>.
-    /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(Alignment.Center)]
+    [Description("Gets or sets the data labels alignment.")]
     [JsonIgnore]
     public Alignment Alignment
     {
@@ -29,16 +32,19 @@ public class ChartDatasetDataLabels
         set
         {
             alignment = value;
-            DataLabelsAlignment = value.ToChartDatasetDataLabelAlignmentString();
+            DataLabelsAlignment = value.ToAlignmentString();
         }
     }
 
     /// <summary>
     /// Gets or sets the data labels anchor.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see cref="Anchor.None"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(Anchor.None)]
+    [Description("Gets or sets the data labels anchor.")]
     [JsonIgnore]
     public Anchor Anchor
     {
@@ -46,7 +52,7 @@ public class ChartDatasetDataLabels
         set
         {
             anchor = value;
-            DataLabelsAnchor = value.ToChartDatasetDataLabelAnchorString();
+            DataLabelsAnchor = value.ToAnchorString();
         }
     }
 
@@ -57,10 +63,14 @@ public class ChartDatasetDataLabels
     /// <summary>
     /// Gets or sets the data labels alignment.
     /// Possible values: start, center, and end.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="null"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the data labels alignment. Possible values: start, center, and end.")]
+    [ParameterTypeName("string?")]
     [JsonPropertyName("align")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? DataLabelsAlignment { get; private set; }
@@ -68,7 +78,14 @@ public class ChartDatasetDataLabels
     /// <summary>
     /// Gets or sets the data labels anchor.
     /// Possible values: start, center, and end.
+    /// <para>
+    /// Default value is <see langword="null"/>.
+    /// </para>
     /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the data labels anchor. Possible values: start, center, and end.")]
+    [ParameterTypeName("string?")]
     [JsonPropertyName("anchor")]
     public string? DataLabelsAnchor { get; private set; }
 
