@@ -47,14 +47,14 @@ public class ChartDataset<TData> : IChartDataset
     public List<TData>? Data { get; set; }
 
     /// <summary>
-    /// Configure the visibility of the dataset. Setting <c>Hidden</c> to <c>true</c> will prevent the dataset from being rendered in the Chart.
+    /// Configure the visibility of the dataset. Setting Hidden to true will prevent the dataset from being rendered in the Chart.
     /// <para>
     /// Default value is <see langword="false"/>.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(false)]
-    [Description("Configure the visibility of the dataset. Setting Hidden to true will prevent the dataset from being rendered in the Chart.")]
+    [Description("Configure the visibility of the dataset. Setting <code>Hidden</code> to <b>true</b> will prevent the dataset from being rendered in the Chart.")]
     public bool Hidden { get; set; }
 
     /// <summary>
