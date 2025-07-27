@@ -22,6 +22,7 @@ public partial class DoughnutChart : ChartComponentBase
     /// <returns>A task representing the asynchronous operation, with a result of the updated <see cref="ChartData"/>.</returns>
     [AddedVersion("1.0.0")]
     [Description("Asynchronously adds a new data entry to the specified chart data.")]
+    [MethodReturnTypeName($"Task<{nameof(ChartData)}>")]
     public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IChartDatasetData data)
     {
         if (chartData is null)
@@ -56,6 +57,7 @@ public partial class DoughnutChart : ChartComponentBase
     /// dataset added.</returns>
     [AddedVersion("1.0.0")]
     [Description("Asynchronously adds a new dataset to the specified chart data.")]
+    [MethodReturnTypeName($"Task<{nameof(ChartData)}>")]
     public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data)
     {
         if (chartData is null)
@@ -114,6 +116,7 @@ public partial class DoughnutChart : ChartComponentBase
     /// dataset added.</returns>
     [AddedVersion("1.0.0")]
     [Description("Asynchronously adds a dataset to the specified chart data.")]
+    [MethodReturnTypeName($"Task<{nameof(ChartData)}>")]
     public override async Task<ChartData> AddDatasetAsync(ChartData chartData, IChartDataset chartDataset, IChartOptions chartOptions)
     {
         if (chartData is null)
@@ -146,6 +149,7 @@ public partial class DoughnutChart : ChartComponentBase
     /// <returns>A task that represents the asynchronous initialization operation.</returns>
     [AddedVersion("1.0.0")]
     [Description("Asynchronously initializes the chart with the specified data and options.")]
+    [MethodReturnTypeName(nameof(Task))]
     public override async Task InitializeAsync(ChartData chartData, IChartOptions chartOptions, string[]? plugins = null)
     {
         if (chartData is not null && chartData.Datasets is not null)
@@ -166,6 +170,7 @@ public partial class DoughnutChart : ChartComponentBase
     /// <returns></returns>
     [AddedVersion("1.0.0")]
     [Description("Asynchronously updates the chart with the specified data and options.")]
+    [MethodReturnTypeName(nameof(Task))]
     public override async Task UpdateAsync(ChartData chartData, IChartOptions chartOptions)
     {
         if (chartData is not null && chartData.Datasets is not null)
