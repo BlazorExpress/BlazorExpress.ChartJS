@@ -2,13 +2,11 @@
 @inherits MainLayoutBase
 
 <BulmaLayout>
-
     <HeaderSection>
         <WebsiteNavbar BrandImgSrc="@DemoStringConstants.StaticAssets_Icons_Logo_png"
                        BrandImgAltText="Blazor Express Logo"
                        ApplicationName="@DemoStringConstants.NugetPackageName" />
     </HeaderSection>
-
     <SidebarSection>
         <Menu @ref="menuRef" Class="be-bulma-page-menu" IsScrollable="true">
             @foreach (var group in linkGroups)
@@ -41,7 +39,6 @@
             }
         </Menu>
     </SidebarSection>
-
     <ContentSection>
         <div class="p-5">
             <Button Class="bi bi-box-arrow-right menu-toggle-button ml-1 mt-0 mb-1" @onclick="ToggleSidebarSection" />
