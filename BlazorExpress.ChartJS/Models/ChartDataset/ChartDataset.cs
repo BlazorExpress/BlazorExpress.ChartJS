@@ -20,9 +20,9 @@ public class ChartDataset<TData> : IChartDataset
     #region Properties, Indexers
 
     /// <summary>
-    /// How to clip relative to chartArea. Positive value allows overflow, negative value clips that many pixels inside
-    /// chartArea. 0 = clip at chartArea.
-    /// Clipping can also be configured per side: clip: {left: 5, top: false, right: -2, bottom: 0}
+    /// How to clip relative to chartArea. Positive value allows overflow, negative value clips that 
+    /// many pixels inside chartArea. 0 = clip at chartArea.  Clipping can also be configured 
+    /// per side: clip: {left: 5, top: false, right: -2, bottom: 0}
     /// <para>
     /// Default value is <see langword="null"/>.
     /// </para>
@@ -47,14 +47,14 @@ public class ChartDataset<TData> : IChartDataset
     public List<TData>? Data { get; set; }
 
     /// <summary>
-    /// Configures the visibility state of the dataset. Set it to <see langword="true"/>, to hide the dataset from the chart.
+    /// Configure the visibility of the dataset. Setting <c>Hidden</c> to <c>true</c> will prevent the dataset from being rendered in the Chart.
     /// <para>
     /// Default value is <see langword="false"/>.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(false)]
-    [Description("Configures the visibility state of the dataset. Set it to <code>true</code>, to hide the dataset from the chart.")]
+    [Description("Configure the visibility of the dataset. Setting Hidden to true will prevent the dataset from being rendered in the Chart.")]
     public bool Hidden { get; set; }
 
     /// <summary>
@@ -90,6 +90,9 @@ public class ChartDataset<TData> : IChartDataset
     [DefaultValue(0)]
     [Description("The drawing order of dataset. Also affects order for stacking, tooltip and legend.")]
     public int Order { get; set; }
+
+    //Parsing
+    //https://www.chartjs.org/docs/latest/general/data-structures.html#dataset-configuration
 
     //Stack
     //https://www.chartjs.org/docs/latest/general/data-structures.html#dataset-configuration
