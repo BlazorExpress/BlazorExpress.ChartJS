@@ -9,12 +9,32 @@
     </SubTitleTemplate>
 </PageHero>
 
-@* <img src="https://i.imgur.com/IX3bajc.png" class="img-fluid" alt="Blazor Bar Chart - API Documentation" /> *@
+<Image Src="@DemoImageSrcConstants.PolarAreaChart" class="img-fluid" alt="Blazor PolarArea Chart - API Documentation" />
 
 <DemoLink Href="@DemoRouteConstants.Demos_PolarAreaChart" />
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="Parameters" PageUrl="@pageUrl" Link="parameters">
-    <DocxTable TItem="Block" DocType="DocType.Parameters" />
+    <DocxTable TItem="PolarAreaChart" DocType="DocType.Parameters" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Methods" PageUrl="@pageUrl" Link="methods">
+    <DocxTable TItem="PolarAreaChart" DocType="DocType.Methods" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="PolarAreaChartOptions Properties" PageUrl="@pageUrl" Link="polarareachart-options-properties">
+    <DocxTable TItem="PolarAreaChartOptions" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="PolarAreaChartDataset Properties" PageUrl="@pageUrl" Link="polarareachart-dataset-properties">
+    <DocxTable TItem="PolarAreaChartDataset" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="PolarAreaChartDatasetData Properties" PageUrl="@pageUrl" Link="polarareachart-dataset-data-properties">
+    <DocxTable TItem="PolarAreaChartDatasetData" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartData Properties" PageUrl="@pageUrl" Link="chart-data-properties">
+    <DocxTable TItem="ChartData" DocType="DocType.Properties" />
 </Section>
 
 @code {
@@ -23,5 +43,5 @@
     private const string pageDescription = "This documentation provides a comprehensive reference for the <code>Block</code> component, guiding you through its configuration options.";
     private const string metaTitle = "Blazor PolarArea Chart Component";
     private const string metaDescription = "This documentation provides a comprehensive reference for the Block component, guiding you through its configuration options.";
-    private const string imageUrl = "https://i.imgur.com/FGgEMp6.jpg"; // TODO: update
+    private const string imageUrl = @DemoImageSrcConstants.PolarAreaChart;
 }

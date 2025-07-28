@@ -9,7 +9,7 @@
     </SubTitleTemplate>
 </PageHero>
 
-@* <img src="https://i.imgur.com/IX3bajc.png" class="img-fluid" alt="Blazor Bar Chart - API Documentation" /> *@
+<Image Src="@DemoImageSrcConstants.LineChart" class="img-fluid" alt="Blazor Line Chart - API Documentation" />
 
 <DemoLink Href="@DemoRouteConstants.Demos_LineChart" />
 
@@ -21,11 +21,27 @@
     <DocxTable TItem="LineChart" DocType="DocType.Methods" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="LineChartOptions Properties" PageUrl="@pageUrl" Link="linechart-options-properties">
+    <DocxTable TItem="LineChartOptions" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="LineChartDataset Properties" PageUrl="@pageUrl" Link="linechart-dataset-properties">
+    <DocxTable TItem="LineChartDataset" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="LineChartDatasetData Properties" PageUrl="@pageUrl" Link="linechart-dataset-data-properties">
+    <DocxTable TItem="LineChartDatasetData" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartData Properties" PageUrl="@pageUrl" Link="chart-data-properties">
+    <DocxTable TItem="ChartData" DocType="DocType.Properties" />
+</Section>
+
 @code {
     private const string pageUrl = DemoRouteConstants.Docs_LineChart;
     private const string pageTitle = "Line Chart";
     private const string pageDescription = "Comprehensive API documentation for the Blazor <code>Line Chart</code> component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
     private const string metaTitle = "Blazor Line Chart API Reference & Configuration Guide";
     private const string metaDescription = "Comprehensive API documentation for the Blazor Line Chart component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
-    private const string imageUrl = "https://i.imgur.com/FGgEMp6.jpg"; // TODO: update with actual image URL
+    private const string imageUrl = @DemoImageSrcConstants.LineChart;
 }

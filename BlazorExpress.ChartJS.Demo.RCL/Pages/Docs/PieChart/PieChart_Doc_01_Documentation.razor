@@ -9,12 +9,32 @@
     </SubTitleTemplate>
 </PageHero>
 
-@* <img src="https://i.imgur.com/IX3bajc.png" class="img-fluid" alt="Blazor Bar Chart - API Documentation" /> *@
+<Image Src="@DemoImageSrcConstants.PieChart" class="img-fluid" alt="Blazor Pie Chart - API Documentation" />
 
 <DemoLink Href="@DemoRouteConstants.Demos_PieChart" />
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="Parameters" PageUrl="@pageUrl" Link="parameters">
-    <DocxTable TItem="Block" DocType="DocType.Parameters" />
+    <DocxTable TItem="PieChart" DocType="DocType.Parameters" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Methods" PageUrl="@pageUrl" Link="methods">
+    <DocxTable TItem="PieChart" DocType="DocType.Methods" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="PieChartOptions Properties" PageUrl="@pageUrl" Link="piechart-options-properties">
+    <DocxTable TItem="PieChartOptions" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="PieChartDataset Properties" PageUrl="@pageUrl" Link="piechart-dataset-properties">
+    <DocxTable TItem="PieChartDataset" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="PieChartDatasetData Properties" PageUrl="@pageUrl" Link="piechart-dataset-data-properties">
+    <DocxTable TItem="PieChartDatasetData" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartData Properties" PageUrl="@pageUrl" Link="chart-data-properties">
+    <DocxTable TItem="ChartData" DocType="DocType.Properties" />
 </Section>
 
 @code {
@@ -23,5 +43,5 @@
     private const string pageDescription = "This documentation provides a comprehensive reference for the <code>Block</code> component, guiding you through its configuration options.";
     private const string metaTitle = "Blazor Pie Chart Component";
     private const string metaDescription = "This documentation provides a comprehensive reference for the Block component, guiding you through its configuration options.";
-    private const string imageUrl = "https://i.imgur.com/FGgEMp6.jpg"; // TODO: update
+    private const string imageUrl = @DemoImageSrcConstants.PieChart;
 }
