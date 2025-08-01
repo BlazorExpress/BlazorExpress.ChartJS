@@ -29,6 +29,7 @@ public class DoughnutChartDataset : ChartDataset<double?>
     /// <para>
     /// Default value is 'center'.
     /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/doughnut.html#border-alignment" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("center")]
@@ -94,6 +95,7 @@ public class DoughnutChartDataset : ChartDataset<double?>
     /// <para>
     /// Default value is 0.
     /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/doughnut.html#border-radius" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(0)]
@@ -127,6 +129,9 @@ public class DoughnutChartDataset : ChartDataset<double?>
     [ParameterTypeName("double?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? Circumference { get; set; }
+
+    //Clip
+    //https://www.chartjs.org/docs/latest/charts/doughnut.html#general
 
     [AddedVersion("1.0.0")]
     [DefaultValue("new()")]
