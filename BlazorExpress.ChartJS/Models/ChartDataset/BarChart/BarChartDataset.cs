@@ -244,41 +244,41 @@ public class BarChartDataset : ChartDataset<double?>
     //https://www.chartjs.org/docs/latest/configuration/elements.html#point-styles
 
     /// <summary>
-    /// Gets or sets a value indicating whether null or undefined values will not be used for spacing calculations when determining bar size.
+    /// If true, null or undefined values will not be used for spacing calculations when determining bar size.
     /// <para>
     /// Default value is <see langword="false" />.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(false)]
-    [Description("Gets or sets a value indicating whether null or undefined values will not be used for spacing calculations when determining bar size.")]
+    [Description("If <b>true</b>, null or undefined values will not be used for spacing calculations when determining bar size.")]
     public bool SkipNull { get; set; }
 
     //Stack
     //https://www.chartjs.org/docs/latest/charts/bar.html#general
 
     /// <summary>
-    /// Gets or sets the ID of the x axis to plot this dataset on.
+    /// The ID of the x-axis to plot this dataset on.
     /// <para>
     /// Default value is first x axis.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Gets or sets the ID of the x axis to plot this dataset on.")]
+    [Description("The ID of the x-axis to plot this dataset on.")]
     [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? XAxisID { get; set; }
 
     /// <summary>
-    /// Gets or sets the ID of the y axis to plot this dataset on.
+    /// The ID of the y-axis to plot this dataset on.
     /// <para>
     /// Default value is first y axis.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Gets or sets the ID of the y axis to plot this dataset on.")]
+    [Description("The ID of the y-axis to plot this dataset on.")]
     [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? YAxisID { get; set; }

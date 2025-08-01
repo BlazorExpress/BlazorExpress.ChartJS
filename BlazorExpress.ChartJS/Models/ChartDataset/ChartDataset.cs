@@ -42,6 +42,7 @@ public class ChartDataset<TData> : IChartDataset
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
     [Description("Get or sets the Data.")]
+    [EditorRequired]
     [ParameterTypeName("List<TData>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<TData>? Data { get; set; }
