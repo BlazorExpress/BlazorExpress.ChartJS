@@ -3,18 +3,23 @@
 /// <summary>
 /// The bar chart allows a number of properties to be specified for each dataset. 
 /// These are used to set display properties for a specific dataset.
-/// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#dataset-properties" />
-/// <seealso href="https://www.chartjs.org/docs/latest/charts/bar.html#general" />
+/// <para>
+/// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#general" />
+/// </para>
+/// <para>
+/// <seealso href="https://www.chartjs.org/docs/latest/charts/bar.html#dataset-properties" />
+/// </para>
 /// </summary>
 public class BarChartDataset : ChartDataset<double?>
 {
     #region Properties, Indexers
 
     /// <summary>
-    /// Gets or sets the bar background color.
+    /// The bar background color.
     /// <para>
-    /// Default value is <c>rgba(0, 0, 0, 0.1)</c>.
+    /// Default value is rgba(0, 0, 0, 0.1).
     /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#styling" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("rgba(0, 0, 0, 0.1)")]
@@ -24,80 +29,88 @@ public class BarChartDataset : ChartDataset<double?>
     public List<string>? BackgroundColor { get; set; }
 
     /// <summary>
-    /// Gets or sets the percent (0-1) of the available width each bar should be within the category width.
+    /// Percent (0-1) of the available width each bar should be within the category width. 
     /// 1.0 will take the whole category width and put the bars right next to each other.
     /// <para>
     /// Default value is 0.9.
     /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#barpercentage" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(0.9)]
-    [Description("Gets or sets the percent (0-1) of the available width each bar should be within the category width.")]
+    [Description("Percent (0-1) of the available width each bar should be within the category width. 1.0 will take the whole category width and put the bars right next to each other.")]
     public double BarPercentage { get; set; } = 0.9;
 
     /// <summary>
-    /// Gets or sets the width of each bar, in pixels. When this is enforced, barPercentage and categoryPercentage are ignored.
+    /// If this value is a number, it is applied to the width of each bar, in pixels. 
+    /// When this is enforced, <see cref="BarPercentage" /> and <see cref="CategoryPercentage" /> are ignored.
     /// <para>
     /// Default value is <see langword="null" />.
     /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#barthickness" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Gets or sets the width of each bar, in pixels. When this is enforced, barPercentage and categoryPercentage are ignored.")]
+    [Description("Gets or sets the width of each bar, in pixels. When this is enforced, <code>BarPercentage</code> and <code>CategoryPercentage</code> are ignored.")]
     [ParameterTypeName("double?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? BarThickness { get; set; }
 
     /// <summary>
-    /// Gets or sets the bar border color.
+    /// The bar border color.
     /// <para>
-    /// Default value is <c>rgba(0, 0, 0, 0.1)</c>.
+    /// Default value is rgba(0, 0, 0, 0.1).
     /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#styling" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("rgba(0, 0, 0, 0.1)")]
-    [Description("Gets or sets the bar border color.")]
+    [Description("The bar border color.")]
     [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? BorderColor { get; set; }
 
     /// <summary>
-    /// Gets or sets the border radius.
+    /// The bar border radius (in pixels).
     /// <para>
     /// Default value is 0.
     /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#styling" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(0)]
-    [Description("Gets or sets the border radius.")]
+    [Description("The bar border radius (in pixels).")]
     [ParameterTypeName("List<double>?")]
     public List<double>? BorderRadius { get; set; }
 
+    //BorderSkipped
+    //https://www.chartjs.org/docs/latest/charts/bar.html#styling
+    //https://www.chartjs.org/docs/latest/api/interfaces/BarControllerDatasetOptions.html#borderskipped
+
     /// <summary>
-    /// Gets or sets the border width (in pixels).
+    /// The bar border width (in pixels).
     /// <para>
     /// Default value is 0.
     /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#styling" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(0)]
-    [Description("Gets or sets the border width (in pixels).")]
+    [Description("The bar border width (in pixels).")]
     [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? BorderWidth { get; set; }
 
-    //BorderSkipped
-    //https://www.chartjs.org/docs/latest/api/interfaces/BarControllerDatasetOptions.html#borderskipped
-
     /// <summary>
-    /// Gets or sets the percent (0-1) of the available width each category should be within the sample width.
+    /// Percent (0-1) of the available width each category should be within the sample width.
     /// <para>
     /// Default value is 0.8.
     /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#categorypercentage" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(0.8)]
-    [Description("Gets or sets the percent (0-1) of the available width each category should be within the sample width.")]
+    [Description("Percent (0-1) of the available width each category should be within the sample width.")]
     public double CategoryPercentage { get; set; } = 0.8;
 
     /// <summary>
@@ -114,80 +127,83 @@ public class BarChartDataset : ChartDataset<double?>
     public BarChartDatasetDataLabels Datalabels { get; set; } = new();
 
     /// <summary>
-    /// Gets or sets a value indicating whether the bars should be grouped on the index axis.
-    /// When <see langword="true" />, all the datasets at the same index value will be placed next to each other centering on that index value.
-    /// When <see langword="false" />, each bar is placed on its actual index-axis value.
+    /// Should the bars be grouped on index axis. 
+    /// When true, all the datasets at same index value will be placed next to each other centering on that index value. 
+    /// When false, each bar is placed on its actual index-axis value.
     /// <para>
     /// Default value is <see langword="true" />.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(true)]
-    [Description("Gets or sets a value indicating whether the bars should be grouped on the index axis.")]
+    [Description("Should the bars be grouped on index axis. When <b>true</b>, all the datasets at same index value will be placed next to each other centering on that index value. When <b>false</b>, each bar is placed on its actual index-axis value.")]
     public bool Grouped { get; set; } = true;
 
     /// <summary>
-    /// Gets or sets the bar background color when hovered.
+    /// The bar background color when hovered.
     /// <para>
     /// Default value is <see langword="null" />.
     /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#interactions" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Gets or sets the bar background color when hovered.")]
+    [Description("The bar background color when hovered.")]
     [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? HoverBackgroundColor { get; set; }
 
     /// <summary>
-    /// Gets or sets the bar border color when hovered.
+    /// The bar border color when hovered.
     /// <para>
     /// Default value is <see langword="null" />.
     /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#interactions" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Gets or sets the bar border color when hovered.")]
+    [Description("The bar border color when hovered.")]
     [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? HoverBorderColor { get; set; }
 
     /// <summary>
-    /// Gets or sets the bar border radius when hovered (in pixels).
+    /// The bar border radius when hovered (in pixels).
     /// <para>
     /// Default value is 0.
     /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#interactions" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(0)]
-    [Description("Gets or sets the bar border radius when hovered (in pixels).")]
+    [Description("The bar border radius when hovered (in pixels).")]
     [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? HoverBorderRadius { get; set; }
 
     /// <summary>
-    /// Gets or sets the bar border width when hovered (in pixels).
+    /// The bar border width when hovered (in pixels).
     /// <para>
     /// Default value is 1.
     /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#interactions" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(1)]
-    [Description("Gets or sets the bar border width when hovered (in pixels).")]
+    [Description("The bar border width when hovered (in pixels).")]
     [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? HoverBorderWidth { get; set; }
 
     /// <summary>
-    /// Gets or sets the base axis of the chart. 'x' for vertical charts and 'y' for horizontal charts.
-    /// Supported values are 'x' and 'y'.
+    /// The base axis of the dataset. 'x' for vertical bars and 'y' for horizontal bars.
     /// <para>
-    /// Default value is <see langword="null" />.
+    /// Default value is 'x'.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
-    [DefaultValue(null)]
-    [Description("Gets or sets the base axis of the chart. 'x' for vertical charts and 'y' for horizontal charts. Supported values are 'x' and 'y'.")]
+    [DefaultValue("x")]
+    [Description("The base axis of the dataset. 'x' for vertical bars and 'y' for horizontal bars.")]
     [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? IndexAxis { get; set; }
@@ -196,32 +212,35 @@ public class BarChartDataset : ChartDataset<double?>
     //https://www.chartjs.org/docs/latest/charts/bar.html#inflateamount
 
     /// <summary>
-    /// Gets or sets the maximum bar thickness to ensure that bars are not sized thicker than this.
+    /// Set this to ensure that bars are not sized thicker than this.
     /// <para>
     /// Default value is <see langword="null" />.
     /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#maxbarthickness" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Gets or sets the maximum bar thickness to ensure that bars are not sized thicker than this.")]
+    [Description("Set this to ensure that bars are not sized thicker than this.")]
     [ParameterTypeName("double?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? MaxBarThickness { get; set; }
 
     /// <summary>
-    /// Gets or sets the minimum bar length in pixels.
+    /// Set this to ensure that bars have a minimum length in pixels.
     /// <para>
     /// Default value is <see langword="null" />.
     /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#styling" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Gets or sets the minimum bar length in pixels.")]
+    [Description("Set this to ensure that bars have a minimum length in pixels.")]
     [ParameterTypeName("double?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? MinBarLength { get; set; }
 
     //PointStyle
+    //https://www.chartjs.org/docs/latest/charts/bar.html#styling
     //https://www.chartjs.org/docs/latest/configuration/elements.html#point-styles
 
     /// <summary>
