@@ -4,39 +4,21 @@ public static class EnumExtensions
 {
     #region Methods
 
-    public static string? ToAlignmentString(this Alignment alignment) =>
+    public static string? ToChartDatasetDataLabelAlignmentString(this DataLabelAlignment alignment) =>
         alignment switch
         {
-            Alignment.Start => "start",
-            Alignment.Center or Alignment.None => "center", // default
-            Alignment.End => "end",
+            DataLabelAlignment.Start => "start",
+            DataLabelAlignment.Center => "center", // default
+            DataLabelAlignment.End => "end",
             _ => null
         };
 
-    public static string? ToAnchorString(this Anchor anchor) =>
+    public static string? ToChartDatasetDataLabelAnchorString(this DataLabelAnchor anchor) =>
         anchor switch
         {
-            Anchor.Start => "start",
-            Anchor.Center or Anchor.None => "center", // default
-            Anchor.End => "end",
-            _ => null
-        };
-
-    public static string? ToChartDatasetDataLabelAlignmentString(this Alignment alignment) =>
-        alignment switch
-        {
-            Alignment.Start => "start",
-            Alignment.Center or Alignment.None => "center", // default
-            Alignment.End => "end",
-            _ => null
-        };
-
-    public static string? ToChartDatasetDataLabelAnchorString(this Anchor anchor) =>
-        anchor switch
-        {
-            Anchor.Start => "start",
-            Anchor.Center or Anchor.None => "center", // default
-            Anchor.End => "end",
+            DataLabelAnchor.Start => "start",
+            DataLabelAnchor.Center => "center", // default
+            DataLabelAnchor.End => "end",
             _ => null
         };
 

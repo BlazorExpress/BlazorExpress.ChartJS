@@ -8,9 +8,9 @@ public class ChartDatasetDataLabels
 {
     #region Fields and Constants
 
-    private Alignment alignment;
+    private DataLabelAlignment alignment;
 
-    private Anchor anchor;
+    private DataLabelAnchor anchor;
 
     #endregion
 
@@ -19,75 +19,103 @@ public class ChartDatasetDataLabels
     /// <summary>
     /// Gets or sets the data labels alignment. 
     /// <para>
-    /// Default value is <see cref="Alignment.Center"/>.
+    /// Default value is <see cref="DataLabelAlignment.Center"/>.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
-    [DefaultValue(Alignment.Center)]
+    [DefaultValue(DataLabelAlignment.Center)]
     [Description("Gets or sets the data labels alignment.")]
     [JsonIgnore]
-    public Alignment Alignment
+    public DataLabelAlignment Alignment
     {
         get => alignment;
         set
         {
             alignment = value;
-            DataLabelsAlignment = value.ToAlignmentString();
+            DataLabelsAlignmentAsString = value.ToChartDatasetDataLabelAlignmentString();
         }
     }
 
     /// <summary>
     /// Gets or sets the data labels anchor.
     /// <para>
-    /// Default value is <see cref="Anchor.None"/>.
+    /// Default value is <see cref="DataLabelAnchor.None"/>.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
-    [DefaultValue(Anchor.None)]
+    [DefaultValue(DataLabelAnchor.Center)]
     [Description("Gets or sets the data labels anchor.")]
     [JsonIgnore]
-    public Anchor Anchor
+    public DataLabelAnchor Anchor
     {
         get => anchor;
         set
         {
             anchor = value;
-            DataLabelsAnchor = value.ToAnchorString();
+            DataLabelsAnchorAsString = value.ToChartDatasetDataLabelAnchorString();
         }
     }
 
-    //public string? BackgroundColor { get; set; }
+    /// <summary>
+    /// Gets or sets the data label background color.
+    /// <para>
+    /// Default value is <see langword="null"/>.
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the data label background color.")]
+    public string? BackgroundColor { get; set; }
 
+
+    /// <summary>
+    /// Gets or sets the data label border color.
+    /// <para>
+    /// Default value is <see langword="null"/>.
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the data label border color.")]
+    public string? BorderColor { get; set; }
+
+    /// <summary>
+    /// Gets or sets the width of the border.
+    /// <para>
+    /// Default value is 2.
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(2)]
+    [Description("Gets or sets the width of the border.")]
     public double BorderWidth { get; set; } = 2;
 
     /// <summary>
-    /// Gets or sets the data labels alignment.
-    /// Possible values: start, center, and end.
+    /// Gets the data labels alignment as a string.
     /// <para>
     /// Default value is <see langword="null"/>.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Gets or sets the data labels alignment. Possible values: start, center, and end.")]
+    [Description("Gets the data labels alignment as a string.")]
     [ParameterTypeName("string?")]
     [JsonPropertyName("align")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? DataLabelsAlignment { get; private set; }
+    public string? DataLabelsAlignmentAsString { get; private set; }
 
     /// <summary>
-    /// Gets or sets the data labels anchor.
-    /// Possible values: start, center, and end.
+    /// Gets the data labels anchor as a string.
     /// <para>
     /// Default value is <see langword="null"/>.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Gets or sets the data labels anchor. Possible values: start, center, and end.")]
+    [Description("Gets the data labels anchor as a string.")]
     [ParameterTypeName("string?")]
     [JsonPropertyName("anchor")]
-    public string? DataLabelsAnchor { get; private set; }
+    public string? DataLabelsAnchorAsString { get; private set; }
 
     #endregion
 }

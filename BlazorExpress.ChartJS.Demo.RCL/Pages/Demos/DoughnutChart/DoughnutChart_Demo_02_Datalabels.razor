@@ -95,11 +95,11 @@
             var dataset = GetRandomDoughnutChartDataset();
 
             if (index == 0)
-                dataset.Datalabels.Anchor = Anchor.End;
+                dataset.Datalabels.Anchor = DataLabelAnchor.End;
             else if (index == numberOfDatasets - 1)
-                dataset.Datalabels.Anchor = Anchor.Start;
+                dataset.Datalabels.Anchor = DataLabelAnchor.Start;
             else
-                dataset.Datalabels.Anchor = Anchor.Center;
+                dataset.Datalabels.Anchor = DataLabelAnchor.Center;
 
             datasets.Add(dataset);
         }

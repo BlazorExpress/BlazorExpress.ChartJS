@@ -1,4 +1,4 @@
-﻿<LineChart @ref="lineChart" Width="700" />
+﻿<LineChart @ref="lineChart" Width="800" />
 
 @code {
     private LineChart lineChart = default!;
@@ -25,7 +25,7 @@
                 // PointHoverRadius = 4,
 
                 // datalabels
-                Datalabels = new() { Alignment = Alignment.End, Anchor = Anchor.End }
+            Datalabels = new() { Alignment = DataLabelAlignment.End, Anchor = DataLabelAnchor.End, BackgroundColor = colors[0] }
             };
         datasets.Add(dataset1);
 
@@ -42,7 +42,7 @@
                 // PointHoverRadius = 4,
 
                 // datalabels
-                Datalabels = new() { Alignment = Alignment.End, Anchor = Anchor.End }
+            Datalabels = new() { Alignment = DataLabelAlignment.End, Anchor = DataLabelAnchor.End, BackgroundColor = colors[1] }
             };
         datasets.Add(dataset2);
 
@@ -59,7 +59,7 @@
                 // PointHoverRadius = 4,
 
                 // datalabels
-                Datalabels = new() { Alignment = Alignment.Start, Anchor = Anchor.Start }
+            Datalabels = new() { Alignment = DataLabelAlignment.Start, Anchor = DataLabelAnchor.Start, BackgroundColor = colors[2] }
             };
         datasets.Add(dataset3);
 
