@@ -18,14 +18,15 @@ public class ChartOptions : IChartOptions
     /// <summary>
     /// Gets or sets the locale for the chart.
     /// <para>
-    /// Default value is <see langword="null" />.
+    /// By default, the chart is using the default locale of the platform which is running on.
     /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/locale.html" />
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [AddedVersion("1.0.0")]
-    [DefaultValue(null)]
+    [DefaultValue("By default, the chart is using the default locale of the platform which is running on.")]
     [Description("Gets or sets the locale for the chart.")]
-    //[ParameterTypeName("string?")]
+    [ParameterTypeName("string?")]
     [Parameter]
     public string? Locale { get; set; }
 
