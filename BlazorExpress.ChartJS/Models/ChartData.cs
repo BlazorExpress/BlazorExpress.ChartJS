@@ -16,6 +16,7 @@ public class ChartData
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the collection of datasets to be displayed in the chart.")]
+    [EditorRequired]
     [ParameterTypeName("List<IChartDataset>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<IChartDataset>? Datasets { get; set; }
@@ -29,6 +30,7 @@ public class ChartData
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the labels for the chart, typically used for the x-axis or categories.")]
+    [EditorRequired]
     [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? Labels { get; set; }

@@ -1,8 +1,8 @@
 ﻿namespace BlazorExpress.ChartJS;
 
 /// <summary>
-/// The line chart allows a number of properties to be specified for each dataset. 
-/// These are used to set display properties for a specific dataset. 
+/// A line chart is a way of plotting data points on a line. 
+/// Often, it is used to show trend data, or the comparison of two data sets.
 /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#dataset-properties" />.
 /// </summary>
 public class LineChartDataset : ChartDataset<double?>
@@ -127,6 +127,9 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("rgba(0, 0, 0, 0.1)")]
+    [Description("")]
     public string BackgroundColor { get; set; } = "rgba(0, 0, 0, 0.1)";
 
     /// <summary>
@@ -136,6 +139,9 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 'butt'.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("butt")]
+    [Description("")]
     public string BorderCapStyle { get; set; } = "butt";
 
     /// <summary>
@@ -144,6 +150,9 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("rgba(0, 0, 0, 0.1)")]
+    [Description("")]
     public string BorderColor { get; set; } = "rgba(0, 0, 0, 0.1)";
 
     /// <summary>
@@ -152,6 +161,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(null)]
+    [Description("")]
+    [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? BorderDash { get; set; }
 
@@ -161,6 +174,9 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 0.0.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(0.0)]
+    [Description("")]
     public double BorderDashOffset { get; set; }
 
     /// <summary>
@@ -170,6 +186,9 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 'miter'.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("miter")]
+    [Description("")]
     public string BorderJoinStyle { get; set; } = "miter";
 
     /// <summary>
@@ -178,7 +197,13 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 3.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(3)]
+    [Description("")]
     public double BorderWidth { get; set; } = 3;
+
+    //clip
+    //https://www.chartjs.org/docs/latest/charts/line.html#general
 
     /// <summary>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#cubicinterpolationmode" />.
@@ -187,8 +212,15 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 'default'.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("default")]
+    [Description("")]
     public string CubicInterpolationMode { get; set; } = "default";
 
+    [AddedVersion("1.0.0")]
+    [DefaultValue("new()")]
+    [Description("")]
+    [ParameterTypeName("LineChartDatasetDataLabels")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
     public LineChartDatasetDataLabels Datalabels { get; set; } = new(); // TODO: add the reference link
 
@@ -198,6 +230,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("List<bool>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<bool>? DrawActiveElementsOnTop { get; set; }
 
@@ -207,6 +243,9 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is <see langword="false"/>.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(false)]
+    [Description("")]
     public object Fill { get; set; } = false;
 
     /// <summary>
@@ -215,6 +254,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? HoverBackgroundColor { get; set; }
 
@@ -224,6 +267,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? HoverBorderCapStyle { get; set; }
 
@@ -233,6 +280,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? HoverBorderColor { get; set; }
 
@@ -242,6 +293,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? HoverBorderDash { get; set; }
 
@@ -251,6 +306,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("double?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? HoverBorderDashOffset { get; set; }
 
@@ -261,6 +320,9 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 'miter'.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
     public string HoverBorderJoinStyle { get; set; } = "miter";
 
     /// <summary>
@@ -269,6 +331,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("double?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? HoverBorderWidth { get; set; }
 
@@ -278,6 +344,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 'x'.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? IndexAxis { get; set; }
 
@@ -287,6 +357,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? PointBackgroundColor { get; set; }
 
@@ -296,6 +370,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? PointBorderColor { get; set; }
 
@@ -305,6 +383,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 1.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? PointBorderWidth { get; set; }
 
@@ -314,6 +396,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 1.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? PointHitRadius { get; set; }
 
@@ -323,6 +409,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is <see langword="null" />.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? PointHoverBackgroundColor { get; set; }
 
@@ -332,6 +422,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is <see langword="null" />.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? PointHoverBorderColor { get; set; }
 
@@ -341,6 +435,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 1.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? PointHoverBorderWidth { get; set; }
 
@@ -350,6 +448,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 4.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? PointHoverRadius { get; set; }
 
@@ -359,6 +461,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 3.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? PointRadius { get; set; }
 
@@ -368,6 +474,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 0.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? PointRotation { get; set; }
 
@@ -379,6 +489,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 'circle'.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? PointStyle { get; set; }
 
@@ -391,6 +505,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is <see langword="true"/>.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    //[ParameterTypeName("")]
     public bool ShowLine { get; set; } = true;
 
     /// <summary>
@@ -402,6 +520,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("bool?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? SpanGaps { get; set; }
 
@@ -414,6 +536,9 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is <see langword="false"/>.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
     public bool Stepped { get; set; }
 
     /// <summary>
@@ -423,6 +548,9 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 0.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
     public double Tension { get; set; }
 
     /// <summary>
@@ -431,6 +559,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 'first x axis'.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? XAxisID { get; set; }
 
@@ -440,6 +572,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <remarks>
     /// Default value is 'first y axis'.
     /// </remarks>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("")]
+    [Description("")]
+    [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? YAxisID { get; set; }
 
