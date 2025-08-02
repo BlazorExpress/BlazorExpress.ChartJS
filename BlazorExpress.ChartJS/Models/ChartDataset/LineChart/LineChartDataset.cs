@@ -122,96 +122,96 @@ public class LineChartDataset : ChartDataset<double?>
     #region Properties, Indexers
 
     /// <summary>
-    /// Get or sets the line fill color.
-    /// </summary>
-    /// <remarks>
+    /// The line fill color.
+    /// <para>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("rgba(0, 0, 0, 0.1)")]
-    [Description("")]
+    [Description("The line fill color.")]
     public string BackgroundColor { get; set; } = "rgba(0, 0, 0, 0.1)";
 
     /// <summary>
     /// Cap style of the line.
     /// Supported values are 'butt', 'round', and 'square'.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 'butt'.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("butt")]
-    [Description("")]
+    [Description("Cap style of the line.")]
     public string BorderCapStyle { get; set; } = "butt";
 
     /// <summary>
-    /// Get or sets the line color.
-    /// </summary>
-    /// <remarks>
+    /// The line color.
+    /// <para>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("rgba(0, 0, 0, 0.1)")]
-    [Description("")]
+    [Description("The line color.")]
     public string BorderColor { get; set; } = "rgba(0, 0, 0, 0.1)";
 
     /// <summary>
-    /// Gets or sets the length and spacing of dashes.
-    /// </summary>
-    /// <remarks>
+    /// Length and spacing of dashes.
+    /// <para>
     /// Default value is <see langword="null"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("")]
+    [Description("Length and spacing of dashes.")]
     [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? BorderDash { get; set; }
 
     /// <summary>
     /// Offset for line dashes.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 0.0.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(0.0)]
-    [Description("")]
+    [Description("Offset for line dashes.")]
     public double BorderDashOffset { get; set; }
 
     /// <summary>
     /// Line joint style. 
     /// There are three possible values for this property: 'round', 'bevel', and 'miter'.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 'miter'.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("miter")]
-    [Description("")]
+    [Description("Line joint style. There are three possible values for this property: 'round', 'bevel', and 'miter'.")]
     public string BorderJoinStyle { get; set; } = "miter";
 
     /// <summary>
-    /// Gets or sets the line width (in pixels).
-    /// </summary>
-    /// <remarks>
+    /// The line width (in pixels).
+    /// <para>
     /// Default value is 3.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(3)]
-    [Description("")]
+    [Description("The line width (in pixels).")]
     public double BorderWidth { get; set; } = 3;
 
     //clip
     //https://www.chartjs.org/docs/latest/charts/line.html#general
 
     /// <summary>
-    /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#cubicinterpolationmode" />.
     /// Supported values are 'default', and 'monotone'.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 'default'.
-    /// </remarks>
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#cubicinterpolationmode" />.
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("default")]
     [Description("")]
@@ -226,10 +226,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// Draw the active points of a dataset over the other points of the dataset.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="null"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -239,10 +239,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// How to fill the area under the line.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="false"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(false)]
     [Description("")]
@@ -250,10 +250,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// The line fill color when hovered.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="null"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -263,10 +263,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// Cap style of the line when hovered.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="null"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -276,10 +276,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// The line color when hovered.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="null"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -289,10 +289,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// Gets or sets the length and spacing of dashes when hovered.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="null"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -302,10 +302,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// Offset for line dashes when hovered.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="null"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -316,10 +316,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <summary>
     /// Line joint style. 
     /// There are three possible values for this property: 'round', 'bevel', and 'miter'.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 'miter'.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -327,10 +327,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// The bar border width when hovered (in pixels) when hovered.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="null"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -340,10 +340,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// The base axis of the dataset. 'x' for horizontal lines and 'y' for vertical lines.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 'x'.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -353,10 +353,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// The fill color for points.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -366,10 +366,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// The border color for points.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -379,10 +379,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// The width of the point border in pixels.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 1.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -392,10 +392,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// The pixel size of the non-displayed point that reacts to mouse events.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 1.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -405,10 +405,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// Point background color when hovered.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="null" />.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -418,10 +418,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// Point border color when hovered.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="null" />.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -431,10 +431,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// Border width of point when hovered.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 1.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -444,10 +444,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// The radius of the point when hovered.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 4.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -457,10 +457,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// The radius of the point shape. If set to 0, the point is not rendered.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 3.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -470,10 +470,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// The rotation of the point in degrees.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 0.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -485,10 +485,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// Style of the point.
     /// Supported values are 'circle', 'cross', 'crossRot', 'dash', 'line', 'rect', 'rectRounded', 'rectRot', 'star', and 'triangle' to style.
     /// the point.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 'circle'.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -501,10 +501,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// If <see langword="false" />, the lines between points are not drawn.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="true"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -516,10 +516,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// If <see langword="false" />, points with null data will create a break in the line.
     /// Can also be a number specifying the maximum gap length to span.
     /// The unit of the value depends on the scale used.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="null"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -532,10 +532,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// true to show the line as a stepped line (tension will be ignored).
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is <see langword="false"/>.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -544,10 +544,10 @@ public class LineChartDataset : ChartDataset<double?>
     /// <summary>
     /// Bezier curve tension of the line. Set to 0 to draw straight lines.
     /// This option is ignored if monotone cubic interpolation is used.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 0.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -555,10 +555,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// The ID of the x axis to plot this dataset on.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 'first x axis'.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
@@ -568,10 +568,10 @@ public class LineChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// The ID of the y axis to plot this dataset on.
-    /// </summary>
-    /// <remarks>
+    /// <para>
     /// Default value is 'first y axis'.
-    /// </remarks>
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("")]
     [Description("")]
