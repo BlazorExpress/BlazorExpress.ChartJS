@@ -220,12 +220,19 @@ public class LineChartDataset : ChartDataset<double?>
     [Description("Supported values are 'default', and 'monotone'.")]
     public string CubicInterpolationMode { get; set; } = "default";
 
+    /// <summary>
+    /// Gets or sets the data labels configuration for the line chart dataset.
+    /// <para>
+    /// Use this property to customize the display of data labels, such as their position,
+    /// formatting, and visibility, for the dataset in the line chart.
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("new()")]
-    [Description("")]
+    [Description("Gets or sets the data labels configuration for the line chart dataset. Use this property to customize the display of data labels, such as their position, formatting, and visibility, for the dataset in the line chart.")]
     [ParameterTypeName("LineChartDatasetDataLabels")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
-    public LineChartDatasetDataLabels Datalabels { get; set; } = new(); // TODO: add the reference link
+    public LineChartDatasetDataLabels Datalabels { get; set; } = new();
 
     /// <summary>
     /// Draw the active points of a dataset over the other points of the dataset.

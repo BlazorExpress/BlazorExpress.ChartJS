@@ -116,12 +116,13 @@ public class BarChartDataset : ChartDataset<double?>
     /// <summary>
     /// Gets or sets the data labels configuration for the bar chart dataset.
     /// <para>
-    /// Default value is a new <see cref="BarChartDatasetDataLabels" /> instance.
+    /// This property allows customization of data labels, such as their appearance, positioning, and
+    /// formatting. If not set, the default configuration will be used.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
-    [DefaultValue(null)]
-    [Description("Gets or sets the data labels configuration for the bar chart dataset.")]
+    [DefaultValue("new()")]
+    [Description("Gets or sets the data labels configuration for the bar chart dataset. This property allows customization of data labels, such as their appearance, positioning, and formatting. If not set, the default configuration will be used.")]
     [ParameterTypeName("BarChartDatasetDataLabels")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public BarChartDatasetDataLabels Datalabels { get; set; } = new();

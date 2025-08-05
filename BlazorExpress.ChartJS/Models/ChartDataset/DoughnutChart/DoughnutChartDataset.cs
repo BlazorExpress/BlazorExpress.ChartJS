@@ -133,12 +133,19 @@ public class DoughnutChartDataset : ChartDataset<double?>
     //Clip
     //https://www.chartjs.org/docs/latest/charts/doughnut.html#general
 
+    /// <summary>
+    /// Gets or sets the data labels configuration for the doughnut chart dataset.
+    /// <para>
+    /// Use this property to customize the display of data labels, such as their font, color,
+    /// alignment, and visibility, for the doughnut chart dataset.
+    /// </para>
+    /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("new()")]
-    [Description("")]
+    [Description("Gets or sets the data labels configuration for the doughnut chart dataset. Use this property to customize the display of data labels, such as their font, color, alignment, and visibility, for the doughnut chart dataset.")]
     [ParameterTypeName("DoughnutChartDatasetDataLabels")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
-    public DoughnutChartDatasetDataLabels Datalabels { get; set; } = new(); // TODO: add the reference link
+    public DoughnutChartDatasetDataLabels Datalabels { get; set; } = new();
 
     /// <summary>
     /// Arc background color when hovered.
