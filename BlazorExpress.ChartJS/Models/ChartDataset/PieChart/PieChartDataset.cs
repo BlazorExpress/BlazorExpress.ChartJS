@@ -243,8 +243,8 @@ public class PieChartDataset : ChartDataset<double?>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(0)]
-    [Description("")]
-    //[ParameterTypeName("")]
+    [Description("Arc offset (in pixels).")]
+    [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? Offset { get; set; }
 
@@ -256,8 +256,8 @@ public class PieChartDataset : ChartDataset<double?>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("")]
-    //[ParameterTypeName("")]
+    [Description("Per-dataset override for the starting angle to draw arcs from.")]
+    [ParameterTypeName("double?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? Rotation { get; set; }
 
@@ -269,8 +269,7 @@ public class PieChartDataset : ChartDataset<double?>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(0)]
-    [Description("")]
-    //[ParameterTypeName("")]
+    [Description("Fixed arc offset (in pixels). Similar to <code>Offset</code> but applies to all arcs.")]
     public double Spacing { get; set; }
 
     /// <summary>
@@ -283,8 +282,7 @@ public class PieChartDataset : ChartDataset<double?>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(1)]
-    [Description("")]
-    //[ParameterTypeName("")]
+    [Description("The relative thickness of the dataset. Providing a value for weight will cause the pie or doughnut dataset to be drawn with a thickness relative to the sum of all the dataset weight values.")]
     public double Weight { get; set; } = 1;
 
     #endregion
