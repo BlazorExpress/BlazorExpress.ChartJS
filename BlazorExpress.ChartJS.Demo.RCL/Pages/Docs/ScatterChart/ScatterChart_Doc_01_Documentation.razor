@@ -42,10 +42,11 @@
 </Section>
 
 @code {
+    private const string componentName = nameof(ScatterChart);
     private const string pageUrl = DemoRouteConstants.Docs_ScatterChart;
-    private const string pageTitle = "Scatter Chart";
-    private const string pageDescription = "This documentation provides a comprehensive reference for the <code>Block</code> component, guiding you through its configuration options.";
-    private const string metaTitle = "Blazor Scatter Chart Component";
-    private const string metaDescription = "This documentation provides a comprehensive reference for the Block component, guiding you through its configuration options.";
+    private const string pageTitle = $"Blazor {componentName} component";
+    private const string pageDescription = $"Comprehensive API documentation for the Blazor <code>{componentName}</code> component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
+    private const string metaTitle = $"Blazor {componentName} component API Reference & Configuration Guide";
+    private const string metaDescription = $"Comprehensive API documentation for the Blazor {componentName} component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
     private const string imageUrl = @DemoImageSrcConstants.ScatterChart;
 }

@@ -42,10 +42,11 @@
 </Section>
 
 @code {
+    private const string componentName = nameof(BarChart);
     private const string pageUrl = DemoRouteConstants.Docs_BarChart;
-    private const string pageTitle = "Bar Chart";
-    private const string pageDescription = "Comprehensive API documentation for the Blazor <code>Bar Chart</code> component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
-    private const string metaTitle = "Blazor Bar Chart API Reference & Configuration Guide";
-    private const string metaDescription = "Comprehensive API documentation for the Blazor Bar Chart component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
+    private const string pageTitle = $"Blazor {componentName} component";
+    private const string pageDescription = $"Comprehensive API documentation for the Blazor <code>{componentName}</code> component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
+    private const string metaTitle = $"Blazor {componentName} component API Reference & Configuration Guide";
+    private const string metaDescription = $"Comprehensive API documentation for the Blazor {componentName} component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
     private const string imageUrl = @DemoImageSrcConstants.BarChart;
 }
