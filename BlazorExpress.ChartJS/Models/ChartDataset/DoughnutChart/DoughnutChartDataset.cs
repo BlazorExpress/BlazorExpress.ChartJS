@@ -33,7 +33,7 @@ public class DoughnutChartDataset : ChartDataset<double?>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("center")]
-    [Description("Supported values are 'center' and 'inner'. When 'center' is set, the borders of arcs next to each other will overlap. When 'inner' is set, it is guaranteed that all borders will not overlap.")]
+    [Description("Supported values are <b>center</b> and <b>inner</b>. When <b>center</b> is set, the borders of arcs next to each other will overlap. When <b>inner</b> is set, it is guaranteed that all borders will not overlap.")]
     [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? BorderAlign { get; set; } // TODO: change this to enum
@@ -78,14 +78,14 @@ public class DoughnutChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// Arc border join style.
-    /// Supported values are 'round', 'bevel', 'miter'.
+    /// Supported values are 'round', 'bevel', and 'miter'.
     /// <para>
     /// Default value is <see langword="null"/>.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Arc border join style. Supported values are 'round', 'bevel', 'miter'.")]
+    [Description("Arc border join style. Supported values are <b>round</b>, <b>bevel</b>, and <b>miter</b>.")]
     [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? BorderJoinStyle { get; set; } // TODO: change this to enum
@@ -139,6 +139,7 @@ public class DoughnutChartDataset : ChartDataset<double?>
     /// Use this property to customize the display of data labels, such as their font, color,
     /// alignment, and visibility, for the doughnut chart dataset.
     /// </para>
+    /// <see href="https://chartjs-plugin-datalabels.netlify.app/guide/getting-started.html#configuration" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("new()")]
@@ -201,14 +202,14 @@ public class DoughnutChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// Arc border join style when hovered.
-    /// Supported values are 'round', 'bevel', 'miter'.
+    /// Supported values are 'round', 'bevel', and 'miter'.
     /// <para>
     /// Default value is <see langword="null"/>.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Arc border join style when hovered. Supported values are 'round', 'bevel', 'miter'.")]
+    [Description("Arc border join style when hovered. Supported values are <b>round</b>, <b>bevel</b>, and <b>miter</b>.")]
     [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? HoverBorderJoinStyle { get; set; } // TODO: change this to enum

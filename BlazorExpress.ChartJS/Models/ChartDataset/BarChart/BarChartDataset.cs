@@ -119,6 +119,7 @@ public class BarChartDataset : ChartDataset<double?>
     /// This property allows customization of data labels, such as their appearance, positioning, and
     /// formatting. If not set, the default configuration will be used.
     /// </para>
+    /// <see href="https://chartjs-plugin-datalabels.netlify.app/guide/getting-started.html#configuration" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("new()")]

@@ -44,7 +44,7 @@ public class LineChartOptions : ChartOptions
     [AddedVersion("1.0.0")]
     [DefaultValue("new()")]
     [Description("Gets or sets the layout configuration for the chart.")]
-    [ParameterTypeName("ChartLayout")]
+    [ParameterTypeName(nameof(ChartLayout))]
     public ChartLayout Layout { get; set; } = new();
 
     /// <summary>
@@ -56,7 +56,7 @@ public class LineChartOptions : ChartOptions
     [AddedVersion("1.0.0")]
     [DefaultValue("new()")]
     [Description("Gets or sets the collection of plugins associated with the line chart.")]
-    [ParameterTypeName("LineChartPlugins")]
+    [ParameterTypeName(nameof(LineChartPlugins))]
     public LineChartPlugins Plugins { get; set; } = new();
 
     /// <summary>

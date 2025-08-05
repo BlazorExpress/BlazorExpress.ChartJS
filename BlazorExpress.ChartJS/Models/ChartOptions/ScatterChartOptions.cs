@@ -17,12 +17,53 @@ public class ScatterChartOptions : ChartOptions
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? IndexAxis { get; set; }
 
+    /// <summary>
+    /// Gets or sets the interaction options for the chart.
+    /// By default, these options apply to both the hover and tooltip interactions.
+    /// <para>
+    /// Default value is a new instance of <see cref="Interaction"/>.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/interactions.html#interactions" />
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("new()")]
+    [Description("Gets or sets the interaction options for the chart.")]
     public Interaction Interaction { get; set; } = new();
 
+    /// <summary>
+    /// Gets or sets the layout configuration for the chart.
+    /// <para>
+    /// Default value is a new instance of <see cref="ChartLayout"/>.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/layout.html#layout" />
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("new()")]
+    [Description("Gets or sets the layout configuration for the chart.")]
+    [ParameterTypeName(nameof(ChartLayout))]
     public ChartLayout Layout { get; set; } = new();
 
+    /// <summary>
+    /// Gets or sets the collection of plugins associated with the scatter chart.
+    /// <para>
+    /// Default value is a new instance of <see cref="ScatterChartPlugins"/>.
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("new()")]
+    [Description("Gets or sets the collection of plugins associated with the scatter chart.")]
+    [ParameterTypeName(nameof(ScatterChartPlugins))]
     public ScatterChartPlugins Plugins { get; set; } = new();
 
+    /// <summary>
+    /// Gets or sets the collection of scales used for measurement or calibration.
+    /// <para>
+    /// Default value is a new instance of <see cref="Scales"/>.
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue("new()")]
+    [Description("Gets or sets the collection of scales used for measurement or calibration.")]
     public Scales Scales { get; set; } = new();
 
     #endregion

@@ -226,6 +226,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// Use this property to customize the display of data labels, such as their position,
     /// formatting, and visibility, for the dataset in the line chart.
     /// </para>
+    /// <see href="https://chartjs-plugin-datalabels.netlify.app/guide/getting-started.html#configuration" />
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("new()")]

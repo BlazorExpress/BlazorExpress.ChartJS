@@ -77,7 +77,7 @@ public class PieChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// Arc border join style.
-    /// Supported values are 'round', 'bevel', 'miter'.
+    /// Supported values are 'round', 'bevel', and 'miter'.
     /// <para>
     /// Default value is <see langword="null"/>.
     /// </para>
