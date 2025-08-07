@@ -144,7 +144,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("butt")]
-    [Description("Cap style of the line.")]
+    [Description("Cap style of the line. Supported values are 'butt', 'round', and 'square'.")]
     public string BorderCapStyle { get; set; } = "butt";
 
     /// <summary>
