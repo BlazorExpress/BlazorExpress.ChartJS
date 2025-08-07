@@ -10,13 +10,9 @@
     <!-- .NET 8 / Web Assembly -->
     <Content Remove="Pages\Docs\GettingStarted\net8\01_A_Manual_Install_04_Snippet.razor" />
     <None Include="Pages\Docs\GettingStarted\net8\01_A_Manual_Install_04_Snippet.razor" />
-    <Compile Remove="Pages\Docs\GettingStarted\net8\01_A_Manual_Install_05_Snippet.cs" />
-    <Content Include="Pages\Docs\GettingStarted\net8\01_A_Manual_Install_05_Snippet.cs" />
     <!-- .NET 8 / Server -->
     <Content Remove="Pages\Docs\GettingStarted\net8\02_A_Manual_Install_04_Snippet.razor" />
     <None Include="Pages\Docs\GettingStarted\net8\02_A_Manual_Install_04_Snippet.razor" />
-    <Compile Remove="Pages\Docs\GettingStarted\net8\02_A_Manual_Install_05_Snippet.cs" />
-    <Content Include="Pages\Docs\GettingStarted\net8\02_A_Manual_Install_05_Snippet.cs" />
   </ItemGroup>
 
   <ItemGroup>

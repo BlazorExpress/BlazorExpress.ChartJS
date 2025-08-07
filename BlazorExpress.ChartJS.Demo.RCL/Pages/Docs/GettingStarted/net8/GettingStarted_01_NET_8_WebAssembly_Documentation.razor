@@ -28,7 +28,7 @@
                     <br />
                     <p>TODO: Update the instructions.</p>
                     <Block>
-                        The template sets up Bulma CSS, the required services, and sample components.
+                        The template sets up BlazorExpress.ChartJS, the required services, and sample components.
                     </Block>
                 </li>
             </ol>
@@ -43,18 +43,13 @@
                     <CodeChunk Class="mt-3" LanguageCode="LanguageCode.Text" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_01_Snippet.razor" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
                 </li>
                 <li>
-                    <b>Add CSS references:</b>
-                    <Block>After the <code>base</code> tag in the <code>head</code> section of the <code>wwwroot/index.html</code> file, add the following references:</Block>
-                    <CodeChunk Class="mt-3" LanguageCode="LanguageCode.HTML" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_02_Snippet.html" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />1
-                </li>
-                <li>
                     <b>Add JS references:</b>
                     <Block>Insert the following references into the body section of the <code>wwwroot/index.html</code> file, immediately after the <code>_framework/blazor.webassembly.js</code> reference:</Block>
                     <CodeChunk Class="mt-3" LanguageCode="LanguageCode.HTML" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_03_Snippet.html" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
                 </li>
                 <li>
                     <b>Register services:</b>
-                    <Block>Add <code>@@using BlazorExpress.Bulma</code> to <code>_Imports.razor</code>:</Block>
+                    <Block>Add <code>@@using BlazorExpress.ChartJS</code> to <code>_Imports.razor</code>:</Block>
                     <CodeChunk Class="mt-3" LanguageCode="LanguageCode.Razor" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_04_Snippet.razor" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
 
                     @* <Block>Register services in <code>Program.cs</code> (if required):</Block>
@@ -85,7 +80,7 @@
     <Section Class="p-0" Size="HeadingSize.H4" Name="4. Troubleshooting" PageUrl="@pageUrl" Link="4-troubleshooting">
         <Block>
             <ul>
-                <li>Ensure all CSS and JS references are correct in <code>index.html</code>.</li>
+                <li>Ensure all JS references are correct in <code>index.html</code>.</li>
                 <li>Restart the development server after making changes to static files.</li>
                 <li>Check the browser console for errors if components do not render as expected.</li>
             </ul>
@@ -96,10 +91,10 @@
         <Block>
             <ul>
                 <li>
-                    <a href="https://github.com/BlazorExpress/BlazorExpress.Bulma" target="_blank">BlazorExpress.Bulma GitHub Repository</a>
+                    <a href="https://github.com/BlazorExpress/BlazorExpress.ChartJS" target="_blank">BlazorExpress.ChartJS GitHub Repository</a>
                 </li>
                 <li>
-                    <a href="https://www.nuget.org/packages/BlazorExpress.Bulma/" target="_blank">NuGet Package</a>
+                    <a href="https://www.nuget.org/packages/BlazorExpress.ChartJS" target="_blank">NuGet Package</a>
                 </li>
             </ul>
         </Block>
