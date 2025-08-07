@@ -117,7 +117,7 @@ public class PolarAreaChartDataset : ChartDataset<double?>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("new()")]
-    [Description("Gets or sets the data labels configuration for the polar area chart dataset. Use this property to customize the display of data labels, such as their position, format, or visibility, in the pie chart dataset. If not set, a default configuration is applied.")]
+    [Description("Gets or sets the data labels configuration for the polar area chart dataset. Use this property to customize the display of data labels, such as their position, format, or visibility, in the polar area chart dataset. If not set, a default configuration is applied.")]
     [ParameterTypeName(nameof(PolarAreaChartDatasetDataLabels))]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public PolarAreaChartDatasetDataLabels Datalabels { get; set; } = new();
