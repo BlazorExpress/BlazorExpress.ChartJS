@@ -1,5 +1,8 @@
 ﻿namespace BlazorExpress.ChartJS;
 
+/// <summary>
+/// <see href="https://www.chartjs.org/docs/latest/charts/bubble.html#data-structure" />
+/// </summary>
 public class BubbleData
 {
     #region Constructors
@@ -15,11 +18,20 @@ public class BubbleData
 
     #region Properties, Indexers
 
-    public double R { get; set; }
-
+    /// <summary>
+    /// X Value
+    /// </summary>
     public double X { get; set; }
 
+    /// <summary>
+    /// Y Value
+    /// </summary>
     public double Y { get; set; }
+
+    /// <summary>
+    /// Bubble radius in pixels (not scaled).
+    /// </summary>
+    public double R { get; set; }
 
     #endregion
 }

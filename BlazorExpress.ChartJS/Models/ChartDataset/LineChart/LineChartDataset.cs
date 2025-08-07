@@ -6,7 +6,9 @@ namespace BlazorExpress.ChartJS;
 /// <summary>
 /// A line chart is a way of plotting data points on a line. 
 /// Often, it is used to show trend data, or the comparison of two data sets.
+/// <para>
 /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#dataset-properties" />.
+/// </para>
 /// </summary>
 public class LineChartDataset : ChartDataset<double?>
 {
