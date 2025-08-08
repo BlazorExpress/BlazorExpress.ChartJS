@@ -53,6 +53,7 @@ public partial class DocsMainLayout : MainLayoutBase
             CssClass = "is-size-7 has-text-weight-bold has-text-warning",
             Links = [
                 new Link { Href = DemoRouteConstants.Docs_BarChart, Text = "Bar chart" },
+                new Link { Href = DemoRouteConstants.Docs_BubbleChart, Text = "Bubble chart" },
                 new Link { Href = DemoRouteConstants.Docs_DoughnutChart, Text = "Doughnut chart" },
                 new Link { Href = DemoRouteConstants.Docs_LineChart, Text = "Line chart" },
                 new Link { Href = DemoRouteConstants.Docs_PieChart, Text = "Pie chart" },

@@ -1,0 +1,39 @@
+@attribute [Route(pageUrl)]
+@layout DemosMainLayout
+
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<PageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</PageHero>
+
+<DocsLink Href="@DemoRouteConstants.Docs_BarChart" />
+
+<Prerequisites PageUrl="@pageUrl" />
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="How it works" PageUrl="@pageUrl" Link="how-it-works">
+    <Block>
+        The <strong>Bar Chart</strong> component visualizes data as vertical bars, making it easy to compare values across categories or track changes over time.
+        <br /><br />
+        <strong>How to use:</strong>
+        <ul>
+            <li>Add the <code>BarChart</code> component to your page.</li>
+            <li>Provide <code>Labels</code> for the X-axis categories and one or more <code>Datasets</code> for the Y-axis values.</li>
+            <li>Customize appearance and behavior using the <code>Options</code> property (e.g., colors, tooltips, axis settings).</li>
+            <li>Refer to the demo code for examples of basic and advanced usage, including multiple datasets and custom styling.</li>
+        </ul>
+        This demo showcases the essential setup for a bar chart and demonstrates how to bind your data for quick visualization.
+    </Block>
+    <Demo Type="typeof(BubbleChart_Demo_01_Examples)" Tabs="true" />
+</Section>
+
+@code {
+    private const string pageUrl = DemoRouteConstants.Demos_BubbleChart;
+    private const string pageTitle = "Bubble Chart";
+    private const string pageDescription = "The <code>Blazor Bubble Chart</code> component displays data values as vertical bars, making it easy to compare multiple data sets or visualize trends over time.";
+    private const string metaTitle = "Blazor Bubble Chart";
+    private const string metaDescription = "The Blazor Bubble Chart component displays data values as vertical bars, making it easy to compare multiple data sets or visualize trends over time.";
+    private const string imageUrl = "https://i.imgur.com/IX3bajc.png"; // TODO: update with the actual image URL for the Bar Chart demo
+}

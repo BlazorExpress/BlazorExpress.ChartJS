@@ -18,6 +18,7 @@ public static class DemoRouteConstants
 
     // Charts
     public const string Demos_BarChart = Demos_Prefix + "/bar-chart";
+    public const string Demos_BubbleChart = Demos_Prefix + "/bubble-chart";
     public const string Demos_DoughnutChart = Demos_Prefix + "/doughnut-chart";
     public const string Demos_LineChart = Demos_Prefix + "/line-chart";
     public const string Demos_PieChart = Demos_Prefix + "/pie-chart";
@@ -43,6 +44,7 @@ public static class DemoRouteConstants
 
     // Charts
     public const string Docs_BarChart = Docs_Prefix + "/bar-chart";
+    public const string Docs_BubbleChart = Docs_Prefix + "/bubble-chart";
     public const string Docs_DoughnutChart = Docs_Prefix + "/doughnut-chart";
     public const string Docs_LineChart = Docs_Prefix + "/line-chart";
     public const string Docs_PieChart = Docs_Prefix + "/pie-chart";

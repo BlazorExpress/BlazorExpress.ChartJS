@@ -39,6 +39,7 @@ public partial class DemosMainLayout : MainLayoutBase
             CssClass = "is-size-7 has-text-weight-bold has-text-warning",
             Links = [
                 new Link { Href = DemoRouteConstants.Demos_BarChart, Text = "Bar chart" },
+                new Link { Href = DemoRouteConstants.Demos_BubbleChart, Text = "Bubble chart" },
                 new Link { Href = DemoRouteConstants.Demos_DoughnutChart, Text = "Doughnut chart" },
                 new Link { Href = DemoRouteConstants.Demos_LineChart, Text = "Line chart" },
                 new Link { Href = DemoRouteConstants.Demos_PieChart, Text = "Pie chart" },

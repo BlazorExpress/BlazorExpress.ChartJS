@@ -14,6 +14,9 @@ public static class DemoPageLinkUtil
         links.Add(new PageLink { Id = index, IconName = BootstrapIconName.BarChartFill, Href = DemoRouteConstants.Demos_BarChart, Text = "Bar Chart", Categories = new() { DemoPageLinkCategory.All, DemoPageLinkCategory.Charts }, Status = PageLinkStatus.None, IsActive = true });
 
         index += 1;
+        links.Add(new PageLink { Id = index, IconName = BootstrapIconName.Diagram3Fill, Href = DemoRouteConstants.Demos_BubbleChart, Text = "Bubble Chart", Categories = new() { DemoPageLinkCategory.All, DemoPageLinkCategory.Charts }, Status = PageLinkStatus.New, IsActive = true });
+
+        index += 1;
         links.Add(new PageLink { Id = index, IconName = BootstrapIconName.CircleFill, Href = DemoRouteConstants.Demos_DoughnutChart, Text = "Doughnut Chart", Categories = new() { DemoPageLinkCategory.All, DemoPageLinkCategory.Charts }, Status = PageLinkStatus.None, IsActive = true });
 
         index += 1;
