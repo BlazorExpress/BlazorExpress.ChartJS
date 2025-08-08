@@ -4,7 +4,7 @@ public class PolarAreaChartInterop
 {
     #region Fields and Constants
 
-    private const string Prefix = "window.blazorexpress.chartjs.bar.";
+    private const string Prefix = "window.blazorexpress.chartjs.polarArea.";
 
     public const string AddDatasetData = Prefix + "addDatasetData";
 

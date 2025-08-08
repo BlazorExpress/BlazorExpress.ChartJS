@@ -4,7 +4,7 @@ public class PieChartInterop
 {
     #region Fields and Constants
 
-    private const string Prefix = "window.blazorexpress.chartjs.bar.";
+    private const string Prefix = "window.blazorexpress.chartjs.pie.";
 
     public const string AddDatasetData = Prefix + "addDatasetData";
 

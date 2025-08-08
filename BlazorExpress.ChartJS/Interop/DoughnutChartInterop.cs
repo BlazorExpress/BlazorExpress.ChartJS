@@ -4,7 +4,7 @@ public class DoughnutChartInterop
 {
     #region Fields and Constants
 
-    private const string Prefix = "window.blazorexpress.chartjs.bar.";
+    private const string Prefix = "window.blazorexpress.chartjs.doughnut.";
 
     public const string AddDatasetData = Prefix + "addDatasetData";
 

@@ -4,7 +4,7 @@ public class RadarChartInterop
 {
     #region Fields and Constants
 
-    private const string Prefix = "window.blazorexpress.chartjs.bar.";
+    private const string Prefix = "window.blazorexpress.chartjs.radar.";
 
     public const string AddDatasetData = Prefix + "addDatasetData";
 

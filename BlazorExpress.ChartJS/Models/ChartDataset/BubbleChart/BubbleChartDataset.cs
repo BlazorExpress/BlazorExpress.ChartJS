@@ -8,7 +8,7 @@
 /// <see href="https://www.chartjs.org/docs/latest/charts/bubble.html#dataset-properties" />
 /// </para>
 /// </summary>
-public class BubbleChartDataset : ChartDataset<BubbleData>
+public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
 {
     #region Properties, Indexers
 

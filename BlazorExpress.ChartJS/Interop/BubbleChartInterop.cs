@@ -1,10 +1,10 @@
 ﻿namespace BlazorExpress.ChartJS;
 
-public class ScatterChartInterop
+public class BubbleChartInterop
 {
     #region Fields and Constants
 
-    private const string Prefix = "window.blazorexpress.chartjs.scatter.";
+    private const string Prefix = "window.blazorexpress.chartjs.bubble.";
 
     public const string AddDatasetData = Prefix + "addDatasetData";
 
