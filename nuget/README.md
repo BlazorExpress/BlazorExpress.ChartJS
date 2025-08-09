@@ -25,14 +25,14 @@ Get started any way you want
 
 | Component Name | Demos |
 |:--|:--|
-| Charts: Bar chart | [Demos](https://chartjs.blazorexpress.com/charts/bar-chart) |
-| Charts: Bubble chart | [Demos](https://chartjs.blazorexpress.com/charts/bubble-chart) |
-| Charts: Doughnut chart | [Demos](https://chartjs.blazorexpress.com/charts/doughnut-chart) |
-| Charts: Line chart | [Demos](https://chartjs.blazorexpress.com/charts/line-chart) |
-| Charts: Pie chart | [Demos](https://chartjs.blazorexpress.com/charts/pie-chart) |
-| Charts: PolarArea chart | [Demos](https://chartjs.blazorexpress.com/charts/polararea-chart) |
-| Charts: Radar chart | [Demos](https://chartjs.blazorexpress.com/charts/radar-chart) |
-| Charts: Scatter chart | [Demos](https://chartjs.blazorexpress.com/charts/scatter-chart) |
+| Charts: Bar chart | [Demos](https://chartjs.blazorexpress.com/demos/bar-chart) |
+| Charts: Bubble chart | [Demos](https://chartjs.blazorexpress.com/demos/bubble-chart) |
+| Charts: Doughnut chart | [Demos](https://chartjs.blazorexpress.com/demos/doughnut-chart) |
+| Charts: Line chart | [Demos](https://chartjs.blazorexpress.com/demos/line-chart) |
+| Charts: Pie chart | [Demos](https://chartjs.blazorexpress.com/demos/pie-chart) |
+| Charts: PolarArea chart | [Demos](https://chartjs.blazorexpress.com/demos/polararea-chart) |
+| Charts: Radar chart | [Demos](https://chartjs.blazorexpress.com/demos/radar-chart) |
+| Charts: Scatter chart | [Demos](https://chartjs.blazorexpress.com/demos/scatter-chart) |
 
 More components coming...
 
