@@ -12,10 +12,6 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
 
     internal ChartType _chartType;
 
-    private bool isAsyncDisposed;
-
-    private bool isDisposed;
-
     #endregion
 
     #region Methods
