@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://chartjs.blazorexpress.com">
-    <img src="https://github.com/BlazorExpress/BlazorExpress.ChartJS/blob/main/BlazorExpress.ChartJS.Demo.WebAssembly/wwwroot/logo-180.png" alt="Blazor Express logo" width="200" height="200">
+    <img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/nuget/logo.png" alt="Blazor Express logo" width="200" height="200">
   </a>
 </p>
 
@@ -30,7 +30,7 @@
 Get started any way you want
 
 - Clone the repo: `git clone https://github.com/BlazorExpress/BlazorExpress.ChartJS`
-- Install with [NuGet](https://www.nuget.org/): `Install-Package BlazorExpress.ChartJS -Version 1.0.0`
+- Install with [NuGet](https://www.nuget.org/): `Install-Package BlazorExpress.ChartJS -Version 1.1.0`
 
 ## Online Demos
 
@@ -41,9 +41,13 @@ Get started any way you want
 | Component Name | Demos |
 |:--|:--|
 | Charts: Bar chart | [Demos](https://chartjs.blazorexpress.com/charts/bar-chart) |
+| Charts: Bubble chart | [Demos](https://chartjs.blazorexpress.com/charts/bubble-chart) |
 | Charts: Doughnut chart | [Demos](https://chartjs.blazorexpress.com/charts/doughnut-chart) |
 | Charts: Line chart | [Demos](https://chartjs.blazorexpress.com/charts/line-chart) |
 | Charts: Pie chart | [Demos](https://chartjs.blazorexpress.com/charts/pie-chart) |
+| Charts: PolarArea chart | [Demos](https://chartjs.blazorexpress.com/charts/polararea-chart) |
+| Charts: Radar chart | [Demos](https://chartjs.blazorexpress.com/charts/radar-chart) |
+| Charts: Scatter chart | [Demos](https://chartjs.blazorexpress.com/charts/scatter-chart) |
 
 More components coming...
 

@@ -15,7 +15,7 @@
 Get started any way you want
 
 - Clone the repo: `git clone https://github.com/BlazorExpress/BlazorExpress.ChartJS`
-- Install with [NuGet](https://www.nuget.org/): `Install-Package BlazorExpress.ChartJS -Version 1.0.0`
+- Install with [NuGet](https://www.nuget.org/): `Install-Package BlazorExpress.ChartJS -Version 1.1.0`
 
 ## Online Demos
 
@@ -26,9 +26,13 @@ Get started any way you want
 | Component Name | Demos |
 |:--|:--|
 | Charts: Bar chart | [Demos](https://chartjs.blazorexpress.com/charts/bar-chart) |
+| Charts: Bubble chart | [Demos](https://chartjs.blazorexpress.com/charts/bubble-chart) |
 | Charts: Doughnut chart | [Demos](https://chartjs.blazorexpress.com/charts/doughnut-chart) |
 | Charts: Line chart | [Demos](https://chartjs.blazorexpress.com/charts/line-chart) |
 | Charts: Pie chart | [Demos](https://chartjs.blazorexpress.com/charts/pie-chart) |
+| Charts: PolarArea chart | [Demos](https://chartjs.blazorexpress.com/charts/polararea-chart) |
+| Charts: Radar chart | [Demos](https://chartjs.blazorexpress.com/charts/radar-chart) |
+| Charts: Scatter chart | [Demos](https://chartjs.blazorexpress.com/charts/scatter-chart) |
 
 More components coming...
 
