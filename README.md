@@ -45,7 +45,7 @@ Get started any way you want
 | Charts: Doughnut chart | [Demos](https://chartjs.blazorexpress.com/demos/doughnut-chart) |
 | Charts: Line chart | [Demos](https://chartjs.blazorexpress.com/demos/line-chart) |
 | Charts: Pie chart | [Demos](https://chartjs.blazorexpress.com/demos/pie-chart) |
-| Charts: PolarArea chart | [Demos](https://chartjs.blazorexpress.com/demos/polararea-chart) |
+| Charts: PolarArea chart | [Demos](https://chartjs.blazorexpress.com/demos/polar-area-chart) |
 | Charts: Radar chart | [Demos](https://chartjs.blazorexpress.com/demos/radar-chart) |
 | Charts: Scatter chart | [Demos](https://chartjs.blazorexpress.com/demos/scatter-chart) |
 
