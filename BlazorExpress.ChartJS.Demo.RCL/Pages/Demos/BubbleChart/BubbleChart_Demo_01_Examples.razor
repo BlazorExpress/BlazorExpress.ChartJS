@@ -1,0 +1,153 @@
+<BubbleChart @ref="bubbleChart" Width="600" />
+
+<div class="mt-5">
+    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="RandomizeAsync"> Randomize </Button>
+    <Button Color="ButtonColor.Link" Size="ButtonSize.Small" @onclick="AddDatasetAsync"> Add Dataset </Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="AddDataAsync">Add Data</Button>
+</div>
+
+@code {
+    private BubbleChart bubbleChart = default!;
+    private BubbleChartOptions bubbleChartOptions = default!;
+    private ChartData chartData = default!;
+
+    private int datasetsCount = 0;
+    private int labelsCount = 0;
+    private string[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+    private Random random = new();
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData { Labels = GetDefaultDataLabels(6), Datasets = GetDefaultDataSets(3) };
+        bubbleChartOptions = new BubbleChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await bubbleChart.InitializeAsync(chartData, bubbleChartOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task RandomizeAsync()
+    {
+        if (chartData is null || chartData.Datasets is null || !chartData.Datasets.Any()) return;
+
+        var newDatasets = new List<IChartDataset>();
+
+        foreach (var dataset in chartData.Datasets)
+        {
+            if (dataset is BubbleChartDataset bubbleChartDataset
+                && bubbleChartDataset is not null
+                && bubbleChartDataset.Data is not null)
+            {
+                var count = bubbleChartDataset.Data.Count;
+
+                var newData = new List<BubbleChartDataPoint>();
+                for (var i = 0; i < count; i++)
+                {
+                    newData.Add(NewBubbleChartDataPoint);
+                }
+
+                bubbleChartDataset.Data = newData;
+                newDatasets.Add(bubbleChartDataset);
+            }
+        }
+
+        chartData.Datasets = newDatasets;
+
+        await bubbleChart.UpdateAsync(chartData, bubbleChartOptions);
+    }
+
+    private async Task AddDatasetAsync()
+    {
+        if (chartData is null || chartData.Datasets is null) return;
+
+        if (datasetsCount >= 12)
+            return;
+
+        var chartDataset = GetRandomBarChartDataset();
+        chartData = await bubbleChart.AddDatasetAsync(chartData, chartDataset, bubbleChartOptions);
+    }
+
+    private async Task AddDataAsync()
+    {
+        if (chartData is null || chartData.Datasets is null)
+            return;
+
+        if (labelsCount >= 12)
+            return;
+
+        var data = new List<IChartDatasetData>();
+        foreach (var dataset in chartData.Datasets)
+        {
+            if (dataset is BubbleChartDataset barChartDataset)
+                data.Add(new BubbleChartDatasetData(barChartDataset.Label, NewBubbleChartDataPoint));
+        }
+
+        chartData = await bubbleChart.AddDataAsync(chartData, GetNextDataLabel(), data);
+    }
+
+    #region Data Preparation
+
+    private List<IChartDataset> GetDefaultDataSets(int numberOfDatasets)
+    {
+        var datasets = new List<IChartDataset>();
+
+        for (var index = 0; index < numberOfDatasets; index++)
+        {
+            datasets.Add(GetRandomBarChartDataset());
+        }
+
+        return datasets;
+    }
+
+    private BubbleChartDataset GetRandomBarChartDataset()
+    {
+        var c = ColorUtility.CategoricalTwelveColors[datasetsCount].ToColor();
+
+        datasetsCount += 1;
+
+        return new BubbleChartDataset()
+        {
+            Label = $"Product {datasetsCount}",
+            Data = GetRandomData(),
+            BackgroundColor = new List<string> { c.ToRgbString() },
+            BorderColor = new List<string> { c.ToRgbString() },
+            BorderWidth = 3,
+        };
+    }
+
+    private List<BubbleChartDataPoint> GetRandomData()
+    {
+        var data = new List<BubbleChartDataPoint>(labelsCount);
+        for (var i = 0; i < labelsCount; i++)
+        {
+            data.Add(NewBubbleChartDataPoint);
+        }
+        return data;
+    }
+
+    private List<string> GetDefaultDataLabels(int numberOfLabels)
+    {
+        var labels = new List<string>();
+        for (var index = 0; index < numberOfLabels; index++)
+        {
+            labels.Add(GetNextDataLabel());
+        }
+
+        return labels;
+    }
+
+    private string GetNextDataLabel()
+    {
+        labelsCount += 1;
+        return months[labelsCount - 1];
+    }
+
+    private BubbleChartDataPoint NewBubbleChartDataPoint => new(X: random.Next(40), Y: random.Next(40), R: random.Next(10));
+
+    #endregion Data Preparation
+}

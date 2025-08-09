@@ -1,0 +1,102 @@
+@attribute [Route(pageUrl)]
+@attribute [Route(pageUrl2)]
+@layout DemosMainLayout
+
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<PageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</PageHero>
+
+<DocsLink Href="@DemoRouteConstants.Docs_BarChart" />
+
+<Prerequisites PageUrl="@pageUrl" />
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="How it works" PageUrl="@pageUrl" Link="how-it-works">
+    <Block>
+        The <strong>Bar Chart</strong> component visualizes data as vertical bars, making it easy to compare values across categories or track changes over time.
+        <br /><br />
+        <strong>How to use:</strong>
+        <ul>
+            <li>Add the <code>BarChart</code> component to your page.</li>
+            <li>Provide <code>Labels</code> for the X-axis categories and one or more <code>Datasets</code> for the Y-axis values.</li>
+            <li>Customize appearance and behavior using the <code>Options</code> property (e.g., colors, tooltips, axis settings).</li>
+            <li>Refer to the demo code for examples of basic and advanced usage, including multiple datasets and custom styling.</li>
+        </ul>
+        This demo showcases the essential setup for a bar chart and demonstrates how to bind your data for quick visualization.
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_01_Examples)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Horizontal bar chart" PageUrl="@pageUrl" Link="horizontal-bar-chart">
+    <Block>
+        The <strong>Horizontal Bar Chart</strong> displays data values as horizontal bars, making it ideal for comparing categories with long labels or when you want to emphasize comparison between values.
+        <br /><br />
+        <strong>How to use:</strong>
+        <ul>
+            <li>Use the <code>BarChart</code> component and set the <code>IndexAxis</code> option to <code>'y'</code> to render bars horizontally.</li>
+            <li>Provide your data and labels as you would for a standard bar chart.</li>
+            <li>Customize colors and appearance using the available palette utilities or your own color set.</li>
+        </ul>
+        Refer to the demo code below for a working example and configuration options.
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_02_Horizontal_BarChart)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Stacked bar chart" PageUrl="@pageUrl" Link="stacked-bar-chart">
+    <Block>
+        The <strong>Stacked Bar Chart</strong> allows you to display multiple data series stacked on top of each other, making it easy to compare the total and individual contributions of each series for every category.
+        <br /><br />
+        <strong>How to use:</strong>
+        <ul>
+            <li>Use the <code>BarChart</code> component and configure the <code>Options.Scales.X.Stacked</code> and <code>Options.Scales.Y.Stacked</code> properties to <code>true</code> to enable stacking.</li>
+            <li>Provide multiple datasets in your chart data, each representing a different series to be stacked.</li>
+            <li>Customize colors for each dataset using palette utilities or your own color set for better distinction.</li>
+            <li>Refer to the demo code below for a working example and further configuration options.</li>
+        </ul>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_03_Stacked_BarChart)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Stacked bar chart with data labels" PageUrl="@pageUrl" Link="stacked-bar-chart-with-data-labels">
+    <Block>
+        The <strong>Stacked Bar Chart with Data Labels</strong> enhances the standard stacked bar chart by displaying value labels directly on each bar segment. This makes it easier to read and compare the values of each dataset within a category.
+        <br /><br />
+        <strong>How to use:</strong>
+        <ul>
+            <li>Use the <code>BarChart</code> component and enable stacking by setting <code>Options.Scales.X.Stacked</code> and <code>Options.Scales.Y.Stacked</code> to <code>true</code>.</li>
+            <li>Add multiple datasets to your chart data to represent different series.</li>
+            <li>Enable data labels by configuring the chart's plugins, such as <code>Options.Plugins.Datalabels.Display = true</code>.</li>
+            <li>Customize the appearance and formatting of data labels as needed for your scenario.</li>
+        </ul>
+        Refer to the demo code below for a working example and further configuration options.
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_04_Stacked_BarChart_with_Datalabels)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Locale" PageUrl="@pageUrl" Link="locale">
+    <Block>
+        The <strong>Locale</strong> demo shows how to localize number and date formatting in your bar chart. 
+        <br /><br />
+        <strong>How to use:</strong>
+        <ul>
+            <li>Set the <code>Locale</code> property on the <code>BarChart</code> component to your desired culture code (e.g., <code>"fr-FR"</code> for French).</li>
+            <li>Number and date labels in the chart will automatically format according to the specified locale.</li>
+            <li>This is useful for displaying charts to users in different regions with appropriate formatting.</li>
+        </ul>
+        Refer to the demo code below for a working example and configuration options.
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_05_Locale)" Tabs="true" />
+</Section>
+
+@code {
+    private const string pageUrl = DemoRouteConstants.Demos_BarChart;
+    private const string pageUrl2 = DemoRouteConstants.Demos_Prefix;
+    private const string pageTitle = "Bar Chart";
+    private const string pageDescription = "The <code>Blazor Bar Chart</code> component displays data values as vertical bars, making it easy to compare multiple data sets or visualize trends over time.";
+    private const string metaTitle = "Blazor Bar Chart";
+    private const string metaDescription = "The Blazor Bar Chart component displays data values as vertical bars, making it easy to compare multiple data sets or visualize trends over time.";
+    private const string imageUrl = "https://i.imgur.com/IX3bajc.png"; // TODO: update with the actual image URL for the Bar Chart demo
+}

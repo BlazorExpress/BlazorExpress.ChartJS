@@ -1,0 +1,67 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+@inherits MainLayoutBase
+
+<BulmaLayout>
+    <HeaderSection>
+        <WebsiteNavbar BrandImgSrc="@DemoStringConstants.StaticAssets_Icons_Logo_png"
+                       BrandImgAltText="Blazor Express Logo"
+                       ApplicationName="@DemoStringConstants.NugetPackageName" />
+    </HeaderSection>
+    <SidebarSection>
+        <Menu @ref="menuRef" Class="be-bulma-page-menu" IsScrollable="true">
+            @foreach (var group in linkGroups)
+            {
+                <MenuLabel Class="@group.CssClass">@group.Name</MenuLabel>
+                if (group.Links?.Any() ?? false)
+                {
+                    <MenuList>
+                        @foreach (var link in group.Links)
+                        {
+                            <MenuItem>
+                                @if (link.Links?.Any() ?? false) // level 2 links
+                                {
+                                    <NavLink ActiveClass="is-active">@link.Text</NavLink>
+                                    <MenuList>
+                                        @foreach (var cLink in link.Links)
+                                        {
+                                            <MenuItem Href="@cLink.Href" Match="@cLink.Match">@cLink.Text</MenuItem>
+                                        }
+                                    </MenuList>
+                                }
+                                else
+                                {
+                                    <MenuItem Href="@link.Href" Match="@link.Match">@link.Text</MenuItem>
+                                }
+                            </MenuItem>
+                        }
+                    </MenuList>
+                }
+            }
+        </Menu>
+    </SidebarSection>
+    <ContentSection>
+        <div class="p-5">
+            <Button Class="bi bi-box-arrow-right menu-toggle-button ml-1 mt-0 mb-1" @onclick="ToggleSidebarSection" />
+            @Body
+            <DoYouKnow Class="mt-3" />
+            <StarOnGitHub />
+            <MainLayoutBaseFooter Version="@Version"
+                                  DotNetVersion="@DotNetVersion"
+                                  DocsUrl="@DocsUrl"
+                                  BlogUrl="@BlogUrl"
+                                  GithubUrl="@GithubUrl"
+                                  NugetUrl="@NuGetUrl"
+                                  TwitterUrl="@TwitterUrl"
+                                  LinkedInUrl="@LinkedInUrl"
+                                  OpenCollectiveUrl="@OpenCollectiveUrl"
+                                  GithubIssuesUrl="@GithubIssuesUrl"
+                                  GithubDiscussionsUrl="@GithubDiscussionsUrl"
+                                  StackoverflowUrl="@StackoverflowUrl" />
+        </div>
+    </ContentSection>
+
+    <FooterSection>
+        <div class="container is-max-desktop mb-4">
+        </div>
+    </FooterSection>
+</BulmaLayout>

@@ -7,12 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- .NET 8 / Web Assembly -->
+    <Content Remove="Pages\Docs\GettingStarted\net8\01_A_Manual_Install_04_Snippet.razor" />
+    <None Include="Pages\Docs\GettingStarted\net8\01_A_Manual_Install_04_Snippet.razor" />
+    <!-- .NET 8 / Server -->
+    <Content Remove="Pages\Docs\GettingStarted\net8\02_A_Manual_Install_04_Snippet.razor" />
+    <None Include="Pages\Docs\GettingStarted\net8\02_A_Manual_Install_04_Snippet.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazor.Bootstrap" Version="3.0.0-preview.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.5" />
+    <PackageReference Include="BlazorExpress.Bulma" Version="0.1.1" />
+    <PackageReference Include="BlazorExpress.Bulma.Docx" Version="0.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.17" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
   </ItemGroup>
 
@@ -23,8 +33,9 @@
   <Target Name="EmbedDemos" BeforeTargets="PrepareForBuild">
     <!-- Embed demo source code into the assembly to display the source code at runtime. -->
     <ItemGroup>
-      <EmbeddedResource Include="Components\**\*Demo*.razor" />
-      <EmbeddedResource Include="Components\**\*Snippet*" />
+      <EmbeddedResource Include="Pages\**\*Demo*.razor" />
+      <EmbeddedResource Include="Pages\**\*Doc*.razor" />
+      <EmbeddedResource Include="Pages\**\*Snippet*" />
     </ItemGroup>
   </Target>
 

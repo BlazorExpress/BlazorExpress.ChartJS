@@ -1,0 +1,33 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+@inherits MainLayoutBase
+
+<BulmaLayout>
+    <HeaderSection>
+        <WebsiteNavbar BrandImgSrc="@DemoStringConstants.StaticAssets_Icons_Logo_png"
+                       BrandImgAltText="Blazor Express Logo"
+                       ApplicationName="@DemoStringConstants.NugetPackageName" />
+    </HeaderSection>
+    <ContentSection>
+        <div class="be-bulma-masthead p-5">
+            @Body
+            <div class="container is-max-desktop mb-4">
+                <MainLayoutBaseFooter Version="@Version"
+                                      DotNetVersion="@DotNetVersion"
+                                      DocsUrl="@DocsUrl"
+                                      BlogUrl="@BlogUrl"
+                                      GithubUrl="@GithubUrl"
+                                      NugetUrl="@NuGetUrl"
+                                      TwitterUrl="@TwitterUrl"
+                                      LinkedInUrl="@LinkedInUrl"
+                                      OpenCollectiveUrl="@OpenCollectiveUrl"
+                                      GithubIssuesUrl="@GithubIssuesUrl"
+                                      GithubDiscussionsUrl="@GithubDiscussionsUrl"
+                                      StackoverflowUrl="@StackoverflowUrl" />
+            </div>
+        </div>
+    </ContentSection>
+    <FooterSection>
+        <div class="container is-max-desktop mb-4">
+        </div>
+    </FooterSection>
+</BulmaLayout>

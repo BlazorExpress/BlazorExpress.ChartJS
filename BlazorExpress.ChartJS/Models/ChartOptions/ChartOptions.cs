@@ -3,51 +3,111 @@
 public interface IChartOptions { }
 
 /// <summary>
-///     <see href="https://www.chartjs.org/docs/latest/general/options.html" />
+/// Represents the base configuration options for all chart types.
+/// <para>
+/// See <see href="https://www.chartjs.org/docs/latest/general/options.html" /> for more information.
+/// </para>
 /// </summary>
 public class ChartOptions : IChartOptions
 {
     #region Properties, Indexers
 
+    //aspectRatio
+    //https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options
+
     /// <summary>
-    /// Gets or sets the locale.
+    /// Gets or sets the locale for the chart.
+    /// <para>
     /// By default, the chart is using the default locale of the platform which is running on.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/locale.html" />
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [AddedVersion("1.0.0")]
+    [DefaultValue("By default, the chart is using the default locale of the platform which is running on.")]
+    [Description("Gets or sets the locale for the chart.")]
+    [ParameterTypeName("string?")]
+    [Parameter]
     public string? Locale { get; set; }
 
     /// <summary>
-    /// Gets or sets the MaintainAspectRatio of the chart.
-    /// <see href="https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options" />
+    /// Gets or sets a value indicating whether to maintain the original canvas aspect ratio (width / height) when resizing.
+    /// <para>
+    /// Default value is <see langword="true" />.
+    /// </para>
+    /// <para>
+    /// See <see href="https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options" /> for more information.
+    /// </para>
     /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(true)]
+    [Description("Gets or sets a value indicating whether to maintain the original canvas aspect ratio (width / height) when resizing.")]
+    [Parameter]
     public bool MaintainAspectRatio { get; set; } = true;
 
+    //onResize
+    //https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options
+
+    //resizeDelay
+    //https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options
+
     /// <summary>
-    /// Gets or set the responsive.
-    /// <see href="https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options" />
+    /// Gets or sets a value indicating whether the chart canvas should resize when its container does.
+    /// <para>
+    /// Default value is <see langword="true" />.
+    /// </para>
+    /// <para>
+    /// See <see href="https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options" /> for more information.
+    /// </para>
     /// </summary>
-    public bool Responsive { get; set; }
+    [AddedVersion("1.0.0")]
+    [DefaultValue(true)]
+    [Description("Gets or sets a value indicating whether the chart canvas should resize when its container does.")]
+    [Parameter]
+    public bool Responsive { get; set; } = true;
 
     #endregion
 }
 
+/// <summary>
+/// Namespace: options.layout, the global options for the chart layout is defined in Chart.defaults.layout.
+/// <see href="https://www.chartjs.org/docs/latest/configuration/layout.html#layout" /> for more information.
+/// </summary>
 public class ChartLayout
 {
     #region Properties, Indexers
 
     /// <summary>
-    /// Apply automatic padding so visible elements are completely drawn.
+    /// Gets or sets a value indicating whether to apply automatic padding so visible elements are completely drawn.
+    /// <para>
+    /// Default value is <see langword="true" />.
+    /// </para>
     /// </summary>
-    public bool AutoPadding { get; set; } = false;
+    [AddedVersion("1.0.0")]
+    [DefaultValue(true)]
+    [Description("Gets or sets a value indicating whether to apply automatic padding so visible elements are completely drawn.")]
+    [Parameter]
+    public bool AutoPadding { get; set; } = true;
 
     /// <summary>
-    /// The padding to add inside the chart.
+    /// Gets or sets the padding to add inside the chart.
+    /// <para>
+    /// Default value is 0.
+    /// </para>
     /// </summary>
+    [AddedVersion("1.0.0")]
+    [DefaultValue(0)]
+    [Description("Gets or sets the padding to add inside the chart.")]
+    [Parameter]
     public int Padding { get; set; } = 0;
 
     #endregion
 }
 
+/// <summary>
+/// Namespace: options.interaction, the global interaction configuration is at Chart.defaults.interaction.
+/// <see href="https://www.chartjs.org/docs/latest/configuration/interactions.html#interactions" />.
+/// </summary>
 public class Interaction
 {
     #region Fields and Constants
@@ -58,16 +118,33 @@ public class Interaction
 
     #region Constructors
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public Interaction()
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
         Mode = InteractionMode.Nearest;
     }
 
     #endregion
 
+    #region Methods
+
+    private void SetMode(InteractionMode interactionMode) =>
+        ChartInteractionMode = interactionMode switch
+        {
+            InteractionMode.Dataset => "dataset",
+            InteractionMode.Index => "index",
+            InteractionMode.Nearest => "nearest",
+            InteractionMode.Point => "point",
+            InteractionMode.X => "x",
+            InteractionMode.Y => "y",
+            _ => ""
+        };
+
+    #endregion
+
     #region Properties, Indexers
+
+    //axis
+    //https://www.chartjs.org/docs/latest/configuration/interactions.html#interactions
 
     /// <summary>
     /// Sets which elements appear in the interaction.
@@ -78,7 +155,10 @@ public class Interaction
     /// <summary>
     /// if <see langword="true" />, the interaction mode only applies when the mouse position intersects an item on the chart.
     /// </summary>
-    public bool Intersect { get; set; }
+    /// <remarks>
+    /// Default value is <see langword="true" />.
+    /// </remarks>
+    public bool Intersect { get; set; } = true;
 
     /// <summary>
     /// Sets which elements appear in the tooltip. See Interaction Modes for details.
@@ -90,11 +170,14 @@ public class Interaction
         set
         {
             mode = value;
-            ChartInteractionMode = value.ToInteractionModeString();
+            SetMode(value);
         }
     }
 
     #endregion
+
+    //includeInvisible
+    //https://www.chartjs.org/docs/latest/configuration/interactions.html#interactions
 }
 
 public class Scales
@@ -108,11 +191,23 @@ public class Scales
     #endregion
 }
 
+public class ChartAxesType
+{
+    #region Fields and Constants
+
+    public static readonly string Linear = "linear";
+    public static readonly string Logarithmic = "logarithmic";
+    public static readonly string Category = "category";
+    public static readonly string Time = "time";
+    public static readonly string Timeseries = "timeseries";
+
+    #endregion
+}
+
 public class ChartAxes
 {
     #region Properties, Indexers
 
-    // Stacked
     public bool BeginAtZero { get; set; } = true;
 
     /// <summary>
@@ -170,6 +265,15 @@ public class ChartAxes
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ChartAxesTitle? Title { get; set; }
+
+    /// <summary>
+    /// Gets or sets the index scale type. See <see cref="ChartAxesType" />.
+    /// </summary>
+    /// <remarks>
+    /// Default value is <see langword="null" />.
+    /// </remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Type { get; set; }
 
     #endregion
 }
@@ -309,6 +413,20 @@ public class ChartAxesGrid
     #endregion
 }
 
+public enum TicksAlignment
+{
+    Center, // default
+    Start,
+    End
+}
+
+public enum TitleAlignment
+{
+    Center, // default
+    Start,
+    End
+}
+
 /// <summary>
 /// Chart axes tick styling
 /// <see href="https://www.chartjs.org/docs/latest/samples/scale-options/ticks.html" />
@@ -317,22 +435,28 @@ public class ChartAxesTicks
 {
     #region Fields and Constants
 
-    private Alignment alignment;
+    private TicksAlignment ticksAlignment;
+
+    #endregion
+
+    #region Methods
+
+    private void SetTicksAlignment(TicksAlignment interactionMode) =>
+        Alignment = interactionMode switch
+        {
+            TicksAlignment.Center => "center",
+            TicksAlignment.Start => "start",
+            TicksAlignment.End => "end",
+            _ => null
+        };
 
     #endregion
 
     #region Properties, Indexers
 
-    [JsonIgnore]
-    public Alignment Alignment
-    {
-        get => alignment;
-        set
-        {
-            alignment = value;
-            TicksAlignment = value.ToAlignmentString();
-        }
-    }
+    [JsonPropertyName("align")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Alignment { get; private set; }
 
     /// <summary>
     /// Color of label backdrops
@@ -387,9 +511,16 @@ public class ChartAxesTicks
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? TextStrokeWidth { get; set; }
 
-    [JsonPropertyName("align")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? TicksAlignment { get; private set; }
+    [JsonIgnore]
+    public TicksAlignment TicksAlignment
+    {
+        get => ticksAlignment;
+        set
+        {
+            ticksAlignment = value;
+            SetTicksAlignment(value);
+        }
+    }
 
     #endregion
 }
@@ -418,22 +549,32 @@ public class ChartAxesTitle
 {
     #region Fields and Constants
 
-    private Alignment alignment;
+    private TitleAlignment titleAlignment;
+
+    #endregion
+
+    #region Methods
+
+    private void SetTitleAlignment(TitleAlignment interactionMode) =>
+        Alignment = interactionMode switch
+        {
+            TitleAlignment.Center => "center", // default
+            TitleAlignment.Start => "start",
+            TitleAlignment.End => "end",
+            _ => null
+        };
 
     #endregion
 
     #region Properties, Indexers
 
-    [JsonIgnore]
-    public Alignment Alignment
-    {
-        get => alignment;
-        set
-        {
-            alignment = value;
-            TitleAlignment = value.ToAlignmentString();
-        }
-    }
+    /// <summary>
+    /// Alignment of the title.
+    /// Options are: 'start', 'center', and 'end'
+    /// </summary>
+    [JsonPropertyName("align")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Alignment { get; private set; }
 
     /// <summary>
     /// Color of text.
@@ -454,13 +595,16 @@ public class ChartAxesTitle
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public string? Text { get; set; }
 
-    /// <summary>
-    /// Alignment of the title.
-    /// Options are: 'start', 'center', and 'end'
-    /// </summary>
-    [JsonPropertyName("align")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? TitleAlignment { get; private set; }
+    [JsonIgnore]
+    public TitleAlignment TitleAlignment
+    {
+        get => titleAlignment;
+        set
+        {
+            titleAlignment = value;
+            SetTitleAlignment(value);
+        }
+    }
 
     #endregion
 }

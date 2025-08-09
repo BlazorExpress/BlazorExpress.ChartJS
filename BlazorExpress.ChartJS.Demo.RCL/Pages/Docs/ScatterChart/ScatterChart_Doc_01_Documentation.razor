@@ -1,0 +1,52 @@
+@attribute [Route(pageUrl)]
+@layout DocsMainLayout
+
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<PageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</PageHero>
+
+<Image Src="@DemoImageSrcConstants.ScatterChart" class="img-fluid" alt="Blazor Scatter Chart - API Documentation" />
+
+<DemoLink Href="@DemoRouteConstants.Demos_ScatterChart" />
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Parameters" PageUrl="@pageUrl" Link="parameters">
+    <DocxTable TItem="ScatterChart" DocType="DocType.Parameters" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Methods" PageUrl="@pageUrl" Link="methods">
+    <DocxTable TItem="ScatterChart" DocType="DocType.Methods" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartData Properties" PageUrl="@pageUrl" Link="chart-data-properties">
+    <DocxTable TItem="ChartData" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ScatterChartDataset Properties" PageUrl="@pageUrl" Link="scatterchart-dataset-properties">
+    <DocxTable TItem="ScatterChartDataset" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ScatterChartDatasetData Properties" PageUrl="@pageUrl" Link="scatterchart-dataset-data-properties">
+    <DocxTable TItem="ScatterChartDatasetData" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ScatterChartDatasetDataLabels Properties" PageUrl="@pageUrl" Link="scatterchart-dataset-data-labels-properties">
+    <DocxTable TItem="ScatterChartDatasetDataLabels" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ScatterChartOptions Properties" PageUrl="@pageUrl" Link="scatterchart-options-properties">
+    <DocxTable TItem="ScatterChartOptions" DocType="DocType.Properties" />
+</Section>
+
+@code {
+    private const string componentName = nameof(ScatterChart);
+    private const string pageUrl = DemoRouteConstants.Docs_ScatterChart;
+    private const string pageTitle = $"Blazor {componentName} component";
+    private const string pageDescription = $"Comprehensive API documentation for the Blazor <code>{componentName}</code> component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
+    private const string metaTitle = $"Blazor {componentName} component API Reference & Configuration Guide";
+    private const string metaDescription = $"Comprehensive API documentation for the Blazor {componentName} component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
+    private const string imageUrl = @DemoImageSrcConstants.ScatterChart;
+}

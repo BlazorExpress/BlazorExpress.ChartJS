@@ -1,0 +1,54 @@
+<div class="has-text-centered mb-4">
+    <h2 class="is-size-3 has-text-weight-semibold">@Title</h2>
+</div>
+<div class="has-text-centered mb-6">
+    <div class="has-text-link is-size-5 has-text-left has-text-weight-semibold">
+        @for (int i = 0; i < componentsLinks.Count;)
+        {
+            <div class="columns is-desktop">
+                @for (int j = 0; j < 3; j++)
+                {
+                    var link = componentsLinks.ElementAtOrDefault(i);
+                    if (link == null)
+                    {
+                        <div class="column is-hidden-mobile"></div>
+                        continue;
+                    }
+                    <div class="column is-clickable">
+                        <a href="@link.Href">
+                            <BootstrapIcon Name="@link.IconName" />
+                            <span>@link.Text</span>
+                            @if (link.Status == PageLinkStatus.New)
+                            {
+                                <Tag Class="ml-1" Color="TagColor.Danger">New</Tag>
+                            }
+                            else if (link.Status == PageLinkStatus.Updated)
+                            {
+                                <Tag Class="ml-1" Color="TagColor.Success">Updated</Tag>
+                            }
+                        </a>
+                    </div>
+
+                    i++;
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private HashSet<PageLink> componentsLinks = null!;
+
+    [Parameter]
+    public string Title { get; set; } = default!;
+
+    [Parameter]
+    public DemoPageLinkCategory Category { get; set; } = DemoPageLinkCategory.All;
+
+    protected override void OnInitialized()
+    {
+        componentsLinks = DemoPageLinkUtil.GetDemosLinks()
+        .Where(link => link.Categories.Contains(Category) && link.IsActive && !link.ExcludedFromHomePage)
+        .ToHashSet();
+    }
+}

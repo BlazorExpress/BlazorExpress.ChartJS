@@ -1,0 +1,74 @@
+﻿@attribute [Route(pageUrl)]
+@layout DemosMainLayout
+
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<PageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</PageHero>
+
+<DocsLink Href="@DemoRouteConstants.Docs_LineChart" />
+
+<Prerequisites PageUrl="@pageUrl" />
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="How it works" PageUrl="@pageUrl" Link="how-it-works">
+    <Block>
+        The <strong>Pie Chart</strong> component visualizes categorical data as proportional slices of a circle, making it ideal for showing parts of a whole.
+        <br /><br />
+        <strong>How to use:</strong>
+        <ul>
+            <li>Add the <code>PieChart</code> component to your page and set its dimensions (e.g., <code>Width="600"</code>).</li>
+            <li>Prepare your chart data by specifying <code>Labels</code> for each category and one or more <code>Datasets</code> with values and background colors.</li>
+            <li>Configure chart options such as <code>Responsive</code> and <code>Title</code> using the <code>PieChartOptions</code> object.</li>
+            <li>Initialize the chart in <code>OnAfterRenderAsync</code> by calling <code>pieChart.InitializeAsync(chartData, pieChartOptions)</code>.</li>
+            <li>Use the demo's interactive buttons to randomize data, add datasets, or add new data points dynamically.</li>
+            <li>Refer to the demo code below for practical examples of data preparation, dynamic updates, and chart customization.</li>
+        </ul>
+        This demo demonstrates how to set up a pie chart, bind your data, and interactively update the chart to fit your application's needs.
+    </Block>
+    <Demo Type="typeof(PieChart_Demo_01_Examples)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Data labels" PageUrl="@pageUrl" Link="data-labels">
+    <Block>
+        The <strong>Pie Chart</strong> component supports data labels, allowing you to display values or category names directly on each slice of the chart.
+        <br /><br />
+        <strong>How to use:</strong>
+        <ul>
+            <li>Enable data labels by passing the <code>ChartDataLabels</code> plugin when initializing the chart: <code>plugins: new[] { "ChartDataLabels" }</code>.</li>
+            <li>Customize the position of data labels for each dataset using the <code>Datalabels.Anchor</code> property (e.g., <code>Anchor.End</code> or <code>Anchor.Center</code>).</li>
+            <li>Prepare your chart data and datasets as usual, and bind them to the <code>PieChart</code> component.</li>
+            <li>Use the provided buttons to randomize data or add new data points dynamically, and observe how data labels update automatically.</li>
+            <li>Refer to the demo code below for practical examples of enabling and customizing data labels in your pie charts.</li>
+        </ul>
+        Data labels make it easier for users to interpret the chart by showing relevant information directly on each pie slice.
+    </Block>
+    <Demo Type="typeof(PieChart_Demo_02_Datalabels)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Change legend position" PageUrl="@pageUrl" Link="change-legend-position">
+    <Block>
+        The <strong>Pie Chart</strong> component allows you to easily change the position of the chart legend to improve readability or match your application's layout.
+        <br /><br />
+        <strong>How to use:</strong>
+        <ul>
+            <li>Set the legend position using <code>pieChartOptions.Plugins.Legend.Position</code> (e.g., <code>"top"</code>, <code>"right"</code>, <code>"bottom"</code>, or <code>"left"</code>).</li>
+            <li>Update the legend position dynamically by changing this property and calling <code>pieChart.UpdateAsync(chartData, pieChartOptions)</code>.</li>
+            <li>Use the demo's buttons to switch the legend position interactively and see the effect in real time.</li>
+            <li>Refer to the demo code below for practical examples of configuring and updating the legend position in your pie charts.</li>
+        </ul>
+        Adjusting the legend position helps ensure your chart is clear and fits well within your application's design.
+    </Block>
+    <Demo Type="typeof(PieChart_Demo_03_Change_Legend_Position)" Tabs="true" />
+</Section>
+
+@code {
+    private const string pageUrl = DemoRouteConstants.Demos_PieChart;
+    private const string pageTitle = "Pie Chart";
+    private const string pageDescription = "Explore interactive <code>Blazor Pie Chart</code> examples with source code. Learn how to visualize categorical data, customize chart appearance, and enhance your Blazor applications. Try live demos and discover practical usage scenarios for the Pie Chart component.";
+    private const string metaTitle = "Blazor Pie Chart Examples & Interactive Demos";
+    private const string metaDescription = "Explore interactive Blazor Pie Chart examples with source code. Learn how to visualize categorical data, customize chart appearance, and enhance your Blazor applications. Try live demos and discover practical usage scenarios for the Pie Chart component.";
+    private const string imageUrl = "https://i.imgur.com/8b7jH0D.png"; // TODO: Update with the actual image URL for the Line Chart demo
+}

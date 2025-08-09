@@ -1,0 +1,66 @@
+@attribute [Route(pageUrl)]
+
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<div class="has-text-centered">
+    <div class="container is-max-desktop mb-4">
+        <div class="mb-6">
+            <div class="pt-6 mb-6">
+                <Tag Color="TagColor.Warning" Size="TagSize.Medium">New in @version</Tag>
+                <span class="is-size-6 text-muted">@releaseShortDescription</span>
+            </div>
+            <div style="justify-items: center;">
+                <Image Src="@DemoStringConstants.StaticAssets_Icons_Logo_png"
+                       Dimension="ImageDimension.Is128x128"
+                       alt="BlazorExpress Logo" />
+            </div>
+        </div>
+        <Hero Class="mb-6">
+            <HeroTitle class="mb-4">
+                @((MarkupString)pageTitle)
+            </HeroTitle>
+            <HeroSubTitle Class="has-text-dark">
+                @((MarkupString)pageDescription)
+            </HeroSubTitle>
+        </Hero>
+        <div class="mb-4">
+            <a href="@nugetUrl" target="_blank"><img alt="Nuget" src="https://img.shields.io/nuget/v/BlazorExpress.ChartJS"></a>
+            <span class="px-1"></span>
+            <a href="@nugetUrl" target="_blank"><img alt="Nuget" src="https://img.shields.io/nuget/dt/BlazorExpress.ChartJS"></a>
+        </div>
+    </div>
+</div>
+
+<div class="container is-max-desktop mb-4">
+    <IndexComponentLinks Title="All Components" Category="@DemoPageLinkCategory.All" />
+
+    <IndexComponentLinks Title="Form Components" Category="@DemoPageLinkCategory.Utils" />
+
+    <DoYouKnow />
+
+    <StarOnGitHub />
+</div>
+
+@code {
+    private const string pageUrl = "/";
+    private const string pageTitle = $"{DemoStringConstants.NugetPackageName} Components <br /> Fast, Free & Open Source";
+    private const string pageDescription = $"Get started with {DemoStringConstants.NugetPackageDisplayName}. Build high-performance, responsive Blazor apps quickly with our free, open-source UI library. Developers, build in minutes!";
+    private const string metaTitle = $"{DemoStringConstants.NugetPackageName} Components: Fast, Free & Open Source";
+    private const string metaDescription = $"Get started with {DemoStringConstants.NugetPackageDisplayName}. Build high-performance, responsive Blazor apps quickly with our free, open-source UI library. Developers, build in minutes!";
+    private const string imageUrl = "https://i.imgur.com/FGgEMp6.jpg"; // TODO: update
+
+    private string version = default!;
+    private string releaseShortDescription = default!;
+    private string githubUrl = default!;
+    private string nugetUrl = default!;
+
+    [Inject] public IConfiguration Configuration { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        version = $"v{Configuration["version"]}"; // example: v0.6.1
+        releaseShortDescription = Configuration["release:short_description"]!;
+        githubUrl = $"{Configuration["urls:github"]}";
+        nugetUrl = $"{Configuration["urls:nuget"]}";
+    }
+}

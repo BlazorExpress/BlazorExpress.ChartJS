@@ -1,26 +1,24 @@
-﻿using BlazorExpress.ChartJS.Enums;
-
-namespace BlazorExpress.ChartJS;
+﻿namespace BlazorExpress.ChartJS;
 
 public static class EnumExtensions
 {
     #region Methods
 
-    public static string? ToAlignmentString(this Alignment alignment) =>
+    public static string? ToChartDatasetDataLabelAlignmentString(this DataLabelAlignment alignment) =>
         alignment switch
         {
-            Alignment.Center => "center", // default
-            Alignment.Start => "start",
-            Alignment.End => "end",
+            DataLabelAlignment.Start => "start",
+            DataLabelAlignment.Center => "center", // default
+            DataLabelAlignment.End => "end",
             _ => null
         };
 
-    public static string? ToAnchorString(this Anchor anchor) =>
+    public static string? ToChartDatasetDataLabelAnchorString(this DataLabelAnchor anchor) =>
         anchor switch
         {
-            Anchor.Center => "center", // default
-            Anchor.Start => "start",
-            Anchor.End => "end",
+            DataLabelAnchor.Start => "start",
+            DataLabelAnchor.Center => "center", // default
+            DataLabelAnchor.End => "end",
             _ => null
         };
 

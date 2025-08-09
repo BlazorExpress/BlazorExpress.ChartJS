@@ -1,0 +1,48 @@
+@attribute [Route(pageUrl)]
+@attribute [Route(pageUrl2)]
+@layout BlogMainLayout
+
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<PageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</PageHero>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Latest Articles" PageUrl="@pageUrl" Link="latest-articles">
+    <Block>
+        Welcome to the official <strong>BlazorExpress.ChartJS Blog</strong>! Here you’ll find the latest news, tutorials, and best practices for building interactive charts and data visualizations in your Blazor WebAssembly applications using ChartJS.
+        <br /><br />
+        <ul>
+            <li><strong>Getting Started Guides:</strong> Step-by-step instructions for integrating ChartJS with Blazor.</li>
+            <li><strong>Feature Highlights:</strong> Deep dives into new and advanced charting features.</li>
+            <li><strong>Practical Examples:</strong> Real-world use cases and code samples for bar, line, pie, and custom charts.</li>
+            <li><strong>Performance Tips:</strong> Learn how to optimize chart rendering and interactivity in Blazor WebAssembly.</li>
+            <li><strong>Release Notes:</strong> Stay up to date with the latest updates and improvements to BlazorExpress.ChartJS.</li>
+        </ul>
+        Whether you’re new to Blazor or looking to enhance your data visualization skills, our blog provides practical insights and inspiration for your next project.
+    </Block>
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Popular Topics" PageUrl="@pageUrl" Link="popular-topics">
+    <Block>
+        <ul>
+            <li>How to create interactive charts in Blazor WebAssembly</li>
+            <li>Customizing ChartJS components for your Blazor app</li>
+            <li>Responsive and accessible data visualizations</li>
+            <li>Integrating ChartJS plugins and advanced options</li>
+            <li>Best practices for Blazor and ChartJS performance</li>
+        </ul>
+    </Block>
+</Section>
+
+@code {
+    private const string pageUrl = DemoRouteConstants.Blog_Home;
+    private const string pageUrl2 = DemoRouteConstants.Blog_Prefix;
+    private const string pageTitle = "BlazorExpress.ChartJS Blog – Tutorials, News & ChartJS Tips for Blazor";
+    private const string pageDescription = "Discover tutorials, news, and practical examples for BlazorExpress.ChartJS. Learn how to build interactive charts in Blazor WebAssembly with ChartJS.";
+    private const string metaTitle = "BlazorExpress.ChartJS Blog – Tutorials, News & ChartJS Tips for Blazor";
+    private const string metaDescription = "Explore the official BlazorExpress.ChartJS blog for tutorials, updates, and practical examples on building interactive charts in Blazor WebAssembly using ChartJS.";
+    private const string imageUrl = "https://i.imgur.com/IX3bajc.png"; // TODO: update with the actual image URL for the Bar Chart demo
+}

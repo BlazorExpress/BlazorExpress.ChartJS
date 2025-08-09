@@ -1,0 +1,52 @@
+@attribute [Route(pageUrl)]
+@layout DocsMainLayout
+
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<PageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</PageHero>
+
+<Image Src="@DemoImageSrcConstants.LineChart" class="img-fluid" alt="Blazor Line Chart - API Documentation" />
+
+<DemoLink Href="@DemoRouteConstants.Demos_LineChart" />
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Parameters" PageUrl="@pageUrl" Link="parameters">
+    <DocxTable TItem="LineChart" DocType="DocType.Parameters" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Methods" PageUrl="@pageUrl" Link="methods">
+    <DocxTable TItem="LineChart" DocType="DocType.Methods" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartData Properties" PageUrl="@pageUrl" Link="chart-data-properties">
+    <DocxTable TItem="ChartData" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="LineChartDataset Properties" PageUrl="@pageUrl" Link="linechart-dataset-properties">
+    <DocxTable TItem="LineChartDataset" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="LineChartDatasetData Properties" PageUrl="@pageUrl" Link="linechart-dataset-data-properties">
+    <DocxTable TItem="LineChartDatasetData" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="LineChartDatasetDataLabels Properties" PageUrl="@pageUrl" Link="linechart-dataset-data-labels-properties">
+    <DocxTable TItem="LineChartDatasetDataLabels" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="LineChartOptions Properties" PageUrl="@pageUrl" Link="linechart-options-properties">
+    <DocxTable TItem="LineChartOptions" DocType="DocType.Properties" />
+</Section>
+
+@code {
+    private const string componentName = nameof(LineChart);
+    private const string pageUrl = DemoRouteConstants.Docs_LineChart;
+    private const string pageTitle = $"Blazor {componentName} component";
+    private const string pageDescription = $"Comprehensive API documentation for the Blazor <code>{componentName}</code> component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
+    private const string metaTitle = $"Blazor {componentName} component API Reference & Configuration Guide";
+    private const string metaDescription = $"Comprehensive API documentation for the Blazor {componentName} component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
+    private const string imageUrl = @DemoImageSrcConstants.LineChart;
+}

@@ -1,0 +1,17 @@
+﻿﻿<div class="table-container">
+    <table class="table">
+        <tbody>
+            @foreach (var c in ColorUtility.CategoricalSixColors.Select((c, i) => new { Color = c, Index = i }))
+            {
+                <tr>
+                    <td class="p-2">@c.Color</td>
+                    <td class="p-2"><div class="m-1" style="background-color: @c.Color;width:48px;height:48px;" Title="@($"Index: {c.Index}, Color: {@ColorUtility.CategoricalSixColors[c.Index].ToColor().ToRgbString().ToLowerInvariant()}")"></div></td>
+                    <td class="p-2"><div class="m-1" style="background-color: @ColorUtility.CategoricalSixColors[c.Index].ToColor().ToRgbaString(0.8);width:48px;height:48px;" Title="@($"Index: {c.Index}, Color: {@ColorUtility.CategoricalSixColors[c.Index].ToColor().ToRgbaString(0.8).ToLowerInvariant()}")"></div></td>
+                    <td class="p-2"><div class="m-1" style="background-color: @ColorUtility.CategoricalSixColors[c.Index].ToColor().ToRgbaString(0.6);width:48px;height:48px;" Title="@($"Index: {c.Index}, Color: {@ColorUtility.CategoricalSixColors[c.Index].ToColor().ToRgbaString(0.6).ToLowerInvariant()}")"></div></td>
+                    <td class="p-2"><div class="m-1" style="background-color: @ColorUtility.CategoricalSixColors[c.Index].ToColor().ToRgbaString(0.4);width:48px;height:48px;" Title="@($"Index: {c.Index}, Color: {@ColorUtility.CategoricalSixColors[c.Index].ToColor().ToRgbaString(0.4).ToLowerInvariant()}")"></div></td>
+                    <td class="p-2"><div class="m-1" style="background-color: @ColorUtility.CategoricalSixColors[c.Index].ToColor().ToRgbaString(0.2);width:48px;height:48px;" Title="@($"Index: {c.Index}, Color: {@ColorUtility.CategoricalSixColors[c.Index].ToColor().ToRgbaString(0.2).ToLowerInvariant()}")"></div></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

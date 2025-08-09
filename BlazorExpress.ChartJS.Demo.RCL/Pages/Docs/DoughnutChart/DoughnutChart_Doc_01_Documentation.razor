@@ -1,0 +1,52 @@
+@attribute [Route(pageUrl)]
+@layout DocsMainLayout
+
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<PageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</PageHero>
+
+<Image Src="@DemoImageSrcConstants.DoughnutChart" class="img-fluid" alt="Blazor Doughnut Chart - API Documentation" />
+
+<DemoLink Href="@DemoRouteConstants.Demos_DoughnutChart" />
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Parameters" PageUrl="@pageUrl" Link="parameters">
+    <DocxTable TItem="DoughnutChart" DocType="DocType.Parameters" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Methods" PageUrl="@pageUrl" Link="methods">
+    <DocxTable TItem="DoughnutChart" DocType="DocType.Methods" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartData Properties" PageUrl="@pageUrl" Link="chart-data-properties">
+    <DocxTable TItem="ChartData" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="DoughnutChartDataset Properties" PageUrl="@pageUrl" Link="doughnutchart-dataset-properties">
+    <DocxTable TItem="DoughnutChartDataset" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="DoughnutChartDatasetData Properties" PageUrl="@pageUrl" Link="doughnutchart-dataset-data-properties">
+    <DocxTable TItem="DoughnutChartDatasetData" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="DoughnutChartDatasetDataLabels Properties" PageUrl="@pageUrl" Link="doughnutchart-dataset-data-labels-properties">
+    <DocxTable TItem="DoughnutChartDatasetDataLabels" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="DoughnutChartOptions Properties" PageUrl="@pageUrl" Link="doughnutchart-options-properties">
+    <DocxTable TItem="DoughnutChartOptions" DocType="DocType.Properties" />
+</Section>
+
+@code {
+    private const string componentName = nameof(DoughnutChart);
+    private const string pageUrl = DemoRouteConstants.Docs_DoughnutChart;
+    private const string pageTitle = $"Blazor {componentName} component";
+    private const string pageDescription = $"Comprehensive API documentation for the Blazor <code>{componentName}</code> component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
+    private const string metaTitle = $"Blazor {componentName} component API Reference & Configuration Guide";
+    private const string metaDescription = $"Comprehensive API documentation for the Blazor {componentName} component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
+    private const string imageUrl = @DemoImageSrcConstants.DoughnutChart;
+}

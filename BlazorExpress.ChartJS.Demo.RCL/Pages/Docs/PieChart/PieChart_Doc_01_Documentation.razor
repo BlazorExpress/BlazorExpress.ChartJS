@@ -1,0 +1,52 @@
+@attribute [Route(pageUrl)]
+@layout DocsMainLayout
+
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<PageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</PageHero>
+
+<Image Src="@DemoImageSrcConstants.PieChart" class="img-fluid" alt="Blazor Pie Chart - API Documentation" />
+
+<DemoLink Href="@DemoRouteConstants.Demos_PieChart" />
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Parameters" PageUrl="@pageUrl" Link="parameters">
+    <DocxTable TItem="PieChart" DocType="DocType.Parameters" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Methods" PageUrl="@pageUrl" Link="methods">
+    <DocxTable TItem="PieChart" DocType="DocType.Methods" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartData Properties" PageUrl="@pageUrl" Link="chart-data-properties">
+    <DocxTable TItem="ChartData" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="PieChartDataset Properties" PageUrl="@pageUrl" Link="piechart-dataset-properties">
+    <DocxTable TItem="PieChartDataset" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="PieChartDatasetData Properties" PageUrl="@pageUrl" Link="piechart-dataset-data-properties">
+    <DocxTable TItem="PieChartDatasetData" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="PieChartDatasetDataLabels Properties" PageUrl="@pageUrl" Link="piechart-dataset-data-labels-properties">
+    <DocxTable TItem="PieChartDatasetDataLabels" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="PieChartOptions Properties" PageUrl="@pageUrl" Link="piechart-options-properties">
+    <DocxTable TItem="PieChartOptions" DocType="DocType.Properties" />
+</Section>
+
+@code {
+    private const string componentName = nameof(PieChart);
+    private const string pageUrl = DemoRouteConstants.Docs_PieChart;
+    private const string pageTitle = $"Blazor {componentName} component";
+    private const string pageDescription = $"Comprehensive API documentation for the Blazor <code>{componentName}</code> component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
+    private const string metaTitle = $"Blazor {componentName} component API Reference & Configuration Guide";
+    private const string metaDescription = $"Comprehensive API documentation for the Blazor {componentName} component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
+    private const string imageUrl = @DemoImageSrcConstants.PieChart;
+}
