@@ -44,5 +44,7 @@ public static class DemoStringConstants
     public const string StaticAssets_Icons_Path = StaticAssets_RootPath + "/icons";
     public const string StaticAssets_Icons_Logo_png = StaticAssets_Icons_Path + "/logo.png";
 
+    public const string StaticAssets_Images_Path = StaticAssets_RootPath + "/images";
+
     #endregion
 }

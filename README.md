@@ -38,16 +38,16 @@ Get started any way you want
 
 ## Components
 
-| Component Name | Demos |
+| Component Name | Demos | Docs |
 |:--|:--|
-| Charts: Bar chart | [Demos](https://chartjs.blazorexpress.com/demos/bar-chart) |
-| Charts: Bubble chart | [Demos](https://chartjs.blazorexpress.com/demos/bubble-chart) |
-| Charts: Doughnut chart | [Demos](https://chartjs.blazorexpress.com/demos/doughnut-chart) |
-| Charts: Line chart | [Demos](https://chartjs.blazorexpress.com/demos/line-chart) |
-| Charts: Pie chart | [Demos](https://chartjs.blazorexpress.com/demos/pie-chart) |
-| Charts: PolarArea chart | [Demos](https://chartjs.blazorexpress.com/demos/polar-area-chart) |
-| Charts: Radar chart | [Demos](https://chartjs.blazorexpress.com/demos/radar-chart) |
-| Charts: Scatter chart | [Demos](https://chartjs.blazorexpress.com/demos/scatter-chart) |
+| Charts: Bar chart | [Demos](https://chartjs.blazorexpress.com/demos/bar-chart) | [Docs](https://chartjs.blazorexpress.com/docs/bar-chart) |
+| Charts: Bubble chart | [Demos](https://chartjs.blazorexpress.com/demos/bubble-chart) | [Docs](https://chartjs.blazorexpress.com/docs/bubble-chart) |
+| Charts: Doughnut chart | [Demos](https://chartjs.blazorexpress.com/demos/doughnut-chart) | [Docs](https://chartjs.blazorexpress.com/docs/doughnut-chart) |
+| Charts: Line chart | [Demos](https://chartjs.blazorexpress.com/demos/line-chart) | [Docs](https://chartjs.blazorexpress.com/docs/line-chart) |
+| Charts: Pie chart | [Demos](https://chartjs.blazorexpress.com/demos/pie-chart) | [Docs](https://chartjs.blazorexpress.com/docs/pie-chart) |
+| Charts: PolarArea chart | [Demos](https://chartjs.blazorexpress.com/demos/polar-area-chart) | [Docs](https://chartjs.blazorexpress.com/docs/polar-area-chart) |
+| Charts: Radar chart | [Demos](https://chartjs.blazorexpress.com/demos/radar-chart) | [Docs](https://chartjs.blazorexpress.com/docs/radar-chart) |
+| Charts: Scatter chart | [Demos](https://chartjs.blazorexpress.com/demos/scatter-chart) | [Docs](https://chartjs.blazorexpress.com/docs/scatter-chart) |
 
 More components coming...
 
@@ -57,4 +57,4 @@ More components coming...
 
 ## Copyright and license
 
-Code and documentation copyright 2024 [Blazor Express](https://blazorexpress.com/) Code released under the [Apache-2.0 License](https://github.com/BlazorExpress/BlazorExpress.ChartJS/blob/main/LICENSE).
+Code and documentation copyright 2025 [Blazor Express](https://blazorexpress.com/) Code released under the [Apache-2.0 License](https://github.com/BlazorExpress/BlazorExpress.ChartJS/blob/main/LICENSE).
