@@ -48,7 +48,10 @@ public class LineChartDataset : ChartDataset<double?>
 
         if (relativeIndex)
         {
-            var myIndex = relativeIndex ? chartData.Datasets.IndexOf(this) : 0;
+            if (chartData?.Datasets == null)
+                throw new ArgumentException("The chart data or its datasets collection is null.");
+
+            var myIndex = chartData.Datasets.IndexOf(this);
 
             if (myIndex < 0)
                 throw new ArgumentException("The dataset is not in the chart data.");
