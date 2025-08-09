@@ -9,9 +9,9 @@
     </SubTitleTemplate>
 </PageHero>
 
-<Image Src="@DemoImageSrcConstants.BarChart" class="img-fluid" alt="Blazor Bar Chart - API Documentation" />
-
 <DemoLink Href="@DemoRouteConstants.Demos_BubbleChart" />
+
+<Image Src="@imageUrl" class="img-fluid" alt="Blazor Bar Chart - API Documentation" />
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="Parameters" PageUrl="@pageUrl" Link="parameters">
     <DocxTable TItem="BubbleChart" DocType="DocType.Parameters" />
@@ -48,5 +48,5 @@
     private const string pageDescription = $"Comprehensive API documentation for the Blazor <code>{componentName}</code> component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
     private const string metaTitle = $"Blazor {componentName} component API Reference & Configuration Guide";
     private const string metaDescription = $"Comprehensive API documentation for the Blazor {componentName} component, including configuration options, parameters, methods, events, child component parameters, and model properties.";
-    private const string imageUrl = @DemoImageSrcConstants.BarChart;
+    private const string imageUrl = @DemoImageSrcConstants.BubbleChart;
 }
