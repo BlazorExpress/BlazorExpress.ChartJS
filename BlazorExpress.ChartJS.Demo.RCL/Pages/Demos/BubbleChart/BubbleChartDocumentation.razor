@@ -9,22 +9,25 @@
     </SubTitleTemplate>
 </PageHero>
 
-<DocsLink Href="@DemoRouteConstants.Docs_BarChart" />
+<DocsLink Href="@DemoRouteConstants.Docs_BubbleChart" />
 
 <Prerequisites PageUrl="@pageUrl" />
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="How it works" PageUrl="@pageUrl" Link="how-it-works">
     <Block>
-        The <strong>Bar Chart</strong> component visualizes data as vertical bars, making it easy to compare values across categories or track changes over time.
+        The <strong>Bubble Chart</strong> component visualizes three dimensions of data by displaying each data point as a bubble, where the X and Y coordinates determine the position and the bubble size represents a third value. This makes it ideal for comparing and analyzing relationships between multiple variables.
+
         <br /><br />
         <strong>How to use:</strong>
         <ul>
-            <li>Add the <code>BarChart</code> component to your page.</li>
-            <li>Provide <code>Labels</code> for the X-axis categories and one or more <code>Datasets</code> for the Y-axis values.</li>
-            <li>Customize appearance and behavior using the <code>Options</code> property (e.g., colors, tooltips, axis settings).</li>
-            <li>Refer to the demo code for examples of basic and advanced usage, including multiple datasets and custom styling.</li>
+            <li>Add the <code>BubbleChart</code> component to your page and set its desired <code>Width</code> (e.g., <code>Width="600"</code>).</li>
+            <li>Prepare your <code>ChartData</code> with <code>Labels</code> for the X-axis and one or more <code>BubbleChartDataset</code> objects, each containing a list of <code>BubbleChartDataPoint</code> (with <code>X</code>, <code>Y</code>, and <code>R</code> values).</li>
+            <li>Configure chart appearance and behavior using <code>BubbleChartOptions</code> (e.g., responsiveness, tooltips, axis settings).</li>
+            <li>Initialize the chart by calling <code>InitializeAsync</code> with your data and options.</li>
+            <li>Use built-in methods such as <code>AddDatasetAsync</code>, <code>AddDataAsync</code>, and <code>UpdateAsync</code> to dynamically update the chart as shown in the demo.</li>
+            <li>Refer to the demo code below for practical examples, including adding datasets, randomizing data, and customizing chart styles.</li>
         </ul>
-        This demo showcases the essential setup for a bar chart and demonstrates how to bind your data for quick visualization.
+        This demo provides a hands-on example of setting up a Bubble Chart in Blazor, demonstrating how to bind and update your data for interactive visualizations.
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_01_Examples)" Tabs="true" />
 </Section>
@@ -32,8 +35,8 @@
 @code {
     private const string pageUrl = DemoRouteConstants.Demos_BubbleChart;
     private const string pageTitle = "Bubble Chart";
-    private const string pageDescription = "The <code>Blazor Bubble Chart</code> component displays data values as vertical bars, making it easy to compare multiple data sets or visualize trends over time.";
+    private const string pageDescription = "The <code>Blazor Bubble Chart</code> component is used to display three dimensions of data at the same time. The location of the bubble is determined by the first two dimensions and the corresponding horizontal and vertical axes. The third dimension is represented by the size of the individual bubbles.";
     private const string metaTitle = "Blazor Bubble Chart";
-    private const string metaDescription = "The Blazor Bubble Chart component displays data values as vertical bars, making it easy to compare multiple data sets or visualize trends over time.";
+    private const string metaDescription = "The Blazor Bubble Chart component is used to display three dimensions of data at the same time. The location of the bubble is determined by the first two dimensions and the corresponding horizontal and vertical axes. The third dimension is represented by the size of the individual bubbles.";
     private const string imageUrl = "https://i.imgur.com/IX3bajc.png"; // TODO: update with the actual image URL for the Bar Chart demo
 }

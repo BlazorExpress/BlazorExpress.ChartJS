@@ -19,7 +19,7 @@
     protected override void OnInitialized()
     {
         chartData = new ChartData { Labels = GetDefaultDataLabels(6), Datasets = GetDefaultDataSets(3) };
-        bubbleChartOptions = new BubbleChartOptions { Responsive = true, /*Interaction = new Interaction { Mode = InteractionMode.Index }*/ };
+        bubbleChartOptions = new BubbleChartOptions { Responsive = true };
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
