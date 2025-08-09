@@ -4,8 +4,6 @@
     <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="RandomizeAsync"> Randomize </Button>
     <Button Color="ButtonColor.Link" Size="ButtonSize.Small" @onclick="AddDatasetAsync"> Add Dataset </Button>
     <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="AddDataAsync">Add Data</Button>
-    <Button Color="ButtonColor.Success" Size="ButtonSize.Small" @onclick="ShowHorizontalBarChartAsync">Horizontal Bar Chart</Button>
-    <Button Color="ButtonColor.Warning" Size="ButtonSize.Small" @onclick="ShowVerticalBarChartAsync">Vertical Bar Chart</Button>
 </div>
 
 @code {
@@ -50,7 +48,7 @@
                 var newData = new List<BubbleChartDataPoint>();
                 for (var i = 0; i < count; i++)
                 {
-                    newData.Add(new(random.Next(40), random.Next(40), random.Next(40)));
+                    newData.Add(NewBubbleChartDataPoint);
                 }
 
                 bubbleChartDataset.Data = newData;
@@ -86,22 +84,10 @@
         foreach (var dataset in chartData.Datasets)
         {
             if (dataset is BubbleChartDataset barChartDataset)
-                data.Add(new BubbleChartDatasetData(barChartDataset.Label, random.Next(200)));
+                data.Add(new BubbleChartDatasetData(barChartDataset.Label, NewBubbleChartDataPoint));
         }
 
         chartData = await bubbleChart.AddDataAsync(chartData, GetNextDataLabel(), data);
-    }
-
-    private async Task ShowHorizontalBarChartAsync()
-    {
-        //barChartOptions.IndexAxis = "y";
-        await bubbleChart.UpdateAsync(chartData, bubbleChartOptions);
-    }
-
-    private async Task ShowVerticalBarChartAsync()
-    {
-        //barChartOptions.IndexAxis = "x";
-        await bubbleChart.UpdateAsync(chartData, bubbleChartOptions);
     }
 
     #region Data Preparation
@@ -134,14 +120,13 @@
         };
     }
 
-    private List<BubbleChartDataPoint?> GetRandomData()
+    private List<BubbleChartDataPoint> GetRandomData()
     {
-        var data = new List<BubbleChartDataPoint>();
-        for (var index = 0; index < labelsCount; index++)
+        var data = new List<BubbleChartDataPoint>(labelsCount);
+        for (var i = 0; i < labelsCount; i++)
         {
-            data.Add(new(random.Next(40), random.Next(40), random.Next(40)));
+            data.Add(NewBubbleChartDataPoint);
         }
-
         return data;
     }
 
@@ -161,6 +146,8 @@
         labelsCount += 1;
         return months[labelsCount - 1];
     }
+
+    private BubbleChartDataPoint NewBubbleChartDataPoint => new(X: random.Next(40), Y: random.Next(40), R: random.Next(10));
 
     #endregion Data Preparation
 }
