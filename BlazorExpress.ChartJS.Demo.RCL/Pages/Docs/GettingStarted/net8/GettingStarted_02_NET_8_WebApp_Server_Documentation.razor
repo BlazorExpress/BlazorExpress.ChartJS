@@ -39,8 +39,12 @@
         <Block>
             <ol>
                 <li>
-                    <b>Add the NuGet package:</b>
-                    <CodeChunk Class="mt-3" LanguageCode="LanguageCode.Text" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_01_Snippet.razor" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
+                    <b>Run .NET CLI command:</b>
+                    <CodeChunk Class="mt-3" LanguageCode="LanguageCode.Text" FilePath="~\Pages\Docs\GettingStarted\net8\02_A_Manual_Install_01_Run_Net_CLI_Command_Snippet.razor" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
+                </li>
+                <li>
+                    <b>Add package reference:</b>
+                    <CodeChunk Class="mt-3" LanguageCode="LanguageCode.Text" FilePath="~\Pages\Docs\GettingStarted\net8\02_A_Manual_Install_02_Add_Package_Reference_Snippet.razor" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
                 </li>
                 <li>
                     <b>Add JS references:</b>
@@ -49,19 +53,9 @@
                 </li>
                 <li>
                     <b>Register services:</b>
-                    <Block>Add <code>@@using BlazorExpress.ChartJS</code> to <code>_Imports.razor</code>:</Block>
+                    <Block>Add <code>BlazorExpress.ChartJS</code> namespace to <code>_Imports.razor</code>:</Block>
                     <CodeChunk Class="mt-3" LanguageCode="LanguageCode.Razor" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_04_Snippet.razor" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
-
-                    @* <Block>Register services in <code>Program.cs</code> (if required):</Block>
-                        <CodeChunk Class="mt-3" LanguageCode="LanguageCode.CSharp" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_05_Snippet.cs" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
-                        <p>
-                            <b>Note:</b> If <code>AddBlazorExpressBulma()</code> is not available, check the <a href="https://github.com/BlazorExpress/BlazorExpress.Bulma" target="_blank">official documentation</a> for the latest setup instructions.
-                        </p> *@
                 </li>
-                @* <li>
-                        <b>Remove default references:</b>
-                        <Block>In <code>wwwroot/index.html</code>, remove the default CSS and JS references that conflict with Bulma:</Block>
-                    </li> *@
             </ol>
         </Block>
     </Section>
@@ -70,7 +64,7 @@
         <Block>
             <ol>
                 <li>
-                    <Block>Add a Bulma component to <code>Components/Pages/Home.razor</code>:</Block>
+                    <Block>Add a BarChart component to <code>Components/Pages/Home.razor</code>:</Block>
                     <CodeChunk Class="mt-3" LanguageCode="LanguageCode.Razor" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_06_Snippet.razor" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
                 </li>
             </ol>
@@ -91,7 +85,7 @@
         <Block>
             <ul>
                 <li>
-                    <a href="https://github.com/BlazorExpress/BlazorExpress.ChartJS" target="_blank">BlazorExpress.ChartJS GitHub Repository</a>
+                    <a href="https://github.com/BlazorExpress/BlazorExpress.ChartJS" target="_blank">GitHub Repository</a>
                 </li>
                 <li>
                     <a href="https://www.nuget.org/packages/BlazorExpress.ChartJS" target="_blank">NuGet Package</a>
