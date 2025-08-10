@@ -83,9 +83,19 @@ public class BarChartDataset : ChartDataset<double?>
     [ParameterTypeName("List<double>?")]
     public List<double>? BorderRadius { get; set; }
 
-    //BorderSkipped
-    //https://www.chartjs.org/docs/latest/charts/bar.html#styling
-    //https://www.chartjs.org/docs/latest/api/interfaces/BarControllerDatasetOptions.html#borderskipped
+    /// <summary>
+    /// This setting is used to avoid drawing the bar stroke at the base of the fill, or disable the border radius. 
+    /// In general, this does not need to be changed except when creating chart types that derive from a bar chart.
+    /// Supported values are 'start', 'end', 'middle', 'bottom', 'left', 'top', 'right', 'false', and 'true'.
+    /// <para>
+    /// Default value is 'start'.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#styling" />
+    /// </summary>
+    [AddedVersion("1.2.0")]
+    [DefaultValue("start")]
+    [Description("This setting is used to avoid drawing the bar stroke at the base of the fill, or disable the border radius. In general, this does not need to be changed except when creating chart types that derive from a bar chart. <br />Supported values are <b>start</b>, <b>end</b>, <b>middle</b>, <b>bottom</b>, <b>left</b>, <b>top</b>, <b>right</b>, <b>false</b>, and <b>true</b>.")]
+    public object BorderSkipped { get; set; } = "start";
 
     /// <summary>
     /// The bar border width (in pixels).
