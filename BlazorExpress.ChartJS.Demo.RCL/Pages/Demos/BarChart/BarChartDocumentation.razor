@@ -101,7 +101,19 @@
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="Border radius" PageUrl="@pageUrl" Link="border-radius">
     <Block>
-        TODO: Update the description once the demo is implemented.
+        The <strong>Border Radius</strong> feature allows you to create bar charts with rounded corners, giving your charts a modern and visually appealing look. This is especially useful for dashboards and applications where aesthetics are important.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Add the <code>BarChart</code> component to your page.</li>
+                <li>When defining each <code>BarChartDataset</code>, set the <code>BorderRadius</code> property to a list of pixel values (e.g., <code>new List&lt;double&gt; { 10 }</code>) to control the roundness of the bar corners.</li>
+                <li>Optionally, set <code>BorderSkipped = false</code> to apply the border radius to all corners of each bar.</li>
+                <li>Customize other appearance options such as <code>BackgroundColor</code> and <code>BorderColor</code> as needed.</li>
+                <li>Refer to the demo code below for a working example and further customization options.</li>
+            </ol>
+        </div>
+        Using the <code>BorderRadius</code> property, you can easily enhance the style of your bar charts to better match your application's design.
     </Block>
     <Demo Type="typeof(BarChart_Demo_06_Border_Radius)" Tabs="true" />
 </Section>
