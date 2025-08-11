@@ -108,14 +108,36 @@
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="Animations - Delay" PageUrl="@pageUrl" Link="animations-delay">
     <Block>
-        TODO: Update the description once the demo is implemented.
+        The <strong>Animations - Delay</strong> demo illustrates how to add a delay to the animation of your Bar Chart, making the chart elements appear with a timed entrance effect. This is useful for drawing attention to the chart as it loads or for creating a more engaging user experience.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Add the <code>BarChart</code> component to your page and define your <code>Labels</code> and <code>Datasets</code> as usual.</li>
+                <li>Configure the <code>Options.Animation</code> property by setting the <code>Duration</code> (in milliseconds) and <code>Delay</code> (in milliseconds) to control the timing of the animation.</li>
+                <li>Bind your <code>chartData</code> and <code>barChartOptions</code> to the <code>BarChart</code> component.</li>
+                <li>Refer to the demo code below for a working example of how to set up and customize animation delays.</li>
+            </ol>
+        </div>
+        Animation delays help you create visually appealing transitions and can be tailored to fit your application's style.
     </Block>
     <Demo Type="typeof(BarChart_Demo_07_Animations_A_Delay)" Tabs="true" />
 </Section>
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="Animations - DataSet level delay" PageUrl="@pageUrl" Link="animations-dataset-level-delay">
     <Block>
-        TODO: Update the description once the demo is implemented.
+        The <strong>Animations - DataSet Level Delay</strong> demo demonstrates how to apply different animation delays to each dataset in your Bar Chart. This allows each dataset to animate in sequence, making comparisons clearer and adding a dynamic effect to your data presentation.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Add the <code>BarChart</code> component to your page and define your <code>Labels</code> and multiple <code>Datasets</code>.</li>
+                <li>For each dataset, set the <code>Animation</code> property with specific <code>Duration</code> and <code>Delay</code> values to control when each dataset animates.</li>
+                <li>Bind your <code>chartData</code> and <code>barChartOptions</code> to the <code>BarChart</code> component.</li>
+                <li>Refer to the demo code below for a practical example of dataset-level animation configuration.</li>
+            </ol>
+        </div>
+        Dataset-level animation delays are ideal for highlighting differences between series and creating engaging, stepwise chart reveals.
     </Block>
     <Demo Type="typeof(BarChart_Demo_08_Animations_B_DataSet_Level_Delay)" Tabs="true" />
 </Section>
