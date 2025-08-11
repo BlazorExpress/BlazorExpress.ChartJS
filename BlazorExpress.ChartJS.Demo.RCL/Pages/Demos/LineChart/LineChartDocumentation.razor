@@ -93,7 +93,19 @@
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="Interpolation modes" PageUrl="@pageUrl" Link="interpolation-modes">
     <Block>
-        TODO: Add a description for the Interpolation Modes section.
+        The <strong>Interpolation Modes</strong> demo showcases how different interpolation settings affect the appearance and smoothness of lines in the <code>LineChart</code> component. Interpolation determines how data points are connected, allowing you to choose between straight lines, smooth curves, or monotone cubic curves for more natural transitions.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Prepare your chart data by defining <code>Labels</code> for the X-axis and one or more <code>Datasets</code> for the Y-axis values.</li>
+                <li>For each dataset, set the <code>CubicInterpolationMode</code> property to control the interpolation style (e.g., <code>"monotone"</code> for monotone cubic interpolation, or leave unset for linear).</li>
+                <li>Optionally, adjust the <code>Tension</code> property to fine-tune the curve smoothness.</li>
+                <li>Add the <code>LineChart</code> component to your page, binding your data and options as shown in the demo code below.</li>
+                <li>Experiment with different interpolation modes and tension values to achieve the desired visual effect for your data.</li>
+            </ol>
+        </div>
+        Using interpolation modes helps you present trends more clearly, making your charts easier to interpret and visually appealing. Refer to the demo code for practical implementation details.
     </Block>
     <Demo Type="typeof(LineChart_Demo_05_Interpolation_Modes)" Tabs="true" />
 </Section>
