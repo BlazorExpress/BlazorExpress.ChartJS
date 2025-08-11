@@ -41,7 +41,6 @@ public class ChartOptions : IChartOptions
     [DefaultValue("By default, the chart is using the default locale of the platform which is running on.")]
     [Description("Gets or sets the locale for the chart.")]
     [ParameterTypeName("string?")]
-    //[Parameter]
     public string? Locale { get; set; }
 
     /// <summary>
@@ -56,7 +55,6 @@ public class ChartOptions : IChartOptions
     [AddedVersion("1.0.0")]
     [DefaultValue(true)]
     [Description("Gets or sets a value indicating whether to maintain the original canvas aspect ratio (width / height) when resizing.")]
-    //[Parameter]
     public bool MaintainAspectRatio { get; set; } = true;
 
     //onResize
@@ -77,7 +75,6 @@ public class ChartOptions : IChartOptions
     [AddedVersion("1.0.0")]
     [DefaultValue(true)]
     [Description("Gets or sets a value indicating whether the chart canvas should resize when its container does.")]
-    //[Parameter]
     public bool Responsive { get; set; } = true;
 
     #endregion
@@ -100,7 +97,6 @@ public class ChartLayout
     [AddedVersion("1.0.0")]
     [DefaultValue(true)]
     [Description("Gets or sets a value indicating whether to apply automatic padding so visible elements are completely drawn.")]
-    //[Parameter]
     public bool AutoPadding { get; set; } = true;
 
     /// <summary>
@@ -112,7 +108,6 @@ public class ChartLayout
     [AddedVersion("1.0.0")]
     [DefaultValue(0)]
     [Description("Gets or sets the padding to add inside the chart.")]
-    //[Parameter]
     public int Padding { get; set; } = 0;
 
     #endregion
