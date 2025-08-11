@@ -22,7 +22,14 @@ public class ChartDataset<TData> : IChartDataset
     /// <summary>
     /// Chart.js animates charts out of the box. 
     /// A number of options are provided to configure how the animation looks and how long it takes.
+    /// <para>
+    /// Default value is <see langword="null"/>.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/animations.html" />
     /// </summary>
+    [AddedVersion("1.2.0")]
+    [DefaultValue(null)]
+    [Description("Chart.js animates charts out of the box. A number of options are provided to configure how the animation looks and how long it takes.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ChartAnimation? Animation { get; set; }
 
