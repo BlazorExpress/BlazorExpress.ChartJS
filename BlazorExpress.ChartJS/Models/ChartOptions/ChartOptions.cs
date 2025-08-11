@@ -12,6 +12,13 @@ public class ChartOptions : IChartOptions
 {
     #region Properties, Indexers
 
+    /// <summary>
+    /// Chart.js animates charts out of the box. 
+    /// A number of options are provided to configure how the animation looks and how long it takes.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public ChartAnimation? Animation { get; set; }
+
     //aspectRatio
     //https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options
 
@@ -27,7 +34,7 @@ public class ChartOptions : IChartOptions
     [DefaultValue("By default, the chart is using the default locale of the platform which is running on.")]
     [Description("Gets or sets the locale for the chart.")]
     [ParameterTypeName("string?")]
-    [Parameter]
+    //[Parameter]
     public string? Locale { get; set; }
 
     /// <summary>
@@ -42,7 +49,7 @@ public class ChartOptions : IChartOptions
     [AddedVersion("1.0.0")]
     [DefaultValue(true)]
     [Description("Gets or sets a value indicating whether to maintain the original canvas aspect ratio (width / height) when resizing.")]
-    [Parameter]
+    //[Parameter]
     public bool MaintainAspectRatio { get; set; } = true;
 
     //onResize
@@ -63,7 +70,7 @@ public class ChartOptions : IChartOptions
     [AddedVersion("1.0.0")]
     [DefaultValue(true)]
     [Description("Gets or sets a value indicating whether the chart canvas should resize when its container does.")]
-    [Parameter]
+    //[Parameter]
     public bool Responsive { get; set; } = true;
 
     #endregion
@@ -86,7 +93,7 @@ public class ChartLayout
     [AddedVersion("1.0.0")]
     [DefaultValue(true)]
     [Description("Gets or sets a value indicating whether to apply automatic padding so visible elements are completely drawn.")]
-    [Parameter]
+    //[Parameter]
     public bool AutoPadding { get; set; } = true;
 
     /// <summary>
@@ -98,7 +105,7 @@ public class ChartLayout
     [AddedVersion("1.0.0")]
     [DefaultValue(0)]
     [Description("Gets or sets the padding to add inside the chart.")]
-    [Parameter]
+    //[Parameter]
     public int Padding { get; set; } = 0;
 
     #endregion
@@ -610,7 +617,7 @@ public class ChartAxesTitle
 }
 
 /// <summary>
-///     <see href="https://www.chartjs.org/docs/latest/general/fonts.html" />
+/// <see href="https://www.chartjs.org/docs/latest/general/fonts.html" />
 /// </summary>
 public class ChartFont
 {
@@ -649,4 +656,51 @@ public class ChartFont
     public string? Weight { get; set; } = "bold";
 
     #endregion
+}
+
+/// <summary>
+/// Chart.js animates charts out of the box. 
+/// A number of options are provided to configure how the animation looks and how long it takes.
+/// <see href="https://www.chartjs.org/docs/latest/configuration/animations.html#animations" />
+/// </summary>
+public class ChartAnimation
+{
+    /// <summary>
+    /// Delay before starting the animations.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// </summary>
+    public double? Delay { get; set; } = null;
+
+    /// <summary>
+    /// The number of milliseconds an animation takes.
+    /// <para>
+    /// Default value is 1000
+    /// </para>
+    /// </summary>
+    public double Duration { get; set; } = 1000;
+
+    /// <summary>
+    /// Easing function to use.
+    /// <para>
+    /// Default value is "easeOutQuart". 
+    /// </para>
+    /// <para>
+    /// Supported values are: 'linear', 'easeInQuad', 'easeOutQuad', 'easeInOutQuad', 'easeInCubic', 'easeOutCubic', 'easeInOutCubic', 'easeInQuart', 'easeOutQuart', 'easeInOutQuart', 'easeInQuint', 'easeOutQuint', 'easeInOutQuint', 'easeInSine', 'easeOutSine', 'easeInOutSine', 'easeInExpo', 'easeOutExpo', 'easeInOutExpo', 'easeInCirc', 'easeOutCirc', 'easeInOutCirc', 'easeInElastic', 'easeOutElastic', 'easeInOutElastic', 'easeInBack', 'easeOutBack', 'easeInOutBack', 'easeInBounce', 'easeOutBounce', and 'easeInOutBounce'.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/animations.html#easing" />
+    /// </summary>
+    public string Easing { get; set; } = "easeOutQuart";
+
+    /// <summary>
+    /// If set to <see langword="true"/>, the animations loop endlessly.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// </summary>
+    public bool? Loop { get; set; } = null;
+
+    //Animation Callbacks
+    //https://www.chartjs.org/docs/latest/configuration/animations.html#animation-callbacks
 }
