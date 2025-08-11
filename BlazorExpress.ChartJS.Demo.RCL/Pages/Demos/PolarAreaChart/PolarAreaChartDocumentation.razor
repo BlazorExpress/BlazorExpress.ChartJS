@@ -18,14 +18,16 @@
         The <strong>Polar Area Chart</strong> component visualizes each data value as a segment with equal angles but varying radius, making it ideal for comparing values across categories in a circular layout.
         <br /><br />
         <strong>How to use:</strong>
-        <ul>
-            <li>Add the <code>PolarAreaChart</code> component to your page and set its dimensions (e.g., <code>Width="600"</code>).</li>
-            <li>Prepare your chart data by specifying <code>Labels</code> for each category and one or more <code>Datasets</code> with values and background colors.</li>
-            <li>Configure chart options such as <code>Responsive</code> and <code>Title</code> using the <code>PolarAreaChartOptions</code> object.</li>
-            <li>Initialize the chart in <code>OnAfterRenderAsync</code> by calling <code>polarAreaChart.InitializeAsync(chartData, polarAreaChartOptions)</code>.</li>
-            <li>Use the demo's interactive buttons to randomize data, add datasets, or add new data points dynamically and see the chart update in real time.</li>
-            <li>Refer to the demo code below for practical examples of data preparation, dynamic updates, and chart customization.</li>
-        </ul>
+        <div class="content">
+            <ol>
+                <li>Add the <code>PolarAreaChart</code> component to your page and set its dimensions (e.g., <code>Width="600"</code>).</li>
+                <li>Prepare your chart data by specifying <code>Labels</code> for each category and one or more <code>Datasets</code> with values and background colors.</li>
+                <li>Configure chart options such as <code>Responsive</code> and <code>Title</code> using the <code>PolarAreaChartOptions</code> object.</li>
+                <li>Initialize the chart in <code>OnAfterRenderAsync</code> by calling <code>polarAreaChart.InitializeAsync(chartData, polarAreaChartOptions)</code>.</li>
+                <li>Use the demo's interactive buttons to randomize data, add datasets, or add new data points dynamically and see the chart update in real time.</li>
+                <li>Refer to the demo code below for practical examples of data preparation, dynamic updates, and chart customization.</li>
+            </ol>
+        </div>
         This demo demonstrates how to set up a Polar Area Chart, bind your data, and interactively update the chart to fit your application's needs.
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_01_Examples)" Tabs="true" />

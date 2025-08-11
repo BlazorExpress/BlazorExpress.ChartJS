@@ -19,12 +19,14 @@
         The <strong>Bar Chart</strong> component visualizes data as vertical bars, making it easy to compare values across categories or track changes over time.
         <br /><br />
         <strong>How to use:</strong>
-        <ul>
-            <li>Add the <code>BarChart</code> component to your page.</li>
-            <li>Provide <code>Labels</code> for the X-axis categories and one or more <code>Datasets</code> for the Y-axis values.</li>
-            <li>Customize appearance and behavior using the <code>Options</code> property (e.g., colors, tooltips, axis settings).</li>
-            <li>Refer to the demo code for examples of basic and advanced usage, including multiple datasets and custom styling.</li>
-        </ul>
+        <div class="content">
+            <ol>
+                <li>Add the <code>BarChart</code> component to your page.</li>
+                <li>Provide <code>Labels</code> for the X-axis categories and one or more <code>Datasets</code> for the Y-axis values.</li>
+                <li>Customize appearance and behavior using the <code>Options</code> property (e.g., colors, tooltips, axis settings).</li>
+                <li>Refer to the demo code for examples of basic and advanced usage, including multiple datasets and custom styling.</li>
+            </ol>
+        </div>
         This demo showcases the essential setup for a bar chart and demonstrates how to bind your data for quick visualization.
     </Block>
     <Demo Type="typeof(BarChart_Demo_01_Examples)" Tabs="true" />
@@ -35,11 +37,13 @@
         The <strong>Horizontal Bar Chart</strong> displays data values as horizontal bars, making it ideal for comparing categories with long labels or when you want to emphasize comparison between values.
         <br /><br />
         <strong>How to use:</strong>
-        <ul>
-            <li>Use the <code>BarChart</code> component and set the <code>IndexAxis</code> option to <code>'y'</code> to render bars horizontally.</li>
-            <li>Provide your data and labels as you would for a standard bar chart.</li>
-            <li>Customize colors and appearance using the available palette utilities or your own color set.</li>
-        </ul>
+        <div class="content">
+            <ol>
+                <li>Use the <code>BarChart</code> component and set the <code>IndexAxis</code> option to <code>'y'</code> to render bars horizontally.</li>
+                <li>Provide your data and labels as you would for a standard bar chart.</li>
+                <li>Customize colors and appearance using the available palette utilities or your own color set.</li>
+            </ol>
+        </div>
         Refer to the demo code below for a working example and configuration options.
     </Block>
     <Demo Type="typeof(BarChart_Demo_02_Horizontal_BarChart)" Tabs="true" />
@@ -50,12 +54,14 @@
         The <strong>Stacked Bar Chart</strong> allows you to display multiple data series stacked on top of each other, making it easy to compare the total and individual contributions of each series for every category.
         <br /><br />
         <strong>How to use:</strong>
-        <ul>
-            <li>Use the <code>BarChart</code> component and configure the <code>Options.Scales.X.Stacked</code> and <code>Options.Scales.Y.Stacked</code> properties to <code>true</code> to enable stacking.</li>
-            <li>Provide multiple datasets in your chart data, each representing a different series to be stacked.</li>
-            <li>Customize colors for each dataset using palette utilities or your own color set for better distinction.</li>
-            <li>Refer to the demo code below for a working example and further configuration options.</li>
-        </ul>
+        <div class="content">
+            <ol>
+                <li>Use the <code>BarChart</code> component and configure the <code>Options.Scales.X.Stacked</code> and <code>Options.Scales.Y.Stacked</code> properties to <code>true</code> to enable stacking.</li>
+                <li>Provide multiple datasets in your chart data, each representing a different series to be stacked.</li>
+                <li>Customize colors for each dataset using palette utilities or your own color set for better distinction.</li>
+                <li>Refer to the demo code below for a working example and further configuration options.</li>
+            </ol>
+        </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_03_Stacked_BarChart)" Tabs="true" />
 </Section>
@@ -78,14 +84,16 @@
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="Locale" PageUrl="@pageUrl" Link="locale">
     <Block>
-        The <strong>Locale</strong> demo shows how to localize number and date formatting in your bar chart. 
+        The <strong>Locale</strong> demo shows how to localize number and date formatting in your bar chart.
         <br /><br />
         <strong>How to use:</strong>
-        <ul>
-            <li>Set the <code>Locale</code> property on the <code>BarChart</code> component to your desired culture code (e.g., <code>"fr-FR"</code> for French).</li>
-            <li>Number and date labels in the chart will automatically format according to the specified locale.</li>
-            <li>This is useful for displaying charts to users in different regions with appropriate formatting.</li>
-        </ul>
+        <div class="content">
+            <ol>
+                <li>Set the <code>Locale</code> property on the <code>BarChart</code> component to your desired culture code (e.g., <code>"fr-FR"</code> for French).</li>
+                <li>Number and date labels in the chart will automatically format according to the specified locale.</li>
+                <li>This is useful for displaying charts to users in different regions with appropriate formatting.</li>
+            </ol>
+        </div>
         Refer to the demo code below for a working example and configuration options.
     </Block>
     <Demo Type="typeof(BarChart_Demo_05_Locale)" Tabs="true" />

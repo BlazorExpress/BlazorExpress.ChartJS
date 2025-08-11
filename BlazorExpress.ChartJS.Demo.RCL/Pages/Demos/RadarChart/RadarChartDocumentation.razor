@@ -18,14 +18,16 @@
         The <strong>Radar Chart</strong> component visualizes multivariate data with each variable represented on axes starting from the same point, making it ideal for comparing multiple groups across several categories.
         <br /><br />
         <strong>How to use:</strong>
-        <ul>
+        <div class="content">
+        <ol>
             <li>Add the <code>RadarChart</code> component to your page and set its dimensions (e.g., <code>Width="600"</code>).</li>
             <li>Prepare your chart data by specifying <code>Labels</code> for each axis and one or more <code>Datasets</code> with values and styling options.</li>
             <li>Configure chart options such as <code>Responsive</code> using the <code>RadarChartOptions</code> object.</li>
             <li>Initialize the chart in <code>OnAfterRenderAsync</code> by calling <code>radarChart.InitializeAsync(chartData, radarChartOptions)</code>.</li>
             <li>Use the demo's interactive buttons to randomize data, add datasets, or add new data points dynamically and see the chart update in real time.</li>
             <li>Refer to the demo code below for practical examples of data preparation, dynamic updates, and chart customization.</li>
-        </ul>
+        </ol>
+        </div>
         This demo demonstrates how to set up a Radar Chart, bind your data, and interactively update the chart to fit your application's needs.
     </Block>
     <Demo Type="typeof(RadarChart_Demo_01_Examples)" Tabs="true" />
