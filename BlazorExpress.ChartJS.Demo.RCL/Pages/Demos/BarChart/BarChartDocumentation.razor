@@ -19,12 +19,14 @@
         The <strong>Bar Chart</strong> component visualizes data as vertical bars, making it easy to compare values across categories or track changes over time.
         <br /><br />
         <strong>How to use:</strong>
-        <ul>
-            <li>Add the <code>BarChart</code> component to your page.</li>
-            <li>Provide <code>Labels</code> for the X-axis categories and one or more <code>Datasets</code> for the Y-axis values.</li>
-            <li>Customize appearance and behavior using the <code>Options</code> property (e.g., colors, tooltips, axis settings).</li>
-            <li>Refer to the demo code for examples of basic and advanced usage, including multiple datasets and custom styling.</li>
-        </ul>
+        <div class="content">
+            <ol>
+                <li>Add the <code>BarChart</code> component to your page.</li>
+                <li>Provide <code>Labels</code> for the X-axis categories and one or more <code>Datasets</code> for the Y-axis values.</li>
+                <li>Customize appearance and behavior using the <code>Options</code> property (e.g., colors, tooltips, axis settings).</li>
+                <li>Refer to the demo code for examples of basic and advanced usage, including multiple datasets and custom styling.</li>
+            </ol>
+        </div>
         This demo showcases the essential setup for a bar chart and demonstrates how to bind your data for quick visualization.
     </Block>
     <Demo Type="typeof(BarChart_Demo_01_Examples)" Tabs="true" />
@@ -35,11 +37,13 @@
         The <strong>Horizontal Bar Chart</strong> displays data values as horizontal bars, making it ideal for comparing categories with long labels or when you want to emphasize comparison between values.
         <br /><br />
         <strong>How to use:</strong>
-        <ul>
-            <li>Use the <code>BarChart</code> component and set the <code>IndexAxis</code> option to <code>'y'</code> to render bars horizontally.</li>
-            <li>Provide your data and labels as you would for a standard bar chart.</li>
-            <li>Customize colors and appearance using the available palette utilities or your own color set.</li>
-        </ul>
+        <div class="content">
+            <ol>
+                <li>Use the <code>BarChart</code> component and set the <code>IndexAxis</code> option to <code>'y'</code> to render bars horizontally.</li>
+                <li>Provide your data and labels as you would for a standard bar chart.</li>
+                <li>Customize colors and appearance using the available palette utilities or your own color set.</li>
+            </ol>
+        </div>
         Refer to the demo code below for a working example and configuration options.
     </Block>
     <Demo Type="typeof(BarChart_Demo_02_Horizontal_BarChart)" Tabs="true" />
@@ -50,12 +54,14 @@
         The <strong>Stacked Bar Chart</strong> allows you to display multiple data series stacked on top of each other, making it easy to compare the total and individual contributions of each series for every category.
         <br /><br />
         <strong>How to use:</strong>
-        <ul>
-            <li>Use the <code>BarChart</code> component and configure the <code>Options.Scales.X.Stacked</code> and <code>Options.Scales.Y.Stacked</code> properties to <code>true</code> to enable stacking.</li>
-            <li>Provide multiple datasets in your chart data, each representing a different series to be stacked.</li>
-            <li>Customize colors for each dataset using palette utilities or your own color set for better distinction.</li>
-            <li>Refer to the demo code below for a working example and further configuration options.</li>
-        </ul>
+        <div class="content">
+            <ol>
+                <li>Use the <code>BarChart</code> component and configure the <code>Options.Scales.X.Stacked</code> and <code>Options.Scales.Y.Stacked</code> properties to <code>true</code> to enable stacking.</li>
+                <li>Provide multiple datasets in your chart data, each representing a different series to be stacked.</li>
+                <li>Customize colors for each dataset using palette utilities or your own color set for better distinction.</li>
+                <li>Refer to the demo code below for a working example and further configuration options.</li>
+            </ol>
+        </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_03_Stacked_BarChart)" Tabs="true" />
 </Section>
@@ -78,17 +84,74 @@
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="Locale" PageUrl="@pageUrl" Link="locale">
     <Block>
-        The <strong>Locale</strong> demo shows how to localize number and date formatting in your bar chart. 
+        The <strong>Locale</strong> demo shows how to localize number and date formatting in your bar chart.
         <br /><br />
         <strong>How to use:</strong>
-        <ul>
-            <li>Set the <code>Locale</code> property on the <code>BarChart</code> component to your desired culture code (e.g., <code>"fr-FR"</code> for French).</li>
-            <li>Number and date labels in the chart will automatically format according to the specified locale.</li>
-            <li>This is useful for displaying charts to users in different regions with appropriate formatting.</li>
-        </ul>
+        <div class="content">
+            <ol>
+                <li>Set the <code>Locale</code> property on the <code>BarChart</code> component to your desired culture code (e.g., <code>"fr-FR"</code> for French).</li>
+                <li>Number and date labels in the chart will automatically format according to the specified locale.</li>
+                <li>This is useful for displaying charts to users in different regions with appropriate formatting.</li>
+            </ol>
+        </div>
         Refer to the demo code below for a working example and configuration options.
     </Block>
     <Demo Type="typeof(BarChart_Demo_05_Locale)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Border radius" PageUrl="@pageUrl" Link="border-radius">
+    <Block>
+        The <strong>Border Radius</strong> feature allows you to create bar charts with rounded corners, giving your charts a modern and visually appealing look. This is especially useful for dashboards and applications where aesthetics are important.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Add the <code>BarChart</code> component to your page.</li>
+                <li>When defining each <code>BarChartDataset</code>, set the <code>BorderRadius</code> property to a list of pixel values (e.g., <code>new List&lt;double&gt; { 10 }</code>) to control the roundness of the bar corners.</li>
+                <li>Optionally, set <code>BorderSkipped = false</code> to apply the border radius to all corners of each bar.</li>
+                <li>Customize other appearance options such as <code>BackgroundColor</code> and <code>BorderColor</code> as needed.</li>
+                <li>Refer to the demo code below for a working example and further customization options.</li>
+            </ol>
+        </div>
+        Using the <code>BorderRadius</code> property, you can easily enhance the style of your bar charts to better match your application's design.
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_06_Border_Radius)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Animations - Delay" PageUrl="@pageUrl" Link="animations-delay">
+    <Block>
+        The <strong>Animations - Delay</strong> demo illustrates how to add a delay to the animation of your Bar Chart, making the chart elements appear with a timed entrance effect. This is useful for drawing attention to the chart as it loads or for creating a more engaging user experience.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Add the <code>BarChart</code> component to your page and define your <code>Labels</code> and <code>Datasets</code> as usual.</li>
+                <li>Configure the <code>Options.Animation</code> property by setting the <code>Duration</code> (in milliseconds) and <code>Delay</code> (in milliseconds) to control the timing of the animation.</li>
+                <li>Bind your <code>chartData</code> and <code>barChartOptions</code> to the <code>BarChart</code> component.</li>
+                <li>Refer to the demo code below for a working example of how to set up and customize animation delays.</li>
+            </ol>
+        </div>
+        Animation delays help you create visually appealing transitions and can be tailored to fit your application's style.
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_07_Animations_A_Delay)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Animations - DataSet level delay" PageUrl="@pageUrl" Link="animations-dataset-level-delay">
+    <Block>
+        The <strong>Animations - DataSet Level Delay</strong> demo demonstrates how to apply different animation delays to each dataset in your Bar Chart. This allows each dataset to animate in sequence, making comparisons clearer and adding a dynamic effect to your data presentation.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Add the <code>BarChart</code> component to your page and define your <code>Labels</code> and multiple <code>Datasets</code>.</li>
+                <li>For each dataset, set the <code>Animation</code> property with specific <code>Duration</code> and <code>Delay</code> values to control when each dataset animates.</li>
+                <li>Bind your <code>chartData</code> and <code>barChartOptions</code> to the <code>BarChart</code> component.</li>
+                <li>Refer to the demo code below for a practical example of dataset-level animation configuration.</li>
+            </ol>
+        </div>
+        Dataset-level animation delays are ideal for highlighting differences between series and creating engaging, stepwise chart reveals.
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_08_Animations_B_DataSet_Level_Delay)" Tabs="true" />
 </Section>
 
 @code {
@@ -98,5 +161,5 @@
     private const string pageDescription = "The <code>Blazor Bar Chart</code> component displays data values as vertical bars, making it easy to compare multiple data sets or visualize trends over time.";
     private const string metaTitle = "Blazor Bar Chart";
     private const string metaDescription = "The Blazor Bar Chart component displays data values as vertical bars, making it easy to compare multiple data sets or visualize trends over time.";
-    private const string imageUrl = "https://i.imgur.com/IX3bajc.png"; // TODO: update with the actual image URL for the Bar Chart demo
+    private const string imageUrl = @DemoImageSrcConstants.BarChart;
 }

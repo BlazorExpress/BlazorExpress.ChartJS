@@ -512,8 +512,20 @@ public class LineChartDataset : ChartDataset<double?>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? PointStyle { get; set; }
 
-    //segment
-    //https://www.chartjs.org/docs/latest/charts/line.html#segment
+    /// <summary>
+    /// Line segment styles can be overridden by scriptable options in the segment object. Currently, all of the Border* and <see cref="BackgroundColor" /> options are supported. 
+    /// The segment styles are resolved for each section of the line between each point.
+    /// <para>
+    /// Default value is <see langword="null"/>.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
+    /// </summary>
+    [AddedVersion("1.2.0")]
+    [DefaultValue(null)]
+    [Description("Line segment styles can be overridden by scriptable options in the segment object. Currently, all of the Border* and <code>BackgroundColor</code>> options are supported. The segment styles are resolved for each section of the line between each point.")]
+    [ParameterTypeName("List<string>?")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public object? Segment { get; set; }
 
     /// <summary>
     /// If <see langword="false" />, the line is not drawn for this dataset.

@@ -25,8 +25,7 @@ public class BarChartOptions : ChartOptions
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the base axis of the chart. Use 'x' for vertical charts and 'y' for horizontal charts. Supported values are 'x' and 'y'.")]
-    //[ParameterTypeName("string?")]
-    [Parameter]
+    [ParameterTypeName("string?")]
     public string? IndexAxis { get; set; }
 
     /// <summary>
@@ -38,8 +37,6 @@ public class BarChartOptions : ChartOptions
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the interaction options for the bar chart.")]
-    //[ParameterTypeName("Interaction")]
-    [Parameter]
     public Interaction Interaction { get; set; } = new();
 
     /// <summary>
@@ -52,7 +49,6 @@ public class BarChartOptions : ChartOptions
     [DefaultValue(null)]
     [Description("Gets or sets the layout options for the bar chart.")]
     [ParameterTypeName("ChartLayout")]
-    [Parameter]
     public ChartLayout Layout { get; set; } = new();
 
     /// <summary>
@@ -65,7 +61,6 @@ public class BarChartOptions : ChartOptions
     [DefaultValue(null)]
     [Description("Gets or sets the plugins configuration for the bar chart.")]
     [ParameterTypeName("BarChartPlugins")]
-    [Parameter]
     public BarChartPlugins Plugins { get; set; } = new();
 
     /// <summary>
@@ -77,8 +72,6 @@ public class BarChartOptions : ChartOptions
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the scales configuration for the bar chart.")]
-    //[ParameterTypeName("Scales")]
-    [Parameter]
     public Scales Scales { get; set; } = new();
 
     #endregion
