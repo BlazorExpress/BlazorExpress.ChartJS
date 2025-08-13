@@ -3,8 +3,8 @@
   <PropertyGroup>
 
     <PackageId>BlazorExpress.ChartJS</PackageId>
-    <Version>1.1.0</Version>
-    <PackageVersion>1.1.0</PackageVersion>
+    <Version>1.2.0</Version>
+    <PackageVersion>1.2.0</PackageVersion>
 
     <PackageIcon>logo.png</PackageIcon>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
