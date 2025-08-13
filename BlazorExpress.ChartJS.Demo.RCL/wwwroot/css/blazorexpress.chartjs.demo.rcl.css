@@ -79,6 +79,11 @@ h1:focus-visible {
     color: var(--bulma-text-weak);
 }
 
+/* img */
+.image img {
+    width: auto;
+}
+
 /* carbon ads */
 #carbonads {
     position: static;
