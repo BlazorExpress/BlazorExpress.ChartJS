@@ -17,6 +17,8 @@
 [data-theme=dark] {
     --be-bulma-border-color: #495057;
     --be-bulma-pre-bg: #1b1f22;
+    /*masthead*/
+    --be-bulma-body-bg-rgb: 33, 37, 41;
 }
 
 h1:focus-visible {
