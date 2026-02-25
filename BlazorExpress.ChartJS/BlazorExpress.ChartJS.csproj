@@ -3,8 +3,8 @@
   <PropertyGroup>
 
     <PackageId>BlazorExpress.ChartJS</PackageId>
-    <Version>1.2.0</Version>
-    <PackageVersion>1.2.0</PackageVersion>
+    <Version>1.2.1</Version>
+    <PackageVersion>1.2.1</PackageVersion>
 
     <PackageIcon>logo.png</PackageIcon>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
@@ -15,9 +15,9 @@
     <Description>An open-source, production-ready Blazor charts component library built on the Blazor and Chart.js JavaScript library.</Description>
     <Authors>Vikram Reddy</Authors>
     <Company>Blazor Express</Company>
-    <Copyright>Copyright © 2025 Blazor Express</Copyright>
+    <Copyright>Copyright © 2026 Blazor Express</Copyright>
 
-    <TargetFramework>net8.0</TargetFramework>
+	  <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -32,8 +32,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BlazorExpress.Core" Version="0.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.17" />
+    <PackageReference Include="BlazorExpress.Core" Version="0.3.0" />	  
   </ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.17" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.0" />
+	</ItemGroup>
 
 </Project>

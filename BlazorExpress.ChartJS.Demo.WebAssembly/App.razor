@@ -1,4 +1,5 @@
-﻿<Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="new []{ typeof(BlazorExpress.ChartJS.Demo.RCL.App).Assembly }">
+﻿<Router AppAssembly="@typeof(App).Assembly"
+        AdditionalAssemblies="new []{ typeof(BlazorExpress.ChartJS.Demo.RCL.App).Assembly }">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(BlazorExpress.ChartJS.Demo.RCL.MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
