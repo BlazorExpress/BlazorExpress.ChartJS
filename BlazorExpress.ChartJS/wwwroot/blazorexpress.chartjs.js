@@ -547,18 +547,17 @@ window.blazorexpress.chartjs.line = {
                         ctx.setLineDash([5, 5]);
                         ctx.moveTo(activePoint.element.x, chart.chartArea.top);
                         ctx.lineTo(activePoint.element.x, activePoint.element.y);
-                        ctx.linewidth = 2;
+                        ctx.lineWidth = 2;
                         ctx.strokeStyle = 'grey';
                         ctx.stroke();
-                        ctx.restore();
 
                         ctx.beginPath();
-                        ctx.setLineDash([5, 5]);
                         ctx.moveTo(activePoint.element.x, activePoint.element.y);
                         ctx.lineTo(activePoint.element.x, chart.chartArea.bottom);
-                        ctx.linewidth = 2;
+                        ctx.lineWidth = 2;
                         ctx.strokeStyle = 'grey';
                         ctx.stroke();
+
                         ctx.restore();
                     }
                 },
