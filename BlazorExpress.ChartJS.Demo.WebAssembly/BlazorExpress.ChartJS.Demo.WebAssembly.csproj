@@ -1,25 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+		<FingerprintStaticWebAssets>true</FingerprintStaticWebAssets>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0" PrivateAssets="all" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0" PrivateAssets="all" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BlazorExpress.ChartJS.Demo.RCL\BlazorExpress.ChartJS.Demo.RCL.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\BlazorExpress.ChartJS.Demo.RCL\BlazorExpress.ChartJS.Demo.RCL.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Update="wwwroot\staticwebapp.config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Update="wwwroot\staticwebapp.config.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
 </Project>
