@@ -1,7 +1,12 @@
 {
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": [ "/_framework/*", "/css/*", "/js/*", "/_content/*" ]
+    "exclude": [
+      "/_framework/*",
+      "/css/*",
+      "/js/*",
+      "/_content/*"
+    ]
   },
   "mimeTypes": {
     ".js": "application/javascript",
