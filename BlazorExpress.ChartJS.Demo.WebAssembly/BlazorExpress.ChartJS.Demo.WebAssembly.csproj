@@ -16,4 +16,10 @@
     <ProjectReference Include="..\BlazorExpress.ChartJS.Demo.RCL\BlazorExpress.ChartJS.Demo.RCL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\staticwebapp.config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
