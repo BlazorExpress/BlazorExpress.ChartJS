@@ -21,7 +21,7 @@ jobs:
     if: ${{ inputs.prod_release }} || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     env:
-      DOTNET_VERSION: "net10.0"
+      DOTNET_VERSION: "net9.0"
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       PROJECT: "BlazorExpress.ChartJS.Demo.WebAssembly/BlazorExpress.ChartJS.Demo.WebAssembly.csproj"
       BUILD_CONFIG: "Release"
@@ -34,10 +34,10 @@ jobs:
           lfs: false
 
       # Setup .NET 10.0
-      - name: Setup .NET 10.0
+      - name: Setup .NET 9.0
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '9.0.x'
       
       # .NET Restore
       - name: .NET Restore
