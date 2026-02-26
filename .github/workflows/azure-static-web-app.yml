@@ -1,4 +1,4 @@
-name: AzureStaticWebApp (Blazor WebAssembly)
+name: Azure Static WebApp (Blazor WebAssembly)
 
 on:
   push:
