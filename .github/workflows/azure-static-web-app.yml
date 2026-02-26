@@ -62,7 +62,7 @@ jobs:
           action: "upload"
           app_location: "output/wwwroot" # Path to your .csproj folder
           api_location: "" # Leave empty if no API
-          output_location: "output/wwwroot" 
+          output_location: "" # Leave empty when using 'upload' action with a pre-built app
           skip_api_build: true
           skip_app_build: true
 
