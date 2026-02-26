@@ -60,7 +60,7 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WITTY_FOREST_0C3A9ED10 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
-          app_location: "output" # Path to your .csproj folder
+          app_location: "output/wwwroot" # Path to your .csproj folder
           api_location: "" # Leave empty if no API
           output_location: "output/wwwroot" 
           skip_api_build: true
