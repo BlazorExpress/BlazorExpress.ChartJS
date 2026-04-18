@@ -8,7 +8,7 @@
 <p align="center">
     An open-source, production-ready Blazor charts component library built on the <b>Blazor</b> and <b>Chart.js</b> JavaScript library.
     <br>
-    <a href="https://chartjs.blazorexpress.com/charts/getting-started"><strong>Getting Started »</strong></a>
+    <a href="https://chartjs.blazorexpress.com/charts/getting-started"><strong>Getting Started ï¿½</strong></a>
     <br>
 </p>
 
@@ -48,6 +48,49 @@ Get started any way you want
 | Charts: PolarArea chart | [Demos](https://chartjs.blazorexpress.com/demos/polar-area-chart) | [Docs](https://chartjs.blazorexpress.com/docs/polar-area-chart) |
 | Charts: Radar chart | [Demos](https://chartjs.blazorexpress.com/demos/radar-chart) | [Docs](https://chartjs.blazorexpress.com/docs/radar-chart) |
 | Charts: Scatter chart | [Demos](https://chartjs.blazorexpress.com/demos/scatter-chart) | [Docs](https://chartjs.blazorexpress.com/docs/scatter-chart) |
+
+## Combo bar/line
+
+`BarChart` and `LineChart` both support mixed bar/line datasets. Add `BarChartDataset` and `LineChartDataset` instances to the same `ChartData.Datasets` collection and initialize either chart component as the root chart.
+
+```razor
+<BarChart @ref="chart" Width="600" />
+
+@code {
+  private BarChart chart = default!;
+  private readonly BarChartOptions options = new()
+  {
+    Responsive = true,
+    Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false },
+  };
+
+  private readonly ChartData chartData = new()
+  {
+    Labels = new List<string> { "January", "February", "March" },
+    Datasets = new List<IChartDataset>
+    {
+      new BarChartDataset
+      {
+        Label = "Revenue",
+        Data = new List<double?> { 65, 59, 80 },
+      },
+      new LineChartDataset
+      {
+        Label = "Target",
+        Data = new List<double?> { 50, 55, 60 },
+      },
+    },
+  };
+
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (firstRender)
+      await chart.InitializeAsync(chartData, options);
+  }
+}
+```
+
+Use `LineChart` the same way when you want the line configuration to be the root chart type.
 
 More components coming...
 
