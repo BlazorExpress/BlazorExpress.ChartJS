@@ -37,6 +37,23 @@
     <Demo Type="typeof(LineChart_Demo_01_B_Examples)" Tabs="true" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Combo bar/line" PageUrl="@pageUrl" Link="combo-bar-line">
+    <Block>
+        The <strong>Combo bar/line</strong> demo mixes <code>LineChartDataset</code> and <code>BarChartDataset</code> in the same <code>LineChart</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Use the <code>LineChart</code> component as the root chart.</li>
+                <li>Add both <code>LineChartDataset</code> and <code>BarChartDataset</code> instances to the same <code>ChartData.Datasets</code> collection.</li>
+                <li>Configure interaction options such as <code>Mode = InteractionMode.Index</code> and <code>Intersect = false</code> so bar and line points share tooltips cleanly.</li>
+                <li>Refer to the demo code below for a working example with a line series and bar columns in the same chart area.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_06_Combo_Bar_Line)" Tabs="true" />
+</Section>
+
 <Section Class="p-0" Size="HeadingSize.H4" Name="Data labels" PageUrl="@pageUrl" Link="data-labels">
     <Block>
         The <strong>Line Chart</strong> component supports data labels, allowing you to display values directly on each data point in the chart.

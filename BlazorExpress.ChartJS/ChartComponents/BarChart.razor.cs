@@ -31,15 +31,30 @@ public partial class BarChart : ChartComponentBase
         if (chartData.Datasets is null)
             throw new ArgumentNullException(nameof(chartData.Datasets));
 
+        if (chartData.Labels is null)
+            throw new ArgumentNullException(nameof(chartData.Labels));
+
+        if (dataLabel is null)
+            throw new ArgumentNullException(nameof(dataLabel));
+
+        if (string.IsNullOrWhiteSpace(dataLabel))
+            throw new Exception($"{nameof(dataLabel)} cannot be empty.");
+
         if (data is null)
             throw new ArgumentNullException(nameof(data));
 
-        foreach (var dataset in chartData.Datasets)
-            if (dataset is BarChartDataset barChartDataset && barChartDataset.Label == dataLabel)
-                if (data is BarChartDatasetData barChartDatasetData)
-                    barChartDataset.Data?.Add(barChartDatasetData.Data as double?);
+        var chartDatasetData = BarLineChartSupport.GetSupportedDatasetData(data);
 
-        await JSRuntime.InvokeVoidAsync(BarChartInterop.AddDatasetData, Id, dataLabel, data);
+        if (chartDatasetData is null)
+            return chartData;
+
+        if (!chartData.Labels.Contains(dataLabel))
+            chartData.Labels.Add(dataLabel);
+
+        foreach (var dataset in chartData.Datasets.Where(BarLineChartSupport.IsSupportedDataset))
+            BarLineChartSupport.AppendDataPoint(dataset, chartDatasetData);
+
+        await JSRuntime.InvokeVoidAsync(BarChartInterop.AddDatasetData, Id, dataLabel, chartDatasetData);
 
         return chartData;
     }
@@ -78,7 +93,13 @@ public partial class BarChart : ChartComponentBase
         if (!data.Any())
             throw new Exception($"{nameof(data)} cannot be empty.");
 
-        if (chartData.Datasets.Count != data.Count)
+        var supportedDatasets = chartData.Datasets.Where(BarLineChartSupport.IsSupportedDataset).ToList();
+        var supportedData = BarLineChartSupport.GetSupportedDatasetData(data);
+
+        if (!supportedDatasets.Any() || !supportedData.Any())
+            return chartData;
+
+        if (supportedDatasets.Count != supportedData.Count)
             throw new InvalidDataException("The chart dataset count and the new data points count do not match.");
 
         if (chartData.Labels.Contains(dataLabel))
@@ -86,16 +107,22 @@ public partial class BarChart : ChartComponentBase
 
         chartData.Labels.Add(dataLabel);
 
-        foreach (var dataset in chartData.Datasets)
-            if (dataset is BarChartDataset barChartDataset)
+        foreach (var dataset in supportedDatasets)
+        {
+            var chartDataset = dataset switch
             {
-                var chartDatasetData = data.FirstOrDefault(x => x is BarChartDatasetData barChartDatasetData && barChartDatasetData.DatasetLabel == barChartDataset.Label);
+                BarChartDataset barChartDataset => barChartDataset.Label,
+                LineChartDataset lineChartDataset => lineChartDataset.Label,
+                _ => null,
+            };
 
-                if (chartDatasetData is BarChartDatasetData barChartDatasetData)
-                    barChartDataset.Data?.Add(barChartDatasetData.Data as double?);
-            }
+            var chartDatasetData = supportedData.FirstOrDefault(x => x.DatasetLabel == chartDataset);
 
-        await JSRuntime.InvokeVoidAsync(BarChartInterop.AddDatasetsData, Id, dataLabel, data?.Select(x => (BarChartDatasetData)x));
+            if (chartDatasetData is not null)
+                BarLineChartSupport.AppendDataPoint(dataset, chartDatasetData);
+        }
+
+        await JSRuntime.InvokeVoidAsync(BarChartInterop.AddDatasetsData, Id, dataLabel, supportedData);
 
         return chartData;
     }
@@ -122,10 +149,10 @@ public partial class BarChart : ChartComponentBase
         if (chartDataset is null)
             throw new ArgumentNullException(nameof(chartDataset));
 
-        if (chartDataset is BarChartDataset)
+        if (BarLineChartSupport.IsSupportedDataset(chartDataset))
         {
             chartData.Datasets.Add(chartDataset);
-            await JSRuntime.InvokeVoidAsync(BarChartInterop.AddDataset, Id, (BarChartDataset)chartDataset);
+            await JSRuntime.InvokeVoidAsync(BarChartInterop.AddDataset, Id, chartDataset);
         }
 
         return chartData;
@@ -148,7 +175,7 @@ public partial class BarChart : ChartComponentBase
     {
         if (chartData is not null && chartData.Datasets is not null)
         {
-            var datasets = chartData.Datasets.OfType<BarChartDataset>();
+            var datasets = BarLineChartSupport.GetSupportedDatasets(chartData);
             var data = new { chartData.Labels, Datasets = datasets };
             await JSRuntime.InvokeVoidAsync(BarChartInterop.Initialize, Id, GetChartType(), data, (BarChartOptions)chartOptions, plugins);
         }
@@ -169,7 +196,7 @@ public partial class BarChart : ChartComponentBase
     {
         if (chartData is not null && chartData.Datasets is not null)
         {
-            var datasets = chartData.Datasets.OfType<BarChartDataset>();
+            var datasets = BarLineChartSupport.GetSupportedDatasets(chartData);
             var data = new { chartData.Labels, Datasets = datasets };
             await JSRuntime.InvokeVoidAsync(BarChartInterop.Update, Id, GetChartType(), data, (BarChartOptions)chartOptions);
         }

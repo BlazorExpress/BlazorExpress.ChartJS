@@ -12,6 +12,15 @@
 /// </summary>
 public class BarChartDataset : ChartDataset<double?>
 {
+    #region Constructors
+
+    public BarChartDataset()
+    {
+        Type = "bar";
+    }
+
+    #endregion
+
     #region Properties, Indexers
 
     /// <summary>
