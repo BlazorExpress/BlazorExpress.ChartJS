@@ -34,7 +34,15 @@ Get started any way you want
 
 ## Online Demos
 
-- [Demo Website](https://chartjs.blazorexpress.com)
+- [Demos Website](https://chartjs.blazorexpress.com)
+
+## Supported Tech Stack
+
+| BlazorExpress.ChartJS | .NET | Chart.js | chartjs-plugin-datalabels |
+|:--|:--|:--|:--|
+| 1.2.2 | 8, 9, 10 | 4.4.1 | 2.2.0 |
+| 1.1.0+ | 8 | 4.4.1 | 2.2.0 |
+| 1.0.0 | 8 | 4.0.1 | 2.2.0 |
 
 ## Components
 
@@ -96,11 +104,3 @@ More components coming...
 ## Copyright and license
 
 Code and documentation copyright 2026 [Blazor Express](https://blazorexpress.com/) Code released under the [Apache-2.0 License](https://github.com/BlazorExpress/BlazorExpress.ChartJS/blob/main/LICENSE).
-
-## Supported Tech Stack
-
-| BlazorExpress.ChartJS | .NET | Chart.js | chartjs-plugin-datalabels |
-|:--|:--|:--|:--|
-| 1.2.2 | 8, 9, 10 | 4.4.1 | 2.2.0 |
-| 1.1.0+ | 8 | 4.4.1 | 2.2.0 |
-| 1.0.0 | 8 | 4.0.1 | 2.2.0 |
