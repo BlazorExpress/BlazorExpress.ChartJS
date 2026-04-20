@@ -19,7 +19,15 @@ Get started any way you want
 
 ## Online Demos
 
-- [Demo Website](https://chartjs.blazorexpress.com)
+- [Demos Website](https://chartjs.blazorexpress.com)
+
+## Supported Tech Stack
+
+| BlazorExpress.ChartJS | .NET | Chart.js | chartjs-plugin-datalabels |
+|:--|:--|:--|:--|
+| 1.2.2 | 8, 9, 10 | 4.4.1 | 2.2.0 |
+| 1.1.0+ | 8 | 4.4.1 | 2.2.0 |
+| 1.0.0 | 8 | 4.0.1 | 2.2.0 |
 
 ## Components
 
