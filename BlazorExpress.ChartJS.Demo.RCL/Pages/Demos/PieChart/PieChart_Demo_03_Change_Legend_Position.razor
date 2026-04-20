@@ -1,10 +1,10 @@
 ﻿<PieChart @ref="pieChart" Width="600" />
 
 <div class="mt-5">
-    <button class="btn btn-primary btn-sm" @onclick="PositionTopAsync"> Position: top </button>
-    <button class="btn btn-primary btn-sm" @onclick="PositionRightAsync"> Position: right </button>
-    <button class="btn btn-primary btn-sm" @onclick="PositionBottomAsync"> Position: bottom </button>
-    <button class="btn btn-primary btn-sm" @onclick="PositionLeftAsync"> Position: left </button>
+    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="PositionTopAsync"> Position: top </Button>
+    <Button Color="ButtonColor.Link" Size="ButtonSize.Small" @onclick="PositionRightAsync"> Position: right </Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="PositionBottomAsync"> Position: bottom </Button>
+    <Button Color="ButtonColor.Warning" Size="ButtonSize.Small" @onclick="PositionLeftAsync"> Position: left </Button>
 </div>
 
 @code {

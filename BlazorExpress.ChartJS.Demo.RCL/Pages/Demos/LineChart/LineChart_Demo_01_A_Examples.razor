@@ -1,11 +1,11 @@
 ﻿<LineChart @ref="lineChart" Width="600" />
 
 <div class="mt-5">
-    <button class="btn btn-primary btn-sm" @onclick="async () => await RandomizeAsync()"> Randomize </button>
-    <button class="btn btn-primary btn-sm" @onclick="async () => await AddDatasetAsync()"> Add Dataset </button>
-    <button class="btn btn-primary btn-sm" @onclick="async () => await AddDataAsync()"> Add Data </button>
-    <button class="btn btn-primary btn-sm" @onclick="async () => await ShowHorizontalLineChartAsync()"> Horizontal Line Chart </button>
-    <button class="btn btn-primary btn-sm" @onclick="async () => await ShowVerticalLineChartAsync()"> Vertical Line Chart </button>
+    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="RandomizeAsync"> Randomize </Button>
+    <Button Color="ButtonColor.Link" Size="ButtonSize.Small" @onclick="AddDatasetAsync"> Add Dataset </Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="AddDataAsync"> Add Data </Button>
+    <Button Color="ButtonColor.Success" Size="ButtonSize.Small" @onclick="ShowHorizontalLineChartAsync"> Horizontal Line Chart </Button>
+    <Button Color="ButtonColor.Warning" Size="ButtonSize.Small" @onclick="ShowVerticalLineChartAsync"> Vertical Line Chart </Button>
 </div>
 
 @code {

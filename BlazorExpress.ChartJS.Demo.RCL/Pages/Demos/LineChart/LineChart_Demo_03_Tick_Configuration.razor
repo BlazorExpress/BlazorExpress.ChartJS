@@ -1,9 +1,9 @@
 ﻿<LineChart @ref="lineChart" Width="600" />
 
 <div class="mt-5">
-    <button class="btn btn-primary btn-sm" @onclick="async () => await ChangeTicksAlignmentToStart()"> Alignment: start </button>
-    <button class="btn btn-primary btn-sm" @onclick="async () => await ChangeTicksAlignmentToCenter()"> Alignment: center (default) </button>
-    <button class="btn btn-primary btn-sm" @onclick="async () => await ChangeTicksAlignmentToEnd()"> Alignment: end </button>
+    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="ChangeTicksAlignmentToStart"> Alignment: start </Button>
+    <Button Color="ButtonColor.Link" Size="ButtonSize.Small" @onclick="ChangeTicksAlignmentToCenter"> Alignment: center (default) </Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="ChangeTicksAlignmentToEnd"> Alignment: end </Button>
 </div>
 
 @code {
@@ -22,7 +22,7 @@
         lineChartOptions = new() { Responsive = true, Interaction = new Interaction { Mode = InteractionMode.Index } };
 
         // set ticks color
-        lineChartOptions.Scales.X!.Ticks = new ChartAxesTicks { Color = "red" };
+        lineChartOptions.Scales.X!.Ticks = new ChartAxesTicks { Color = ColorUtility.CategoricalTwelveColors[0] };
         lineChartOptions.Scales.Y!.Ticks = new ChartAxesTicks { Color = ColorUtility.CategoricalTwelveColors[4] };
     }
 
