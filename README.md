@@ -49,6 +49,28 @@ Get started any way you want
 | Charts: Radar chart | [Demos](https://chartjs.blazorexpress.com/demos/radar-chart) | [Docs](https://chartjs.blazorexpress.com/docs/radar-chart) |
 | Charts: Scatter chart | [Demos](https://chartjs.blazorexpress.com/demos/scatter-chart) | [Docs](https://chartjs.blazorexpress.com/docs/scatter-chart) |
 
+## Screenshots
+
+### Bar chart
+
+<img width="627" height="372" alt="image" src="https://github.com/user-attachments/assets/eb2ee933-92f4-4505-9ffe-a07ebcc81b10" />
+
+<img width="614" height="315" alt="image" src="https://github.com/user-attachments/assets/f4936bbc-9ebc-469e-828b-94078c8df9ee" />
+
+### Bubble Chart
+
+<img width="627" height="374" alt="image" src="https://github.com/user-attachments/assets/35da28e4-8e28-488b-8110-fb704399e18a" />
+
+### Doughnut Chart
+
+<img width="627" height="672" alt="image" src="https://github.com/user-attachments/assets/69226e90-a12d-40de-9993-3a2df1f06978" />
+
+### Line Chart
+
+<img width="626" height="318" alt="image" src="https://github.com/user-attachments/assets/40da8b8d-e88a-4b34-a9a4-99a8a1bcec7c" />
+
+<img width="610" height="320" alt="image" src="https://github.com/user-attachments/assets/61d56847-2cd1-44d3-8916-777c331a1b62" />
+
 ## Combo bar/line
 
 `BarChart` and `LineChart` both support mixed bar/line datasets. Add `BarChartDataset` and `LineChartDataset` instances to the same `ChartData.Datasets` collection and initialize either chart component as the root chart.
