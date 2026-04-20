@@ -71,48 +71,21 @@ Get started any way you want
 
 <img width="610" height="320" alt="image" src="https://github.com/user-attachments/assets/61d56847-2cd1-44d3-8916-777c331a1b62" />
 
-## Combo bar/line
+### Pie Chart
 
-`BarChart` and `LineChart` both support mixed bar/line datasets. Add `BarChartDataset` and `LineChartDataset` instances to the same `ChartData.Datasets` collection and initialize either chart component as the root chart.
+<img width="628" height="626" alt="image" src="https://github.com/user-attachments/assets/88889e02-3149-4a16-afe6-288eabf69daa" />
 
-```razor
-<BarChart @ref="chart" Width="600" />
+### PolarArea Chart
 
-@code {
-  private BarChart chart = default!;
-  private readonly BarChartOptions options = new()
-  {
-    Responsive = true,
-    Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false },
-  };
+<img width="617" height="669" alt="image" src="https://github.com/user-attachments/assets/5c3d6004-1de1-4a83-a05b-63bb5cb64a57" />
 
-  private readonly ChartData chartData = new()
-  {
-    Labels = new List<string> { "January", "February", "March" },
-    Datasets = new List<IChartDataset>
-    {
-      new BarChartDataset
-      {
-        Label = "Revenue",
-        Data = new List<double?> { 65, 59, 80 },
-      },
-      new LineChartDataset
-      {
-        Label = "Target",
-        Data = new List<double?> { 50, 55, 60 },
-      },
-    },
-  };
+### Radar Chart
 
-  protected override async Task OnAfterRenderAsync(bool firstRender)
-  {
-    if (firstRender)
-      await chart.InitializeAsync(chartData, options);
-  }
-}
-```
+<img width="626" height="671" alt="image" src="https://github.com/user-attachments/assets/2d2f7989-08d7-4f6f-b33a-dbbca1fde74b" />
 
-Use `LineChart` the same way when you want the line configuration to be the root chart type.
+### Scatter Chart
+
+<img width="939" height="531" alt="image" src="https://github.com/user-attachments/assets/47de0935-afb0-4c6d-ad8b-a1c5195b3e30" />
 
 More components coming...
 
