@@ -563,8 +563,21 @@ public class LineChartDataset : ChartDataset<double?>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? SpanGaps { get; set; }
 
-    //stack
-    //https://www.chartjs.org/docs/latest/charts/line.html#general
+    /// <summary>
+    /// The ID of the group to which this dataset belongs. On a stacked scale,
+    /// datasets sharing the same stack are stacked together; datasets with
+    /// different stacks are drawn independently.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#general" />
+    /// </summary>
+    [AddedVersion("1.2.3")]
+    [DefaultValue(null)]
+    [Description("The ID of the group to which this dataset belongs. Datasets sharing the same stack are stacked together; datasets with different stacks are drawn independently.")]
+    [ParameterTypeName("string?")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Stack { get; set; }
 
     /// <summary>
     /// If the stepped value is set to anything other than <see langword="false"/>, tension will be ignored.
