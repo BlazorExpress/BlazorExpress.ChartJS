@@ -83,6 +83,23 @@
     <Demo Type="typeof(BarChart_Demo_03_Stacked_BarChart)" Tabs="true" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Stacked bar chart with groups" PageUrl="@pageUrl" Link="stacked-bar-chart-with-groups">
+    <Block>
+        The <strong>Stacked Bar Chart with Groups</strong> displays multiple independent stacks side by side for each category. Datasets that share the same <code>Stack</code> value are stacked together, while datasets with different <code>Stack</code> values are rendered as separate groups.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Enable stacking by setting <code>Options.Scales.X.Stacked</code> and <code>Options.Scales.Y.Stacked</code> to <code>true</code>.</li>
+                <li>Assign the same <code>Stack</code> value to datasets that should be stacked together.</li>
+                <li>Use different <code>Stack</code> values to render multiple stacked groups side by side for each category.</li>
+                <li>Refer to the demo code below for a working example with two grouped stacks and multiple series in each stack.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_10_Stacked_BarChart_With_Groups)" Tabs="true" />
+</Section>
+
 <Section Class="p-0" Size="HeadingSize.H4" Name="Stacked bar chart with data labels" PageUrl="@pageUrl" Link="stacked-bar-chart-with-data-labels">
     <Block>
         The <strong>Stacked Bar Chart with Data Labels</strong> enhances the standard stacked bar chart by displaying value labels directly on each bar segment. This makes it easier to read and compare the values of each dataset within a category.
