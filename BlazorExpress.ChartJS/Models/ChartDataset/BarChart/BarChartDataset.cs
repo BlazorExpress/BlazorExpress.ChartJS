@@ -275,8 +275,20 @@ public class BarChartDataset : ChartDataset<double?>
     [Description("If <b>true</b>, null or undefined values will not be used for spacing calculations when determining bar size.")]
     public bool SkipNull { get; set; }
 
-    //Stack
-    //https://www.chartjs.org/docs/latest/charts/bar.html#general
+    /// <summary>
+    /// The ID of the group to which this dataset belongs. Datasets sharing the same
+    /// stack are stacked together; datasets with different stacks render side by side.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#general" />
+    /// </summary>
+    [AddedVersion("1.2.3")]
+    [DefaultValue(null)]
+    [Description("The ID of the group to which this dataset belongs. Datasets sharing the same stack are stacked together; datasets with different stacks render side by side.")]
+    [ParameterTypeName("string?")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Stack { get; set; }
 
     /// <summary>
     /// The ID of the x-axis to plot this dataset on.
