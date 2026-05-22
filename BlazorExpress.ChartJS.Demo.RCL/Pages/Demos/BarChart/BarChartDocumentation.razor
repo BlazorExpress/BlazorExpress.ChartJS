@@ -105,12 +105,14 @@
         The <strong>Stacked Bar Chart with Data Labels</strong> enhances the standard stacked bar chart by displaying value labels directly on each bar segment. This makes it easier to read and compare the values of each dataset within a category.
         <br /><br />
         <strong>How to use:</strong>
-        <ul>
-            <li>Use the <code>BarChart</code> component and enable stacking by setting <code>Options.Scales.X.Stacked</code> and <code>Options.Scales.Y.Stacked</code> to <code>true</code>.</li>
-            <li>Add multiple datasets to your chart data to represent different series.</li>
-            <li>Enable data labels by configuring the chart's plugins, such as <code>Options.Plugins.Datalabels.Display = true</code>.</li>
-            <li>Customize the appearance and formatting of data labels as needed for your scenario.</li>
-        </ul>
+        <div class="content">
+            <ol>
+                <li>Use the <code>BarChart</code> component and enable stacking by setting <code>Options.Scales.X.Stacked</code> and <code>Options.Scales.Y.Stacked</code> to <code>true</code>.</li>
+                <li>Add multiple datasets to your chart data to represent different series.</li>
+                <li>Enable data labels by passing the <code>ChartDataLabels</code> plugin when calling <code>InitializeAsync</code>: <code>plugins: new[] { "ChartDataLabels" }</code>.</li>
+                <li>Customize label styling with <code>Options.Plugins.Datalabels</code> or per-dataset <code>Datalabels</code> settings as needed.</li>
+            </ol>
+        </div>
         Refer to the demo code below for a working example and further configuration options.
     </Block>
     <Demo Type="typeof(BarChart_Demo_04_Stacked_BarChart_with_Datalabels)" Tabs="true" />
@@ -170,7 +172,7 @@
     <Demo Type="typeof(BarChart_Demo_07_Animations_A_Delay)" Tabs="true" />
 </Section>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Animations - DataSet level delay" PageUrl="@pageUrl" Link="animations-dataset-level-delay">
+<Section Class="p-0" Size="HeadingSize.H4" Name="Animations - Dataset level delay" PageUrl="@pageUrl" Link="animations-dataset-level-delay">
     <Block>
         The <strong>Animations - DataSet Level Delay</strong> demo demonstrates how to apply different animation delays to each dataset in your Bar Chart. This allows each dataset to animate in sequence, making comparisons clearer and adding a dynamic effect to your data presentation.
         <br /><br />

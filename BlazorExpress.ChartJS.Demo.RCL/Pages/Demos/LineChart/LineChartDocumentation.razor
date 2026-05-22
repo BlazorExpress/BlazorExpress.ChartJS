@@ -54,6 +54,23 @@
     <Demo Type="typeof(LineChart_Demo_06_Combo_Bar_Line)" Tabs="true" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Stacked line chart" PageUrl="@pageUrl" Link="stacked-line-chart">
+    <Block>
+        The <strong>Stack</strong> demo shows how to combine <code>LineChartDataset.Stack</code> with a stacked Y-axis to build a layered line or area chart.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Options.Scales.Y.Stacked = true</code> so values accumulate on the Y-axis.</li>
+                <li>Assign the same <code>Stack</code> value to each <code>LineChartDataset</code> that should contribute to the same stacked total.</li>
+                <li>Optionally set <code>Fill</code> or use <code>FillToStackedValueBelow()</code> to make each layer easier to read.</li>
+                <li>Refer to the demo code below for a working example of stacked traffic series using shared stack IDs.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_07_Stack)" Tabs="true" />
+</Section>
+
 <Section Class="p-0" Size="HeadingSize.H4" Name="Data labels" PageUrl="@pageUrl" Link="data-labels">
     <Block>
         The <strong>Line Chart</strong> component supports data labels, allowing you to display values directly on each data point in the chart.
@@ -61,8 +78,8 @@
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Enable data labels by setting <code>Options.Plugins.Datalabels.Display = true</code> in your chart options.</li>
-                <li>Customize the label content, formatting, and position using the available plugin settings.</li>
+                <li>Enable data labels by passing the <code>ChartDataLabels</code> plugin when calling <code>InitializeAsync</code>: <code>plugins: new[] { "ChartDataLabels" }</code>.</li>
+                <li>Customize the label content, formatting, and position using <code>Options.Plugins.Datalabels</code> or per-dataset <code>Datalabels</code> settings.</li>
                 <li>Bind your data and labels to the chart as usual.</li>
                 <li>Refer to the demo code below for a working example and further configuration options.</li>
             </ol>
@@ -72,7 +89,7 @@
     <Demo Type="typeof(LineChart_Demo_02_Datalabels)" Tabs="true" />
 </Section>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Tick Configuration" PageUrl="@pageUrl" Link="tick-configuration">
+<Section Class="p-0" Size="HeadingSize.H4" Name="Tick configuration" PageUrl="@pageUrl" Link="tick-configuration">
     <Block>
         The <strong>Tick Configuration</strong> demo shows how to customize the appearance and behavior of axis ticks in the Line Chart component.
         <br /><br />

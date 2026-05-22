@@ -1,0 +1,81 @@
+<LineChart @ref="lineChart" Width="700" />
+
+@code {
+    private const string TrafficStack = "traffic";
+
+    private LineChart lineChart = default!;
+    private LineChartOptions lineChartOptions = default!;
+    private ChartData chartData = default!;
+
+    protected override void OnInitialized()
+    {
+        var desktopColor = ColorUtility.CategoricalTwelveColors[0].ToColor();
+        var mobileColor = ColorUtility.CategoricalTwelveColors[1].ToColor();
+        var tabletColor = ColorUtility.CategoricalTwelveColors[2].ToColor();
+
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "January", "February", "March", "April", "May", "June" },
+            Datasets = new List<IChartDataset>
+            {
+                new LineChartDataset
+                {
+                    Label = "Desktop",
+                    Stack = TrafficStack,
+                    Data = new List<double?> { 35, 38, 42, 46, 50, 53 },
+                    BackgroundColor = desktopColor.ToRgbaString(0.35),
+                    BorderColor = desktopColor.ToRgbString(),
+                    BorderWidth = 2,
+                    PointRadius = new List<double> { 3 },
+                    PointHoverRadius = new List<double> { 5 },
+                    Tension = 0.35,
+                }.FillToOrigin(),
+                new LineChartDataset
+                {
+                    Label = "Mobile",
+                    Stack = TrafficStack,
+                    Data = new List<double?> { 22, 25, 29, 33, 36, 40 },
+                    BackgroundColor = mobileColor.ToRgbaString(0.35),
+                    BorderColor = mobileColor.ToRgbString(),
+                    BorderWidth = 2,
+                    PointRadius = new List<double> { 3 },
+                    PointHoverRadius = new List<double> { 5 },
+                    Tension = 0.35,
+                }.FillToStackedValueBelow(),
+                new LineChartDataset
+                {
+                    Label = "Tablet",
+                    Stack = TrafficStack,
+                    Data = new List<double?> { 10, 12, 13, 15, 16, 18 },
+                    BackgroundColor = tabletColor.ToRgbaString(0.35),
+                    BorderColor = tabletColor.ToRgbString(),
+                    BorderWidth = 2,
+                    PointRadius = new List<double> { 3 },
+                    PointHoverRadius = new List<double> { 5 },
+                    Tension = 0.35,
+                }.FillToStackedValueBelow(),
+            },
+        };
+
+        lineChartOptions = new LineChartOptions
+        {
+            Responsive = true,
+            Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false },
+        };
+
+        lineChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Month", Display = true };
+        lineChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Sessions", Display = true };
+        lineChartOptions.Scales.Y.Stacked = true;
+
+        lineChartOptions.Plugins.Title!.Text = "Website sessions by device type";
+        lineChartOptions.Plugins.Title.Display = true;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await lineChart.InitializeAsync(chartData, lineChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}
