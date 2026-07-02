@@ -1,0 +1,137 @@
+# BlazorExpress.ChartJS.MCP
+
+Model Context Protocol server for generating and integrating BlazorExpress.ChartJS charts.
+
+Requires .NET 10 SDK/runtime.
+
+## Install
+
+```powershell
+dotnet tool install --global BlazorExpress.ChartJS.MCP
+```
+
+## MCP command
+
+```powershell
+blazorexpress-chartjs-mcp
+```
+
+The server uses stdio transport and exposes tools for listing supported chart types, generating complete Razor examples, previewing project integration edits, and applying approved integration plans.
+
+## How to test in local
+
+From the repository root, run the solution tests:
+
+```powershell
+dotnet test .\BlazorExpress.ChartJS.sln
+```
+
+Create the local .NET tool package:
+
+```powershell
+dotnet pack .\BlazorExpress.ChartJS.MCP\BlazorExpress.ChartJS.MCP.csproj -c Release
+```
+
+Install the generated package locally:
+
+```powershell
+dotnet tool install --global BlazorExpress.ChartJS.MCP --add-source .\BlazorExpress.ChartJS.MCP\bin\Release
+```
+
+If the tool is already installed, update it instead:
+
+```powershell
+dotnet tool update --global BlazorExpress.ChartJS.MCP --add-source .\BlazorExpress.ChartJS.MCP\bin\Release
+```
+
+Run the MCP server:
+
+```powershell
+blazorexpress-chartjs-mcp
+```
+
+The command starts a stdio MCP server. It is expected to keep running and wait for an MCP client to send requests.
+
+## How to integrate with VS Code
+
+Install or update the tool locally first:
+
+```powershell
+dotnet pack .\BlazorExpress.ChartJS.MCP\BlazorExpress.ChartJS.MCP.csproj -c Release
+dotnet tool install --global BlazorExpress.ChartJS.MCP --add-source .\BlazorExpress.ChartJS.MCP\bin\Release
+```
+
+If the tool is already installed:
+
+```powershell
+dotnet tool update --global BlazorExpress.ChartJS.MCP --add-source .\BlazorExpress.ChartJS.MCP\bin\Release
+```
+
+Create or update `.vscode/mcp.json` in your workspace:
+
+```json
+{
+  "servers": {
+    "blazorexpress-chartjs": {
+      "type": "stdio",
+      "command": "blazorexpress-chartjs-mcp"
+    }
+  }
+}
+```
+
+In VS Code:
+
+1. Open Command Palette.
+2. Run `MCP: List Servers`.
+3. Start `blazorexpress-chartjs` if it is not already running.
+4. Open Copilot Chat in Agent mode.
+5. Use the tools exposed by the server, such as `list_chart_types` or `generate_chart_example`.
+
+You can also add the server through Command Palette using `MCP: Add Server`, choose a command/stdio server, and use `blazorexpress-chartjs-mcp` as the command.
+
+## How to integrate with Visual Studio
+
+Prerequisite: Visual Studio 2022 version 17.14 or later, or Visual Studio 2026, with GitHub Copilot Agent mode enabled.
+
+Option 1: use Visual Studio chat.
+
+1. Open the Copilot chat pane.
+2. Switch to Agent mode.
+3. Select Tools.
+4. Select the plus (`+`) button.
+5. Select `Add custom MCP server`.
+6. Enter:
+   - Name: `blazorexpress-chartjs`
+   - Transport: `stdio`
+   - Command: `blazorexpress-chartjs-mcp`
+7. Save the server.
+8. Enable the MCP tools from the Tools picker.
+
+Option 2: use a config file.
+
+Create one of these files:
+
+- `<SOLUTIONDIR>\.mcp.json` for a solution-level config that can be checked in.
+- `%USERPROFILE%\.mcp.json` for a user-level config.
+- `<SOLUTIONDIR>\.vscode\mcp.json` if you want VS Code and Visual Studio to share the same workspace config.
+
+Use this configuration:
+
+```json
+{
+  "servers": {
+    "blazorexpress-chartjs": {
+      "type": "stdio",
+      "command": "blazorexpress-chartjs-mcp"
+    }
+  }
+}
+```
+
+After saving the file, open Copilot Chat in Agent mode, select Tools, and enable the BlazorExpress.ChartJS MCP tools. Visual Studio may ask for permission before running a tool.
+
+References:
+
+- VS Code MCP servers: https://code.visualstudio.com/docs/agent-customization/mcp-servers
+- Visual Studio MCP servers: https://learn.microsoft.com/en-us/visualstudio/ide/mcp-servers
