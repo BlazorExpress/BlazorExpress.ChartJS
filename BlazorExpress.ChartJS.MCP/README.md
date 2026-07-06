@@ -16,7 +16,24 @@ dotnet tool install --global BlazorExpress.ChartJS.MCP
 blazorexpress-chartjs-mcp
 ```
 
-The server uses stdio transport and exposes tools for listing supported chart types, generating complete Razor examples, previewing project integration edits, and applying approved integration plans.
+The default command starts a Streamable HTTP MCP server at `http://localhost:5000/mcp`.
+
+The server exposes tools for listing supported chart types, generating complete Razor examples, previewing project integration edits, and applying approved integration plans.
+
+HTTP mode does not require authentication when `ASPNETCORE_ENVIRONMENT` is `Development`. In other environments, set `CHARTJS_MCP_TOKEN` and send it as a bearer token.
+
+Use explicit stdio mode for editor integrations that launch the MCP server as a child process:
+
+```powershell
+blazorexpress-chartjs-mcp --stdio
+```
+
+You can also select the transport with:
+
+```powershell
+blazorexpress-chartjs-mcp --transport http
+blazorexpress-chartjs-mcp --transport stdio
+```
 
 ## How to test in local
 
@@ -47,10 +64,59 @@ dotnet tool update --global BlazorExpress.ChartJS.MCP --add-source .\BlazorExpre
 Run the MCP server:
 
 ```powershell
+$env:ASPNETCORE_ENVIRONMENT = "Development"
 blazorexpress-chartjs-mcp
 ```
 
-The command starts a stdio MCP server. It is expected to keep running and wait for an MCP client to send requests.
+The command starts a Streamable HTTP MCP server on `http://localhost:5000/mcp`.
+
+Check health:
+
+```powershell
+Invoke-RestMethod http://localhost:5000/health
+```
+
+Run the stdio MCP server for local editor integration:
+
+```powershell
+blazorexpress-chartjs-mcp --stdio
+```
+
+## How to run as a Kestrel service
+
+For local development, no bearer token is required:
+
+```powershell
+$env:ASPNETCORE_ENVIRONMENT = "Development"
+blazorexpress-chartjs-mcp
+```
+
+For production, configure the URL and bearer token:
+
+```powershell
+$env:ASPNETCORE_ENVIRONMENT = "Production"
+$env:ASPNETCORE_URLS = "http://localhost:5000"
+$env:CHARTJS_MCP_TOKEN = "<your-strong-token>"
+blazorexpress-chartjs-mcp
+```
+
+Production MCP clients must send:
+
+```text
+Authorization: Bearer <your-strong-token>
+```
+
+The Streamable HTTP endpoint is:
+
+```text
+http://localhost:5000/mcp
+```
+
+The health endpoint is:
+
+```text
+http://localhost:5000/health
+```
 
 ## How to integrate with VS Code
 
@@ -74,10 +140,17 @@ Create or update `.vscode/mcp.json` in your workspace:
   "servers": {
     "blazorexpress-chartjs": {
       "type": "stdio",
-      "command": "blazorexpress-chartjs-mcp"
+      "command": "blazorexpress-chartjs-mcp",
+      "args": ["--stdio"]
     }
   }
 }
+```
+
+For an HTTP MCP client, use this URL:
+
+```text
+http://localhost:5000/mcp
 ```
 
 In VS Code:
@@ -105,6 +178,7 @@ Option 1: use Visual Studio chat.
    - Name: `blazorexpress-chartjs`
    - Transport: `stdio`
    - Command: `blazorexpress-chartjs-mcp`
+   - Arguments: `--stdio`
 7. Save the server.
 8. Enable the MCP tools from the Tools picker.
 
@@ -123,7 +197,8 @@ Use this configuration:
   "servers": {
     "blazorexpress-chartjs": {
       "type": "stdio",
-      "command": "blazorexpress-chartjs-mcp"
+      "command": "blazorexpress-chartjs-mcp",
+      "args": ["--stdio"]
     }
   }
 }
