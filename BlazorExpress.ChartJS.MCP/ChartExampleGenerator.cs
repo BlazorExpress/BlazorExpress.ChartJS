@@ -20,76 +20,176 @@ public sealed class ChartExampleGenerator
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var definition = ChartCatalog.Get(request.ChartType);
-        var title = string.IsNullOrWhiteSpace(request.Title) ? $"{definition.Name} Chart" : request.Title.Trim();
-        var pageName = MakeIdentifier(string.IsNullOrWhiteSpace(request.PageName) ? $"{definition.Name}ChartPage" : request.PageName);
-        var route = NormalizeRoute(request.Route, definition);
-        var labels = NormalizeLabels(request.Labels, definition);
-        var datasets = NormalizeDatasets(request.Datasets, labels, definition);
-        var width = request.Width is > 0 ? request.Width.Value : 700;
-        var height = request.Height is > 0 ? request.Height.Value : 400;
-        var datalabels = request.Datalabels == true && definition.SupportsDatalabels;
-        var legendPosition = NormalizeLegendPosition(request.LegendPosition);
-        var stacked = request.Stacked == true && definition.SupportsStacking;
-        var horizontal = definition.SupportsOrientation && string.Equals(request.Orientation, "horizontal", StringComparison.OrdinalIgnoreCase);
-
-        var chartField = LowerFirst(definition.ComponentName);
-        var optionsField = LowerFirst(definition.OptionsTypeName);
+        var model = CreateChartModel(request, identifierSuffix: "");
         var code = new StringBuilder();
 
+        code.AppendLine($"@page \"{model.Route}\"");
+        code.AppendLine("@using BlazorExpress.ChartJS");
+        code.AppendLine();
+        code.AppendLine($"<h3>{EscapeHtml(model.Title)}</h3>");
+        code.AppendLine();
+        AppendChartMarkup(code, model, indent: "");
+        code.AppendLine();
+        code.AppendLine("@code {");
+        AppendChartFields(code, model);
+        code.AppendLine();
+        code.AppendLine("    protected override void OnInitialized()");
+        code.AppendLine("    {");
+        AppendChartInitialization(code, model);
+        code.AppendLine("    }");
+        code.AppendLine();
+        AppendAfterRender(code, [model]);
+        code.AppendLine("}");
+
+        return new GeneratedChartExample(
+            ChartType: model.Definition.Name,
+            Route: model.Route,
+            PageName: model.PageName,
+            Code: code.ToString(),
+            RequiredScripts: RequiredScripts([model]));
+    }
+
+    public GeneratedChartDashboard GenerateDashboard(ChartDashboardRequest request)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var chartRequests = request.Charts is { Count: > 0 }
+            ? request.Charts
+            : ChartCatalog.All.Select(x => new ChartGenerationRequest
+            {
+                ChartType = x.Name,
+                Title = $"{x.Name} Example",
+                Datalabels = false,
+            }).ToList();
+
+        var title = string.IsNullOrWhiteSpace(request.Title) ? "Chart Dashboard" : request.Title.Trim();
+        var route = NormalizeRoute(request.Route, "/charts/dashboard", "route");
+        var pageName = MakeIdentifier(string.IsNullOrWhiteSpace(request.PageName) ? "ChartDashboardPage" : request.PageName);
+        var models = chartRequests.Select((chart, index) => CreateChartModel(chart, (index + 1).ToString(CultureInfo.InvariantCulture))).ToList();
+
+        var code = new StringBuilder();
         code.AppendLine($"@page \"{route}\"");
         code.AppendLine("@using BlazorExpress.ChartJS");
         code.AppendLine();
         code.AppendLine($"<h3>{EscapeHtml(title)}</h3>");
         code.AppendLine();
-        code.AppendLine($"<{definition.ComponentName} @ref=\"{chartField}\" Width=\"{width}\" Height=\"{height}\" />");
+        code.AppendLine("<div class=\"chart-dashboard\">");
+        foreach (var model in models)
+        {
+            code.AppendLine("    <section class=\"chart-dashboard-section\">");
+            code.AppendLine($"        <h4>{EscapeHtml(model.Title)}</h4>");
+            AppendChartMarkup(code, model, indent: "        ");
+            code.AppendLine("    </section>");
+        }
+        code.AppendLine("</div>");
         code.AppendLine();
         code.AppendLine("@code {");
-        code.AppendLine($"    private {definition.ComponentName} {chartField} = default!;");
-        code.AppendLine($"    private {definition.OptionsTypeName} {optionsField} = default!;");
-        code.AppendLine("    private ChartData chartData = default!;");
-        code.AppendLine();
+        foreach (var model in models)
+        {
+            AppendChartFields(code, model);
+            code.AppendLine();
+        }
         code.AppendLine("    protected override void OnInitialized()");
         code.AppendLine("    {");
-        code.AppendLine("        chartData = new ChartData");
-        code.AppendLine("        {");
-        code.AppendLine($"            Labels = new List<string> {{ {string.Join(", ", labels.Select(ToCSharpString))} }},");
-        code.AppendLine("            Datasets = new List<IChartDataset>");
-        code.AppendLine("            {");
-        foreach (var dataset in datasets)
-            AppendDataset(code, definition, dataset, labels.Count, stacked);
-        code.AppendLine("            },");
-        code.AppendLine("        };");
-        code.AppendLine();
-        code.AppendLine($"        {optionsField} = new {definition.OptionsTypeName}");
-        code.AppendLine("        {");
-        code.AppendLine("            Responsive = true,");
-        code.AppendLine("            MaintainAspectRatio = false,");
-        if (definition.Name is "Bar" && horizontal)
-            code.AppendLine("            IndexAxis = \"y\",");
-        code.AppendLine("        };");
-        code.AppendLine();
-        AppendOptionsCustomization(code, definition, optionsField, title, legendPosition, stacked);
+        foreach (var model in models)
+            AppendChartInitialization(code, model);
         code.AppendLine("    }");
         code.AppendLine();
-        code.AppendLine("    protected override async Task OnAfterRenderAsync(bool firstRender)");
-        code.AppendLine("    {");
-        code.AppendLine("        if (firstRender)");
-        if (datalabels)
-            code.AppendLine($"            await {chartField}.InitializeAsync(chartData: chartData, chartOptions: {optionsField}, plugins: new string[] {{ \"ChartDataLabels\" }});");
-        else
-            code.AppendLine($"            await {chartField}.InitializeAsync(chartData, {optionsField});");
-        code.AppendLine();
-        code.AppendLine("        await base.OnAfterRenderAsync(firstRender);");
-        code.AppendLine("    }");
+        AppendAfterRender(code, models);
         code.AppendLine("}");
 
-        return new GeneratedChartExample(
-            ChartType: definition.Name,
+        return new GeneratedChartDashboard(
             Route: route,
             PageName: pageName,
             Code: code.ToString(),
-            RequiredScripts: RequiredScripts(datalabels));
+            ChartTypes: models.Select(x => x.Definition.Name).ToList(),
+            RequiredScripts: RequiredScripts(models));
+    }
+
+    private static ChartRenderModel CreateChartModel(ChartGenerationRequest request, string identifierSuffix)
+    {
+        var definition = ChartCatalog.Get(request.ChartType);
+        var title = string.IsNullOrWhiteSpace(request.Title) ? $"{definition.Name} Chart" : request.Title.Trim();
+        var pageName = MakeIdentifier(string.IsNullOrWhiteSpace(request.PageName) ? $"{definition.Name}ChartPage" : request.PageName);
+        var route = NormalizeRoute(request.Route, $"/charts/{ToKebabCase(definition.Name)}", "route");
+        var labels = NormalizeLabels(request.Labels, definition);
+        var datasets = NormalizeDatasets(request.Datasets, labels, definition);
+        var width = NormalizeDimension(request.Width, 700, "width");
+        var height = NormalizeDimension(request.Height, 400, "height");
+        var datalabels = request.Datalabels == true && definition.SupportsDatalabels;
+        var legendPosition = NormalizeLegendPosition(request.LegendPosition);
+        var stacked = request.Stacked == true && definition.SupportsStacking;
+        var horizontal = definition.SupportsOrientation && string.Equals(request.Orientation, "horizontal", StringComparison.OrdinalIgnoreCase);
+        var suffix = string.IsNullOrWhiteSpace(identifierSuffix) ? "" : identifierSuffix;
+
+        return new ChartRenderModel(
+            Definition: definition,
+            Title: title,
+            Route: route,
+            PageName: pageName,
+            Labels: labels,
+            Datasets: datasets,
+            Width: width,
+            Height: height,
+            IncludeDatalabels: datalabels,
+            LegendPosition: legendPosition,
+            Stacked: stacked,
+            Horizontal: horizontal,
+            ChartField: $"{LowerFirst(definition.ComponentName)}{suffix}",
+            OptionsField: $"{LowerFirst(definition.OptionsTypeName)}{suffix}",
+            DataField: $"chartData{suffix}");
+    }
+
+    private static void AppendChartMarkup(StringBuilder code, ChartRenderModel model, string indent) =>
+        code.AppendLine($"{indent}<{model.Definition.ComponentName} @ref=\"{model.ChartField}\" Width=\"{model.Width}\" Height=\"{model.Height}\" />");
+
+    private static void AppendChartFields(StringBuilder code, ChartRenderModel model)
+    {
+        code.AppendLine($"    private {model.Definition.ComponentName} {model.ChartField} = default!;");
+        code.AppendLine($"    private {model.Definition.OptionsTypeName} {model.OptionsField} = default!;");
+        code.AppendLine($"    private ChartData {model.DataField} = default!;");
+    }
+
+    private static void AppendChartInitialization(StringBuilder code, ChartRenderModel model)
+    {
+        code.AppendLine($"        {model.DataField} = new ChartData");
+        code.AppendLine("        {");
+        code.AppendLine($"            Labels = new List<string> {{ {string.Join(", ", model.Labels.Select(ToCSharpString))} }},");
+        code.AppendLine("            Datasets = new List<IChartDataset>");
+        code.AppendLine("            {");
+        foreach (var dataset in model.Datasets)
+            AppendDataset(code, model.Definition, dataset, model.Labels.Count, model.Stacked);
+        code.AppendLine("            },");
+        code.AppendLine("        };");
+        code.AppendLine();
+        code.AppendLine($"        {model.OptionsField} = new {model.Definition.OptionsTypeName}");
+        code.AppendLine("        {");
+        code.AppendLine("            Responsive = true,");
+        code.AppendLine("            MaintainAspectRatio = false,");
+        if (model.Definition.Name is "Bar" && model.Horizontal)
+            code.AppendLine("            IndexAxis = \"y\",");
+        code.AppendLine("        };");
+        code.AppendLine();
+        AppendOptionsCustomization(code, model);
+    }
+
+    private static void AppendAfterRender(StringBuilder code, IReadOnlyList<ChartRenderModel> models)
+    {
+        code.AppendLine("    protected override async Task OnAfterRenderAsync(bool firstRender)");
+        code.AppendLine("    {");
+        code.AppendLine("        if (firstRender)");
+        code.AppendLine("        {");
+        foreach (var model in models)
+        {
+            if (model.IncludeDatalabels)
+                code.AppendLine($"            await {model.ChartField}.InitializeAsync({model.DataField}, {model.OptionsField}, new string[] {{ \"ChartDataLabels\" }});");
+            else
+                code.AppendLine($"            await {model.ChartField}.InitializeAsync({model.DataField}, {model.OptionsField});");
+        }
+        code.AppendLine("        }");
+        code.AppendLine();
+        code.AppendLine("        await base.OnAfterRenderAsync(firstRender);");
+        code.AppendLine("    }");
     }
 
     private static void AppendDataset(StringBuilder code, ChartDefinition definition, ChartDatasetRequest dataset, int labelCount, bool stacked)
@@ -117,49 +217,62 @@ public sealed class ChartExampleGenerator
             code.AppendLine($"                    Data = new List<double?> {{ {string.Join(", ", values.Select(FormatNullableNumber))} }},");
         }
 
-        code.AppendLine($"                    BackgroundColor = new List<string> {{ {string.Join(", ", colors.Select(ToCSharpString))} }},");
-        code.AppendLine($"                    BorderColor = new List<string> {{ {string.Join(", ", borderColors.Select(ToCSharpString))} }},");
+        AppendColorProperty(code, definition, "BackgroundColor", colors);
+        AppendColorProperty(code, definition, "BorderColor", borderColors);
 
         if (definition.Name is "Bar")
             code.AppendLine("                    BorderWidth = new List<double> { 1 },");
 
-        if (stacked && !string.IsNullOrWhiteSpace(dataset.Stack) && (definition.Name is "Bar"))
+        if (stacked && !string.IsNullOrWhiteSpace(dataset.Stack) && definition.Name is "Bar")
             code.AppendLine($"                    Stack = {ToCSharpString(dataset.Stack)},");
 
         code.AppendLine("                },");
     }
 
-    private static void AppendOptionsCustomization(StringBuilder code, ChartDefinition definition, string optionsField, string title, string legendPosition, bool stacked)
+    private static void AppendOptionsCustomization(StringBuilder code, ChartRenderModel model)
     {
-        if (definition.Name is "Bubble")
+        var definition = model.Definition;
+
+        if (definition.SupportsTitleOptions)
         {
-            code.AppendLine($"        // BubbleChartOptions currently inherits the common ChartOptions surface.");
-            return;
+            code.AppendLine($"        {model.OptionsField}.Plugins.Title!.Text = {ToCSharpString(model.Title)};");
+            code.AppendLine($"        {model.OptionsField}.Plugins.Title.Display = true;");
         }
 
-        code.AppendLine($"        {optionsField}.Plugins.Title!.Text = {ToCSharpString(title)};");
-        code.AppendLine($"        {optionsField}.Plugins.Title.Display = true;");
-        code.AppendLine($"        {optionsField}.Plugins.Legend.Position = {ToCSharpString(legendPosition)};");
+        if (definition.SupportsLegendOptions)
+            code.AppendLine($"        {model.OptionsField}.Plugins.Legend.Position = {ToCSharpString(model.LegendPosition)};");
 
-        if (stacked && definition.Name is "Bar" or "Line")
+        if (model.Stacked && definition.SupportsScales)
         {
-            code.AppendLine($"        {optionsField}.Scales.X!.Stacked = true;");
-            code.AppendLine($"        {optionsField}.Scales.Y!.Stacked = true;");
+            code.AppendLine($"        {model.OptionsField}.Scales.X!.Stacked = true;");
+            code.AppendLine($"        {model.OptionsField}.Scales.Y!.Stacked = true;");
         }
     }
 
-    private static IReadOnlyList<string> RequiredScripts(bool includeDatalabels)
+    private static void AppendColorProperty(StringBuilder code, ChartDefinition definition, string propertyName, IReadOnlyList<string> colors)
+    {
+        var propertyType = definition.DatasetType.GetProperty(propertyName)?.PropertyType;
+        if (propertyType == typeof(string))
+        {
+            code.AppendLine($"                    {propertyName} = {ToCSharpString(colors.FirstOrDefault() ?? DefaultColors[0])},");
+            return;
+        }
+
+        code.AppendLine($"                    {propertyName} = new List<string> {{ {string.Join(", ", colors.Select(ToCSharpString))} }},");
+    }
+
+    private static IReadOnlyList<string> RequiredScripts(IReadOnlyList<ChartRenderModel> models)
     {
         var scripts = new List<string>
         {
             "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js",
-            "_content/BlazorExpress.ChartJS/blazorexpress.chartjs.js"
         };
 
-        if (includeDatalabels)
-            scripts.Insert(1, "https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js");
+        if (models.Any(x => x.IncludeDatalabels))
+            scripts.Add("https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js");
 
-        return scripts;
+        scripts.Add("_content/BlazorExpress.ChartJS/blazorexpress.chartjs.js");
+        return scripts.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
     }
 
     private static IReadOnlyList<string> NormalizeLabels(IReadOnlyList<string>? labels, ChartDefinition definition)
@@ -232,9 +345,20 @@ public sealed class ChartExampleGenerator
     private static IReadOnlyList<string> NormalizeColors(IReadOnlyList<string>? colors, int count)
     {
         if (colors is { Count: > 0 })
-            return colors;
+            return colors.Select(x => string.IsNullOrWhiteSpace(x) ? DefaultColors[0] : x).ToList();
 
         return DefaultColors.Take(Math.Max(1, Math.Min(count, DefaultColors.Length))).ToList();
+    }
+
+    private static int NormalizeDimension(int? value, int fallback, string field)
+    {
+        if (value is null)
+            return fallback;
+
+        if (value <= 0)
+            throw new ToolInputException($"{field} must be greater than zero.", field);
+
+        return value.Value;
     }
 
     private static IReadOnlyList<T> Pad<T>(IReadOnlyList<T> values, int count, T fallback)
@@ -247,12 +371,15 @@ public sealed class ChartExampleGenerator
         return result;
     }
 
-    private static string NormalizeRoute(string? route, ChartDefinition definition)
+    private static string NormalizeRoute(string? route, string fallback, string field)
     {
         if (string.IsNullOrWhiteSpace(route))
-            return $"/charts/{ToKebabCase(definition.Name)}";
+            return fallback;
 
         var normalized = route.Trim();
+        if (normalized.Any(char.IsWhiteSpace) || normalized.Contains('"', StringComparison.Ordinal))
+            throw new ToolInputException($"{field} must be a route path without whitespace or quotes.", field);
+
         return normalized.StartsWith("/", StringComparison.Ordinal) ? normalized : $"/{normalized}";
     }
 
@@ -291,4 +418,21 @@ public sealed class ChartExampleGenerator
 
     private static string FormatNumber(double value) =>
         value.ToString("0.########", CultureInfo.InvariantCulture);
+
+    private sealed record ChartRenderModel(
+        ChartDefinition Definition,
+        string Title,
+        string Route,
+        string PageName,
+        IReadOnlyList<string> Labels,
+        IReadOnlyList<ChartDatasetRequest> Datasets,
+        int Width,
+        int Height,
+        bool IncludeDatalabels,
+        string LegendPosition,
+        bool Stacked,
+        bool Horizontal,
+        string ChartField,
+        string OptionsField,
+        string DataField);
 }

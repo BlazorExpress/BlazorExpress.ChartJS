@@ -12,7 +12,11 @@ public sealed record ChartDefinition(
     Type DatasetType,
     bool SupportsDatalabels,
     bool SupportsStacking,
-    bool SupportsOrientation);
+    bool SupportsOrientation,
+    bool SupportsPluginOptions,
+    bool SupportsTitleOptions,
+    bool SupportsLegendOptions,
+    bool SupportsScales);
 
 public sealed record ChartGenerationSchema(
     string ChartType,
@@ -22,8 +26,12 @@ public sealed record ChartGenerationSchema(
     bool SupportsDatalabels,
     bool SupportsStacking,
     bool SupportsOrientation,
+    bool SupportsPluginOptions,
+    bool SupportsTitleOptions,
+    bool SupportsLegendOptions,
     IReadOnlyList<string> CommonInputs,
     IReadOnlyList<string> ChartSpecificInputs,
+    IReadOnlyDictionary<string, object?> Examples,
     IReadOnlyDictionary<string, object?> Metadata);
 
 public sealed record PropertyMetadata(
@@ -77,10 +85,31 @@ public sealed record GeneratedChartExample(
     string Code,
     IReadOnlyList<string> RequiredScripts);
 
+public sealed record ChartDashboardRequest
+{
+    public string? Title { get; init; }
+    public string? Route { get; init; }
+    public string? PageName { get; init; }
+    public IReadOnlyList<ChartGenerationRequest>? Charts { get; init; }
+}
+
+public sealed record GeneratedChartDashboard(
+    string Route,
+    string PageName,
+    string Code,
+    IReadOnlyList<string> ChartTypes,
+    IReadOnlyList<string> RequiredScripts);
+
 public sealed record PreviewIntegrationRequest
 {
     public string TargetProjectPath { get; init; } = "";
     public ChartGenerationRequest Chart { get; init; } = new();
+}
+
+public sealed record PreviewDashboardIntegrationRequest
+{
+    public string TargetProjectPath { get; init; } = "";
+    public ChartDashboardRequest Dashboard { get; init; } = new();
 }
 
 public sealed record IntegrationPlan
@@ -106,3 +135,25 @@ public sealed record ApplyIntegrationResult(
     string PlanHash,
     IReadOnlyList<string> WrittenFiles,
     IReadOnlyList<string> ManualSteps);
+
+public sealed record ToolFailure(bool Success, ToolError Error);
+
+public sealed record ToolError(
+    string Code,
+    string Message,
+    string? Field = null,
+    IReadOnlyList<string>? Details = null);
+
+public sealed class ToolInputException : Exception
+{
+    public ToolInputException(string message, string? field = null, IReadOnlyList<string>? details = null)
+        : base(message)
+    {
+        Field = field;
+        Details = details ?? [];
+    }
+
+    public string? Field { get; }
+
+    public IReadOnlyList<string> Details { get; }
+}

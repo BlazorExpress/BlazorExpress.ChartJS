@@ -22,8 +22,37 @@ public sealed class ProjectIntegrationService
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var project = ResolveProject(request.TargetProjectPath);
         var generated = generator.Generate(request.Chart);
+        return PreviewGeneratedPage(
+            request.TargetProjectPath,
+            new GeneratedPage(
+                PageName: generated.PageName,
+                Route: generated.Route,
+                Title: request.Chart.Title ?? generated.ChartType + " Chart",
+                Code: generated.Code,
+                RequiredScripts: generated.RequiredScripts,
+                Description: $"generated {generated.ChartType} chart page"));
+    }
+
+    public IntegrationPlan PreviewDashboard(PreviewDashboardIntegrationRequest request)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var generated = generator.GenerateDashboard(request.Dashboard);
+        return PreviewGeneratedPage(
+            request.TargetProjectPath,
+            new GeneratedPage(
+                PageName: generated.PageName,
+                Route: generated.Route,
+                Title: request.Dashboard.Title ?? "Chart Dashboard",
+                Code: generated.Code,
+                RequiredScripts: generated.RequiredScripts,
+                Description: "generated chart dashboard page"));
+    }
+
+    public IntegrationPlan PreviewGeneratedPage(string targetProjectPath, GeneratedPage generated)
+    {
+        var project = ResolveProject(targetProjectPath);
         var hostModel = DetectHostModel(project);
         var edits = new List<FileEdit>();
         var manualSteps = new List<string>();
@@ -32,7 +61,7 @@ public sealed class ProjectIntegrationService
         AddImportsEdit(project.RootDirectory, edits);
         AddScriptEdit(project, hostModel, generated.RequiredScripts, edits, manualSteps);
         AddPageEdit(project, hostModel, generated, edits);
-        AddNavigationEdit(project.RootDirectory, generated.Route, request.Chart.Title ?? generated.ChartType + " Chart", edits, manualSteps);
+        AddNavigationEdit(project.RootDirectory, generated.Route, generated.Title, edits, manualSteps);
 
         var plan = new IntegrationPlan
         {
@@ -201,7 +230,7 @@ public sealed class ProjectIntegrationService
             AddReplaceEdit(scriptFile, content, newContent, "Add BlazorExpress.ChartJS script references.", edits);
     }
 
-    private static void AddPageEdit(ProjectContext project, string hostModel, GeneratedChartExample generated, List<FileEdit> edits)
+    private static void AddPageEdit(ProjectContext project, string hostModel, GeneratedPage generated, List<FileEdit> edits)
     {
         var pagesDirectory = hostModel switch
         {
@@ -212,7 +241,7 @@ public sealed class ProjectIntegrationService
 
         var pagePath = Path.Combine(pagesDirectory, $"{generated.PageName}.razor");
         var original = File.Exists(pagePath) ? File.ReadAllText(pagePath) : "";
-        AddReplaceEdit(pagePath, original, generated.Code, $"Create or update generated {generated.ChartType} chart page.", edits);
+        AddReplaceEdit(pagePath, original, generated.Code, $"Create or update {generated.Description}.", edits);
     }
 
     private static void AddNavigationEdit(string root, string route, string title, List<FileEdit> edits, List<string> manualSteps)
@@ -306,4 +335,12 @@ public sealed class ProjectIntegrationService
     }
 
     private sealed record ProjectContext(string ProjectFilePath, string RootDirectory);
+
+    public sealed record GeneratedPage(
+        string PageName,
+        string Route,
+        string Title,
+        string Code,
+        IReadOnlyList<string> RequiredScripts,
+        string Description);
 }

@@ -7,15 +7,15 @@ public static class ChartCatalog
 {
     private static readonly IReadOnlyDictionary<string, ChartDefinition> DefinitionsByKey = new Dictionary<string, ChartDefinition>(StringComparer.OrdinalIgnoreCase)
     {
-        ["bar"] = new("Bar", "BarChart", "BarChartOptions", "BarChartDataset", typeof(BarChart), typeof(BarChartOptions), typeof(BarChartDataset), true, true, true),
-        ["bubble"] = new("Bubble", "BubbleChart", "BubbleChartOptions", "BubbleChartDataset", typeof(BubbleChart), typeof(BubbleChartOptions), typeof(BubbleChartDataset), true, false, false),
-        ["doughnut"] = new("Doughnut", "DoughnutChart", "DoughnutChartOptions", "DoughnutChartDataset", typeof(DoughnutChart), typeof(DoughnutChartOptions), typeof(DoughnutChartDataset), true, false, false),
-        ["line"] = new("Line", "LineChart", "LineChartOptions", "LineChartDataset", typeof(LineChart), typeof(LineChartOptions), typeof(LineChartDataset), true, true, false),
-        ["pie"] = new("Pie", "PieChart", "PieChartOptions", "PieChartDataset", typeof(PieChart), typeof(PieChartOptions), typeof(PieChartDataset), true, false, false),
-        ["polararea"] = new("PolarArea", "PolarAreaChart", "PolarAreaChartOptions", "PolarAreaChartDataset", typeof(PolarAreaChart), typeof(PolarAreaChartOptions), typeof(PolarAreaChartDataset), true, false, false),
-        ["polar-area"] = new("PolarArea", "PolarAreaChart", "PolarAreaChartOptions", "PolarAreaChartDataset", typeof(PolarAreaChart), typeof(PolarAreaChartOptions), typeof(PolarAreaChartDataset), true, false, false),
-        ["radar"] = new("Radar", "RadarChart", "RadarChartOptions", "RadarChartDataset", typeof(RadarChart), typeof(RadarChartOptions), typeof(RadarChartDataset), true, false, false),
-        ["scatter"] = new("Scatter", "ScatterChart", "ScatterChartOptions", "ScatterChartDataset", typeof(ScatterChart), typeof(ScatterChartOptions), typeof(ScatterChartDataset), true, false, false),
+        ["bar"] = Create("Bar", "BarChart", "BarChartOptions", "BarChartDataset", typeof(BarChart), typeof(BarChartOptions), typeof(BarChartDataset), true, true, true),
+        ["bubble"] = Create("Bubble", "BubbleChart", "BubbleChartOptions", "BubbleChartDataset", typeof(BubbleChart), typeof(BubbleChartOptions), typeof(BubbleChartDataset), true, false, false),
+        ["doughnut"] = Create("Doughnut", "DoughnutChart", "DoughnutChartOptions", "DoughnutChartDataset", typeof(DoughnutChart), typeof(DoughnutChartOptions), typeof(DoughnutChartDataset), true, false, false),
+        ["line"] = Create("Line", "LineChart", "LineChartOptions", "LineChartDataset", typeof(LineChart), typeof(LineChartOptions), typeof(LineChartDataset), true, true, false),
+        ["pie"] = Create("Pie", "PieChart", "PieChartOptions", "PieChartDataset", typeof(PieChart), typeof(PieChartOptions), typeof(PieChartDataset), true, false, false),
+        ["polararea"] = Create("PolarArea", "PolarAreaChart", "PolarAreaChartOptions", "PolarAreaChartDataset", typeof(PolarAreaChart), typeof(PolarAreaChartOptions), typeof(PolarAreaChartDataset), true, false, false),
+        ["polar-area"] = Create("PolarArea", "PolarAreaChart", "PolarAreaChartOptions", "PolarAreaChartDataset", typeof(PolarAreaChart), typeof(PolarAreaChartOptions), typeof(PolarAreaChartDataset), true, false, false),
+        ["radar"] = Create("Radar", "RadarChart", "RadarChartOptions", "RadarChartDataset", typeof(RadarChart), typeof(RadarChartOptions), typeof(RadarChartDataset), false, false, false),
+        ["scatter"] = Create("Scatter", "ScatterChart", "ScatterChartOptions", "ScatterChartDataset", typeof(ScatterChart), typeof(ScatterChartOptions), typeof(ScatterChartDataset), true, false, false),
     };
 
     public static IReadOnlyList<ChartDefinition> All { get; } = DefinitionsByKey.Values
@@ -46,6 +46,9 @@ public static class ChartCatalog
             SupportsDatalabels: definition.SupportsDatalabels,
             SupportsStacking: definition.SupportsStacking,
             SupportsOrientation: definition.SupportsOrientation,
+            SupportsPluginOptions: definition.SupportsPluginOptions,
+            SupportsTitleOptions: definition.SupportsTitleOptions,
+            SupportsLegendOptions: definition.SupportsLegendOptions,
             CommonInputs:
             [
                 "title",
@@ -59,7 +62,44 @@ public static class ChartCatalog
                 "datalabels"
             ],
             ChartSpecificInputs: GetChartSpecificInputs(definition),
+            Examples: GetExamples(definition),
             Metadata: GetTypeMetadata(definition));
+    }
+
+    private static ChartDefinition Create(
+        string name,
+        string componentName,
+        string optionsTypeName,
+        string datasetTypeName,
+        Type componentType,
+        Type optionsType,
+        Type datasetType,
+        bool supportsDatalabels,
+        bool supportsStacking,
+        bool supportsOrientation)
+    {
+        var pluginsProperty = optionsType.GetProperty("Plugins", BindingFlags.Public | BindingFlags.Instance);
+        var supportsPluginOptions = pluginsProperty is not null;
+        var pluginType = pluginsProperty?.PropertyType;
+        var supportsTitleOptions = pluginType?.GetProperty("Title", BindingFlags.Public | BindingFlags.Instance) is not null;
+        var supportsLegendOptions = pluginType?.GetProperty("Legend", BindingFlags.Public | BindingFlags.Instance) is not null;
+        var supportsScales = optionsType.GetProperty("Scales", BindingFlags.Public | BindingFlags.Instance) is not null;
+
+        return new ChartDefinition(
+            name,
+            componentName,
+            optionsTypeName,
+            datasetTypeName,
+            componentType,
+            optionsType,
+            datasetType,
+            supportsDatalabels,
+            supportsStacking,
+            supportsOrientation,
+            supportsPluginOptions,
+            supportsTitleOptions,
+            supportsLegendOptions,
+            supportsScales);
     }
 
     private static IReadOnlyList<string> GetChartSpecificInputs(ChartDefinition definition)
@@ -90,6 +130,20 @@ public static class ChartCatalog
             ["datasetProperties"] = GetPublicPropertyMetadata(definition.DatasetType),
         };
 
+    private static IReadOnlyDictionary<string, object?> GetExamples(ChartDefinition definition)
+    {
+        var common = new Dictionary<string, object?>
+        {
+            ["labelsJson"] = """["Jan","Feb","Mar"]""",
+            ["numericDatasetsJson"] = """[{"label":"Revenue","data":[12,19,7],"backgroundColor":"rgba(54, 162, 235, 0.7)","borderColor":["rgba(54, 162, 235, 1)"]}]""",
+        };
+
+        if (definition.Name is "Scatter" or "Bubble")
+            common["pointDatasetsJson"] = """[{"label":"Samples","points":[{"x":1,"y":12,"r":6},{"x":2,"y":19,"r":8}],"backgroundColor":"rgba(255, 99, 132, 0.7)"}]""";
+
+        return common;
+    }
+
     private static string? GetDescription(MemberInfo member) =>
         member.GetCustomAttribute<DescriptionAttribute>()?.Description;
 
@@ -104,8 +158,14 @@ public static class ChartCatalog
             .OrderBy(x => x.Name)
             .ToList();
 
-    private static string NormalizeKey(string value) =>
+    private static string NormalizeKey(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            throw new ArgumentException("A chart type is required.", nameof(value));
+
+        return
         value.Replace(" ", "", StringComparison.Ordinal)
             .Replace("_", "", StringComparison.Ordinal)
             .ToLowerInvariant();
+    }
 }

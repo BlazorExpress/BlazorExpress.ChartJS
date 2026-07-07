@@ -18,7 +18,19 @@ blazorexpress-chartjs-mcp
 
 The default command starts a Streamable HTTP MCP server at `http://localhost:5000/mcp`.
 
-The server exposes tools for listing supported chart types, generating complete Razor examples, previewing project integration edits, and applying approved integration plans.
+The server exposes tools for listing supported chart types, generating complete Razor examples, generating multi-chart dashboard pages, previewing project integration edits, and applying approved integration plans.
+
+Available tools include:
+
+- `list_chart_types`
+- `get_chart_generation_schema`
+- `generate_chart_example`
+- `generate_chart_dashboard`
+- `preview_project_integration`
+- `preview_dashboard_integration`
+- `apply_project_integration`
+
+Successful tool responses return the generated payload directly. Invalid inputs return structured JSON with `success: false` and an `error` object containing `code`, `message`, `field`, and `details`.
 
 HTTP mode does not require authentication when `ASPNETCORE_ENVIRONMENT` is `Development`. In other environments, set `CHARTJS_MCP_TOKEN` and send it as a bearer token.
 
@@ -159,7 +171,7 @@ In VS Code:
 2. Run `MCP: List Servers`.
 3. Start `blazorexpress-chartjs` if it is not already running.
 4. Open Copilot Chat in Agent mode.
-5. Use the tools exposed by the server, such as `list_chart_types` or `generate_chart_example`.
+5. Use the tools exposed by the server, such as `list_chart_types`, `generate_chart_example`, or `generate_chart_dashboard`.
 
 You can also add the server through Command Palette using `MCP: Add Server`, choose a command/stdio server, and use `blazorexpress-chartjs-mcp` as the command.
 
