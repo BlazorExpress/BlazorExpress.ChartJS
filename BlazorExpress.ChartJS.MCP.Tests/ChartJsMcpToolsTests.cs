@@ -45,6 +45,45 @@ public class ChartJsMcpToolsTests
     }
 
     [Fact]
+    public void PreviewProjectIntegration_Returns_Structured_Error_For_Ambiguous_Folder()
+    {
+        using var workspace = new TemporaryWorkspace();
+        var firstProject = workspace.CreateWebAssemblyProject(Path.Combine("src", "FirstApp"), "FirstApp");
+        var secondProject = workspace.CreateWebAssemblyProject(Path.Combine("src", "SecondApp"), "SecondApp");
+
+        var json = ChartJsMcpTools.PreviewProjectIntegration(workspace.Root, "Bar");
+
+        AssertToolError(json, "targetProjectPath");
+        Assert.Contains(EscapeJsonPath(Path.Combine(firstProject, "FirstApp.csproj")), json);
+        Assert.Contains(EscapeJsonPath(Path.Combine(secondProject, "SecondApp.csproj")), json);
+    }
+
+    [Fact]
+    public void PreviewProjectIntegration_Resolves_Nested_Single_Blazor_Project()
+    {
+        using var workspace = new TemporaryWorkspace();
+        var project = workspace.CreateWebAssemblyProject(Path.Combine("src", "App"), "App");
+
+        var json = ChartJsMcpTools.PreviewProjectIntegration(workspace.Root, "Bar");
+
+        Assert.DoesNotContain("\"success\": false", json);
+        Assert.Contains(EscapeJsonPath(Path.Combine(project, "App.csproj")), json);
+    }
+
+    [Fact]
+    public void PreviewDashboardIntegration_Uses_Same_Project_Resolver()
+    {
+        using var workspace = new TemporaryWorkspace();
+        var project = workspace.CreateWebAssemblyProject(Path.Combine("src", "App"), "App");
+
+        var json = ChartJsMcpTools.PreviewDashboardIntegration(workspace.Root, title: "Charts");
+
+        Assert.DoesNotContain("\"success\": false", json);
+        Assert.Contains("ChartDashboardPage.razor", json);
+        Assert.Contains(EscapeJsonPath(Path.Combine(project, "App.csproj")), json);
+    }
+
+    [Fact]
     public void GenerateChartExample_Accepts_Color_String()
     {
         var json = ChartJsMcpTools.GenerateChartExample(
@@ -107,5 +146,53 @@ public class ChartJsMcpToolsTests
 
         if (expectedField is not null)
             Assert.Equal(expectedField, document.RootElement.GetProperty("error").GetProperty("field").GetString());
+    }
+
+    private static string EscapeJsonPath(string path) =>
+        path.Replace("\\", "\\\\", StringComparison.Ordinal);
+
+    private sealed class TemporaryWorkspace : IDisposable
+    {
+        private readonly string root = Path.Combine(Path.GetTempPath(), $"bex-chartjs-mcp-tool-tests-{Guid.NewGuid():N}");
+
+        public string Root => root;
+
+        public string CreateWebAssemblyProject(string relativePath, string projectName)
+        {
+            var projectRoot = Path.Combine(root, relativePath);
+            Directory.CreateDirectory(projectRoot);
+            Directory.CreateDirectory(Path.Combine(projectRoot, "wwwroot"));
+            Directory.CreateDirectory(Path.Combine(projectRoot, "Pages"));
+            Directory.CreateDirectory(Path.Combine(projectRoot, "Shared"));
+
+            File.WriteAllText(Path.Combine(projectRoot, $"{projectName}.csproj"), """
+                <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+                  <PropertyGroup>
+                    <TargetFramework>net10.0</TargetFramework>
+                  </PropertyGroup>
+                </Project>
+                """);
+            File.WriteAllText(Path.Combine(projectRoot, "_Imports.razor"), "@using Microsoft.AspNetCore.Components" + Environment.NewLine);
+            File.WriteAllText(Path.Combine(projectRoot, "wwwroot", "index.html"), """
+                <html>
+                <body>
+                    <div id="app"></div>
+                </body>
+                </html>
+                """);
+            File.WriteAllText(Path.Combine(projectRoot, "Shared", "NavMenu.razor"), """
+                <nav>
+                    <NavLink class="nav-link" href="">Home</NavLink>
+                </nav>
+                """);
+
+            return projectRoot;
+        }
+
+        public void Dispose()
+        {
+            if (Directory.Exists(root))
+                Directory.Delete(root, recursive: true);
+        }
     }
 }

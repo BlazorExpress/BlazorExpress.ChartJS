@@ -26,6 +26,113 @@ public class ProjectIntegrationServiceTests
     }
 
     [Fact]
+    public void Preview_Accepts_Exact_Project_File_Path()
+    {
+        using var workspace = new TemporaryWorkspace();
+        var projectDirectory = workspace.CreateWebAssemblyProject();
+        var projectFilePath = Path.Combine(projectDirectory, "Sample.csproj");
+        var service = new ProjectIntegrationService(new ChartExampleGenerator());
+
+        var plan = service.Preview(new PreviewIntegrationRequest
+        {
+            TargetProjectPath = projectFilePath,
+            Chart = new ChartGenerationRequest { ChartType = "Line" },
+        });
+
+        Assert.Equal(projectFilePath, plan.ProjectFilePath);
+    }
+
+    [Fact]
+    public void Preview_Resolves_Repo_Folder_With_One_Nested_Blazor_App()
+    {
+        using var workspace = new TemporaryWorkspace();
+        var projectDirectory = workspace.CreateWebAssemblyProject(Path.Combine("src", "App"), "App");
+        var service = new ProjectIntegrationService(new ChartExampleGenerator());
+
+        var plan = service.Preview(new PreviewIntegrationRequest
+        {
+            TargetProjectPath = workspace.Root,
+            Chart = new ChartGenerationRequest { ChartType = "Line" },
+        });
+
+        Assert.Equal(Path.Combine(projectDirectory, "App.csproj"), plan.ProjectFilePath);
+    }
+
+    [Fact]
+    public void Preview_Rejects_Repo_Folder_With_Multiple_Blazor_App_Candidates()
+    {
+        using var workspace = new TemporaryWorkspace();
+        var firstProjectDirectory = workspace.CreateWebAssemblyProject(Path.Combine("src", "FirstApp"), "FirstApp");
+        var secondProjectDirectory = workspace.CreateWebAssemblyProject(Path.Combine("src", "SecondApp"), "SecondApp");
+        var service = new ProjectIntegrationService(new ChartExampleGenerator());
+
+        var exception = Assert.Throws<ToolInputException>(() => service.Preview(new PreviewIntegrationRequest
+        {
+            TargetProjectPath = workspace.Root,
+            Chart = new ChartGenerationRequest { ChartType = "Line" },
+        }));
+
+        Assert.Equal("targetProjectPath", exception.Field);
+        Assert.Contains(Path.Combine(firstProjectDirectory, "FirstApp.csproj"), exception.Details);
+        Assert.Contains(Path.Combine(secondProjectDirectory, "SecondApp.csproj"), exception.Details);
+    }
+
+    [Fact]
+    public void Preview_Rejects_Folder_With_Only_NonBlazor_Projects()
+    {
+        using var workspace = new TemporaryWorkspace();
+        var projectDirectory = workspace.CreateLibraryProject(Path.Combine("src", "Library"), "Library");
+        var service = new ProjectIntegrationService(new ChartExampleGenerator());
+
+        var exception = Assert.Throws<ToolInputException>(() => service.Preview(new PreviewIntegrationRequest
+        {
+            TargetProjectPath = workspace.Root,
+            Chart = new ChartGenerationRequest { ChartType = "Line" },
+        }));
+
+        Assert.Equal("targetProjectPath", exception.Field);
+        Assert.Contains(Path.Combine(projectDirectory, "Library.csproj"), exception.Details);
+    }
+
+    [Fact]
+    public void Preview_Resolves_Solution_With_One_Blazor_App()
+    {
+        using var workspace = new TemporaryWorkspace();
+        var projectDirectory = workspace.CreateWebAssemblyProject(Path.Combine("src", "App"), "App");
+        var libraryDirectory = workspace.CreateLibraryProject(Path.Combine("src", "Library"), "Library");
+        var solutionPath = workspace.CreateSolution("Sample.sln", Path.Combine(projectDirectory, "App.csproj"), Path.Combine(libraryDirectory, "Library.csproj"));
+        var service = new ProjectIntegrationService(new ChartExampleGenerator());
+
+        var plan = service.Preview(new PreviewIntegrationRequest
+        {
+            TargetProjectPath = solutionPath,
+            Chart = new ChartGenerationRequest { ChartType = "Line" },
+        });
+
+        Assert.Equal(Path.Combine(projectDirectory, "App.csproj"), plan.ProjectFilePath);
+    }
+
+    [Fact]
+    public void Preview_Rejects_Solution_With_Multiple_Blazor_App_Candidates()
+    {
+        using var workspace = new TemporaryWorkspace();
+        var firstProjectDirectory = workspace.CreateWebAssemblyProject(Path.Combine("src", "FirstApp"), "FirstApp");
+        var secondProjectDirectory = workspace.CreateWebAssemblyProject(Path.Combine("src", "SecondApp"), "SecondApp");
+        var solutionPath = workspace.CreateSolution("Sample.sln", Path.Combine(firstProjectDirectory, "FirstApp.csproj"), Path.Combine(secondProjectDirectory, "SecondApp.csproj"));
+        var service = new ProjectIntegrationService(new ChartExampleGenerator());
+
+        var exception = Assert.Throws<ToolInputException>(() => service.Preview(new PreviewIntegrationRequest
+        {
+            TargetProjectPath = solutionPath,
+            Chart = new ChartGenerationRequest { ChartType = "Line" },
+        }));
+
+        Assert.Equal("targetProjectPath", exception.Field);
+        Assert.Contains(Path.Combine(firstProjectDirectory, "FirstApp.csproj"), exception.Details);
+        Assert.Contains(Path.Combine(secondProjectDirectory, "SecondApp.csproj"), exception.Details);
+    }
+
+    [Fact]
     public void Apply_Writes_Files_For_Matching_Preview()
     {
         using var workspace = new TemporaryWorkspace();
@@ -102,35 +209,78 @@ public class ProjectIntegrationServiceTests
     {
         private readonly string root = Path.Combine(Path.GetTempPath(), $"bex-chartjs-mcp-tests-{Guid.NewGuid():N}");
 
-        public string CreateWebAssemblyProject()
-        {
-            Directory.CreateDirectory(root);
-            Directory.CreateDirectory(Path.Combine(root, "wwwroot"));
-            Directory.CreateDirectory(Path.Combine(root, "Pages"));
-            Directory.CreateDirectory(Path.Combine(root, "Shared"));
+        public string Root => root;
 
-            File.WriteAllText(Path.Combine(root, "Sample.csproj"), """
+        public string CreateWebAssemblyProject(string relativePath = "", string projectName = "Sample")
+        {
+            var projectRoot = string.IsNullOrWhiteSpace(relativePath) ? root : Path.Combine(root, relativePath);
+            Directory.CreateDirectory(projectRoot);
+            Directory.CreateDirectory(Path.Combine(projectRoot, "wwwroot"));
+            Directory.CreateDirectory(Path.Combine(projectRoot, "Pages"));
+            Directory.CreateDirectory(Path.Combine(projectRoot, "Shared"));
+
+            File.WriteAllText(Path.Combine(projectRoot, $"{projectName}.csproj"), """
                 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
                   <PropertyGroup>
                     <TargetFramework>net10.0</TargetFramework>
                   </PropertyGroup>
                 </Project>
                 """);
-            File.WriteAllText(Path.Combine(root, "_Imports.razor"), "@using Microsoft.AspNetCore.Components" + Environment.NewLine);
-            File.WriteAllText(Path.Combine(root, "wwwroot", "index.html"), """
+            File.WriteAllText(Path.Combine(projectRoot, "_Imports.razor"), "@using Microsoft.AspNetCore.Components" + Environment.NewLine);
+            File.WriteAllText(Path.Combine(projectRoot, "wwwroot", "index.html"), """
                 <html>
                 <body>
                     <div id="app"></div>
                 </body>
                 </html>
                 """);
-            File.WriteAllText(Path.Combine(root, "Shared", "NavMenu.razor"), """
+            File.WriteAllText(Path.Combine(projectRoot, "Shared", "NavMenu.razor"), """
                 <nav>
                     <NavLink class="nav-link" href="">Home</NavLink>
                 </nav>
                 """);
 
-            return root;
+            return projectRoot;
+        }
+
+        public string CreateLibraryProject(string relativePath, string projectName)
+        {
+            var projectRoot = Path.Combine(root, relativePath);
+            Directory.CreateDirectory(projectRoot);
+            File.WriteAllText(Path.Combine(projectRoot, $"{projectName}.csproj"), """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <TargetFramework>net10.0</TargetFramework>
+                  </PropertyGroup>
+                </Project>
+                """);
+
+            return projectRoot;
+        }
+
+        public string CreateSolution(string fileName, params string[] projectPaths)
+        {
+            Directory.CreateDirectory(root);
+            var solutionPath = Path.Combine(root, fileName);
+            var lines = new List<string>
+            {
+                "Microsoft Visual Studio Solution File, Format Version 12.00",
+                "# Visual Studio Version 17",
+            };
+
+            foreach (var projectPath in projectPaths)
+            {
+                var relativePath = Path.GetRelativePath(root, projectPath);
+                var projectName = Path.GetFileNameWithoutExtension(projectPath);
+                lines.Add($"Project(\"{{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}}\") = \"{projectName}\", \"{relativePath}\", \"{{{Guid.NewGuid():D}}}\"");
+                lines.Add("EndProject");
+            }
+
+            lines.Add("Global");
+            lines.Add("EndGlobal");
+            File.WriteAllText(solutionPath, string.Join(Environment.NewLine, lines));
+
+            return solutionPath;
         }
 
         public void Dispose()

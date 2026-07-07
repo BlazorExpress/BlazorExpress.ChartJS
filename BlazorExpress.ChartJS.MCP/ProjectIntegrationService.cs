@@ -10,6 +10,15 @@ public sealed class ProjectIntegrationService
 {
     private const string PackageReference = "BlazorExpress.ChartJS";
     private const string PackageVersion = "1.2.3";
+    private static readonly string[] ExcludedProjectSearchDirectories =
+    [
+        "bin",
+        "obj",
+        ".git",
+        ".vs",
+        "node_modules",
+        "artifacts"
+    ];
 
     private readonly ChartExampleGenerator generator;
 
@@ -120,22 +129,107 @@ public sealed class ProjectIntegrationService
     private static ProjectContext ResolveProject(string targetProjectPath)
     {
         if (string.IsNullOrWhiteSpace(targetProjectPath))
-            throw new ArgumentException("A target project path is required.", nameof(targetProjectPath));
+            throw new ToolInputException("A target project path is required.", "targetProjectPath");
 
         var path = Path.GetFullPath(targetProjectPath);
-        if (File.Exists(path) && string.Equals(Path.GetExtension(path), ".csproj", StringComparison.OrdinalIgnoreCase))
-            return new ProjectContext(path, Path.GetDirectoryName(path)!);
+        if (File.Exists(path))
+        {
+            if (string.Equals(Path.GetExtension(path), ".csproj", StringComparison.OrdinalIgnoreCase))
+                return new ProjectContext(path, Path.GetDirectoryName(path)!);
+
+            if (string.Equals(Path.GetExtension(path), ".sln", StringComparison.OrdinalIgnoreCase))
+                return ResolveProjectFromSolution(path);
+
+            throw new ToolInputException("Target project path must be a .csproj file, .sln file, or directory.", "targetProjectPath");
+        }
 
         if (!Directory.Exists(path))
             throw new DirectoryNotFoundException($"Target project path was not found: {path}");
 
-        var projectFiles = Directory.GetFiles(path, "*.csproj", SearchOption.TopDirectoryOnly);
-        if (projectFiles.Length == 0)
-            throw new FileNotFoundException($"No .csproj file was found in {path}.");
-        if (projectFiles.Length > 1)
-            throw new InvalidOperationException($"Multiple .csproj files were found in {path}. Pass the exact project file path.");
+        return ResolveProjectFromDirectory(path);
+    }
 
-        return new ProjectContext(projectFiles[0], path);
+    private static ProjectContext ResolveProjectFromDirectory(string directory)
+    {
+        var topLevelProjects = Directory.GetFiles(directory, "*.csproj", SearchOption.TopDirectoryOnly);
+        if (topLevelProjects.Length > 0)
+            return ResolveProjectCandidates(topLevelProjects, $"No Blazor app project was found in {directory}.");
+
+        var recursiveProjects = Directory
+            .EnumerateFiles(directory, "*.csproj", SearchOption.AllDirectories)
+            .Where(path => !IsExcludedFromProjectSearch(directory, path))
+            .ToArray();
+
+        return ResolveProjectCandidates(recursiveProjects, $"No Blazor app project was found under {directory}.");
+    }
+
+    private static ProjectContext ResolveProjectFromSolution(string solutionPath)
+    {
+        var solutionDirectory = Path.GetDirectoryName(solutionPath)!;
+        var content = File.ReadAllText(solutionPath);
+        var projectFiles = Regex.Matches(
+                content,
+                @"Project\("".*?""\)\s*=\s*"".*?"",\s*""(?<path>[^""]+\.csproj)""",
+                RegexOptions.IgnoreCase)
+            .Select(match => Path.GetFullPath(Path.Combine(solutionDirectory, match.Groups["path"].Value)))
+            .Where(File.Exists)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+
+        return ResolveProjectCandidates(projectFiles, $"No Blazor app project was found in {solutionPath}.");
+    }
+
+    private static ProjectContext ResolveProjectCandidates(IReadOnlyList<string> projectFiles, string noBlazorProjectMessage)
+    {
+        if (projectFiles.Count == 0)
+            throw new ToolInputException(noBlazorProjectMessage, "targetProjectPath");
+
+        var candidates = projectFiles
+            .Select(CreateProjectCandidate)
+            .OrderBy(x => x.ProjectFilePath, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+        var blazorAppCandidates = candidates.Where(x => x.IsBlazorApp).ToList();
+
+        if (blazorAppCandidates.Count == 1)
+            return new ProjectContext(blazorAppCandidates[0].ProjectFilePath, blazorAppCandidates[0].RootDirectory);
+
+        if (blazorAppCandidates.Count > 1)
+            throw new ToolInputException(
+                "Multiple Blazor project files were found. Pass the exact .csproj path.",
+                "targetProjectPath",
+                blazorAppCandidates.Select(x => x.ProjectFilePath).ToList());
+
+        throw new ToolInputException(
+            noBlazorProjectMessage,
+            "targetProjectPath",
+            candidates.Select(x => x.ProjectFilePath).ToList());
+    }
+
+    private static ProjectCandidate CreateProjectCandidate(string projectFilePath)
+    {
+        var fullPath = Path.GetFullPath(projectFilePath);
+        var rootDirectory = Path.GetDirectoryName(fullPath)!;
+        var projectText = File.ReadAllText(fullPath);
+
+        return new ProjectCandidate(fullPath, rootDirectory, IsBlazorAppProject(rootDirectory, projectText));
+    }
+
+    private static bool IsBlazorAppProject(string rootDirectory, string projectText) =>
+        projectText.Contains("Microsoft.NET.Sdk.BlazorWebAssembly", StringComparison.OrdinalIgnoreCase)
+        || projectText.Contains("Microsoft.AspNetCore.Components.WebAssembly", StringComparison.OrdinalIgnoreCase)
+        || projectText.Contains("<UseMaui>true</UseMaui>", StringComparison.OrdinalIgnoreCase)
+        || File.Exists(Path.Combine(rootDirectory, "App.razor"))
+        || File.Exists(Path.Combine(rootDirectory, "Components", "App.razor"))
+        || File.Exists(Path.Combine(rootDirectory, "wwwroot", "index.html"));
+
+    private static bool IsExcludedFromProjectSearch(string rootDirectory, string path)
+    {
+        var relativePath = Path.GetRelativePath(rootDirectory, path);
+        var segments = relativePath.Split(
+            [Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar],
+            StringSplitOptions.RemoveEmptyEntries);
+
+        return segments.Any(segment => ExcludedProjectSearchDirectories.Contains(segment, StringComparer.OrdinalIgnoreCase));
     }
 
     private static string DetectHostModel(ProjectContext project)
@@ -335,6 +429,8 @@ public sealed class ProjectIntegrationService
     }
 
     private sealed record ProjectContext(string ProjectFilePath, string RootDirectory);
+
+    private sealed record ProjectCandidate(string ProjectFilePath, string RootDirectory, bool IsBlazorApp);
 
     public sealed record GeneratedPage(
         string PageName,

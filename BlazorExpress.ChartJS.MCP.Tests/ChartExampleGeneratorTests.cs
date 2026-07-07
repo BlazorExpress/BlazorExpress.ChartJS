@@ -193,11 +193,19 @@ public class ChartExampleGeneratorTests
             process.StartInfo.UseShellExecute = false;
             process.Start();
 
-            var output = process.StandardOutput.ReadToEnd();
-            var error = process.StandardError.ReadToEnd();
-            process.WaitForExit(120_000);
+            var outputTask = process.StandardOutput.ReadToEndAsync();
+            var errorTask = process.StandardError.ReadToEndAsync();
+            var exited = process.WaitForExit(120_000);
+            if (!exited)
+            {
+                process.Kill(entireProcessTree: true);
+                process.WaitForExit(30_000);
+            }
 
-            Assert.True(process.ExitCode == 0, output + Environment.NewLine + error);
+            var output = outputTask.GetAwaiter().GetResult();
+            var error = errorTask.GetAwaiter().GetResult();
+
+            Assert.True(exited && process.ExitCode == 0, output + Environment.NewLine + error);
         }
 
         public void Dispose()
