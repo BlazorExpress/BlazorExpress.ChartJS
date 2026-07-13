@@ -157,7 +157,7 @@ public partial class BubbleChart : ChartComponentBase
 
         var datasets = chartData.Datasets.OfType<BubbleChartDataset>();
         var data = new { chartData.Labels, Datasets = datasets };
-        await JSRuntime.InvokeVoidAsync(BubbleChartInterop.Initialize, Id, GetChartType(), data, (BubbleChartOptions)chartOptions, plugins);
+        await JSRuntime.InvokeVoidAsync(BubbleChartInterop.Initialize, Id, GetChartType(), data, (BubbleChartOptions)chartOptions, plugins, DotNetObjectReference);
     }
 
     /// <summary>

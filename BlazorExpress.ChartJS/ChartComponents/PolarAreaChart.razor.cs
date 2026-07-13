@@ -150,7 +150,7 @@ public partial class PolarAreaChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<PolarAreaChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync(PolarAreaChartInterop.Initialize, Id, GetChartType(), data, (PolarAreaChartOptions)chartOptions, plugins);
+            await JSRuntime.InvokeVoidAsync(PolarAreaChartInterop.Initialize, Id, GetChartType(), data, (PolarAreaChartOptions)chartOptions, plugins, DotNetObjectReference);
         }
     }
 

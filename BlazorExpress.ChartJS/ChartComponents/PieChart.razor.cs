@@ -156,7 +156,7 @@ public partial class PieChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<PieChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync(PieChartInterop.Initialize, Id, GetChartType(), data, (PieChartOptions)chartOptions, plugins);
+            await JSRuntime.InvokeVoidAsync(PieChartInterop.Initialize, Id, GetChartType(), data, (PieChartOptions)chartOptions, plugins, DotNetObjectReference);
         }
     }
 
