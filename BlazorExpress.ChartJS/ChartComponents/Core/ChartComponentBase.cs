@@ -12,6 +12,8 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
 
     internal ChartType _chartType;
 
+    private DotNetObjectReference<ChartComponentBase>? dotNetObjectReference;
+
     #endregion
 
     #region Methods
@@ -76,8 +78,22 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
         if (chartData is not null && chartData.Datasets is not null && chartData.Datasets.Any())
         {
             var _data = GetChartDataObject(chartData);
-            await JSRuntime.InvokeVoidAsync(ChartInterop.Initialize, Id, GetChartType(), _data, chartOptions, plugins);
+            await JSRuntime.InvokeVoidAsync(ChartInterop.Initialize, Id, GetChartType(), _data, chartOptions, plugins, DotNetObjectReference);
         }
+    }
+
+    /// <summary>
+    /// Dispatches a chart-item click to the configured callback.
+    /// </summary>
+    /// <param name="eventArgs">The selected chart data-item metadata.</param>
+    /// <returns>A task that represents the asynchronous callback dispatch operation.</returns>
+    [JSInvokable]
+    [AddedVersion("1.2.4")]
+    [Description("Dispatches a chart-item click to the configured callback.")]
+    public async Task HandleClickAsync(ChartClickEventArgs eventArgs)
+    {
+        if (OnClick.HasDelegate)
+            await OnClick.InvokeAsync(eventArgs);
     }
 
     //public async Task Render() { }
@@ -138,6 +154,9 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
         };
 
     protected string ContainerClassNames => ContainerClass!;
+
+    protected DotNetObjectReference<ChartComponentBase> DotNetObjectReference =>
+        dotNetObjectReference ??= Microsoft.JSInterop.DotNetObjectReference.Create(this);
 
     protected string ContainerStyleNames =>
         BuildStyleNames(
@@ -242,6 +261,18 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     protected bool IsRenderComplete { get; private set; }
 
     /// <summary>
+    /// Gets or sets the callback that is invoked when a chart data item is selected.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.2.4")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the callback that is invoked when a chart data item is selected.")]
+    [Parameter]
+    public EventCallback<ChartClickEventArgs> OnClick { get; set; }
+
+    /// <summary>
     /// Gets or sets chart container width.
     /// The default unit of measure is <see cref="Unit.Px" />.
     /// To change the unit of measure see <see cref="WidthUnit" />.
@@ -271,6 +302,14 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     #endregion
 
     #region Other
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+            dotNetObjectReference?.Dispose();
+
+        base.Dispose(disposing);
+    }
 
     ~ChartComponentBase()
     {

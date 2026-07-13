@@ -1,4 +1,11 @@
-<BarChart @ref="barChart" Width="600" />
+<BarChart @ref="barChart" Width="600" OnClick="HandleClickAsync" />
+
+@if (selectedChartItem is not null)
+{
+    <p class="mt-3 mb-0">
+        Selected: @selectedChartItem.DatasetLabel (dataset @selectedChartItem.DatasetIndex), @selectedChartItem.Label (index @selectedChartItem.Index), value @selectedChartItem.Value
+    </p>
+}
 
 <div class="mt-5">
     <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="RandomizeAsync"> Randomize </Button>
@@ -12,6 +19,7 @@
     private BarChart barChart = default!;
     private BarChartOptions barChartOptions = default!;
     private ChartData chartData = default!;
+    private ChartClickEventArgs? selectedChartItem;
 
     private int datasetsCount = 0;
     private int labelsCount = 0;
@@ -31,6 +39,12 @@
             await barChart.InitializeAsync(chartData, barChartOptions);
         }
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private Task HandleClickAsync(ChartClickEventArgs eventArgs)
+    {
+        selectedChartItem = eventArgs;
+        return Task.CompletedTask;
     }
 
     private async Task RandomizeAsync()

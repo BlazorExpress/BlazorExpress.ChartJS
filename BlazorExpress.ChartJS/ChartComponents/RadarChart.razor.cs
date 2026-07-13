@@ -150,7 +150,7 @@ public partial class RadarChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<RadarChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync(RadarChartInterop.Initialize, Id, GetChartType(), data, (RadarChartOptions)chartOptions, plugins);
+            await JSRuntime.InvokeVoidAsync(RadarChartInterop.Initialize, Id, GetChartType(), data, (RadarChartOptions)chartOptions, plugins, DotNetObjectReference);
         }
     }
 

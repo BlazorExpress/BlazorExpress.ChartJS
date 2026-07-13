@@ -39,6 +39,26 @@ if (!window.blazorexpress.chartjs.scatter) {
 }
 
 window.blazorexpress.chartjs = {
+    addClickHandler: (chart, dotNetObjectReference) => {
+        if (!chart || !chart.canvas || !dotNetObjectReference || chart.blazorExpressClickHandler) return;
+
+        chart.blazorExpressClickHandler = true;
+        chart.canvas.addEventListener('click', (event) => {
+            const activeElements = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+            if (!activeElements || activeElements.length === 0) return;
+
+            const activeElement = activeElements[0];
+            const dataset = chart.data.datasets?.[activeElement.datasetIndex];
+
+            dotNetObjectReference.invokeMethodAsync('HandleClickAsync', {
+                datasetIndex: activeElement.datasetIndex,
+                datasetLabel: dataset?.label ?? null,
+                index: activeElement.index,
+                label: chart.data.labels?.[activeElement.index] ?? null,
+                value: dataset?.data?.[activeElement.index] ?? null
+            }).catch(() => { });
+        });
+    },
     create: (elementId, type, data, options, plugins) => {
         let chartEl = document.getElementById(elementId);
         let _plugins = [];
@@ -72,11 +92,14 @@ window.blazorexpress.chartjs = {
 
         return chart;
     },
-    initialize: (elementId, type, data, options, plugins) => {
+    initialize: (elementId, type, data, options, plugins, dotNetObjectReference) => {
         let chart = window.blazorexpress.chartjs.get(elementId);
-        if (chart) return;
-        else
+        if (!chart) {
             window.blazorexpress.chartjs.create(elementId, type, data, options, plugins);
+            chart = window.blazorexpress.chartjs.get(elementId);
+        }
+
+        window.blazorexpress.chartjs.addClickHandler(chart, dotNetObjectReference);
     },
     resize: (elementId, width, height) => {
         let chart = window.blazorexpress.chartjs.get(elementId);
@@ -201,11 +224,14 @@ window.blazorexpress.chartjs.bar = {
 
         return chart;
     },
-    initialize: (elementId, type, data, options, plugins) => {
+    initialize: (elementId, type, data, options, plugins, dotNetObjectReference) => {
         let chart = window.blazorexpress.chartjs.bar.get(elementId);
-        if (chart) return;
-        else
+        if (!chart) {
             window.blazorexpress.chartjs.bar.create(elementId, type, data, options, plugins);
+            chart = window.blazorexpress.chartjs.bar.get(elementId);
+        }
+
+        window.blazorexpress.chartjs.addClickHandler(chart, dotNetObjectReference);
     },
     resize: (elementId, width, height) => {
         let chart = window.blazorexpress.chartjs.bar.get(elementId);
@@ -313,11 +339,14 @@ window.blazorexpress.chartjs.bubble = {
 
         return chart;
     },
-    initialize: (elementId, type, data, options, plugins) => {
+    initialize: (elementId, type, data, options, plugins, dotNetObjectReference) => {
         let chart = window.blazorexpress.chartjs.bubble.get(elementId);
-        if (chart) return;
-        else
+        if (!chart) {
             window.blazorexpress.chartjs.bubble.create(elementId, type, data, options, plugins);
+            chart = window.blazorexpress.chartjs.bubble.get(elementId);
+        }
+
+        window.blazorexpress.chartjs.addClickHandler(chart, dotNetObjectReference);
     },
     resize: (elementId, width, height) => {
         let chart = window.blazorexpress.chartjs.bubble.get(elementId);
@@ -431,11 +460,14 @@ window.blazorexpress.chartjs.doughnut = {
 
         return chart;
     },
-    initialize: (elementId, type, data, options, plugins) => {
+    initialize: (elementId, type, data, options, plugins, dotNetObjectReference) => {
         let chart = window.blazorexpress.chartjs.doughnut.get(elementId);
-        if (chart) return;
-        else
+        if (!chart) {
             window.blazorexpress.chartjs.doughnut.create(elementId, type, data, options, plugins);
+            chart = window.blazorexpress.chartjs.doughnut.get(elementId);
+        }
+
+        window.blazorexpress.chartjs.addClickHandler(chart, dotNetObjectReference);
     },
     resize: (elementId, width, height) => {
         let chart = window.blazorexpress.chartjs.doughnut.get(elementId);
@@ -581,12 +613,14 @@ window.blazorexpress.chartjs.line = {
 
         return chart;
     },
-    initialize: (elementId, type, data, options, plugins) => {
+    initialize: (elementId, type, data, options, plugins, dotNetObjectReference) => {
         let chart = window.blazorexpress.chartjs.line.get(elementId);
-        if (chart)
-            return;
-        else
+        if (!chart) {
             window.blazorexpress.chartjs.line.create(elementId, type, data, options, plugins);
+            chart = window.blazorexpress.chartjs.line.get(elementId);
+        }
+
+        window.blazorexpress.chartjs.addClickHandler(chart, dotNetObjectReference);
     },
     resize: (elementId, width, height) => {
         let chart = window.blazorexpress.chartjs.line.get(elementId);
@@ -701,11 +735,14 @@ window.blazorexpress.chartjs.pie = {
 
         return chart;
     },
-    initialize: (elementId, type, data, options, plugins) => {
+    initialize: (elementId, type, data, options, plugins, dotNetObjectReference) => {
         let chart = window.blazorexpress.chartjs.pie.get(elementId);
-        if (chart) return;
-        else
+        if (!chart) {
             window.blazorexpress.chartjs.pie.create(elementId, type, data, options, plugins);
+            chart = window.blazorexpress.chartjs.pie.get(elementId);
+        }
+
+        window.blazorexpress.chartjs.addClickHandler(chart, dotNetObjectReference);
     },
     resize: (elementId, width, height) => {
         let chart = window.blazorexpress.chartjs.pie.get(elementId);
@@ -820,11 +857,14 @@ window.blazorexpress.chartjs.polarArea = {
 
         return chart;
     },
-    initialize: (elementId, type, data, options, plugins) => {
+    initialize: (elementId, type, data, options, plugins, dotNetObjectReference) => {
         let chart = window.blazorexpress.chartjs.polarArea.get(elementId);
-        if (chart) return;
-        else
+        if (!chart) {
             window.blazorexpress.chartjs.polarArea.create(elementId, type, data, options, plugins);
+            chart = window.blazorexpress.chartjs.polarArea.get(elementId);
+        }
+
+        window.blazorexpress.chartjs.addClickHandler(chart, dotNetObjectReference);
     },
     resize: (elementId, width, height) => {
         let chart = window.blazorexpress.chartjs.polarArea.get(elementId);
@@ -938,11 +978,14 @@ window.blazorexpress.chartjs.radar = {
 
         return chart;
     },
-    initialize: (elementId, type, data, options, plugins) => {
+    initialize: (elementId, type, data, options, plugins, dotNetObjectReference) => {
         let chart = window.blazorexpress.chartjs.radar.get(elementId);
-        if (chart) return;
-        else
+        if (!chart) {
             window.blazorexpress.chartjs.radar.create(elementId, type, data, options, plugins);
+            chart = window.blazorexpress.chartjs.radar.get(elementId);
+        }
+
+        window.blazorexpress.chartjs.addClickHandler(chart, dotNetObjectReference);
     },
     resize: (elementId, width, height) => {
         let chart = window.blazorexpress.chartjs.radar.get(elementId);
@@ -1073,11 +1116,14 @@ window.blazorexpress.chartjs.scatter = {
 
         return chart;
     },
-    initialize: (elementId, type, data, options, plugins) => {
+    initialize: (elementId, type, data, options, plugins, dotNetObjectReference) => {
         let chart = window.blazorexpress.chartjs.scatter.get(elementId);
-        if (chart) return;
-        else
+        if (!chart) {
             window.blazorexpress.chartjs.scatter.create(elementId, type, data, options, plugins);
+            chart = window.blazorexpress.chartjs.scatter.get(elementId);
+        }
+
+        window.blazorexpress.chartjs.addClickHandler(chart, dotNetObjectReference);
     },
     resize: (elementId, width, height) => {
         let chart = window.blazorexpress.chartjs.scatter.get(elementId);
