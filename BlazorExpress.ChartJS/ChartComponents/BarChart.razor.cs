@@ -177,7 +177,7 @@ public partial class BarChart : ChartComponentBase
         {
             var datasets = BarLineChartSupport.GetSupportedDatasets(chartData);
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync(BarChartInterop.Initialize, Id, GetChartType(), data, (BarChartOptions)chartOptions, plugins);
+            await JSRuntime.InvokeVoidAsync(BarChartInterop.Initialize, Id, GetChartType(), data, (BarChartOptions)chartOptions, plugins, DotNetObjectReference);
         }
     }
 

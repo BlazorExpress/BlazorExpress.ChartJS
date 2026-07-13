@@ -156,7 +156,7 @@ public partial class DoughnutChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<DoughnutChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync(DoughnutChartInterop.Initialize, Id, GetChartType(), data, (DoughnutChartOptions)chartOptions, plugins);
+            await JSRuntime.InvokeVoidAsync(DoughnutChartInterop.Initialize, Id, GetChartType(), data, (DoughnutChartOptions)chartOptions, plugins, DotNetObjectReference);
         }
     }
 

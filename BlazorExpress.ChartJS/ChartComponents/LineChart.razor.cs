@@ -184,7 +184,7 @@ public partial class LineChart : ChartComponentBase
 
         var datasets = BarLineChartSupport.GetSupportedDatasets(chartData);
         var data = new { chartData.Labels, Datasets = datasets };
-        await JSRuntime.InvokeVoidAsync(LineChartInterop.Initialize, Id, GetChartType(), data, (LineChartOptions)chartOptions, plugins);
+        await JSRuntime.InvokeVoidAsync(LineChartInterop.Initialize, Id, GetChartType(), data, (LineChartOptions)chartOptions, plugins, DotNetObjectReference);
     }
 
     /// <summary>
