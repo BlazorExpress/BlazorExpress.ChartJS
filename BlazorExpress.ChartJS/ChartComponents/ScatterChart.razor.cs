@@ -157,7 +157,7 @@ public partial class ScatterChart : ChartComponentBase
 
         var datasets = chartData.Datasets.OfType<ScatterChartDataset>();
         var data = new { chartData.Labels, Datasets = datasets };
-        await JSRuntime.InvokeVoidAsync(ScatterChartInterop.Initialize, Id, GetChartType(), data, (ScatterChartOptions)chartOptions, plugins);
+        await JSRuntime.InvokeVoidAsync(ScatterChartInterop.Initialize, Id, GetChartType(), data, (ScatterChartOptions)chartOptions, plugins, DotNetObjectReference);
     }
 
     /// <summary>

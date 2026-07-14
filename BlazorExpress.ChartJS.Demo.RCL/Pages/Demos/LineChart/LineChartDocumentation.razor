@@ -144,6 +144,13 @@
     <Demo Type="typeof(LineChart_Demo_05_Interpolation_Modes)" Tabs="true" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Click event" PageUrl="@pageUrl" Link="click-event">
+    <Block>
+        Set the <code>OnClick</code> callback to react when a line data point is selected. The callback receives <code>ChartClickEventArgs</code> with the dataset, point index, label, and raw value; the demo displays the selected item below the chart.
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_08_Click_Event)" Tabs="true" />
+</Section>
+
 @code {
     private const string pageUrl = DemoRouteConstants.Demos_LineChart;
     private const string pageTitle = "Line Chart";
