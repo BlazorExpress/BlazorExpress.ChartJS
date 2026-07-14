@@ -70,6 +70,13 @@
     <Demo Type="typeof(PieChart_Demo_03_Change_Legend_Position)" Tabs="true" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Click event" PageUrl="@pageUrl" Link="click-event">
+    <Block>
+        Set the <code>OnClick</code> callback to react when a pie slice is selected. The callback receives <code>ChartClickEventArgs</code> with the dataset, item index, label, and raw value; the demo displays the selected item below the chart.
+    </Block>
+    <Demo Type="typeof(PieChart_Demo_04_Click_Event)" Tabs="true" />
+</Section>
+
 @code {
     private const string pageUrl = DemoRouteConstants.Demos_PieChart;
     private const string pageTitle = "Pie Chart";

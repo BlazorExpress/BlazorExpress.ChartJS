@@ -52,6 +52,13 @@
     <Demo Type="typeof(ScatterChart_Demo_02_Dynamic_Data)" Tabs="true" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Click event" PageUrl="@pageUrl" Link="click-event">
+    <Block>
+        Set the <code>OnClick</code> callback to react when a scatter point is selected. The callback receives <code>ChartClickEventArgs</code> with the dataset, point index, and raw coordinates; the demo displays the selected item below the chart.
+    </Block>
+    <Demo Type="typeof(ScatterChart_Demo_03_Click_Event)" Tabs="true" />
+</Section>
+
 @code {
     private const string pageUrl = DemoRouteConstants.Demos_ScatterChart;
     private const string pageTitle = "Scatter Chart";

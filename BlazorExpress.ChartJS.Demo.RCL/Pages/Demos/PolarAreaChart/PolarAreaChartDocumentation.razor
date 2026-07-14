@@ -33,6 +33,13 @@
     <Demo Type="typeof(PolarAreaChart_Demo_01_Examples)" Tabs="true" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Click event" PageUrl="@pageUrl" Link="click-event">
+    <Block>
+        Set the <code>OnClick</code> callback to react when a polar-area segment is selected. The callback receives <code>ChartClickEventArgs</code> with the dataset, item index, label, and raw value; the demo displays the selected item below the chart.
+    </Block>
+    <Demo Type="typeof(PolarAreaChart_Demo_02_Click_Event)" Tabs="true" />
+</Section>
+
 @code {
     private const string pageUrl = DemoRouteConstants.Demos_PolarAreaChart;
     private const string pageTitle = "PolarArea Chart";
