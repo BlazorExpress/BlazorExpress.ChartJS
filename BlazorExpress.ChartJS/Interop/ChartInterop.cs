@@ -10,6 +10,11 @@ public class ChartInterop
 
     public const string AddDatasetsData = Prefix + "addDatasetsData";
 
+    /// <summary>
+    /// JavaScript function that destroys the Chart.js instance bound to a canvas.
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [Description("JavaScript function that destroys the Chart.js instance bound to a canvas.")]
     public const string Destroy = Prefix + "destroy";
 
     public const string Initialize = Prefix + "initialize";

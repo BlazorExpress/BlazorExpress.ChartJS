@@ -44,20 +44,34 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
         base.Dispose(disposing);
     }
 
+    /// <summary>
+    /// Destroys the Chart.js instance once, then releases the .NET object reference and the base resources,
+    /// even when the destroy call fails.
+    /// </summary>
+    /// <param name="disposing"><see langword="true" /> when called from <see cref="IAsyncDisposable.DisposeAsync" />.</param>
+    /// <returns>A task that represents the asynchronous dispose operation.</returns>
+    [AddedVersion("1.3.0")]
+    [Description("Destroys the Chart.js instance once, then releases the .NET object reference and the base resources, even when the destroy call fails.")]
     protected override async ValueTask DisposeAsyncCore(bool disposing)
     {
-        if (disposing && !isDestroyRequested)
+        try
         {
-            isDestroyRequested = true;
-            isDisposed = true;
+            if (disposing && !isDestroyRequested)
+            {
+                isDestroyRequested = true;
+                isDisposed = true;
 
-            if (IsFirstRenderComplete)
-                await SafeInvokeVoidAsync(ChartInterop.Destroy, Id);
-
-            dotNetObjectReference?.Dispose();
+                if (IsFirstRenderComplete)
+                    await SafeInvokeVoidAsync(ChartInterop.Destroy, Id);
+            }
         }
+        finally
+        {
+            if (disposing)
+                dotNetObjectReference?.Dispose();
 
-        await base.DisposeAsyncCore(disposing);
+            await base.DisposeAsyncCore(disposing);
+        }
     }
 
     #endregion

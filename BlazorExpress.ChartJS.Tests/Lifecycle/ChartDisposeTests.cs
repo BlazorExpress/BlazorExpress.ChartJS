@@ -26,7 +26,9 @@ public class ChartDisposeTests : BunitContext
     [Fact]
     public async Task DisposeAsync_BeforeFirstRender_MakesNoJsCall()
     {
+        JSInterop.Mode = JSRuntimeMode.Loose;
         var chart = new BarChart();
+        AttachJSRuntime(chart);
 
         await chart.DisposeAsync();
         await chart.DisposeAsync();
@@ -50,6 +52,23 @@ public class ChartDisposeTests : BunitContext
     }
 
     [Theory]
+    [MemberData(nameof(ChartTestData.ChartTypesAndBase), MemberType = typeof(ChartTestData))]
+    public async Task DisposeAsync_WhenDestroyFails_SurfacesErrorAndReleasesReference(string chartType)
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        var chart = ChartTestData.RenderChart(this, chartType);
+        await chart.InitializeAsync(ChartTestData.CreateChartData(chartType), ChartTestData.CreateOptions(chartType));
+        var reference = (IDisposable)JSInterop.Invocations.Last(i => i.Identifier.EndsWith(".initialize", StringComparison.Ordinal)).Arguments[^1]!;
+        JSInterop.SetupVoid(ChartInterop.Destroy, _ => true).SetException(new JSException("Chart.js is not loaded."));
+
+        await Assert.ThrowsAsync<JSException>(() => chart.DisposeAsync().AsTask());
+
+        var value = reference.GetType().GetProperty("Value")!;
+        var error = Assert.Throws<System.Reflection.TargetInvocationException>(() => value.GetValue(reference));
+        Assert.IsType<ObjectDisposedException>(error.InnerException);
+    }
+
+    [Theory]
     [MemberData(nameof(ChartTestData.ChartTypesAndOperations), MemberType = typeof(ChartTestData))]
     public async Task Operation_AfterDispose_MakesNoJsCall(string chartType, string operation)
     {
@@ -62,6 +81,18 @@ public class ChartDisposeTests : BunitContext
 
         Assert.Equal(invocationsAfterDispose, JSInterop.Invocations.Count);
     }
+
+    #endregion
+
+    #region Private Methods
+
+    /// <summary>
+    /// Gives an unrendered chart the test JS runtime, so a JS call made before the first render would be recorded.
+    /// </summary>
+    private void AttachJSRuntime(ChartComponentBase chart) =>
+        typeof(BlazorExpressComponentCore)
+            .GetProperty("JSRuntime", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)!
+            .SetValue(chart, JSInterop.JSRuntime);
 
     #endregion
 
