@@ -9,7 +9,7 @@ public class SafeInvokeTests : BunitContext
     #region Public Methods
 
     [Theory]
-    [MemberData(nameof(ChartTestData.ChartTypesAndOperations), MemberType = typeof(ChartTestData))]
+    [MemberData(nameof(ChartTestData.JsCallingChartTypesAndOperations), MemberType = typeof(ChartTestData))]
     public async Task Operation_WhenCallCancelled_DoesNotThrow(string chartType, string operation)
     {
         var chart = ChartTestData.RenderChart(this, chartType);
@@ -19,7 +19,7 @@ public class SafeInvokeTests : BunitContext
     }
 
     [Theory]
-    [MemberData(nameof(ChartTestData.ChartTypesAndOperations), MemberType = typeof(ChartTestData))]
+    [MemberData(nameof(ChartTestData.JsCallingChartTypesAndOperations), MemberType = typeof(ChartTestData))]
     public async Task Operation_WhenCircuitDisconnected_DoesNotThrow(string chartType, string operation)
     {
         var chart = ChartTestData.RenderChart(this, chartType);
