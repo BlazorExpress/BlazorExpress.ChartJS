@@ -2,7 +2,7 @@
 
 public partial class RadarChart : ChartComponentBase
 {
-    #region Constructors
+    #region Constructors and Finalizers
 
     public RadarChart()
     {
@@ -12,6 +12,8 @@ public partial class RadarChart : ChartComponentBase
     #endregion
 
     #region Methods
+
+    #region Public Methods
 
     /// <summary>
     /// Asynchronously adds a new data entry to the specified chart data.
@@ -39,7 +41,7 @@ public partial class RadarChart : ChartComponentBase
                 if (data is RadarChartDatasetData radarChartDatasetData)
                     radarChartDataset.Data?.Add(radarChartDatasetData.Data as double?);
 
-        await JSRuntime.InvokeVoidAsync(RadarChartInterop.AddDatasetData, Id, dataLabel, data);
+        await SafeInvokeVoidAsync(RadarChartInterop.AddDatasetData, Id, dataLabel, data);
 
         return chartData;
     }
@@ -95,7 +97,7 @@ public partial class RadarChart : ChartComponentBase
                     radarChartDataset.Data?.Add(radarChartDatasetData.Data as double?);
             }
 
-        await JSRuntime.InvokeVoidAsync(RadarChartInterop.AddDatasetsData, Id, dataLabel, data?.Select(x => (RadarChartDatasetData)x));
+        await SafeInvokeVoidAsync(RadarChartInterop.AddDatasetsData, Id, dataLabel, data?.Select(x => (RadarChartDatasetData)x));
 
         return chartData;
     }
@@ -125,7 +127,7 @@ public partial class RadarChart : ChartComponentBase
         if (chartDataset is RadarChartDataset)
         {
             chartData.Datasets.Add(chartDataset);
-            await JSRuntime.InvokeVoidAsync(RadarChartInterop.AddDataset, Id, (RadarChartDataset)chartDataset);
+            await SafeInvokeVoidAsync(RadarChartInterop.AddDataset, Id, (RadarChartDataset)chartDataset);
         }
 
         return chartData;
@@ -150,7 +152,7 @@ public partial class RadarChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<RadarChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync(RadarChartInterop.Initialize, Id, GetChartType(), data, (RadarChartOptions)chartOptions, plugins, DotNetObjectReference);
+            await SafeInvokeVoidAsync(RadarChartInterop.Initialize, Id, GetChartType(), data, (RadarChartOptions)chartOptions, plugins, DotNetObjectReference);
         }
     }
 
@@ -171,9 +173,11 @@ public partial class RadarChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<RadarChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync(RadarChartInterop.Update, Id, GetChartType(), data, (RadarChartOptions)chartOptions);
+            await SafeInvokeVoidAsync(RadarChartInterop.Update, Id, GetChartType(), data, (RadarChartOptions)chartOptions);
         }
     }
+
+    #endregion
 
     #endregion
 }

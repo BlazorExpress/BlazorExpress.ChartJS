@@ -2,7 +2,7 @@
 
 public partial class BubbleChart : ChartComponentBase
 {
-    #region Constructors
+    #region Constructors and Finalizers
 
     public BubbleChart()
     {
@@ -12,6 +12,8 @@ public partial class BubbleChart : ChartComponentBase
     #endregion
 
     #region Methods
+
+    #region Public Methods
 
     /// <summary>
     /// Asynchronously adds a new data entry to the specified chart data.
@@ -39,7 +41,7 @@ public partial class BubbleChart : ChartComponentBase
                 if (data is BubbleChartDatasetData bubbleChartDatasetData && bubbleChartDatasetData.Data is BubbleChartDataPoint bubbleChartDataPoint)
                     bubbleChartDataset.Data?.Add(bubbleChartDataPoint);
 
-        await JSRuntime.InvokeVoidAsync(BubbleChartInterop.AddDatasetData, Id, dataLabel, data);
+        await SafeInvokeVoidAsync(BubbleChartInterop.AddDatasetData, Id, dataLabel, data);
 
         return chartData;
     }
@@ -95,7 +97,7 @@ public partial class BubbleChart : ChartComponentBase
                     bubbleChartDataset.Data?.Add(bubbleChartDataPoint);
             }
 
-        await JSRuntime.InvokeVoidAsync(BubbleChartInterop.AddDatasetsData, Id, dataLabel, data?.Select(x => (BubbleChartDatasetData)x));
+        await SafeInvokeVoidAsync(BubbleChartInterop.AddDatasetsData, Id, dataLabel, data?.Select(x => (BubbleChartDatasetData)x));
 
         return chartData;
     }
@@ -125,7 +127,7 @@ public partial class BubbleChart : ChartComponentBase
         if (chartDataset is BubbleChartDataset)
         {
             chartData.Datasets.Add(chartDataset);
-            await JSRuntime.InvokeVoidAsync(BubbleChartInterop.AddDataset, Id, (BubbleChartDataset)chartDataset);
+            await SafeInvokeVoidAsync(BubbleChartInterop.AddDataset, Id, (BubbleChartDataset)chartDataset);
         }
 
         return chartData;
@@ -157,7 +159,7 @@ public partial class BubbleChart : ChartComponentBase
 
         var datasets = chartData.Datasets.OfType<BubbleChartDataset>();
         var data = new { chartData.Labels, Datasets = datasets };
-        await JSRuntime.InvokeVoidAsync(BubbleChartInterop.Initialize, Id, GetChartType(), data, (BubbleChartOptions)chartOptions, plugins, DotNetObjectReference);
+        await SafeInvokeVoidAsync(BubbleChartInterop.Initialize, Id, GetChartType(), data, (BubbleChartOptions)chartOptions, plugins, DotNetObjectReference);
     }
 
     /// <summary>
@@ -184,8 +186,10 @@ public partial class BubbleChart : ChartComponentBase
 
         var datasets = chartData.Datasets.OfType<BubbleChartDataset>();
         var data = new { chartData.Labels, Datasets = datasets };
-        await JSRuntime.InvokeVoidAsync(BubbleChartInterop.Update, Id, GetChartType(), data, (BubbleChartOptions)chartOptions);
+        await SafeInvokeVoidAsync(BubbleChartInterop.Update, Id, GetChartType(), data, (BubbleChartOptions)chartOptions);
     }
+
+    #endregion
 
     #endregion
 }
