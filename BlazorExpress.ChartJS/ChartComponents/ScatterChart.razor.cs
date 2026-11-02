@@ -2,7 +2,7 @@
 
 public partial class ScatterChart : ChartComponentBase
 {
-    #region Constructors
+    #region Constructors and Finalizers
 
     public ScatterChart()
     {
@@ -12,6 +12,8 @@ public partial class ScatterChart : ChartComponentBase
     #endregion
 
     #region Methods
+
+    #region Public Methods
 
     /// <summary>
     /// Asynchronously adds a new data entry to the specified chart data.
@@ -39,7 +41,7 @@ public partial class ScatterChart : ChartComponentBase
                 if (data is ScatterChartDatasetData scatterChartDatasetData && scatterChartDatasetData.Data is ScatterChartDataPoint scatterChartDataPoint)
                     scatterChartDataset.Data?.Add(scatterChartDataPoint);
 
-        await JSRuntime.InvokeVoidAsync(ScatterChartInterop.AddDatasetData, Id, dataLabel, data);
+        await SafeInvokeVoidAsync(ScatterChartInterop.AddDatasetData, Id, dataLabel, data);
 
         return chartData;
     }
@@ -95,7 +97,7 @@ public partial class ScatterChart : ChartComponentBase
                     scatterChartDataset.Data?.Add(scatterChartDataPoint);
             }
 
-        await JSRuntime.InvokeVoidAsync(ScatterChartInterop.AddDatasetsData, Id, dataLabel, data?.Select(x => (ScatterChartDatasetData)x));
+        await SafeInvokeVoidAsync(ScatterChartInterop.AddDatasetsData, Id, dataLabel, data?.Select(x => (ScatterChartDatasetData)x));
 
         return chartData;
     }
@@ -125,7 +127,7 @@ public partial class ScatterChart : ChartComponentBase
         if (chartDataset is ScatterChartDataset)
         {
             chartData.Datasets.Add(chartDataset);
-            await JSRuntime.InvokeVoidAsync(ScatterChartInterop.AddDataset, Id, (ScatterChartDataset)chartDataset);
+            await SafeInvokeVoidAsync(ScatterChartInterop.AddDataset, Id, (ScatterChartDataset)chartDataset);
         }
 
         return chartData;
@@ -157,7 +159,7 @@ public partial class ScatterChart : ChartComponentBase
 
         var datasets = chartData.Datasets.OfType<ScatterChartDataset>();
         var data = new { chartData.Labels, Datasets = datasets };
-        await JSRuntime.InvokeVoidAsync(ScatterChartInterop.Initialize, Id, GetChartType(), data, (ScatterChartOptions)chartOptions, plugins, DotNetObjectReference);
+        await SafeInvokeVoidAsync(ScatterChartInterop.Initialize, Id, GetChartType(), data, (ScatterChartOptions)chartOptions, plugins, DotNetObjectReference);
     }
 
     /// <summary>
@@ -184,8 +186,10 @@ public partial class ScatterChart : ChartComponentBase
 
         var datasets = chartData.Datasets.OfType<ScatterChartDataset>();
         var data = new { chartData.Labels, Datasets = datasets };
-        await JSRuntime.InvokeVoidAsync(ScatterChartInterop.Update, Id, GetChartType(), data, (ScatterChartOptions)chartOptions);
+        await SafeInvokeVoidAsync(ScatterChartInterop.Update, Id, GetChartType(), data, (ScatterChartOptions)chartOptions);
     }
+
+    #endregion
 
     #endregion
 }

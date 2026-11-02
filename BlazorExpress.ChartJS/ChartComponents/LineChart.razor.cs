@@ -2,7 +2,7 @@
 
 public partial class LineChart : ChartComponentBase
 {
-    #region Constructors
+    #region Constructors and Finalizers
 
     public LineChart()
     {
@@ -12,6 +12,8 @@ public partial class LineChart : ChartComponentBase
     #endregion
 
     #region Methods
+
+    #region Public Methods
 
     /// <summary>
     /// Asynchronously adds a new data entry to the specified chart data.
@@ -54,7 +56,7 @@ public partial class LineChart : ChartComponentBase
         foreach (var dataset in chartData.Datasets.Where(BarLineChartSupport.IsSupportedDataset))
             BarLineChartSupport.AppendDataPoint(dataset, chartDatasetData);
 
-        await JSRuntime.InvokeVoidAsync(LineChartInterop.AddDatasetData, Id, dataLabel, chartDatasetData);
+        await SafeInvokeVoidAsync(LineChartInterop.AddDatasetData, Id, dataLabel, chartDatasetData);
 
         return chartData;
     }
@@ -122,7 +124,7 @@ public partial class LineChart : ChartComponentBase
                 BarLineChartSupport.AppendDataPoint(dataset, chartDatasetData);
         }
 
-        await JSRuntime.InvokeVoidAsync(LineChartInterop.AddDatasetsData, Id, dataLabel, supportedData);
+        await SafeInvokeVoidAsync(LineChartInterop.AddDatasetsData, Id, dataLabel, supportedData);
 
         return chartData;
     }
@@ -152,7 +154,7 @@ public partial class LineChart : ChartComponentBase
         if (BarLineChartSupport.IsSupportedDataset(chartDataset))
         {
             chartData.Datasets.Add(chartDataset);
-            await JSRuntime.InvokeVoidAsync(LineChartInterop.AddDataset, Id, chartDataset);
+            await SafeInvokeVoidAsync(LineChartInterop.AddDataset, Id, chartDataset);
         }
 
         return chartData;
@@ -184,7 +186,7 @@ public partial class LineChart : ChartComponentBase
 
         var datasets = BarLineChartSupport.GetSupportedDatasets(chartData);
         var data = new { chartData.Labels, Datasets = datasets };
-        await JSRuntime.InvokeVoidAsync(LineChartInterop.Initialize, Id, GetChartType(), data, (LineChartOptions)chartOptions, plugins, DotNetObjectReference);
+        await SafeInvokeVoidAsync(LineChartInterop.Initialize, Id, GetChartType(), data, (LineChartOptions)chartOptions, plugins, DotNetObjectReference);
     }
 
     /// <summary>
@@ -211,8 +213,10 @@ public partial class LineChart : ChartComponentBase
 
         var datasets = BarLineChartSupport.GetSupportedDatasets(chartData);
         var data = new { chartData.Labels, Datasets = datasets };
-        await JSRuntime.InvokeVoidAsync(LineChartInterop.Update, Id, GetChartType(), data, (LineChartOptions)chartOptions);
+        await SafeInvokeVoidAsync(LineChartInterop.Update, Id, GetChartType(), data, (LineChartOptions)chartOptions);
     }
+
+    #endregion
 
     #endregion
 }

@@ -14,15 +14,55 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
 
     private DotNetObjectReference<ChartComponentBase>? dotNetObjectReference;
 
+    private bool isDestroyRequested;
+
+    private bool isDisposed;
+
+    #endregion
+
+    #region Constructors and Finalizers
+
+    ~ChartComponentBase()
+    {
+        Dispose(false);
+    }
+
     #endregion
 
     #region Methods
 
-    //public async Task Stop() { }
+    #region Protected Override Methods
 
-    //public async Task ToBase64Image() { }
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            isDisposed = true;
+            dotNetObjectReference?.Dispose();
+        }
 
-    //public async Task ToBase64Image(string type, double quality) { }
+        base.Dispose(disposing);
+    }
+
+    protected override async ValueTask DisposeAsyncCore(bool disposing)
+    {
+        if (disposing && !isDestroyRequested)
+        {
+            isDestroyRequested = true;
+            isDisposed = true;
+
+            if (IsFirstRenderComplete)
+                await SafeInvokeVoidAsync(ChartInterop.Destroy, Id);
+
+            dotNetObjectReference?.Dispose();
+        }
+
+        await base.DisposeAsyncCore(disposing);
+    }
+
+    #endregion
+
+    #region Public Methods
 
     /// <summary>
     /// Asynchronously adds a new data entry to the specified chart data.
@@ -62,27 +102,6 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     //public async Task Clear() { }
 
     /// <summary>
-    /// Asynchronously initializes the chart with the specified data and options.
-    /// </summary>
-    /// <remarks>This method prepares the chart for rendering by invoking the necessary JavaScript functions
-    /// to set up the chart with the provided data and options. Ensure that <paramref name="chartData"/> contains valid
-    /// datasets before calling this method.</remarks>
-    /// <param name="chartData">The data to be used for the chart. Must contain at least one dataset.</param>
-    /// <param name="chartOptions">The options to configure the chart's appearance and behavior.</param>
-    /// <param name="plugins">An optional array of plugin identifiers to enhance the chart's functionality.</param>
-    /// <returns>A task that represents the asynchronous initialization operation.</returns>
-    [AddedVersion("1.0.0")]
-    [Description("Asynchronously initializes the chart with the specified data and options.")]
-    public virtual async Task InitializeAsync(ChartData chartData, IChartOptions chartOptions, string[]? plugins = null)
-    {
-        if (chartData is not null && chartData.Datasets is not null && chartData.Datasets.Any())
-        {
-            var _data = GetChartDataObject(chartData);
-            await JSRuntime.InvokeVoidAsync(ChartInterop.Initialize, Id, GetChartType(), _data, chartOptions, plugins, DotNetObjectReference);
-        }
-    }
-
-    /// <summary>
     /// Dispatches a chart-item click to the configured callback.
     /// </summary>
     /// <param name="eventArgs">The selected chart data-item metadata.</param>
@@ -94,6 +113,28 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     {
         if (OnClick.HasDelegate)
             await OnClick.InvokeAsync(eventArgs);
+    }
+
+    /// <summary>
+    /// Asynchronously initializes the chart with the specified data and options.
+    /// </summary>
+    /// <remarks>This method prepares the chart for rendering by invoking the necessary JavaScript functions
+    /// to set up the chart with the provided data and options. Ensure that <paramref name="chartData"/> contains valid
+    /// datasets before calling this method. Calling it again on a chart that is already initialized has no effect;
+    /// use <see cref="UpdateAsync(ChartData, IChartOptions)"/> to change the data or options of a rendered chart.</remarks>
+    /// <param name="chartData">The data to be used for the chart. Must contain at least one dataset.</param>
+    /// <param name="chartOptions">The options to configure the chart's appearance and behavior.</param>
+    /// <param name="plugins">An optional array of plugin identifiers to enhance the chart's functionality.</param>
+    /// <returns>A task that represents the asynchronous initialization operation.</returns>
+    [AddedVersion("1.0.0")]
+    [Description("Asynchronously initializes the chart with the specified data and options.")]
+    public virtual async Task InitializeAsync(ChartData chartData, IChartOptions chartOptions, string[]? plugins = null)
+    {
+        if (chartData is not null && chartData.Datasets is not null && chartData.Datasets.Any())
+        {
+            var _data = GetChartDataObject(chartData);
+            await SafeInvokeVoidAsync(ChartInterop.Initialize, Id, GetChartType(), _data, chartOptions, plugins, DotNetObjectReference);
+        }
     }
 
     //public async Task Render() { }
@@ -117,8 +158,14 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     {
         var widthWithUnit = $"width:{width.ToString(CultureInfo.InvariantCulture)}{widthUnit.ToCssString()}";
         var heightWithUnit = $"height:{height.ToString(CultureInfo.InvariantCulture)}{heightUnit.ToCssString()}";
-        await JSRuntime.InvokeVoidAsync(ChartInterop.Resize, Id, widthWithUnit, heightWithUnit);
+        await SafeInvokeVoidAsync(ChartInterop.Resize, Id, widthWithUnit, heightWithUnit);
     }
+
+    //public async Task Stop() { }
+
+    //public async Task ToBase64Image() { }
+
+    //public async Task ToBase64Image(string type, double quality) { }
 
     /// <summary>
     /// Asynchronously updates the chart with the specified data and options.
@@ -136,8 +183,12 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
             return;
 
         var _data = GetChartDataObject(chartData);
-        await JSRuntime.InvokeVoidAsync(ChartInterop.Update, Id, GetChartType(), _data, chartOptions);
+        await SafeInvokeVoidAsync(ChartInterop.Update, Id, GetChartType(), _data, chartOptions);
     }
+
+    #endregion
+
+    #region Protected Methods
 
     protected string GetChartType() =>
         _chartType switch
@@ -153,17 +204,37 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
             _ => "line" // default
         };
 
-    protected string ContainerClassNames => ContainerClass!;
+    /// <summary>
+    /// Invokes a JavaScript function for this chart, treating a disconnected circuit or a cancelled call during
+    /// teardown as benign. After the component is disposed, only the chart destroy call is sent.
+    /// </summary>
+    /// <param name="identifier">The JavaScript function to invoke.</param>
+    /// <param name="args">The JSON-serializable arguments.</param>
+    /// <returns>A task that represents the asynchronous invocation.</returns>
+    [AddedVersion("1.3.0")]
+    [Description("Invokes a JavaScript function for this chart, treating a disconnected circuit or a cancelled call during teardown as benign.")]
+    protected async Task SafeInvokeVoidAsync(string identifier, params object?[] args)
+    {
+        if (isDisposed && identifier != ChartInterop.Destroy)
+            return;
 
-    protected DotNetObjectReference<ChartComponentBase> DotNetObjectReference =>
-        dotNetObjectReference ??= Microsoft.JSInterop.DotNetObjectReference.Create(this);
+        try
+        {
+            await JSRuntime.InvokeVoidAsync(identifier, args);
+        }
+        catch (JSDisconnectedException)
+        {
+            // The circuit is gone, so there is no browser-side chart left to update.
+        }
+        catch (TaskCanceledException)
+        {
+            // The call was cancelled while the component was being torn down.
+        }
+    }
 
-    protected string ContainerStyleNames =>
-        BuildStyleNames(
-            ContainerStyle,
-            (Width.HasValue && Width.Value > 0 ? $"width:{Width.Value.ToString(CultureInfo.InvariantCulture)}{WidthUnit.ToCssString()};" : null, Width.HasValue && Width.Value > 0),
-            (Height.HasValue && Height.Value > 0 ? $"height:{Height.Value.ToString(CultureInfo.InvariantCulture)}{HeightUnit.ToCssString()};" : null, Height.HasValue && Height.Value > 0)
-        );
+    #endregion
+
+    #region Private Methods
 
     private object GetChartDataObject(ChartData chartData)
     {
@@ -173,6 +244,8 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
             foreach (var dataset in chartData.Datasets)
                 if (dataset is BarChartDataset)
                     datasets.Add((BarChartDataset)dataset);
+                else if (dataset is BubbleChartDataset)
+                    datasets.Add((BubbleChartDataset)dataset);
                 else if (dataset is DoughnutChartDataset)
                     datasets.Add((DoughnutChartDataset)dataset);
                 else if (dataset is LineChartDataset)
@@ -193,6 +266,8 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
 
     #endregion
 
+    #endregion
+
     #region Properties, Indexers
 
     /// <summary>
@@ -207,6 +282,8 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     [Parameter]
     public string? ContainerClass { get; set; }
 
+    protected string ContainerClassNames => ContainerClass!;
+
     /// <summary>
     /// Gets or sets the CSS style string applied to the container element.
     /// <para>
@@ -218,6 +295,16 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     [Description("Gets or sets the CSS style string applied to the container element.")]
     [Parameter]
     public string? ContainerStyle { get; set; }
+
+    protected string ContainerStyleNames =>
+        BuildStyleNames(
+            ContainerStyle,
+            (Width.HasValue && Width.Value > 0 ? $"width:{Width.Value.ToString(CultureInfo.InvariantCulture)}{WidthUnit.ToCssString()};" : null, Width.HasValue && Width.Value > 0),
+            (Height.HasValue && Height.Value > 0 ? $"height:{Height.Value.ToString(CultureInfo.InvariantCulture)}{HeightUnit.ToCssString()};" : null, Height.HasValue && Height.Value > 0)
+        );
+
+    protected DotNetObjectReference<ChartComponentBase> DotNetObjectReference =>
+        dotNetObjectReference ??= Microsoft.JSInterop.DotNetObjectReference.Create(this);
 
     /// <summary>
     /// Gets or sets chart container height.
@@ -298,23 +385,6 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     [Description("Gets or sets chart container width unit of measure.")]
     [Parameter]
     public Unit WidthUnit { get; set; } = Unit.Px;
-
-    #endregion
-
-    #region Other
-
-    protected override void Dispose(bool disposing)
-    {
-        if (disposing)
-            dotNetObjectReference?.Dispose();
-
-        base.Dispose(disposing);
-    }
-
-    ~ChartComponentBase()
-    {
-        Dispose(false);
-    }
 
     #endregion
 }

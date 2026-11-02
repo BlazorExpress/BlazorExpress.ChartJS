@@ -2,7 +2,7 @@
 
 public partial class PolarAreaChart : ChartComponentBase
 {
-    #region Constructors
+    #region Constructors and Finalizers
 
     public PolarAreaChart()
     {
@@ -12,6 +12,8 @@ public partial class PolarAreaChart : ChartComponentBase
     #endregion
 
     #region Methods
+
+    #region Public Methods
 
     /// <summary>
     /// Asynchronously adds a new data entry to the specified chart data.
@@ -39,7 +41,7 @@ public partial class PolarAreaChart : ChartComponentBase
                 if (data is PolarAreaChartDatasetData barChartDatasetData)
                     barChartDataset.Data?.Add(barChartDatasetData.Data as double?);
 
-        await JSRuntime.InvokeVoidAsync(PolarAreaChartInterop.AddDatasetData, Id, dataLabel, data);
+        await SafeInvokeVoidAsync(PolarAreaChartInterop.AddDatasetData, Id, dataLabel, data);
 
         return chartData;
     }
@@ -95,7 +97,7 @@ public partial class PolarAreaChart : ChartComponentBase
                     barChartDataset.Data?.Add(barChartDatasetData.Data as double?);
             }
 
-        await JSRuntime.InvokeVoidAsync(PolarAreaChartInterop.AddDatasetsData, Id, dataLabel, data?.Select(x => (PolarAreaChartDatasetData)x));
+        await SafeInvokeVoidAsync(PolarAreaChartInterop.AddDatasetsData, Id, dataLabel, data?.Select(x => (PolarAreaChartDatasetData)x));
 
         return chartData;
     }
@@ -125,7 +127,7 @@ public partial class PolarAreaChart : ChartComponentBase
         if (chartDataset is PolarAreaChartDataset)
         {
             chartData.Datasets.Add(chartDataset);
-            await JSRuntime.InvokeVoidAsync(PolarAreaChartInterop.AddDataset, Id, (PolarAreaChartDataset)chartDataset);
+            await SafeInvokeVoidAsync(PolarAreaChartInterop.AddDataset, Id, (PolarAreaChartDataset)chartDataset);
         }
 
         return chartData;
@@ -150,7 +152,7 @@ public partial class PolarAreaChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<PolarAreaChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync(PolarAreaChartInterop.Initialize, Id, GetChartType(), data, (PolarAreaChartOptions)chartOptions, plugins, DotNetObjectReference);
+            await SafeInvokeVoidAsync(PolarAreaChartInterop.Initialize, Id, GetChartType(), data, (PolarAreaChartOptions)chartOptions, plugins, DotNetObjectReference);
         }
     }
 
@@ -171,9 +173,11 @@ public partial class PolarAreaChart : ChartComponentBase
         {
             var datasets = chartData.Datasets.OfType<PolarAreaChartDataset>();
             var data = new { chartData.Labels, Datasets = datasets };
-            await JSRuntime.InvokeVoidAsync(PolarAreaChartInterop.Update, Id, GetChartType(), data, (PolarAreaChartOptions)chartOptions);
+            await SafeInvokeVoidAsync(PolarAreaChartInterop.Update, Id, GetChartType(), data, (PolarAreaChartOptions)chartOptions);
         }
     }
+
+    #endregion
 
     #endregion
 }
