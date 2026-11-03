@@ -58,7 +58,7 @@ public class ChartDisposeTests : BunitContext
         JSInterop.Mode = JSRuntimeMode.Loose;
         var chart = ChartTestData.RenderChart(this, chartType);
         await chart.InitializeAsync(ChartTestData.CreateChartData(chartType), ChartTestData.CreateOptions(chartType));
-        var reference = (IDisposable)JSInterop.Invocations.Last(i => i.Identifier.EndsWith(".initialize", StringComparison.Ordinal)).Arguments[^1]!;
+        var reference = (IDisposable)JSInterop.Invocations.Last(i => i.Identifier.EndsWith(".initialize", StringComparison.Ordinal)).Arguments.OfType<DotNetObjectReference<ChartComponentBase>>().Single();
         JSInterop.SetupVoid(ChartInterop.Destroy, _ => true).SetException(new JSException("Chart.js is not loaded."));
 
         await Assert.ThrowsAsync<JSException>(() => chart.DisposeAsync().AsTask());

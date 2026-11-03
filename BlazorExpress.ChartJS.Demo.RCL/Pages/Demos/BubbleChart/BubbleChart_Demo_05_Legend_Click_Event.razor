@@ -1,0 +1,58 @@
+<div class="mb-3">
+    <label>
+        <input type="checkbox" @bind="legendClickToggles" />
+        Legend click hides and shows the dataset (<code>LegendClickToggles</code>)
+    </label>
+</div>
+
+<BubbleChart @ref="bubbleChart" Width="600" LegendClickToggles="legendClickToggles" OnLegendClick="HandleLegendClickAsync" />
+
+@if (legendClicks.Count > 0)
+{
+    <ul class="mt-3 mb-0">
+        @foreach (var legendClick in legendClicks)
+        {
+            <li>@legendClick</li>
+        }
+    </ul>
+}
+
+@code {
+    private BubbleChart bubbleChart = default!;
+    private BubbleChartOptions bubbleChartOptions = default!;
+    private ChartData chartData = default!;
+    private bool legendClickToggles = true;
+    private readonly List<string> legendClicks = new();
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "January", "February", "March", "April" },
+            Datasets = new List<IChartDataset>
+            {
+                new BubbleChartDataset { Label = "Projects", Data = new List<BubbleChartDataPoint> { new(10, 20, 8), new(15, 12, 12), new(25, 28, 6), new(35, 18, 10) }, BackgroundColor = new List<string> { "rgba(54, 162, 235, 0.5)" }, BorderColor = new List<string> { "rgb(54, 162, 235)" }, BorderWidth = 1 },
+                new BubbleChartDataset { Label = "Products", Data = new List<BubbleChartDataPoint> { new(12, 30, 10), new(22, 22, 7), new(30, 10, 14), new(40, 26, 9) }, BackgroundColor = new List<string> { "rgba(255, 159, 64, 0.5)" }, BorderColor = new List<string> { "rgb(255, 159, 64)" }, BorderWidth = 1 },
+            },
+        };
+        bubbleChartOptions = new BubbleChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await bubbleChart.InitializeAsync(chartData, bubbleChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private Task HandleLegendClickAsync(ChartLegendClickEventArgs eventArgs)
+    {
+        legendClicks.Insert(0, $"{eventArgs.Text} (dataset {eventArgs.DatasetIndex}): hidden = {eventArgs.Hidden}");
+
+        if (legendClicks.Count > 5)
+            legendClicks.RemoveAt(legendClicks.Count - 1);
+
+        return Task.CompletedTask;
+    }
+}

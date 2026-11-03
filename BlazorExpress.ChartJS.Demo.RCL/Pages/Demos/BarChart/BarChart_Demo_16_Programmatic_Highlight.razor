@@ -1,0 +1,42 @@
+<BarChart @ref="barChart" Width="600" />
+
+<div class="mt-3">
+    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="HighlightMarchRevenueAsync">Highlight March revenue</Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="HighlightMarchAsync">Highlight all of March</Button>
+    <Button Color="ButtonColor.Warning" Size="ButtonSize.Small" @onclick="ClearHighlightAsync">Clear</Button>
+</div>
+
+@code {
+    private BarChart barChart = default!;
+    private BarChartOptions barChartOptions = default!;
+    private ChartData chartData = default!;
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "January", "February", "March", "April" },
+            Datasets = new List<IChartDataset>
+            {
+                new BarChartDataset { Label = "Revenue", Data = new List<double?> { 40, 55, 62, 70 }, BackgroundColor = new List<string> { "#36A2EB" } },
+                new BarChartDataset { Label = "Costs", Data = new List<double?> { 30, 34, 38, 41 }, BackgroundColor = new List<string> { "#FF9F40" } },
+            },
+        };
+        barChartOptions = new BarChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await barChart.InitializeAsync(chartData, barChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task ClearHighlightAsync() => await barChart.SetActiveElementsAsync([]);
+
+    private async Task HighlightMarchAsync() =>
+        await barChart.SetActiveElementsAsync([new ChartActiveElement(0, 2), new ChartActiveElement(1, 2)]);
+
+    private async Task HighlightMarchRevenueAsync() => await barChart.SetActiveElementsAsync([new ChartActiveElement(0, 2)]);
+}

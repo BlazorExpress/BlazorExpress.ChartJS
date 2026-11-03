@@ -1,0 +1,79 @@
+<ScatterChart @ref="scatterChart" Width="600" OnLegendClick="UpdateVisibleDatasetCountAsync" />
+
+<div class="mt-3">
+    @foreach (var label in datasetLabels)
+    {
+        <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" Class="mr-1" @onclick="() => ToggleDatasetAsync(label)">Toggle @label</Button>
+    }
+    <Button Color="ButtonColor.Warning" Size="ButtonSize.Small" @onclick="() => scatterChart.HideAsync(datasetLabels.IndexOf(FirstDataset), PointIndex)">Hide Third Sensor A</Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="() => scatterChart.ShowAsync(datasetLabels.IndexOf(FirstDataset), PointIndex)">Show Third Sensor A</Button>
+    <Button Color="ButtonColor.Success" Size="ButtonSize.Small" @onclick="RefreshWithoutAnimationAsync">Refresh data without animation</Button>
+</div>
+
+<p class="mt-3 mb-0">Visible datasets: @visibleDatasetCount of @datasetLabels.Count</p>
+
+@code {
+    private const string FirstDataset = "Sensor A";
+    private const int PointIndex = 2;
+    private ScatterChart scatterChart = default!;
+    private ScatterChartOptions scatterChartOptions = default!;
+    private ChartData chartData = default!;
+    private readonly List<string> labels = new() { "First", "Second", "Third", "Fourth" };
+    private readonly List<string> datasetLabels = new() { "Sensor A", "Sensor B", "Sensor C" };
+    private readonly Dictionary<string, string> colors = new() { ["Sensor A"] = "54, 162, 235", ["Sensor B"] = "255, 159, 64", ["Sensor C"] = "75, 192, 192" };
+    private int visibleDatasetCount = 3;
+
+    protected override void OnInitialized()
+    {
+        chartData = CreateChartData();
+        scatterChartOptions = new ScatterChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await scatterChart.InitializeAsync(chartData, scatterChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private ChartData CreateChartData() =>
+        new()
+        {
+            Labels = labels,
+            Datasets = datasetLabels
+                .Select(label => (IChartDataset)new ScatterChartDataset
+                {
+                    Label = label,
+                    Data = labels.Select(_ => new ScatterChartDataPoint(Random.Shared.Next(0, 100), Random.Shared.Next(0, 100))).ToList(),
+                    BackgroundColor = $"rgba({colors[label]}, 0.6)",
+                    BorderColor = $"rgb({colors[label]})",
+                    BorderWidth = 2,
+                })
+                .ToList(),
+        };
+
+    // New data objects, in a new order: hidden datasets and points stay hidden because they are matched by label.
+    private async Task RefreshWithoutAnimationAsync()
+    {
+        datasetLabels.Reverse();
+        chartData = CreateChartData();
+        await scatterChart.UpdateAsync(chartData, scatterChartOptions, ChartUpdateMode.None);
+        await UpdateVisibleDatasetCountAsync();
+    }
+
+    private async Task ToggleDatasetAsync(string label)
+    {
+        var datasetIndex = datasetLabels.IndexOf(label);
+        var isVisible = await scatterChart.IsDatasetVisibleAsync(datasetIndex);
+
+        if (isVisible)
+            await scatterChart.HideAsync(datasetIndex);
+        else
+            await scatterChart.ShowAsync(datasetIndex);
+
+        await UpdateVisibleDatasetCountAsync();
+    }
+
+    private async Task UpdateVisibleDatasetCountAsync() => visibleDatasetCount = await scatterChart.GetVisibleDatasetCountAsync();
+}

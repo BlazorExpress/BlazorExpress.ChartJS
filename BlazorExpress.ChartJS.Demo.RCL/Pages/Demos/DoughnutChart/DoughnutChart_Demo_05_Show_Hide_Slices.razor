@@ -1,0 +1,74 @@
+<DoughnutChart @ref="doughnutChart" Width="400" OnLegendClick="ReadVisibilityAsync" />
+
+<div class="mt-3">
+    @foreach (var label in sliceLabels)
+    {
+        <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" Class="mr-1" @onclick="() => ToggleSliceAsync(label)">Toggle @label</Button>
+    }
+    <Button Color="ButtonColor.Success" Size="ButtonSize.Small" @onclick="RefreshSortedAsync">Refresh, sorted by value</Button>
+</div>
+
+<p class="mt-3 mb-0">@visibilityText</p>
+
+@code {
+    private DoughnutChart doughnutChart = default!;
+    private DoughnutChartOptions doughnutChartOptions = default!;
+    private ChartData chartData = default!;
+    private List<string> sliceLabels = new() { "Chrome", "Safari", "Firefox", "Edge" };
+    private readonly Dictionary<string, string> colors = new() { ["Chrome"] = "rgb(54, 162, 235)", ["Safari"] = "rgb(153, 102, 255)", ["Firefox"] = "rgb(255, 159, 64)", ["Edge"] = "rgb(201, 203, 207)" };
+    private string visibilityText = "All slices are visible.";
+
+    protected override void OnInitialized()
+    {
+        chartData = CreateChartData(sliceLabels.ToDictionary(label => label, _ => (double)Random.Shared.Next(5, 60)));
+        doughnutChartOptions = new DoughnutChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await doughnutChart.InitializeAsync(chartData, doughnutChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private ChartData CreateChartData(Dictionary<string, double> values) =>
+        new()
+        {
+            Labels = sliceLabels.ToList(),
+            Datasets = new List<IChartDataset>
+            {
+                new DoughnutChartDataset
+                {
+                    Label = "Visitors",
+                    Data = sliceLabels.Select(label => (double?)values[label]).ToList(),
+                    BackgroundColor = sliceLabels.Select(label => colors[label]).ToList(),
+                },
+            },
+        };
+
+    // New values sorted largest first: the slices move, and a hidden slice stays hidden because it is matched by label.
+    private async Task RefreshSortedAsync()
+    {
+        var values = sliceLabels.ToDictionary(label => label, _ => (double)Random.Shared.Next(5, 60));
+        sliceLabels = values.OrderByDescending(pair => pair.Value).Select(pair => pair.Key).ToList();
+        chartData = CreateChartData(values);
+        await doughnutChart.UpdateAsync(chartData, doughnutChartOptions);
+        await ReadVisibilityAsync();
+    }
+
+    private async Task ReadVisibilityAsync()
+    {
+        var states = new List<string>();
+        for (var i = 0; i < sliceLabels.Count; i++)
+            states.Add($"{sliceLabels[i]}: {(await doughnutChart.GetDataVisibilityAsync(i) ? "visible" : "hidden")}");
+
+        visibilityText = string.Join(", ", states);
+    }
+
+    private async Task ToggleSliceAsync(string label)
+    {
+        await doughnutChart.ToggleDataVisibilityAsync(sliceLabels.IndexOf(label));
+        await ReadVisibilityAsync();
+    }
+}

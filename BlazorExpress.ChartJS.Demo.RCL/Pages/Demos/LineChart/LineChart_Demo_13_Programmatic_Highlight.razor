@@ -1,0 +1,42 @@
+<LineChart @ref="lineChart" Width="600" />
+
+<div class="mt-3">
+    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="HighlightOneAsync">Highlight March Desktop</Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="HighlightAllAsync">Highlight all of March</Button>
+    <Button Color="ButtonColor.Warning" Size="ButtonSize.Small" @onclick="ClearHighlightAsync">Clear</Button>
+</div>
+
+@code {
+    private LineChart lineChart = default!;
+    private LineChartOptions lineChartOptions = default!;
+    private ChartData chartData = default!;
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "January", "February", "March", "April", "May", "June" },
+            Datasets = new List<IChartDataset>
+            {
+                new LineChartDataset { Label = "Desktop", Data = new List<double?> { 45, 52, 60, 58, 66, 72 }, BackgroundColor = "rgb(54, 162, 235)", BorderColor = "rgb(54, 162, 235)" },
+                new LineChartDataset { Label = "Mobile", Data = new List<double?> { 30, 41, 47, 55, 61, 70 }, BackgroundColor = "rgb(255, 159, 64)", BorderColor = "rgb(255, 159, 64)" },
+            },
+        };
+        lineChartOptions = new LineChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await lineChart.InitializeAsync(chartData, lineChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task ClearHighlightAsync() => await lineChart.SetActiveElementsAsync([]);
+
+    private async Task HighlightAllAsync() =>
+        await lineChart.SetActiveElementsAsync([new ChartActiveElement(0, 2), new ChartActiveElement(1, 2)]);
+
+    private async Task HighlightOneAsync() => await lineChart.SetActiveElementsAsync([new ChartActiveElement(0, 2)]);
+}

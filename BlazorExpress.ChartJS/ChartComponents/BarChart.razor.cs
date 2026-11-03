@@ -179,7 +179,7 @@ public partial class BarChart : ChartComponentBase
         {
             var datasets = BarLineChartSupport.GetSupportedDatasets(chartData);
             var data = new { chartData.Labels, Datasets = datasets };
-            await SafeInvokeVoidAsync(BarChartInterop.Initialize, Id, GetChartType(), data, (BarChartOptions)chartOptions, plugins, DotNetObjectReference);
+            await SafeInvokeVoidAsync(BarChartInterop.Initialize, Id, GetChartType(), data, (BarChartOptions)chartOptions, plugins, DotNetObjectReference, EventOptions);
         }
     }
 
@@ -194,13 +194,28 @@ public partial class BarChart : ChartComponentBase
     [AddedVersion("1.0.0")]
     [Description("Asynchronously updates the chart with the specified data and options.")]
     [MethodReturnTypeName(nameof(Task))]
-    public override async Task UpdateAsync(ChartData chartData, IChartOptions chartOptions)
+    public override async Task UpdateAsync(ChartData chartData, IChartOptions chartOptions) =>
+        await UpdateAsync(chartData, chartOptions, ChartUpdateMode.Default);
+
+    /// <summary>
+    /// Asynchronously updates the chart with the specified data and options, using a Chart.js update mode.
+    /// For example, <see cref="ChartUpdateMode.None" /> applies the changes without animation.
+    /// </summary>
+    /// <remarks>Datasets, slices, bars and points hidden or shown at runtime keep that state when their label is still present.</remarks>
+    /// <param name="chartData">The data to be displayed on the chart. Must not be null and must contain at least one dataset.</param>
+    /// <param name="chartOptions">The options to configure the chart's appearance and behavior.</param>
+    /// <param name="mode">The Chart.js update mode.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    [AddedVersion("1.3.0")]
+    [Description("Asynchronously updates the chart with the specified data and options, using a Chart.js update mode.")]
+    [MethodReturnTypeName(nameof(Task))]
+    public override async Task UpdateAsync(ChartData chartData, IChartOptions chartOptions, ChartUpdateMode mode)
     {
         if (chartData is not null && chartData.Datasets is not null)
         {
             var datasets = BarLineChartSupport.GetSupportedDatasets(chartData);
             var data = new { chartData.Labels, Datasets = datasets };
-            await SafeInvokeVoidAsync(BarChartInterop.Update, Id, GetChartType(), data, (BarChartOptions)chartOptions);
+            await SafeInvokeVoidAsync(BarChartInterop.Update, [Id, GetChartType(), data, (BarChartOptions)chartOptions, .. GetUpdateModeArguments(mode)]);
         }
     }
 
