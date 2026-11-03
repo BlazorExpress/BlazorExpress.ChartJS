@@ -1,0 +1,52 @@
+<PieChart @ref="pieChart" Width="400" />
+
+<div class="mt-3">
+    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="ExportPngAsync">Export PNG</Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="ExportJpegAsync">Export JPEG (quality 0.8)</Button>
+    <Button Color="ButtonColor.Success" Size="ButtonSize.Small" @onclick="DownloadPngAsync">Download PNG</Button>
+</div>
+
+@if (imageDataUrl is not null)
+{
+    <p class="mt-3 mb-1">Exported @imageDataUrl.Length characters: <code>@imageDataUrl[..Math.Min(30, imageDataUrl.Length)]...</code></p>
+    <img src="@imageDataUrl" alt="Exported pie chart image" style="max-width: 300px; border: 1px solid #dee2e6;" />
+}
+
+@code {
+    private PieChart pieChart = default!;
+    private PieChartOptions pieChartOptions = default!;
+    private ChartData chartData = default!;
+    private string? imageDataUrl;
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "Desktop", "Tablet", "Mobile", "Other" },
+            Datasets = new List<IChartDataset>
+            {
+                new PieChartDataset
+                {
+                    Label = "Sessions",
+                    Data = new List<double?> { 48, 18, 26, 8 },
+                    BackgroundColor = new List<string> { "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(255, 159, 64)", "rgb(201, 203, 207)" },
+                },
+            },
+        };
+        pieChartOptions = new PieChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await pieChart.InitializeAsync(chartData, pieChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task DownloadPngAsync() => await pieChart.DownloadImageAsync("pie-chart.png");
+
+    private async Task ExportJpegAsync() => imageDataUrl = await pieChart.ToBase64ImageAsync(ChartImageType.Jpeg, 0.8);
+
+    private async Task ExportPngAsync() => imageDataUrl = await pieChart.ToBase64ImageAsync();
+}

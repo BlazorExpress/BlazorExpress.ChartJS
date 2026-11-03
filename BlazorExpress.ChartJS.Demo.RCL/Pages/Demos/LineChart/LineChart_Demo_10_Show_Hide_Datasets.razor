@@ -1,0 +1,78 @@
+<LineChart @ref="lineChart" Width="600" OnLegendClick="UpdateVisibleDatasetCountAsync" />
+
+<div class="mt-3">
+    @foreach (var label in datasetLabels)
+    {
+        <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" Class="mr-1" @onclick="() => ToggleDatasetAsync(label)">Toggle @label</Button>
+    }
+    <Button Color="ButtonColor.Warning" Size="ButtonSize.Small" @onclick="() => lineChart.HideAsync(datasetLabels.IndexOf(FirstDataset), PointIndex)">Hide March Desktop</Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="() => lineChart.ShowAsync(datasetLabels.IndexOf(FirstDataset), PointIndex)">Show March Desktop</Button>
+    <Button Color="ButtonColor.Success" Size="ButtonSize.Small" @onclick="RefreshWithoutAnimationAsync">Refresh data without animation</Button>
+</div>
+
+<p class="mt-3 mb-0">Visible datasets: @visibleDatasetCount of @datasetLabels.Count</p>
+
+@code {
+    private const string FirstDataset = "Desktop";
+    private const int PointIndex = 2;
+    private LineChart lineChart = default!;
+    private LineChartOptions lineChartOptions = default!;
+    private ChartData chartData = default!;
+    private readonly List<string> labels = new() { "January", "February", "March", "April", "May", "June" };
+    private readonly List<string> datasetLabels = new() { "Desktop", "Mobile", "Tablet" };
+    private readonly Dictionary<string, string> colors = new() { ["Desktop"] = "54, 162, 235", ["Mobile"] = "255, 159, 64", ["Tablet"] = "75, 192, 192" };
+    private int visibleDatasetCount = 3;
+
+    protected override void OnInitialized()
+    {
+        chartData = CreateChartData();
+        lineChartOptions = new LineChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await lineChart.InitializeAsync(chartData, lineChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private ChartData CreateChartData() =>
+        new()
+        {
+            Labels = labels,
+            Datasets = datasetLabels
+                .Select(label => (IChartDataset)new LineChartDataset
+                {
+                    Label = label,
+                    Data = labels.Select(_ => (double?)Random.Shared.Next(10, 80)).ToList(),
+                    BackgroundColor = $"rgb({colors[label]})",
+                    BorderColor = $"rgb({colors[label]})",
+                })
+                .ToList(),
+        };
+
+    // New data objects, in a new order: hidden datasets and points stay hidden because they are matched by label.
+    private async Task RefreshWithoutAnimationAsync()
+    {
+        datasetLabels.Reverse();
+        chartData = CreateChartData();
+        await lineChart.UpdateAsync(chartData, lineChartOptions, ChartUpdateMode.None);
+        await UpdateVisibleDatasetCountAsync();
+    }
+
+    private async Task ToggleDatasetAsync(string label)
+    {
+        var datasetIndex = datasetLabels.IndexOf(label);
+        var isVisible = await lineChart.IsDatasetVisibleAsync(datasetIndex);
+
+        if (isVisible)
+            await lineChart.HideAsync(datasetIndex);
+        else
+            await lineChart.ShowAsync(datasetIndex);
+
+        await UpdateVisibleDatasetCountAsync();
+    }
+
+    private async Task UpdateVisibleDatasetCountAsync() => visibleDatasetCount = await lineChart.GetVisibleDatasetCountAsync();
+}

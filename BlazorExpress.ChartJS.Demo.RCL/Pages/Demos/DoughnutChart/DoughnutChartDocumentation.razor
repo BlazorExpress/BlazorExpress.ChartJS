@@ -57,6 +57,106 @@
     <Demo Type="typeof(DoughnutChart_Demo_03_Click_Event)" Tabs="true" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Export image" PageUrl="@pageUrl" Link="export-image">
+    <Block>
+        Export the chart as an image with <code>ToBase64ImageAsync</code>, which returns a base64 data URL you can show, store or send, or save it straight to a file in the browser with <code>DownloadImageAsync</code>.
+        If the chart is still animating, both wait for the animation to finish, and the image is streamed from the browser, so Blazor Server needs no larger message size.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Keep a reference to the chart with <code>@@ref</code> and initialize it.</li>
+                <li>Call <code>ToBase64ImageAsync()</code> for a PNG data URL, or pass <code>ChartImageType.Jpeg</code> and a quality from 0 to 1.</li>
+                <li>Call <code>DownloadImageAsync("doughnut-chart.png")</code> to save the image as a file without sending it to .NET.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_04_Export_Image)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Show and hide slices" PageUrl="@pageUrl" Link="show-and-hide-slices">
+    <Block>
+        Show and hide single slices from C# and read whether a slice is visible.
+        A hidden slice stays hidden when <code>UpdateAsync</code> refreshes the data, even if the slices are re-sorted, because slices are matched by label.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Call <code>ToggleDataVisibilityAsync(index)</code>, or <code>HideAsync(0, index)</code> and <code>ShowAsync(0, index)</code>.</li>
+                <li>Read the state with <code>GetDataVisibilityAsync(index)</code>.</li>
+                <li>Refresh with <code>UpdateAsync</code>; hidden slices stay hidden.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_05_Show_Hide_Slices)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Legend click event" PageUrl="@pageUrl" Link="legend-click-event">
+    <Block>
+        Set <code>OnLegendClick</code> to react when a legend item is clicked. On this chart each legend item is a slice, so the callback receives <code>ChartLegendClickEventArgs</code> with the slice <code>Index</code>, the legend text and whether the slice is hidden after the click.
+        Set <code>LegendClickToggles="false"</code> to stop the legend from hiding slices, for example to open details instead.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Add an <code>OnLegendClick</code> callback to the chart.</li>
+                <li>Keep <code>LegendClickToggles</code> at <code>true</code> for the default hide and show, or set it to <code>false</code> to handle the click yourself.</li>
+                <li>Use <code>Index</code>, <code>Text</code> and <code>Hidden</code> from the event arguments.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_06_Legend_Click_Event)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Hover event" PageUrl="@pageUrl" Link="hover-event">
+    <Block>
+        Set <code>OnHover</code> to react when the pointer moves onto a different slice. The callback receives <code>ChartHoverEventArgs</code> with the same item details as <code>OnClick</code>.
+        It is called only when the hovered slice changes, and once with a <code>null</code> <code>DatasetIndex</code> when the pointer leaves all slices, so it does not flood Blazor Server with calls.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Add an <code>OnHover</code> callback to the chart.</li>
+                <li>Check <code>DatasetIndex</code>: a value means a slice is hovered; <code>null</code> means the pointer left all slices.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_07_Hover_Event)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Programmatic highlight" PageUrl="@pageUrl" Link="programmatic-highlight">
+    <Block>
+        Highlight slices and show their tooltip from C# with <code>SetActiveElementsAsync</code>, for example to point at a value from a table next to the chart.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Pass one or more <code>ChartActiveElement(datasetIndex, index)</code> items to <code>SetActiveElementsAsync</code>.</li>
+                <li>Pass an empty list to clear the highlight and the tooltip.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_08_Programmatic_Highlight)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Update modes and animation control" PageUrl="@pageUrl" Link="update-modes-and-animation-control">
+    <Block>
+        Choose how <code>UpdateAsync</code> animates with <code>ChartUpdateMode</code>, and control the running animation with <code>StopAsync</code>, <code>RenderAsync</code>, <code>ResetAsync</code> and <code>ClearAsync</code>.
+        These map one-to-one to the Chart.js <code>update(mode)</code>, <code>stop()</code>, <code>render()</code>, <code>reset()</code> and <code>clear()</code> methods.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Call <code>UpdateAsync(data, options)</code> for the default animated update, or pass <code>ChartUpdateMode.None</code> to apply the change at once. Each update replaces the chart's datasets, so an animated update draws the new data from the chart's starting state.</li>
+                <li>Call <code>StopAsync()</code> to end any running animation; the chart stays as it was drawn at that moment. Call <code>UpdateAsync</code> again to animate to new values.</li>
+                <li>Call <code>ResetAsync()</code> to put the chart back in its starting state, before its first animation, and <code>RenderAsync()</code> to draw that state. Stop any running animation first, or its next frame draws over the reset.</li>
+                <li>Call <code>ClearAsync()</code> to clear the canvas; <code>RenderAsync()</code> draws the chart again. A running animation draws over the cleared canvas on its next frame, so stop it first or wait for it to end.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_09_Update_Modes)" Tabs="true" />
+</Section>
+
 @code {
     private const string pageUrl = DemoRouteConstants.Demos_DoughnutChart;
     private const string pageTitle = "Doughnut Chart";

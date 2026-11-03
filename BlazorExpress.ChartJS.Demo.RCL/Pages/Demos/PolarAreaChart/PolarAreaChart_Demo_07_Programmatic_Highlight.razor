@@ -1,0 +1,46 @@
+<PolarAreaChart @ref="polarAreaChart" Width="500" />
+
+<div class="mt-3">
+    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="HighlightOneAsync">Highlight South</Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="HighlightTwoAsync">Highlight North and East</Button>
+    <Button Color="ButtonColor.Warning" Size="ButtonSize.Small" @onclick="ClearHighlightAsync">Clear</Button>
+</div>
+
+@code {
+    private PolarAreaChart polarAreaChart = default!;
+    private PolarAreaChartOptions polarAreaChartOptions = default!;
+    private ChartData chartData = default!;
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "North", "South", "East", "West" },
+            Datasets = new List<IChartDataset>
+            {
+                new PolarAreaChartDataset
+                {
+                    Label = "Sales",
+                    Data = new List<double?> { 35, 55, 40, 25 },
+                    BackgroundColor = new List<string> { "rgba(54, 162, 235, 0.5)", "rgba(153, 102, 255, 0.5)", "rgba(255, 159, 64, 0.5)", "rgba(201, 203, 207, 0.5)" },
+                },
+            },
+        };
+        polarAreaChartOptions = new PolarAreaChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await polarAreaChart.InitializeAsync(chartData, polarAreaChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task ClearHighlightAsync() => await polarAreaChart.SetActiveElementsAsync([]);
+
+    private async Task HighlightOneAsync() => await polarAreaChart.SetActiveElementsAsync([new ChartActiveElement(0, 1)]);
+
+    private async Task HighlightTwoAsync() =>
+        await polarAreaChart.SetActiveElementsAsync([new ChartActiveElement(0, 0), new ChartActiveElement(0, 2)]);
+}

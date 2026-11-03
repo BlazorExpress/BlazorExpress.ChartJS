@@ -1,0 +1,49 @@
+<PolarAreaChart @ref="polarAreaChart" Width="500" OnHover="HandleHoverAsync" />
+
+<p class="mt-3 mb-0">@hoverText</p>
+<p class="mb-0">Hover events received: @hoverEventCount</p>
+
+@code {
+    private PolarAreaChart polarAreaChart = default!;
+    private PolarAreaChartOptions polarAreaChartOptions = default!;
+    private ChartData chartData = default!;
+    private string hoverText = "Move the pointer over a slice.";
+    private int hoverEventCount;
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "North", "South", "East", "West" },
+            Datasets = new List<IChartDataset>
+            {
+                new PolarAreaChartDataset
+                {
+                    Label = "Sales",
+                    Data = new List<double?> { 35, 55, 40, 25 },
+                    BackgroundColor = new List<string> { "rgba(54, 162, 235, 0.5)", "rgba(153, 102, 255, 0.5)", "rgba(255, 159, 64, 0.5)", "rgba(201, 203, 207, 0.5)" },
+                },
+            },
+        };
+        polarAreaChartOptions = new PolarAreaChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await polarAreaChart.InitializeAsync(chartData, polarAreaChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    // Called only when the hovered slice changes, and once when the pointer leaves all slices.
+    private Task HandleHoverAsync(ChartHoverEventArgs eventArgs)
+    {
+        hoverEventCount++;
+        hoverText = eventArgs.DatasetIndex is null
+            ? "The pointer left all slices."
+            : $"Hovering: {eventArgs.DatasetLabel}, {eventArgs.Label} (value {eventArgs.Value})";
+
+        return Task.CompletedTask;
+    }
+}

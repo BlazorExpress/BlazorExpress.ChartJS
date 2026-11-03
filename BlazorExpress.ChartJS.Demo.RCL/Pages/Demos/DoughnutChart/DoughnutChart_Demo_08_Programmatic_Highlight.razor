@@ -1,0 +1,46 @@
+<DoughnutChart @ref="doughnutChart" Width="400" />
+
+<div class="mt-3">
+    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="HighlightOneAsync">Highlight Safari</Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="HighlightTwoAsync">Highlight Chrome and Firefox</Button>
+    <Button Color="ButtonColor.Warning" Size="ButtonSize.Small" @onclick="ClearHighlightAsync">Clear</Button>
+</div>
+
+@code {
+    private DoughnutChart doughnutChart = default!;
+    private DoughnutChartOptions doughnutChartOptions = default!;
+    private ChartData chartData = default!;
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge" },
+            Datasets = new List<IChartDataset>
+            {
+                new DoughnutChartDataset
+                {
+                    Label = "Visitors",
+                    Data = new List<double?> { 55, 20, 12, 13 },
+                    BackgroundColor = new List<string> { "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(255, 159, 64)", "rgb(201, 203, 207)" },
+                },
+            },
+        };
+        doughnutChartOptions = new DoughnutChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await doughnutChart.InitializeAsync(chartData, doughnutChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task ClearHighlightAsync() => await doughnutChart.SetActiveElementsAsync([]);
+
+    private async Task HighlightOneAsync() => await doughnutChart.SetActiveElementsAsync([new ChartActiveElement(0, 1)]);
+
+    private async Task HighlightTwoAsync() =>
+        await doughnutChart.SetActiveElementsAsync([new ChartActiveElement(0, 0), new ChartActiveElement(0, 2)]);
+}

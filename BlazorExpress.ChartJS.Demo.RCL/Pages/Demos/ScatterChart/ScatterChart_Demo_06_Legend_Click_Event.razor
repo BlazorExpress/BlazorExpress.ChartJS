@@ -1,0 +1,58 @@
+<div class="mb-3">
+    <label>
+        <input type="checkbox" @bind="legendClickToggles" />
+        Legend click hides and shows the dataset (<code>LegendClickToggles</code>)
+    </label>
+</div>
+
+<ScatterChart @ref="scatterChart" Width="600" LegendClickToggles="legendClickToggles" OnLegendClick="HandleLegendClickAsync" />
+
+@if (legendClicks.Count > 0)
+{
+    <ul class="mt-3 mb-0">
+        @foreach (var legendClick in legendClicks)
+        {
+            <li>@legendClick</li>
+        }
+    </ul>
+}
+
+@code {
+    private ScatterChart scatterChart = default!;
+    private ScatterChartOptions scatterChartOptions = default!;
+    private ChartData chartData = default!;
+    private bool legendClickToggles = true;
+    private readonly List<string> legendClicks = new();
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "First", "Second", "Third", "Fourth" },
+            Datasets = new List<IChartDataset>
+            {
+                new ScatterChartDataset { Label = "Sensor A", Data = new List<ScatterChartDataPoint> { new(10, 25), new(25, 15), new(35, 40), new(50, 30) }, BackgroundColor = "rgba(54, 162, 235, 0.6)", BorderColor = "rgb(54, 162, 235)", BorderWidth = 2 },
+                new ScatterChartDataset { Label = "Sensor B", Data = new List<ScatterChartDataPoint> { new(15, 45), new(30, 35), new(45, 20), new(60, 50) }, BackgroundColor = "rgba(255, 159, 64, 0.6)", BorderColor = "rgb(255, 159, 64)", BorderWidth = 2 },
+            },
+        };
+        scatterChartOptions = new ScatterChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await scatterChart.InitializeAsync(chartData, scatterChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private Task HandleLegendClickAsync(ChartLegendClickEventArgs eventArgs)
+    {
+        legendClicks.Insert(0, $"{eventArgs.Text} (dataset {eventArgs.DatasetIndex}): hidden = {eventArgs.Hidden}");
+
+        if (legendClicks.Count > 5)
+            legendClicks.RemoveAt(legendClicks.Count - 1);
+
+        return Task.CompletedTask;
+    }
+}

@@ -1,0 +1,49 @@
+<PieChart @ref="pieChart" Width="400" OnHover="HandleHoverAsync" />
+
+<p class="mt-3 mb-0">@hoverText</p>
+<p class="mb-0">Hover events received: @hoverEventCount</p>
+
+@code {
+    private PieChart pieChart = default!;
+    private PieChartOptions pieChartOptions = default!;
+    private ChartData chartData = default!;
+    private string hoverText = "Move the pointer over a slice.";
+    private int hoverEventCount;
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "Desktop", "Tablet", "Mobile", "Other" },
+            Datasets = new List<IChartDataset>
+            {
+                new PieChartDataset
+                {
+                    Label = "Sessions",
+                    Data = new List<double?> { 48, 18, 26, 8 },
+                    BackgroundColor = new List<string> { "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(255, 159, 64)", "rgb(201, 203, 207)" },
+                },
+            },
+        };
+        pieChartOptions = new PieChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await pieChart.InitializeAsync(chartData, pieChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    // Called only when the hovered slice changes, and once when the pointer leaves all slices.
+    private Task HandleHoverAsync(ChartHoverEventArgs eventArgs)
+    {
+        hoverEventCount++;
+        hoverText = eventArgs.DatasetIndex is null
+            ? "The pointer left all slices."
+            : $"Hovering: {eventArgs.DatasetLabel}, {eventArgs.Label} (value {eventArgs.Value})";
+
+        return Task.CompletedTask;
+    }
+}

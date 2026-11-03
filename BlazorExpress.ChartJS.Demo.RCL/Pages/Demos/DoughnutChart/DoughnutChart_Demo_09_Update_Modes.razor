@@ -1,0 +1,89 @@
+<DoughnutChart @ref="doughnutChart" Width="400" />
+
+<div class="mt-3">
+    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="RefreshAsync">Refresh (animated)</Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="RefreshWithoutAnimationAsync">Refresh without animation</Button>
+    <Button Color="ButtonColor.Success" Size="ButtonSize.Small" @onclick="ResetAsync">Reset</Button>
+    <Button Color="ButtonColor.Warning" Size="ButtonSize.Small" @onclick="StopAsync">Stop</Button>
+    <Button Color="ButtonColor.Link" Size="ButtonSize.Small" @onclick="RenderAsync">Render</Button>
+    <Button Color="ButtonColor.Danger" Size="ButtonSize.Small" @onclick="ClearAsync">Clear</Button>
+</div>
+
+<p class="mt-3 mb-0">@status</p>
+
+@code {
+    private DoughnutChart doughnutChart = default!;
+    private DoughnutChartOptions doughnutChartOptions = default!;
+    private ChartData chartData = default!;
+    private string status = "Animations take 2 seconds here, so there is time to click Stop.";
+
+    protected override void OnInitialized()
+    {
+        chartData = CreateChartData();
+        doughnutChartOptions = new DoughnutChartOptions { Responsive = true, Animation = new ChartAnimation { Duration = 2000 } };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await doughnutChart.InitializeAsync(chartData, doughnutChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task ClearAsync()
+    {
+        await doughnutChart.ClearAsync();
+        status = "Cleared the canvas. Click Render to draw the chart again. While an animation runs, its next frame draws over the cleared canvas, so click Stop first.";
+    }
+
+    private ChartData CreateChartData() =>
+        new()
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge" },
+            Datasets = new List<IChartDataset>
+            {
+                new DoughnutChartDataset
+                {
+                    Label = "Visitors",
+                    Data = Enumerable.Range(0, 4).Select(_ => (double?)Random.Shared.Next(5, 60)).ToList(),
+                    BackgroundColor = new List<string> { "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(255, 159, 64)", "rgb(201, 203, 207)" },
+                },
+            },
+        };
+
+    private async Task RefreshAsync()
+    {
+        chartData = CreateChartData();
+        await doughnutChart.UpdateAsync(chartData, doughnutChartOptions);
+        status = "Applied new data with the default animation, drawn from the chart's starting state.";
+    }
+
+    private async Task RefreshWithoutAnimationAsync()
+    {
+        chartData = CreateChartData();
+        await doughnutChart.UpdateAsync(chartData, doughnutChartOptions, ChartUpdateMode.None);
+        status = "Applied new data at once, without animation.";
+    }
+
+    private async Task RenderAsync()
+    {
+        await doughnutChart.RenderAsync();
+        status = "Redrew the chart as it is now, for example after Clear.";
+    }
+
+    // Stop first: a running animation would draw over the reset state on its next frame.
+    private async Task ResetAsync()
+    {
+        await doughnutChart.StopAsync();
+        await doughnutChart.ResetAsync();
+        await doughnutChart.RenderAsync();
+        status = "Reset the chart to its starting state, before its first animation. Click Refresh (animated) to see an update animate from here.";
+    }
+
+    private async Task StopAsync()
+    {
+        await doughnutChart.StopAsync();
+        status = "Stopped any running animation. The chart stays as it was drawn at that moment.";
+    }
+}

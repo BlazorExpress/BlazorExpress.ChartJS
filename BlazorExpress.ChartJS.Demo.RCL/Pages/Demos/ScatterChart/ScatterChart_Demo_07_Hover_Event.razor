@@ -1,0 +1,45 @@
+<ScatterChart @ref="scatterChart" Width="600" OnHover="HandleHoverAsync" />
+
+<p class="mt-3 mb-0">@hoverText</p>
+<p class="mb-0">Hover events received: @hoverEventCount</p>
+
+@code {
+    private ScatterChart scatterChart = default!;
+    private ScatterChartOptions scatterChartOptions = default!;
+    private ChartData chartData = default!;
+    private string hoverText = "Move the pointer over a point.";
+    private int hoverEventCount;
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "First", "Second", "Third", "Fourth" },
+            Datasets = new List<IChartDataset>
+            {
+                new ScatterChartDataset { Label = "Sensor A", Data = new List<ScatterChartDataPoint> { new(10, 25), new(25, 15), new(35, 40), new(50, 30) }, BackgroundColor = "rgba(54, 162, 235, 0.6)", BorderColor = "rgb(54, 162, 235)", BorderWidth = 2 },
+                new ScatterChartDataset { Label = "Sensor B", Data = new List<ScatterChartDataPoint> { new(15, 45), new(30, 35), new(45, 20), new(60, 50) }, BackgroundColor = "rgba(255, 159, 64, 0.6)", BorderColor = "rgb(255, 159, 64)", BorderWidth = 2 },
+            },
+        };
+        scatterChartOptions = new ScatterChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await scatterChart.InitializeAsync(chartData, scatterChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    // Called only when the hovered point changes, and once when the pointer leaves all points.
+    private Task HandleHoverAsync(ChartHoverEventArgs eventArgs)
+    {
+        hoverEventCount++;
+        hoverText = eventArgs.DatasetIndex is null
+            ? "The pointer left all points."
+            : $"Hovering: {eventArgs.DatasetLabel}, {eventArgs.Label} (value {eventArgs.Value})";
+
+        return Task.CompletedTask;
+    }
+}

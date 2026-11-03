@@ -21,6 +21,22 @@
     <DocxTable TItem="ScatterChart" DocType="DocType.Methods" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Common Parameters" PageUrl="@pageUrl" Link="common-parameters">
+    <DocxTable TItem="ChartComponentBase" DocType="DocType.Parameters" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Common Events" PageUrl="@pageUrl" Link="common-events">
+    <DocxTable TItem="ChartComponentBase" DocType="DocType.Events" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Common Methods" PageUrl="@pageUrl" Link="common-methods">
+    <Block>
+        Every chart inherits these methods from <code>ChartComponentBase</code>. The chart's own versions of <code>AddDataAsync</code>, <code>AddDatasetAsync</code>, <code>InitializeAsync</code> and <code>UpdateAsync</code> are listed under <strong>Methods</strong> above.
+        <code>HandleClickAsync</code>, <code>HandleHoverAsync</code> and <code>HandleLegendClickAsync</code> are called by the browser to raise <code>OnClick</code>, <code>OnHover</code> and <code>OnLegendClick</code>; you don't call them yourself.
+    </Block>
+    <DocxTable TItem="ChartComponentBase" DocType="DocType.Methods" />
+</Section>
+
 <Section Class="p-0" Size="HeadingSize.H4" Name="ChartData Properties" PageUrl="@pageUrl" Link="chart-data-properties">
     <DocxTable TItem="ChartData" DocType="DocType.Properties" />
 </Section>
@@ -39,6 +55,18 @@
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="ScatterChartOptions Properties" PageUrl="@pageUrl" Link="scatterchart-options-properties">
     <DocxTable TItem="ScatterChartOptions" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartLegendClickEventArgs Properties" PageUrl="@pageUrl" Link="chart-legend-click-event-args-properties">
+    <DocxTable TItem="ChartLegendClickEventArgs" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartHoverEventArgs Properties" PageUrl="@pageUrl" Link="chart-hover-event-args-properties">
+    <DocxTable TItem="ChartHoverEventArgs" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartActiveElement Properties" PageUrl="@pageUrl" Link="chart-active-element-properties">
+    <DocxTable TItem="ChartActiveElement" DocType="DocType.Properties" />
 </Section>
 
 @code {

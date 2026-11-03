@@ -51,7 +51,7 @@ public partial class InteropConstantsTests
     private static HashSet<string> ChartTypeModules() =>
         ChartTypeModuleRegex().Matches(script).Select(m => m.Groups[1].Value).ToHashSet();
 
-    [GeneratedRegex(@"^\s{8}(\w+): \(", RegexOptions.Multiline)]
+    [GeneratedRegex(@"^\s{8}(\w+): (?:async )?\(", RegexOptions.Multiline)]
     private static partial Regex CoreFunctionRegex();
 
     private static HashSet<string> CoreFunctions()

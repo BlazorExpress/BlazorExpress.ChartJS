@@ -1,0 +1,45 @@
+<RadarChart @ref="radarChart" Width="600" OnHover="HandleHoverAsync" />
+
+<p class="mt-3 mb-0">@hoverText</p>
+<p class="mb-0">Hover events received: @hoverEventCount</p>
+
+@code {
+    private RadarChart radarChart = default!;
+    private RadarChartOptions radarChartOptions = default!;
+    private ChartData chartData = default!;
+    private string hoverText = "Move the pointer over a point.";
+    private int hoverEventCount;
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "Speed", "Reliability", "Comfort", "Safety", "Efficiency" },
+            Datasets = new List<IChartDataset>
+            {
+                new RadarChartDataset { Label = "Vehicle A", Data = new List<double?> { 80, 72, 65, 90, 78 }, BackgroundColor = "rgba(54, 162, 235, 0.2)", BorderColor = "rgb(54, 162, 235)", BorderWidth = 2, Fill = true },
+                new RadarChartDataset { Label = "Vehicle B", Data = new List<double?> { 68, 85, 80, 74, 88 }, BackgroundColor = "rgba(255, 159, 64, 0.2)", BorderColor = "rgb(255, 159, 64)", BorderWidth = 2, Fill = true },
+            },
+        };
+        radarChartOptions = new RadarChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await radarChart.InitializeAsync(chartData, radarChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    // Called only when the hovered point changes, and once when the pointer leaves all points.
+    private Task HandleHoverAsync(ChartHoverEventArgs eventArgs)
+    {
+        hoverEventCount++;
+        hoverText = eventArgs.DatasetIndex is null
+            ? "The pointer left all points."
+            : $"Hovering: {eventArgs.DatasetLabel}, {eventArgs.Label} (value {eventArgs.Value})";
+
+        return Task.CompletedTask;
+    }
+}
