@@ -59,7 +59,7 @@
     {
         chartData = CreateChartData();
         await scatterChart.UpdateAsync(chartData, scatterChartOptions);
-        status = "Applied new data with the default animation, drawn from the chart's starting state.";
+        status = "Applied new data with the default animation: the chart moved from its current values to the new ones.";
     }
 
     private async Task RefreshWithoutAnimationAsync()
@@ -81,7 +81,7 @@
         await scatterChart.StopAsync();
         await scatterChart.ResetAsync();
         await scatterChart.RenderAsync();
-        status = "Reset the chart to its starting state, before its first animation. Click Refresh (animated) to see an update animate from here.";
+        status = "Reset the chart to its starting state, before its first animation. Click Refresh (animated) to see the chart regrow from here.";
     }
 
     private async Task StopAsync()

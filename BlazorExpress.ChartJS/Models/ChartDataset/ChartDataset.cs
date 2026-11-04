@@ -73,6 +73,24 @@ public class ChartDataset<TData> : IChartDataset
     public bool Hidden { get; set; }
 
     /// <summary>
+    /// Gets or sets a stable identity key for the dataset. It is not drawn on the chart.
+    /// <para>
+    /// On <c>UpdateAsync</c>, a dataset is matched to a dataset already on the chart by this key when set,
+    /// otherwise by a unique <see cref="Label"/>, otherwise by order of occurrence. A matched dataset animates from its
+    /// current values to the new ones and keeps the visibility changed at runtime. Set a key when a series keeps its
+    /// identity while its label changes, for example on relabelling or localization. An empty key counts as not set.
+    /// </para>
+    /// <para>
+    /// Default value is <see langword="null"/>.
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets a stable identity key for the dataset. It is not drawn on the chart. On <code>UpdateAsync</code>, datasets are matched by this key when set, otherwise by a unique <code>Label</code>, otherwise by order of occurrence. A matched dataset animates from its current values and keeps its runtime visibility.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Key { get; set; }
+
+    /// <summary>
     /// The label for the dataset which appears in the legend and tooltips.
     /// <para>
     /// Default value is <see langword="null"/>.

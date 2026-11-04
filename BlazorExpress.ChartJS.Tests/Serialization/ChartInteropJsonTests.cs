@@ -41,6 +41,19 @@ public class ChartInteropJsonTests : BunitContext
 
     [Theory]
     [MemberData(nameof(ChartTestData.ChartTypes), MemberType = typeof(ChartTestData))]
+    public async Task InitializeAsync_SendsDatasetKeyWhenSet(string chartType)
+    {
+        var chartData = ChartTestData.CreateChartData(chartType);
+        SetKey(chartData.Datasets![0], "sales");
+
+        var dataset = (await InitializeAsync(chartType, chartData)).Data.GetProperty("datasets")[0];
+
+        Assert.Equal("sales", dataset.GetProperty("key").GetString());
+        Assert.Equal(datasetProperties[chartType].Append("key").Order(), dataset.EnumerateObject().Select(p => p.Name).Order());
+    }
+
+    [Theory]
+    [MemberData(nameof(ChartTestData.ChartTypes), MemberType = typeof(ChartTestData))]
     public async Task InitializeAsync_SendsDatasetProperties(string chartType)
     {
         var dataset = (await InitializeAsync(chartType)).Data.GetProperty("datasets")[0];
@@ -106,12 +119,16 @@ public class ChartInteropJsonTests : BunitContext
 
     #region Private Methods
 
-    private async Task<SentChart> InitializeAsync(string chartType)
+    // Key is declared on the generic ChartDataset<TData>, so it is set through reflection for every dataset type.
+    private static void SetKey(IChartDataset dataset, string key) =>
+        dataset.GetType().GetProperty(nameof(ChartDataset<double?>.Key))!.SetValue(dataset, key);
+
+    private async Task<SentChart> InitializeAsync(string chartType, ChartData? chartData = null)
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
 
         var chart = ChartTestData.RenderChart(this, chartType);
-        await chart.InitializeAsync(ChartTestData.CreateChartData(chartType), ChartTestData.CreateOptions(chartType));
+        await chart.InitializeAsync(chartData ?? ChartTestData.CreateChartData(chartType), ChartTestData.CreateOptions(chartType));
 
         var invocation = JSInterop.Invocations.Last(i => i.Identifier.EndsWith(".initialize", StringComparison.Ordinal));
 

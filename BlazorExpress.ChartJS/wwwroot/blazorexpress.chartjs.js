@@ -14,7 +14,7 @@ if (!window.blazorexpress.chartjs) {
     const maxAnimationWaitMs = 5000;
 
     // Per-chart state the library keeps beside Chart.js: event options, the .NET reference, and the
-    // visibility changed at runtime, which `update` re-applies after it swaps in new data objects.
+    // visibility changed at runtime, which `update` re-applies after it hands Chart.js the matched and new datasets.
     const chartStates = new WeakMap();
 
     const applyDataLabelsBackgroundColor = (options) => {
@@ -71,10 +71,9 @@ if (!window.blazorexpress.chartjs) {
     const getDataItemCount = (chart) =>
         Math.max(chart.data.labels?.length ?? 0, ...(chart.data.datasets ?? []).map(dataset => dataset?.data?.length ?? 0));
 
-    // A dataset is matched across updates by its label, and a data item by its entry in `labels`.
-    // Missing or duplicate labels fall back to the position. Runs in O(n).
+    // A data item is matched across updates by its entry in `labels`. Missing or duplicate labels fall back
+    // to the position. Runs in O(n).
     const getKeys = (values) => {
-        const isMissing = value => value === undefined || value === null || value === '';
         const counts = new Map();
 
         for (const value of values)
@@ -84,7 +83,24 @@ if (!window.blazorexpress.chartjs) {
         return values.map((value, i) => !isMissing(value) && counts.get(String(value)) === 1 ? `label:${String(value)}` : `#${i}`);
     };
 
-    const getDatasetKeys = (chart) => getKeys((chart.data.datasets ?? []).map(dataset => dataset?.label));
+    // Chart dataset identity across updates (foundation rules): the base is a non-empty `key`, else a non-empty
+    // label, else none, followed by the occurrence of that base in array order. A unique label is `label:Sales#0`
+    // wherever it sits, and duplicate or missing labels pair in order of occurrence. Runs in O(n).
+    const getDatasetIdentityKeys = (datasets) => {
+        const counts = new Map();
+
+        return (datasets ?? []).map(dataset => {
+            const base = !isMissing(dataset?.key) ? `key:${String(dataset.key)}`
+                : !isMissing(dataset?.label) ? `label:${String(dataset.label)}`
+                    : 'none';
+            const occurrence = counts.get(base) ?? 0;
+            counts.set(base, occurrence + 1);
+
+            return `${base}#${occurrence}`;
+        });
+    };
+
+    const getDatasetKeys = (chart) => getDatasetIdentityKeys(chart.data.datasets);
 
     const getDataKeys = (chart) => {
         const labels = chart.data.labels ?? [];
@@ -151,6 +167,10 @@ if (!window.blazorexpress.chartjs) {
 
     const isInRange = (index, count) => Number.isInteger(index) && index >= 0 && index < count;
 
+    const isMissing = value => value === undefined || value === null || value === '';
+
+    const isObject = value => value !== null && typeof value === 'object';
+
     const isVersionBelow = (version, minimum) => {
         const actualParts = String(version).split('.').map(part => parseInt(part, 10) || 0);
         const minimumParts = minimum.split('.').map(part => parseInt(part, 10) || 0);
@@ -162,6 +182,26 @@ if (!window.blazorexpress.chartjs) {
         }
 
         return false;
+    };
+
+    // Reuses the current dataset object for each new dataset with the same identity key and the same `type`.
+    // Chart.js matches metadata by object identity, so it keeps the controller and elements and animates from the
+    // current values. Any other dataset goes in as the new object and grows in from its base.
+    const matchDatasets = (chart, nextDatasets) => {
+        const currentDatasets = chart.data.datasets ?? [];
+        const currentKeys = getDatasetIdentityKeys(currentDatasets);
+        const currentByKey = new Map(currentKeys.map((key, i) => [key, currentDatasets[i]]));
+
+        return getDatasetIdentityKeys(nextDatasets).map((key, i) => {
+            const next = nextDatasets[i];
+            const current = currentByKey.get(key);
+
+            if (!isObject(current) || !isObject(next) || current.type !== next.type)
+                return next;
+
+            replaceDatasetProperties(current, next);
+            return current;
+        });
     };
 
     const recordDataVisibility = (chart, index) =>
@@ -176,8 +216,9 @@ if (!window.blazorexpress.chartjs) {
         getState(chart).pointOverrides.set(JSON.stringify([datasetKey, dataKey]), { datasetKey, dataKey, hidden });
     };
 
-    // Runs after `chart.data` is replaced and before `chart.update`: new dataset objects get new metadata,
-    // so runtime dataset and slice visibility has to be set again. Overrides whose item is gone are dropped.
+    // Runs after `chart.data` is replaced and before `chart.update`: unmatched dataset objects get new metadata,
+    // so runtime dataset and slice visibility has to be set again (a matched dataset keeps its metadata, so setting
+    // it again changes nothing). Overrides whose item is gone are dropped.
     const reapplyVisibilityBeforeUpdate = (chart, previousDataCount) => {
         const state = getState(chart);
 
@@ -224,23 +265,51 @@ if (!window.blazorexpress.chartjs) {
 
         const datasetKeys = getDatasetKeys(chart);
         const dataKeys = getDataKeys(chart);
-        let isChanged = false;
+        const hiddenByPosition = new Map();
 
         for (const [key, override] of [...state.pointOverrides]) {
             const datasetIndex = datasetKeys.indexOf(override.datasetKey);
-            const element = datasetIndex < 0 ? undefined : chart.getDatasetMeta(datasetIndex).data[dataKeys.indexOf(override.dataKey)];
+            const index = dataKeys.indexOf(override.dataKey);
+            const element = datasetIndex < 0 || index < 0 ? undefined : chart.getDatasetMeta(datasetIndex).data[index];
 
-            if (!element) {
+            if (!element)
                 state.pointOverrides.delete(key);
-            }
-            else if (element.hidden !== override.hidden) {
-                element.hidden = override.hidden;
-                isChanged = true;
+            else
+                hiddenByPosition.set(`${datasetIndex}:${index}`, override.hidden);
+        }
+
+        // A matched dataset keeps its bar and point elements, and their `hidden` flag stays with the position.
+        // So every element is set, to its override or to visible, which also clears a flag whose item has moved or gone.
+        let isChanged = false;
+
+        for (let datasetIndex = 0; datasetIndex < datasetKeys.length; datasetIndex++) {
+            const elements = chart.getDatasetMeta(datasetIndex).data;
+
+            for (let index = 0; index < elements.length; index++) {
+                const hidden = hiddenByPosition.get(`${datasetIndex}:${index}`) ?? false;
+
+                if (elements[index] && !!elements[index].hidden !== hidden) {
+                    elements[index].hidden = hidden;
+                    isChanged = true;
+                }
             }
         }
 
         if (isChanged)
             chart.render();
+    };
+
+    // Makes `target` hold exactly the own properties of `source`, so the result equals a fresh render of the new
+    // dataset and a property removed in C# no longer applies (foundation rules: chart dataset identity across
+    // updates). `__proto__` is skipped, so a payload property cannot change the object's prototype.
+    const replaceDatasetProperties = (target, source) => {
+        for (const name of Object.keys(target))
+            if (!Object.prototype.hasOwnProperty.call(source, name))
+                delete target[name];
+
+        for (const name of Object.keys(source))
+            if (name !== '__proto__')
+                target[name] = source[name];
     };
 
     // ResizeAsync sends CSS declarations such as "width:300px"; a style property needs only the value ("300px").
@@ -574,6 +643,10 @@ if (!window.blazorexpress.chartjs) {
                 applyEventHandlers(options);
 
                 const previousDataCount = getDataItemCount(chart);
+
+                // Matched datasets keep their object, so Chart.js animates them from their current values.
+                if (data)
+                    data.datasets = matchDatasets(chart, data.datasets ?? []);
 
                 chart.data = data;
                 getState(chart).lastHoverKey = '';

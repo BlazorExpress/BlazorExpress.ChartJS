@@ -13,6 +13,22 @@ public class UpdateModeTests : BunitContext
     #region Public Methods
 
     [Theory]
+    [MemberData(nameof(ChartTestData.ChartTypesAndBase), MemberType = typeof(ChartTestData))]
+    public async Task UpdateAsync_SendsDatasetKey(string chartType)
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        var chart = ChartTestData.RenderChart(this, chartType);
+        var chartData = ChartTestData.CreateChartData(chartType);
+        var dataset = chartData.Datasets![0];
+        dataset.GetType().GetProperty(nameof(ChartDataset<double?>.Key))!.SetValue(dataset, "sales");
+
+        await chart.UpdateAsync(chartData, ChartTestData.CreateOptions(chartType), ChartUpdateMode.Default);
+
+        var sentDataset = ChartTestData.Serialize(UpdateInvocation().Arguments[2]).GetProperty("datasets")[0];
+        Assert.Equal("sales", sentDataset.GetProperty("key").GetString());
+    }
+
+    [Theory]
     [MemberData(nameof(ChartTypesAndModes))]
     public async Task UpdateAsync_WithMode_SendsChartJsMode(string chartType, ChartUpdateMode mode)
     {
