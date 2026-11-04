@@ -165,6 +165,8 @@ if (!window.blazorexpress.chartjs) {
         }).catch(() => { });
     };
 
+    const isDirectUpdateMode = mode => mode === 'none' || mode === 'reset';
+
     const isInRange = (index, count) => Number.isInteger(index) && index >= 0 && index < count;
 
     const isMissing = value => value === undefined || value === null || value === '';
@@ -645,7 +647,9 @@ if (!window.blazorexpress.chartjs) {
                 const previousDataCount = getDataItemCount(chart);
 
                 // Matched datasets keep their object, so Chart.js animates them from their current values.
-                if (data)
+                // The direct modes ('none', 'reset') have no animation to keep, and Chart.js applies a reused
+                // controller's cached shared element options in them without refreshing it, so they get the new objects.
+                if (data && !isDirectUpdateMode(mode))
                     data.datasets = matchDatasets(chart, data.datasets ?? []);
 
                 chart.data = data;

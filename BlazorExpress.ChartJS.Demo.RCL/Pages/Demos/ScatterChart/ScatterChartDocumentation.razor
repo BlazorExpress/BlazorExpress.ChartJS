@@ -79,7 +79,7 @@
 <Section Class="p-0" Size="HeadingSize.H4" Name="Show and hide datasets" PageUrl="@pageUrl" Link="show-and-hide-datasets">
     <Block>
         Show and hide whole datasets or single points from C#, check whether a dataset is visible and count the visible datasets.
-        Visibility changed at runtime, from C# or a legend click, stays in place when <code>UpdateAsync</code> refreshes the data, because datasets are matched by <code>Key</code>, label or order, and points by label.
+        Visibility changed at runtime, from C# or a legend click, stays in place when <code>UpdateAsync</code> refreshes the data, because datasets are matched by <code>Key</code>, or else by label, and points by label.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
@@ -150,7 +150,7 @@
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Call <code>UpdateAsync(data, options)</code> for the default animated update, or pass <code>ChartUpdateMode.None</code> to apply the change at once. An animated update moves each matched dataset from its current values to the new ones, and a new dataset grows in. Datasets are matched by <code>Key</code> when set, otherwise by a unique <code>Label</code>, otherwise by order.</li>
+                <li>Call <code>UpdateAsync(data, options)</code> for the default animated update, or pass <code>ChartUpdateMode.None</code> to apply the change at once. An animated update moves each matched dataset from its current values to the new ones, and a new dataset grows in. Datasets are matched by <code>Key</code> when set, otherwise by <code>Label</code>; datasets that share a label, or have none, pair in order.</li>
                 <li>Call <code>StopAsync()</code> to end any running animation; the chart stays as it was drawn at that moment. Call <code>UpdateAsync</code> again to animate to new values.</li>
                 <li>Call <code>ResetAsync()</code> to put the chart back in its starting state, before its first animation, and <code>RenderAsync()</code> to draw that state. Stop any running animation first, or its next frame draws over the reset. Call <code>ResetAsync()</code> and then <code>UpdateAsync(data, options)</code> to regrow the chart from its starting state, as on first render.</li>
                 <li>Call <code>ClearAsync()</code> to clear the canvas; <code>RenderAsync()</code> draws the chart again. A running animation draws over the cleared canvas on its next frame, so stop it first or wait for it to end.</li>

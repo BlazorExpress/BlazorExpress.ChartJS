@@ -529,7 +529,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// </summary>
     /// <remarks>This method updates the chart by invoking a JavaScript function to render the new data and
     /// options. Ensure that <paramref name="chartData"/> contains valid datasets to avoid no operation.
-    /// With animation on, a dataset that matches one already on the chart animates from its current values to the new ones, and any other dataset grows in from its base. Datasets are matched by <see cref="ChartDataset{TData}.Key" /> when set, otherwise by a unique label, otherwise by order of occurrence. A matched dataset keeps the visibility changed at runtime, and slices, bars and points keep theirs while their label is still present. To replay the initial animation instead, call <see cref="ResetAsync" /> and then update.</remarks>
+    /// With animation on, a dataset that matches one already on the chart animates from its current values to the new ones, and any other dataset grows in from its base. Datasets are matched by <see cref="ChartDataset{TData}.Key" /> when set, otherwise by label; datasets that share a label, or have none, pair in order of occurrence. A matched dataset keeps the visibility changed at runtime, and slices, bars and points keep theirs while their label is still present. To replay the initial animation instead, call <see cref="ResetAsync" /> and then update.</remarks>
     /// <param name="chartData">The data to be displayed on the chart. Must not be null and must contain at least one dataset.</param>
     /// <param name="chartOptions">The options to configure the chart's appearance and behavior.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
@@ -543,7 +543,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// For example, <see cref="ChartUpdateMode.None" /> applies the changes without animation.
     /// </summary>
     /// <remarks>
-    /// With animation on, a dataset that matches one already on the chart animates from its current values to the new ones, and any other dataset grows in from its base. Datasets are matched by <see cref="ChartDataset{TData}.Key" /> when set, otherwise by a unique label, otherwise by order of occurrence. A matched dataset keeps the visibility changed at runtime, and slices, bars and points keep theirs while their label is still present. To replay the initial animation instead, call <see cref="ResetAsync" /> and then update.
+    /// With animation on, a dataset that matches one already on the chart animates from its current values to the new ones, and any other dataset grows in from its base. Datasets are matched by <see cref="ChartDataset{TData}.Key" /> when set, otherwise by label; datasets that share a label, or have none, pair in order of occurrence. A matched dataset keeps the visibility changed at runtime, and slices, bars and points keep theirs while their label is still present. To replay the initial animation instead, call <see cref="ResetAsync" /> and then update.
     /// <para>
     /// The 2-argument overload calls this one with <see cref="ChartUpdateMode.Default" />. A derived chart that overrides this
     /// overload must call <c>base.UpdateAsync(chartData, chartOptions, mode)</c>, not the 2-argument overload, which would call back into the override.
