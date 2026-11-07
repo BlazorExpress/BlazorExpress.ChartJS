@@ -1,0 +1,72 @@
+<div class="columns is-multiline">
+    <div class="column is-half">
+        <p class="mb-2"><code>Mode = InteractionMode.Index</code>, <code>Intersect = true</code>, <code>Position = "average"</code>, custom color boxes</p>
+        <PieChart @ref="pieChart1" />
+    </div>
+    <div class="column is-half">
+        <p class="mb-2"><code>Mode = InteractionMode.Nearest</code>, <code>Intersect = false</code>, <code>Position = "nearest"</code>, padding, corners, border and point style</p>
+        <PieChart @ref="pieChart2" />
+    </div>
+</div>
+
+@code {
+    private PieChart pieChart1 = default!;
+    private PieChart pieChart2 = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var indexOptions = new PieChartOptions();
+            indexOptions.Plugins.Tooltip = new ChartPluginsTooltip
+            {
+                Mode = InteractionMode.Index,
+                Intersect = true,
+                Position = "average",
+                BoxWidth = 20,
+                BoxHeight = 10,
+                BoxPadding = 6,
+                MultiKeyBackground = "rgb(255, 255, 255)",
+            };
+            await pieChart1.InitializeAsync(CreateChartData(), indexOptions);
+
+            var nearestOptions = new PieChartOptions();
+            nearestOptions.Plugins.Tooltip = new ChartPluginsTooltip
+            {
+                Mode = InteractionMode.Nearest,
+                Intersect = false,
+                Position = "nearest",
+                Padding = 12,
+                CornerRadius = 10,
+                BorderColor = "rgb(255, 205, 86)",
+                BorderWidth = 2,
+                UsePointStyle = true,
+            };
+            await pieChart2.InitializeAsync(CreateChartData(), nearestOptions);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    // Two rings, so the index mode shows one line per ring.
+    private static ChartData CreateChartData() =>
+        new()
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge", "Opera" },
+            Datasets = new List<IChartDataset>
+            {
+                new PieChartDataset
+                {
+                    Label = "2023",
+                    Data = new List<double?> { 40, 25, 20, 10, 5 },
+                    BackgroundColor = Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbaString(0.6)).ToList(),
+                },
+                new PieChartDataset
+                {
+                    Label = "2024",
+                    Data = new List<double?> { 45, 22, 18, 12, 3 },
+                    BackgroundColor = Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList(),
+                },
+            },
+        };
+}

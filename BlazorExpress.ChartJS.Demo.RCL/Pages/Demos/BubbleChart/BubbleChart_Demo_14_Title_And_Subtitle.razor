@@ -1,0 +1,85 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Title and subtitle on top: <code>Position = "top"</code></p>
+        <BubbleChart @ref="topChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Title on the left, subtitle at the bottom: <code>Position = "left"</code>, <code>Position = "bottom"</code></p>
+        <BubbleChart @ref="sideChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Start-aligned with padding: <code>Align = "start"</code>, <code>Padding</code>, <code>FullSize = false</code></p>
+        <BubbleChart @ref="alignedChart" />
+    </div>
+</div>
+
+@code {
+    private BubbleChart topChart = default!;
+    private BubbleChart sideChart = default!;
+    private BubbleChart alignedChart = default!;
+    private BubbleChartOptions topOptions = default!;
+    private BubbleChartOptions sideOptions = default!;
+    private BubbleChartOptions alignedOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        // title and subtitle Color default to "black"
+        topOptions = new BubbleChartOptions();
+        topOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Study time vs score", Position = "top" };
+        topOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Two classes, eight students each" };
+
+        sideOptions = new BubbleChartOptions();
+        sideOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Study time vs score", Position = "left" };
+        sideOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Two classes, eight students each", Position = "bottom" };
+
+        alignedOptions = new BubbleChartOptions();
+        alignedOptions.Plugins.Title = new ChartPluginsTitle
+        {
+            Display = true,
+            Text = "Study time vs score",
+            Align = "start",
+            Padding = new() { Top = 10, Bottom = 20 },
+            FullSize = false, // the title spans the chart area only, not the full canvas width
+            Font = new ChartFont { Size = 16 }
+        };
+        alignedOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Two classes, eight students each", Align = "start" };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await topChart.InitializeAsync(GetChartData(), topOptions);
+            await sideChart.InitializeAsync(GetChartData(), sideOptions);
+            await alignedChart.InitializeAsync(GetChartData(), alignedOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Datasets =
+        [
+            CreateDataset("Class A", 0, [new(1, 52, 8), new(2, 58, 12), new(3, 61, 6), new(4, 70, 15), new(5, 68, 10), new(6, 77, 7), new(7, 84, 14), new(8, 88, 9)]),
+            CreateDataset("Class B", 1, [new(1, 45, 14), new(2, 55, 10), new(3, 50, 16), new(4, 63, 7), new(5, 72, 12), new(6, 70, 15), new(7, 79, 8), new(8, 92, 13)])
+        ]
+    };
+
+    private static BubbleChartDataset CreateDataset(string label, int colorIndex, List<BubbleChartDataPoint> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new BubbleChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = [c.ToRgbaString(0.5)],
+            BorderColor = [c.ToRgbString()],
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

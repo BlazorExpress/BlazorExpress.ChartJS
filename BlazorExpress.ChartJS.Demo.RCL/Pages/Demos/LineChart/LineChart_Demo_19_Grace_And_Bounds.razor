@@ -1,0 +1,108 @@
+<div class="columns is-multiline">
+    <div class="column is-half">
+        <p class="has-text-weight-semibold mb-2">y <code>Grace = "10%"</code>: 10% of half the data range added above and below</p>
+        <LineChart @ref="gracePercentChart" />
+    </div>
+    <div class="column is-half">
+        <p class="has-text-weight-semibold mb-2">y <code>Grace = 5</code>: 5 data units added above and below</p>
+        <LineChart @ref="graceUnitsChart" />
+    </div>
+    <div class="column is-half">
+        <p class="has-text-weight-semibold mb-2">y <code>Bounds = "data"</code> (ends at the lowest point, not a tick), <code>SuggestedMax = 100</code></p>
+        <LineChart @ref="boundsChart" />
+    </div>
+    <div class="column is-half">
+        <p class="has-text-weight-semibold mb-2">Stacked axes: <code>Stack = "demo"</code>, <code>StackWeight</code> 2 and 1, <code>Offset = true</code></p>
+        <LineChart @ref="stackedAxesChart" />
+    </div>
+</div>
+
+@code {
+    private LineChart gracePercentChart = default!;
+    private LineChart graceUnitsChart = default!;
+    private LineChart boundsChart = default!;
+    private LineChart stackedAxesChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // the y-axis starts at the data minimum here (BeginAtZero = false), so grace shows on both ends
+            var gracePercentOptions = new LineChartOptions();
+            gracePercentOptions.Scales.Y!.BeginAtZero = false;
+            gracePercentOptions.Scales.Y!.Grace = "10%"; // percentage of half the data range
+
+            var graceUnitsOptions = new LineChartOptions();
+            graceUnitsOptions.Scales.Y!.BeginAtZero = false;
+            graceUnitsOptions.Scales.Y!.Grace = 5; // data units
+
+            var boundsOptions = new LineChartOptions();
+            boundsOptions.Scales.Y!.BeginAtZero = false;
+            boundsOptions.Scales.Y!.Bounds = "data"; // Chart.js default is "ticks"
+            boundsOptions.Scales.Y!.SuggestedMin = 30; // ignored: the data already goes lower (23)
+            boundsOptions.Scales.Y!.SuggestedMax = 100; // extends the axis above the highest point (83)
+
+            // y and y2 share the left edge: y takes 2/3 of the height, y2 the other 1/3
+            var stackedAxesOptions = new LineChartOptions();
+            stackedAxesOptions.Scales.Y!.Position = "left";
+            stackedAxesOptions.Scales.Y!.Stack = "demo";
+            stackedAxesOptions.Scales.Y!.StackWeight = 2;
+            stackedAxesOptions.Scales.Y!.Offset = true;
+            stackedAxesOptions.Scales.Y!.Border = new ChartAxesBorder { Color = ColorUtility.CategoricalTwelveColors[0] };
+            stackedAxesOptions.Scales.AdditionalAxes = new()
+            {
+                ["y2"] = new ChartAxes
+                {
+                    Type = ChartAxesType.Linear,
+                    Position = "left",
+                    Stack = "demo",
+                    StackWeight = 1,
+                    Offset = true, // extra space between the two stacked axes
+                    Border = new ChartAxesBorder { Color = ColorUtility.CategoricalTwelveColors[1] }
+                }
+            };
+
+            await gracePercentChart.InitializeAsync(GetChartData([23, 41, 37, 83, 52, 66]), gracePercentOptions);
+            await graceUnitsChart.InitializeAsync(GetChartData([23, 41, 37, 83, 52, 66]), graceUnitsOptions);
+            await boundsChart.InitializeAsync(GetChartData([23, 41, 37, 83, 52, 66]), boundsOptions);
+            await stackedAxesChart.InitializeAsync(GetStackedChartData(), stackedAxesOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static readonly List<string> labels = ["January", "February", "March", "April", "May", "June"];
+
+    private static ChartData GetChartData(List<double?> data) => new()
+    {
+        Labels = labels.ToList(),
+        Datasets = [CreateDataset("Visitors", 0, data)]
+    };
+
+    private static ChartData GetStackedChartData()
+    {
+        var visitors = CreateDataset("Visitors (y)", 0, [23, 41, 37, 83, 52, 66]);
+
+        var signUps = CreateDataset("Sign-ups (y2)", 1, [4, 7, 5, 9, 6, 8]);
+        signUps.YAxisID = "y2";
+
+        return new ChartData { Labels = labels.ToList(), Datasets = [visitors, signUps] };
+    }
+
+    private static LineChartDataset CreateDataset(string label, int colorIndex, List<double?> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new LineChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.5),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

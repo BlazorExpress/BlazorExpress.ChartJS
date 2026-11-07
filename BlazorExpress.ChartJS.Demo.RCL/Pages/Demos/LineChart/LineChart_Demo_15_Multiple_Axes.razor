@@ -1,0 +1,74 @@
+<div class="columns is-multiline">
+    <div class="column is-half">
+        <p class="has-text-weight-semibold mb-2">Second y-axis: <code>AdditionalAxes["y1"]</code> on the right, <code>YAxisID = "y1"</code></p>
+        <LineChart @ref="rightAxisChart" />
+    </div>
+    <div class="column is-half">
+        <p class="has-text-weight-semibold mb-2">Both on the left: <code>Position = "left"</code>, <code>Weight = 1</code> puts y1 outside y</p>
+        <LineChart @ref="leftAxesChart" />
+    </div>
+</div>
+
+@code {
+    private LineChart rightAxisChart = default!;
+    private LineChart leftAxesChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await rightAxisChart.InitializeAsync(GetChartData(), GetChartOptions("right", null));
+            await leftAxesChart.InitializeAsync(GetChartData(), GetChartOptions("left", 1));
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static LineChartOptions GetChartOptions(string secondAxisPosition, double? secondAxisWeight)
+    {
+        var options = new LineChartOptions { Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false } };
+
+        options.Scales.Y!.Position = "left";
+        options.Scales.Y!.Ticks = new ChartAxesTicks { Color = ColorUtility.CategoricalTwelveColors[0] };
+        options.Scales.AdditionalAxes = new()
+        {
+            ["y1"] = new ChartAxes
+            {
+                Type = ChartAxesType.Linear,
+                Position = secondAxisPosition,
+                Weight = secondAxisWeight, // on the same edge, the axis with the higher weight is further from the chart
+                Grid = new ChartAxesGrid { DrawOnChartArea = false }, // keep only the grid lines of y
+                Ticks = new ChartAxesTicks { Color = ColorUtility.CategoricalTwelveColors[1] }
+            }
+        };
+
+        return options;
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData()
+    {
+        var temperature = CreateDataset("Temperature °C (y)", 0, [3, 5, 9, 14, 18, 22, 25]);
+
+        var rainfall = CreateDataset("Rainfall mm (y1)", 1, [78, 61, 55, 47, 52, 38, 30]);
+        rainfall.YAxisID = "y1";
+
+        return new ChartData { Labels = ["January", "February", "March", "April", "May", "June", "July"], Datasets = [temperature, rainfall] };
+    }
+
+    private static LineChartDataset CreateDataset(string label, int colorIndex, List<double?> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new LineChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.5),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

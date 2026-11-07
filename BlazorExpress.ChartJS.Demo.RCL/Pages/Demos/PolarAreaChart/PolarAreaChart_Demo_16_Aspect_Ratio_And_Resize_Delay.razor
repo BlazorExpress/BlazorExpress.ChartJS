@@ -1,0 +1,66 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>AspectRatio = 1</code> (Chart.js default for polar area)</p>
+        <PolarAreaChart @ref="squareChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>AspectRatio = 2</code>, <code>ResizeDelay = 250</code></p>
+        <PolarAreaChart @ref="wideChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>AspectRatio = 3</code></p>
+        <PolarAreaChart @ref="extraWideChart" />
+    </div>
+</div>
+
+@code {
+    private PolarAreaChart squareChart = default!;
+    private PolarAreaChart wideChart = default!;
+    private PolarAreaChart extraWideChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await squareChart.InitializeAsync(GetChartData(), new PolarAreaChartOptions { MaintainAspectRatio = true, AspectRatio = 1 });
+
+            // ResizeDelay waits 250 ms after the last resize before redrawing; resize the window to see it.
+            await wideChart.InitializeAsync(GetChartData(), new PolarAreaChartOptions { MaintainAspectRatio = true, AspectRatio = 2, ResizeDelay = 250 });
+
+            await extraWideChart.InitializeAsync(GetChartData(), new PolarAreaChartOptions { MaintainAspectRatio = true, AspectRatio = 3 });
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() =>
+        new()
+        {
+            Labels = ["North", "East", "South", "West", "Central"],
+            Datasets = [CreateDataset([11, 16, 7, 3, 14])]
+        };
+
+    private static PolarAreaChartDataset CreateDataset(List<double?> data)
+    {
+        var backgroundColors = new List<string>();
+        var borderColors = new List<string>();
+
+        for (var index = 0; index < data.Count; index++)
+        {
+            var c = ColorUtility.CategoricalTwelveColors[index].ToColor();
+            backgroundColors.Add(c.ToRgbaString(0.5));
+            borderColors.Add(c.ToRgbString());
+        }
+
+        return new PolarAreaChartDataset
+        {
+            Label = "Sales",
+            Data = data,
+            BackgroundColor = backgroundColors,
+            BorderColor = borderColors
+        };
+    }
+
+    #endregion Data Preparation
+}

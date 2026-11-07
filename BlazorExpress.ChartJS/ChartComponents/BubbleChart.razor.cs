@@ -143,11 +143,14 @@ public partial class BubbleChart : ChartComponentBase
     /// <param name="chartOptions">The options to configure the chart's appearance and behavior.</param>
     /// <param name="plugins">An optional array of plugin identifiers to enhance the chart's functionality.</param>
     /// <returns>A task that represents the asynchronous initialization operation.</returns>
+    /// <exception cref="ArgumentException">An additional axis in <see cref="Scales.AdditionalAxes" /> has an empty ID, or uses the ID <c>x</c> or <c>y</c> while <see cref="Scales.X" /> or <see cref="Scales.Y" /> is set. Thrown before anything is sent to the browser.</exception>
     [AddedVersion("1.0.0")]
     [Description("Asynchronously initializes the chart with the specified data and options.")]
     [MethodReturnTypeName(nameof(Task))]
     public override async Task InitializeAsync(ChartData chartData, IChartOptions chartOptions, string[]? plugins = null)
     {
+        ChartOptionsValidator.ThrowIfInvalid(chartOptions);
+
         if (chartData is null)
             throw new ArgumentNullException(nameof(chartData));
 
@@ -180,16 +183,19 @@ public partial class BubbleChart : ChartComponentBase
     /// Asynchronously updates the chart with the specified data and options, using a Chart.js update mode.
     /// For example, <see cref="ChartUpdateMode.None" /> applies the changes without animation.
     /// </summary>
-    /// <remarks>Datasets, slices, bars and points hidden or shown at runtime keep that state when their label is still present.</remarks>
+    /// <remarks>With animation on, a dataset that matches one already on the chart animates from its current values to the new ones, and any other dataset grows in from its base. Datasets are matched by <see cref="ChartDataset{TData}.Key" /> when set, otherwise by label; datasets that share a label, or have none, pair in order of occurrence. A matched dataset keeps the visibility changed at runtime, and slices, bars and points keep theirs while their label is still present. To replay the initial animation instead, call <see cref="ResetAsync" /> and then update.</remarks>
     /// <param name="chartData">The data to be displayed on the chart. Must not be null and must contain at least one dataset.</param>
     /// <param name="chartOptions">The options to configure the chart's appearance and behavior.</param>
     /// <param name="mode">The Chart.js update mode.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentException">An additional axis in <see cref="Scales.AdditionalAxes" /> has an empty ID, or uses the ID <c>x</c> or <c>y</c> while <see cref="Scales.X" /> or <see cref="Scales.Y" /> is set. Thrown before anything is sent to the browser.</exception>
     [AddedVersion("1.3.0")]
     [Description("Asynchronously updates the chart with the specified data and options, using a Chart.js update mode.")]
     [MethodReturnTypeName(nameof(Task))]
     public override async Task UpdateAsync(ChartData chartData, IChartOptions chartOptions, ChartUpdateMode mode)
     {
+        ChartOptionsValidator.ThrowIfInvalid(chartOptions);
+
         if (chartData is null)
             throw new ArgumentNullException(nameof(chartData));
 

@@ -1,0 +1,94 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Display = true</code>, <code>Text</code> (default black, size 12, bold)</p>
+        <BarChart @ref="defaultTitleChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Color</code>, <code>Font</code> (size 14, italic), <code>Padding = 10</code></p>
+        <BarChart @ref="styledTitleChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">x <code>TitleAlignment.Start</code>, y <code>TitleAlignment.End</code>, <code>Padding</code> per side</p>
+        <BarChart @ref="alignedTitleChart" />
+    </div>
+</div>
+
+@code {
+    private BarChart defaultTitleChart = default!;
+    private BarChart styledTitleChart = default!;
+    private BarChart alignedTitleChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var defaultTitleOptions = new BarChartOptions();
+            defaultTitleOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Month" };
+            defaultTitleOptions.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Units sold" };
+
+            var styledTitleOptions = new BarChartOptions();
+            styledTitleOptions.Scales.X!.Title = new ChartAxesTitle
+            {
+                Display = true,
+                Text = "Month",
+                Color = ColorUtility.CategoricalTwelveColors[1],
+                Font = new ChartFont { Size = 14, Style = "italic", Weight = "bold" },
+                Padding = 10 // 10 px above and below the title
+            };
+            styledTitleOptions.Scales.Y!.Title = new ChartAxesTitle
+            {
+                Display = true,
+                Text = "Units sold",
+                Color = ColorUtility.CategoricalTwelveColors[2],
+                Font = new ChartFont { Size = 14, Style = "italic", Weight = "bold" },
+                Padding = 10
+            };
+
+            var alignedTitleOptions = new BarChartOptions();
+            alignedTitleOptions.Scales.X!.Title = new ChartAxesTitle
+            {
+                Display = true,
+                Text = "Month",
+                TitleAlignment = TitleAlignment.Start,
+                Padding = new ChartPadding { Top = 12, Bottom = 0 }
+            };
+            alignedTitleOptions.Scales.Y!.Title = new ChartAxesTitle
+            {
+                Display = true,
+                Text = "Units sold",
+                TitleAlignment = TitleAlignment.End,
+                Padding = new ChartPadding { Top = 0, Bottom = 12 }
+            };
+
+            await defaultTitleChart.InitializeAsync(GetChartData(), defaultTitleOptions);
+            await styledTitleChart.InitializeAsync(GetChartData(), styledTitleOptions);
+            await alignedTitleChart.InitializeAsync(GetChartData(), alignedTitleOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData()
+    {
+        var c = ColorUtility.CategoricalTwelveColors[0].ToColor();
+
+        return new ChartData
+        {
+            Labels = ["January", "February", "March", "April", "May", "June"],
+            Datasets =
+            [
+                new BarChartDataset
+                {
+                    Label = "Units sold",
+                    Data = [42, 55, 61, 48, 73, 66],
+                    BackgroundColor = [c.ToRgbaString(0.5)],
+                    BorderColor = [c.ToRgbString()],
+                    BorderWidth = [2]
+                }
+            ]
+        };
+    }
+
+    #endregion Data Preparation
+}

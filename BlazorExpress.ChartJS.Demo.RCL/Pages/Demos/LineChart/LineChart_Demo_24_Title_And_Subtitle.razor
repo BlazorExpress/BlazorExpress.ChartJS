@@ -1,0 +1,79 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Title and subtitle on top (<code>Position = "top"</code>)</p>
+        <LineChart @ref="topChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Title <code>Position = "left"</code>, subtitle <code>Position = "bottom"</code></p>
+        <LineChart @ref="sidesChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Align = "start"</code>, <code>Padding</code> 10 / 20, <code>FullSize = false</code></p>
+        <LineChart @ref="alignedChart" />
+    </div>
+</div>
+
+@code {
+    private LineChart topChart = default!;
+    private LineChart sidesChart = default!;
+    private LineChart alignedChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var topOptions = new LineChartOptions();
+            topOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Website visitors", Position = "top" };
+            topOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "January to June", Position = "top" };
+
+            var sidesOptions = new LineChartOptions();
+            sidesOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Website visitors", Position = "left" };
+            sidesOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Source: web analytics", Position = "bottom" };
+
+            var alignedOptions = new LineChartOptions();
+            alignedOptions.Plugins.Title = new ChartPluginsTitle
+            {
+                Display = true,
+                Text = "Website visitors",
+                Align = "start",
+                Padding = new ChartPadding { Top = 10, Bottom = 20 }, // more space between the title and the legend
+                FullSize = false, // sized to the chart area, so "start" lines up with the y-axis instead of the canvas edge
+                Font = new ChartFont { Size = 18, Weight = "bold" }
+            };
+            alignedOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "January to June", Align = "start" };
+
+            await topChart.InitializeAsync(GetChartData(), topOptions);
+            await sidesChart.InitializeAsync(GetChartData(), sidesOptions);
+            await alignedChart.InitializeAsync(GetChartData(), alignedOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Labels = ["January", "February", "March", "April", "May", "June"],
+        Datasets =
+        [
+            CreateDataset("Desktop", 0, [35, 48, 42, 61, 55, 70]),
+            CreateDataset("Mobile", 1, [22, 30, 38, 33, 46, 41])
+        ]
+    };
+
+    private static LineChartDataset CreateDataset(string label, int colorIndex, List<double?> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new LineChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.5),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

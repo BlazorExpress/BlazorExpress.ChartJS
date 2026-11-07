@@ -1,0 +1,53 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="mb-2"><code>AspectRatio = 1</code> (the doughnut default)</p>
+        <DoughnutChart @ref="doughnutChart1" />
+    </div>
+    <div class="column is-two-thirds">
+        <p class="mb-2"><code>AspectRatio = 2</code>, <code>DevicePixelRatio = 2</code></p>
+        <DoughnutChart @ref="doughnutChart2" />
+    </div>
+    <div class="column is-full">
+        <p class="mb-2"><code>AspectRatio = 3</code>, <code>ResizeDelay = 300</code> (resize the window to see the delay)</p>
+        <DoughnutChart @ref="doughnutChart3" />
+    </div>
+</div>
+
+@code {
+    private DoughnutChart doughnutChart1 = default!;
+    private DoughnutChart doughnutChart2 = default!;
+    private DoughnutChart doughnutChart3 = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await doughnutChart1.InitializeAsync(CreateChartData(), new DoughnutChartOptions { MaintainAspectRatio = true, AspectRatio = 1 });
+
+            var wideOptions = new DoughnutChartOptions { MaintainAspectRatio = true, AspectRatio = 2, DevicePixelRatio = 2 };
+            wideOptions.Plugins.Legend.Position = "right";
+            await doughnutChart2.InitializeAsync(CreateChartData(), wideOptions);
+
+            var widestOptions = new DoughnutChartOptions { MaintainAspectRatio = true, AspectRatio = 3, ResizeDelay = 300 };
+            widestOptions.Plugins.Legend.Position = "right";
+            await doughnutChart3.InitializeAsync(CreateChartData(), widestOptions);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData CreateChartData() =>
+        new()
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge", "Opera" },
+            Datasets = new List<IChartDataset>
+            {
+                new DoughnutChartDataset
+                {
+                    Label = "Visitors",
+                    Data = new List<double?> { 45, 25, 15, 10, 5 },
+                    BackgroundColor = Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList(),
+                },
+            },
+        };
+}

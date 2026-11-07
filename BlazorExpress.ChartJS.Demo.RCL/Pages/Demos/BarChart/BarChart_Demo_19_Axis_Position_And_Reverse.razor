@@ -1,0 +1,70 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Position: x <code>Position = "top"</code>, y <code>Position = "right"</code></p>
+        <BarChart @ref="positionChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Reverse: y <code>Reverse = true</code> (bars hang from the top)</p>
+        <BarChart @ref="reverseChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">x <code>Reverse = true</code>, y <code>Display = false</code></p>
+        <BarChart @ref="hiddenAxisChart" />
+    </div>
+</div>
+
+@code {
+    private BarChart positionChart = default!;
+    private BarChart reverseChart = default!;
+    private BarChart hiddenAxisChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var positionOptions = new BarChartOptions();
+            positionOptions.Scales.X!.Position = "top";
+            positionOptions.Scales.Y!.Position = "right";
+
+            var reverseOptions = new BarChartOptions();
+            reverseOptions.Scales.Y!.Reverse = true;
+
+            var hiddenAxisOptions = new BarChartOptions();
+            hiddenAxisOptions.Scales.X!.Reverse = true; // June first, January last
+            hiddenAxisOptions.Scales.Y!.Display = false; // no y labels, ticks or grid lines
+
+            await positionChart.InitializeAsync(GetChartData(), positionOptions);
+            await reverseChart.InitializeAsync(GetChartData(), reverseOptions);
+            await hiddenAxisChart.InitializeAsync(GetChartData(), hiddenAxisOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Labels = ["January", "February", "March", "April", "May", "June"],
+        Datasets =
+        [
+            CreateDataset("Product A", 0, [35, 48, 42, 61, 55, 70]),
+            CreateDataset("Product B", 1, [22, 30, 38, 33, 46, 41])
+        ]
+    };
+
+    private static BarChartDataset CreateDataset(string label, int colorIndex, List<double?> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new BarChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = [c.ToRgbaString(0.5)],
+            BorderColor = [c.ToRgbString()],
+            BorderWidth = [2]
+        };
+    }
+
+    #endregion Data Preparation
+}

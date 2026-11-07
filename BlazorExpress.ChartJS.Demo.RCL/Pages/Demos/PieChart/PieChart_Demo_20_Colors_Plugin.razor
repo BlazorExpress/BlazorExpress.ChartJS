@@ -1,0 +1,57 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Colors = new() { Enabled = true }</code>, dataset sets no colors: Chart.js palette</p>
+        <PieChart @ref="pieChart1" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Colors = new() { Enabled = false }</code>, dataset sets no colors: Chart.js grey</p>
+        <PieChart @ref="pieChart2" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Colors = new() { ForceOverride = true }</code>: the palette replaces the dataset colors</p>
+        <PieChart @ref="pieChart3" />
+    </div>
+</div>
+
+@code {
+    private PieChart pieChart1 = default!;
+    private PieChart pieChart2 = default!;
+    private PieChart pieChart3 = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var enabledOptions = new PieChartOptions();
+            enabledOptions.Plugins.Colors = new() { Enabled = true };
+            await pieChart1.InitializeAsync(CreateChartData(setColors: false), enabledOptions);
+
+            var disabledOptions = new PieChartOptions();
+            disabledOptions.Plugins.Colors = new() { Enabled = false };
+            await pieChart2.InitializeAsync(CreateChartData(setColors: false), disabledOptions);
+
+            var overrideOptions = new PieChartOptions();
+            overrideOptions.Plugins.Colors = new() { Enabled = true, ForceOverride = true };
+            await pieChart3.InitializeAsync(CreateChartData(setColors: true), overrideOptions);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData CreateChartData(bool setColors) =>
+        new()
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge", "Opera" },
+            Datasets = new List<IChartDataset>
+            {
+                new PieChartDataset
+                {
+                    Label = "Visitors",
+                    Data = new List<double?> { 45, 25, 15, 10, 5 },
+                    BackgroundColor = setColors
+                        ? Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList()
+                        : null,
+                },
+            },
+        };
+}

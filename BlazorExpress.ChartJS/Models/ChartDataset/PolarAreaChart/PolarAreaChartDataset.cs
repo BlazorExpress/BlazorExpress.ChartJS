@@ -201,5 +201,34 @@ public class PolarAreaChartDataset : ChartDataset<double?>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? HoverBorderWidth { get; set; }
 
+    /// <summary>
+    /// The gap between arcs, in pixels. <see cref="SpacingMode" /> sets how the gap is measured.
+    /// <para>
+    /// Default value is <see langword="null" /> (Chart.js uses 0).
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/polar.html" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("The gap between arcs, in pixels. SpacingMode sets how the gap is measured.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("double?")]
+    public double? Spacing { get; set; }
+
+    /// <summary>
+    /// How the spacing between arcs is measured: <c>"angular"</c> keeps an equal angle, <c>"proportional"</c> scales with each arc,
+    /// and <c>"parallel"</c> keeps the edges of neighbouring arcs parallel.
+    /// <para>
+    /// Default value is <see langword="null" /> (Chart.js uses <c>"proportional"</c>).
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/polar.html" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("How the spacing between arcs is measured: \"angular\", \"proportional\" or \"parallel\".")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("string?")]
+    public string? SpacingMode { get; set; }
+
     #endregion
 }

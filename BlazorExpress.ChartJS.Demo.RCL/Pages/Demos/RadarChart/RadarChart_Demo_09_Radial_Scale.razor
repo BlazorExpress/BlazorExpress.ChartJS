@@ -1,0 +1,92 @@
+<div class="columns is-multiline">
+    <div class="column is-half">
+        <p class="is-size-7 has-text-weight-semibold mb-2">Default: <code>BeginAtZero = true</code></p>
+        <RadarChart @ref="defaultChart" />
+    </div>
+    <div class="column is-half">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>BeginAtZero = false</code> (starts from the data minimum)</p>
+        <RadarChart @ref="dataMinimumChart" />
+    </div>
+    <div class="column is-half">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Min = 60</code>, <code>Max = 100</code>, <code>StepSize = 10</code>, <code>ShowLabelBackdrop = false</code>, <code>Circular = true</code></p>
+        <RadarChart @ref="fixedRangeChart" />
+    </div>
+    <div class="column is-half">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Reverse = true</code>, <code>BeginAtZero = false</code></p>
+        <RadarChart @ref="reverseChart" />
+    </div>
+</div>
+
+@code {
+    private RadarChart defaultChart = default!;
+    private RadarChart dataMinimumChart = default!;
+    private RadarChart fixedRangeChart = default!;
+    private RadarChart reverseChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // The library sends BeginAtZero = true by default, so the r axis starts at 0.
+            await defaultChart.InitializeAsync(GetChartData(), new RadarChartOptions());
+
+            var dataMinimumOptions = new RadarChartOptions
+            {
+                Scales = new RadialScales { R = new ChartRadialAxes { BeginAtZero = false } }
+            };
+            await dataMinimumChart.InitializeAsync(GetChartData(), dataMinimumOptions);
+
+            var fixedRangeOptions = new RadarChartOptions
+            {
+                Scales = new RadialScales
+                {
+                    R = new ChartRadialAxes
+                    {
+                        Min = 60,
+                        Max = 100,
+                        Ticks = new ChartAxesTicks { StepSize = 10, ShowLabelBackdrop = false },
+                        Grid = new ChartAxesGrid { Circular = true }
+                    }
+                }
+            };
+            await fixedRangeChart.InitializeAsync(GetChartData(), fixedRangeOptions);
+
+            var reverseOptions = new RadarChartOptions
+            {
+                Scales = new RadialScales { R = new ChartRadialAxes { BeginAtZero = false, Reverse = true } }
+            };
+            await reverseChart.InitializeAsync(GetChartData(), reverseOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() =>
+        new()
+        {
+            Labels = ["Speed", "Power", "Defense", "Stamina", "Agility", "Skill"],
+            Datasets =
+            [
+                CreateDataset("Team A", [72, 85, 78, 90, 80, 76], 0),
+                CreateDataset("Team B", [80, 74, 88, 82, 70, 84], 1)
+            ]
+        };
+
+    private static RadarChartDataset CreateDataset(string label, List<double?> data, int colorIndex)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new RadarChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.2),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2,
+            Fill = true
+        };
+    }
+
+    #endregion Data Preparation
+}

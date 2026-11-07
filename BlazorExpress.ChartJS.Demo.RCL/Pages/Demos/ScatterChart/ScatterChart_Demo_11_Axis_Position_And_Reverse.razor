@@ -1,0 +1,74 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">x on top, y on the right: <code>Position = "top"</code>, <code>Position = "right"</code></p>
+        <ScatterChart @ref="positionChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Reversed y-axis: <code>Reverse = true</code></p>
+        <ScatterChart @ref="reverseChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Hidden x-axis: <code>Display = false</code></p>
+        <ScatterChart @ref="hiddenAxisChart" />
+    </div>
+</div>
+
+@code {
+    private ScatterChart positionChart = default!;
+    private ScatterChart reverseChart = default!;
+    private ScatterChart hiddenAxisChart = default!;
+    private ScatterChartOptions positionOptions = default!;
+    private ScatterChartOptions reverseOptions = default!;
+    private ScatterChartOptions hiddenAxisOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        positionOptions = new ScatterChartOptions();
+        positionOptions.Scales.X!.Position = "top";
+        positionOptions.Scales.Y!.Position = "right";
+
+        reverseOptions = new ScatterChartOptions();
+        reverseOptions.Scales.Y!.Reverse = true; // largest value at the bottom
+
+        hiddenAxisOptions = new ScatterChartOptions();
+        hiddenAxisOptions.Scales.X!.Display = false; // no ticks, title or grid for x
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await positionChart.InitializeAsync(GetChartData(), positionOptions);
+            await reverseChart.InitializeAsync(GetChartData(), reverseOptions);
+            await hiddenAxisChart.InitializeAsync(GetChartData(), hiddenAxisOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Datasets =
+        [
+            CreateDataset("Group A", 0, [new(5, 12), new(15, 28), new(25, 20), new(35, 42), new(45, 38), new(55, 60), new(65, 52), new(75, 70)]),
+            CreateDataset("Group B", 1, [new(10, 40), new(20, 35), new(30, 55), new(40, 48), new(50, 30), new(60, 45), new(70, 25), new(80, 35)])
+        ]
+    };
+
+    private static ScatterChartDataset CreateDataset(string label, int colorIndex, List<ScatterChartDataPoint> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new ScatterChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.5),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

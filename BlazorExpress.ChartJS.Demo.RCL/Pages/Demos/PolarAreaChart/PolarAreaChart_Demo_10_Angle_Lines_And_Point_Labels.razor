@@ -1,0 +1,101 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2">Default: no angle lines, no point labels</p>
+        <PolarAreaChart @ref="defaultChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>PointLabels.Display = true</code>, <code>CenterPointLabels = true</code>, <code>AngleLines.Display = true</code></p>
+        <PolarAreaChart @ref="centeredChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2">Styled: <code>AngleLines</code> color, width and dash; <code>PointLabels</code> color, font, padding and backdrop</p>
+        <PolarAreaChart @ref="styledChart" />
+    </div>
+</div>
+
+@code {
+    private PolarAreaChart defaultChart = default!;
+    private PolarAreaChart centeredChart = default!;
+    private PolarAreaChart styledChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await defaultChart.InitializeAsync(GetChartData(), new PolarAreaChartOptions());
+
+            var centeredOptions = new PolarAreaChartOptions
+            {
+                Scales = new RadialScales
+                {
+                    R = new ChartRadialAxes
+                    {
+                        AngleLines = new ChartAxesAngleLines { Display = true },
+                        PointLabels = new ChartAxesPointLabels { Display = true, CenterPointLabels = true }
+                    }
+                }
+            };
+            await centeredChart.InitializeAsync(GetChartData(), centeredOptions);
+
+            var styledOptions = new PolarAreaChartOptions
+            {
+                Scales = new RadialScales
+                {
+                    R = new ChartRadialAxes
+                    {
+                        AngleLines = new ChartAxesAngleLines
+                        {
+                            Display = true,
+                            Color = "rgba(222, 61, 130, 0.6)",
+                            LineWidth = 2,
+                            BorderDash = [6, 4]
+                        },
+                        PointLabels = new ChartAxesPointLabels
+                        {
+                            Display = true,
+                            Color = "#4046ca",
+                            Font = new ChartFont { Size = 14 },
+                            Padding = 10,
+                            BackdropColor = "rgba(232, 198, 0, 0.3)",
+                            BorderRadius = 4
+                        }
+                    }
+                }
+            };
+            await styledChart.InitializeAsync(GetChartData(), styledOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() =>
+        new()
+        {
+            Labels = ["North", "East", "South", "West", "Central"],
+            Datasets = [CreateDataset([11, 16, 7, 3, 14])]
+        };
+
+    private static PolarAreaChartDataset CreateDataset(List<double?> data)
+    {
+        var backgroundColors = new List<string>();
+        var borderColors = new List<string>();
+
+        for (var index = 0; index < data.Count; index++)
+        {
+            var c = ColorUtility.CategoricalTwelveColors[index].ToColor();
+            backgroundColors.Add(c.ToRgbaString(0.5));
+            borderColors.Add(c.ToRgbString());
+        }
+
+        return new PolarAreaChartDataset
+        {
+            Label = "Sales",
+            Data = data,
+            BackgroundColor = backgroundColors,
+            BorderColor = borderColors
+        };
+    }
+
+    #endregion Data Preparation
+}

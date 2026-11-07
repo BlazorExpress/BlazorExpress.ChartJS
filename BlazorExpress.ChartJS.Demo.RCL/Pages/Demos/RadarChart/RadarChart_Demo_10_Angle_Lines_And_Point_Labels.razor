@@ -1,0 +1,99 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2">Default angle lines and point labels</p>
+        <RadarChart @ref="defaultChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2">Styled: <code>AngleLines</code> color, width and dash; <code>PointLabels</code> color, font, padding and backdrop</p>
+        <RadarChart @ref="styledChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>AngleLines.Display = false</code>, <code>PointLabels.Display = false</code></p>
+        <RadarChart @ref="hiddenChart" />
+    </div>
+</div>
+
+@code {
+    private RadarChart defaultChart = default!;
+    private RadarChart styledChart = default!;
+    private RadarChart hiddenChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await defaultChart.InitializeAsync(GetChartData(), new RadarChartOptions());
+
+            var styledOptions = new RadarChartOptions
+            {
+                Scales = new RadialScales
+                {
+                    R = new ChartRadialAxes
+                    {
+                        AngleLines = new ChartAxesAngleLines
+                        {
+                            Display = true,
+                            Color = "rgba(222, 61, 130, 0.6)",
+                            LineWidth = 2,
+                            BorderDash = [6, 4]
+                        },
+                        PointLabels = new ChartAxesPointLabels
+                        {
+                            Display = true,
+                            Color = "#4046ca",
+                            Font = new ChartFont { Size = 14 },
+                            Padding = 12,
+                            BackdropColor = "rgba(232, 198, 0, 0.3)",
+                            BorderRadius = 4
+                        }
+                    }
+                }
+            };
+            await styledChart.InitializeAsync(GetChartData(), styledOptions);
+
+            var hiddenOptions = new RadarChartOptions
+            {
+                Scales = new RadialScales
+                {
+                    R = new ChartRadialAxes
+                    {
+                        AngleLines = new ChartAxesAngleLines { Display = false },
+                        PointLabels = new ChartAxesPointLabels { Display = false }
+                    }
+                }
+            };
+            await hiddenChart.InitializeAsync(GetChartData(), hiddenOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() =>
+        new()
+        {
+            Labels = ["Speed", "Power", "Defense", "Stamina", "Agility", "Skill"],
+            Datasets =
+            [
+                CreateDataset("Team A", [65, 59, 90, 81, 56, 55], 0),
+                CreateDataset("Team B", [28, 48, 40, 19, 96, 27], 1)
+            ]
+        };
+
+    private static RadarChartDataset CreateDataset(string label, List<double?> data, int colorIndex)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new RadarChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.2),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2,
+            Fill = true
+        };
+    }
+
+    #endregion Data Preparation
+}

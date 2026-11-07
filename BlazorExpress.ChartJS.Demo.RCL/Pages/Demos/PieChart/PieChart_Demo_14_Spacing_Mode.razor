@@ -1,0 +1,49 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Spacing = 8</code>, <code>SpacingMode = "angular"</code> (the Chart.js default)</p>
+        <PieChart @ref="pieChart1" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Spacing = 8</code>, <code>SpacingMode = "proportional"</code></p>
+        <PieChart @ref="pieChart2" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Spacing = 8</code>, <code>SpacingMode = "parallel"</code></p>
+        <PieChart @ref="pieChart3" />
+    </div>
+</div>
+
+@code {
+    private PieChart pieChart1 = default!;
+    private PieChart pieChart2 = default!;
+    private PieChart pieChart3 = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await pieChart1.InitializeAsync(CreateChartData("angular"), new PieChartOptions());
+            await pieChart2.InitializeAsync(CreateChartData("proportional"), new PieChartOptions());
+            await pieChart3.InitializeAsync(CreateChartData("parallel"), new PieChartOptions());
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData CreateChartData(string spacingMode) =>
+        new()
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge", "Opera" },
+            Datasets = new List<IChartDataset>
+            {
+                new PieChartDataset
+                {
+                    Label = "Visitors",
+                    Data = new List<double?> { 45, 25, 15, 10, 5 },
+                    BackgroundColor = Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList(),
+                    Spacing = 8,
+                    SpacingMode = spacingMode,
+                },
+            },
+        };
+}

@@ -1,0 +1,66 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Rotation = -90</code> and <code>Circumference = 180</code></p>
+        <DoughnutChart @ref="doughnutChart1" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Rotation = -135</code>, <code>Circumference = 270</code> and <code>Cutout = "70%"</code></p>
+        <DoughnutChart @ref="doughnutChart2" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2">Gauge: one value and a grey remainder, <code>Cutout = "75%"</code>, legend hidden</p>
+        <DoughnutChart @ref="doughnutChart3" />
+    </div>
+</div>
+
+@code {
+    private DoughnutChart doughnutChart1 = default!;
+    private DoughnutChart doughnutChart2 = default!;
+    private DoughnutChart doughnutChart3 = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await doughnutChart1.InitializeAsync(CreateChartData(), new DoughnutChartOptions { Rotation = -90, Circumference = 180 });
+            await doughnutChart2.InitializeAsync(CreateChartData(), new DoughnutChartOptions { Rotation = -135, Circumference = 270, Cutout = "70%" });
+
+            var gaugeOptions = new DoughnutChartOptions { Rotation = -90, Circumference = 180, Cutout = "75%" };
+            gaugeOptions.Plugins.Legend.Display = false;
+            gaugeOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "72% of target", Position = "bottom" };
+            await doughnutChart3.InitializeAsync(CreateGaugeData(), gaugeOptions);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData CreateChartData() =>
+        new()
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge", "Opera" },
+            Datasets = new List<IChartDataset>
+            {
+                new DoughnutChartDataset
+                {
+                    Label = "Visitors",
+                    Data = new List<double?> { 45, 25, 15, 10, 5 },
+                    BackgroundColor = Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList(),
+                },
+            },
+        };
+
+    private static ChartData CreateGaugeData() =>
+        new()
+        {
+            Labels = new List<string> { "Done", "Remaining" },
+            Datasets = new List<IChartDataset>
+            {
+                new DoughnutChartDataset
+                {
+                    Label = "Progress",
+                    Data = new List<double?> { 72, 28 },
+                    BackgroundColor = new List<string> { ColorUtility.CategoricalTwelveColors[2].ToColor().ToRgbString(), "rgb(230, 230, 230)" },
+                },
+            },
+        };
+}

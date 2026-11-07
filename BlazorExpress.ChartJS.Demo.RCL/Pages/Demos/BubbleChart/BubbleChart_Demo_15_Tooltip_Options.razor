@@ -1,0 +1,99 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Index mode: <code>Mode = InteractionMode.Index</code>, <code>Intersect = false</code>, <code>Position = "average"</code></p>
+        <BubbleChart @ref="indexChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Nearest bubble: <code>Mode = InteractionMode.Nearest</code>, <code>Intersect = true</code>, <code>Position = "nearest"</code>, <code>UsePointStyle = true</code></p>
+        <BubbleChart @ref="nearestChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Styled: <code>Padding</code>, <code>CornerRadius</code>, <code>BorderColor</code>/<code>BorderWidth</code>, <code>BoxWidth</code>/<code>BoxHeight</code>/<code>BoxPadding</code>, <code>MultiKeyBackground</code></p>
+        <BubbleChart @ref="styledChart" />
+    </div>
+</div>
+
+@code {
+    private BubbleChart indexChart = default!;
+    private BubbleChart nearestChart = default!;
+    private BubbleChart styledChart = default!;
+    private BubbleChartOptions indexOptions = default!;
+    private BubbleChartOptions nearestOptions = default!;
+    private BubbleChartOptions styledOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        // one tooltip lists the bubble at the same index in every dataset
+        indexOptions = new BubbleChartOptions();
+        indexOptions.Plugins.Tooltip = new ChartPluginsTooltip
+        {
+            Mode = InteractionMode.Index,
+            Intersect = false,
+            Position = "average"
+        };
+
+        // only the bubble under the pointer, with its point style as the color box
+        nearestOptions = new BubbleChartOptions();
+        nearestOptions.Plugins.Tooltip = new ChartPluginsTooltip
+        {
+            Mode = InteractionMode.Nearest,
+            Intersect = true,
+            Position = "nearest",
+            UsePointStyle = true
+        };
+
+        styledOptions = new BubbleChartOptions();
+        styledOptions.Plugins.Tooltip = new ChartPluginsTooltip
+        {
+            Mode = InteractionMode.Index,
+            Intersect = false,
+            Padding = 12,
+            CornerRadius = 0,
+            BorderColor = ColorUtility.CategoricalTwelveColors[2],
+            BorderWidth = 2,
+            BoxWidth = 20,
+            BoxHeight = 10,
+            BoxPadding = 6,
+            MultiKeyBackground = "#000000" // fills behind the color boxes when several items are shown
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await indexChart.InitializeAsync(GetChartData(), indexOptions);
+            await nearestChart.InitializeAsync(GetChartData(), nearestOptions);
+            await styledChart.InitializeAsync(GetChartData(), styledOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Datasets =
+        [
+            CreateDataset("Group A", 0, "circle", [new(5, 12, 8), new(15, 28, 12), new(25, 20, 6), new(35, 42, 15), new(45, 38, 10), new(55, 60, 7), new(65, 52, 14), new(75, 70, 9)]),
+            CreateDataset("Group B", 1, "triangle", [new(10, 40, 14), new(20, 35, 10), new(30, 55, 16), new(40, 48, 7), new(50, 30, 12), new(60, 45, 15), new(70, 25, 8), new(80, 35, 13)])
+        ]
+    };
+
+    private static BubbleChartDataset CreateDataset(string label, int colorIndex, string pointStyle, List<BubbleChartDataPoint> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new BubbleChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = [c.ToRgbaString(0.5)],
+            BorderColor = [c.ToRgbString()],
+            BorderWidth = 2,
+            PointStyle = [pointStyle]
+        };
+    }
+
+    #endregion Data Preparation
+}

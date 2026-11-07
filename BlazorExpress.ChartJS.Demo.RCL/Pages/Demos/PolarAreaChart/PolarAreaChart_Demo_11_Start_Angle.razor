@@ -1,0 +1,77 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>StartAngle = 0</code> (Chart.js default)</p>
+        <PolarAreaChart @ref="zeroDegreesChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>StartAngle = 45</code></p>
+        <PolarAreaChart @ref="fortyFiveDegreesChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>StartAngle = 90</code></p>
+        <PolarAreaChart @ref="ninetyDegreesChart" />
+    </div>
+</div>
+
+@code {
+    private PolarAreaChart zeroDegreesChart = default!;
+    private PolarAreaChart fortyFiveDegreesChart = default!;
+    private PolarAreaChart ninetyDegreesChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await zeroDegreesChart.InitializeAsync(GetChartData(), GetOptions(0));
+            await fortyFiveDegreesChart.InitializeAsync(GetChartData(), GetOptions(45));
+            await ninetyDegreesChart.InitializeAsync(GetChartData(), GetOptions(90));
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    // Point labels are shown so the rotation of the first slice is easy to follow.
+    private static PolarAreaChartOptions GetOptions(double startAngle) =>
+        new()
+        {
+            Scales = new RadialScales
+            {
+                R = new ChartRadialAxes
+                {
+                    StartAngle = startAngle,
+                    PointLabels = new ChartAxesPointLabels { Display = true, CenterPointLabels = true }
+                }
+            }
+        };
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() =>
+        new()
+        {
+            Labels = ["North", "East", "South", "West", "Central"],
+            Datasets = [CreateDataset([11, 16, 7, 3, 14])]
+        };
+
+    private static PolarAreaChartDataset CreateDataset(List<double?> data)
+    {
+        var backgroundColors = new List<string>();
+        var borderColors = new List<string>();
+
+        for (var index = 0; index < data.Count; index++)
+        {
+            var c = ColorUtility.CategoricalTwelveColors[index].ToColor();
+            backgroundColors.Add(c.ToRgbaString(0.5));
+            borderColors.Add(c.ToRgbString());
+        }
+
+        return new PolarAreaChartDataset
+        {
+            Label = "Sales",
+            Data = data,
+            BackgroundColor = backgroundColors,
+            BorderColor = borderColors
+        };
+    }
+
+    #endregion Data Preparation
+}

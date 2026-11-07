@@ -1,0 +1,72 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Base = 50</code>: bars start at the target value 50</p>
+        <BarChart @ref="baseChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>InflateAmount = 0</code> vs <code>InflateAmount = 6</code> (pixels added on each side)</p>
+        <BarChart @ref="inflateChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>PointStyle</code> per dataset, legend <code>Labels = new() { UsePointStyle = true }</code></p>
+        <BarChart @ref="pointStyleChart" />
+    </div>
+</div>
+
+@code {
+    private BarChart baseChart = default!;
+    private BarChart inflateChart = default!;
+    private BarChart pointStyleChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var target = CreateDataset("Score vs target 50", 0, [72, 38, 55, 64, 41, 80]);
+            target.Base = 50; // values above 50 grow up, values below grow down
+            var baseData = new ChartData { Labels = GetLabels(), Datasets = [target] };
+
+            var notInflated = CreateDataset("InflateAmount = 0", 1, [35, 48, 42, 61, 55, 70]);
+            notInflated.InflateAmount = 0;
+            var inflated = CreateDataset("InflateAmount = 6", 2, [35, 48, 42, 61, 55, 70]);
+            inflated.InflateAmount = 6;
+            var inflateData = new ChartData { Labels = GetLabels(), Datasets = [notInflated, inflated] };
+
+            var triangles = CreateDataset("Triangle", 3, [35, 48, 42, 61, 55, 70]);
+            triangles.PointStyle = "triangle";
+            var diamonds = CreateDataset("Diamond", 4, [22, 30, 38, 33, 46, 41]);
+            diamonds.PointStyle = "rectRot";
+            var stars = CreateDataset("Star", 5, [15, 24, 20, 28, 31, 26]);
+            stars.PointStyle = "star";
+            var pointStyleData = new ChartData { Labels = GetLabels(), Datasets = [triangles, diamonds, stars] };
+
+            var pointStyleOptions = new BarChartOptions();
+            pointStyleOptions.Plugins.Legend.Labels = new() { UsePointStyle = true }; // the legend draws each dataset's PointStyle
+
+            await baseChart.InitializeAsync(baseData, new BarChartOptions());
+            await inflateChart.InitializeAsync(inflateData, new BarChartOptions());
+            await pointStyleChart.InitializeAsync(pointStyleData, pointStyleOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static List<string> GetLabels() => ["January", "February", "March", "April", "May", "June"];
+
+    private static BarChartDataset CreateDataset(string label, int colorIndex, List<double?> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new BarChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = [c.ToRgbaString(0.5)],
+            BorderColor = [c.ToRgbString()],
+            BorderWidth = [2]
+        };
+    }
+
+    #endregion Data Preparation
+}

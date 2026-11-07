@@ -1,0 +1,57 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Colors = new() { Enabled = true }</code>, dataset sets no colors: Chart.js palette</p>
+        <DoughnutChart @ref="doughnutChart1" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Colors = new() { Enabled = false }</code>, dataset sets no colors: Chart.js grey</p>
+        <DoughnutChart @ref="doughnutChart2" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Colors = new() { ForceOverride = true }</code>: the palette replaces the dataset colors</p>
+        <DoughnutChart @ref="doughnutChart3" />
+    </div>
+</div>
+
+@code {
+    private DoughnutChart doughnutChart1 = default!;
+    private DoughnutChart doughnutChart2 = default!;
+    private DoughnutChart doughnutChart3 = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var enabledOptions = new DoughnutChartOptions();
+            enabledOptions.Plugins.Colors = new() { Enabled = true };
+            await doughnutChart1.InitializeAsync(CreateChartData(setColors: false), enabledOptions);
+
+            var disabledOptions = new DoughnutChartOptions();
+            disabledOptions.Plugins.Colors = new() { Enabled = false };
+            await doughnutChart2.InitializeAsync(CreateChartData(setColors: false), disabledOptions);
+
+            var overrideOptions = new DoughnutChartOptions();
+            overrideOptions.Plugins.Colors = new() { Enabled = true, ForceOverride = true };
+            await doughnutChart3.InitializeAsync(CreateChartData(setColors: true), overrideOptions);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData CreateChartData(bool setColors) =>
+        new()
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge", "Opera" },
+            Datasets = new List<IChartDataset>
+            {
+                new DoughnutChartDataset
+                {
+                    Label = "Visitors",
+                    Data = new List<double?> { 45, 25, 15, 10, 5 },
+                    BackgroundColor = setColors
+                        ? Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList()
+                        : null,
+                },
+            },
+        };
+}

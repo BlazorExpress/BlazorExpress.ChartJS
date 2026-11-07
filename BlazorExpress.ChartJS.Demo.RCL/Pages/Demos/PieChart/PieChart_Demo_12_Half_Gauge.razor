@@ -1,0 +1,66 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Rotation = -90</code> and <code>Circumference = 180</code> (top half)</p>
+        <PieChart @ref="pieChart1" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Rotation = -135</code> and <code>Circumference = 270</code></p>
+        <PieChart @ref="pieChart2" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2">Gauge: one value and a grey remainder, <code>Rotation = -90</code>, <code>Circumference = 180</code>, legend hidden</p>
+        <PieChart @ref="pieChart3" />
+    </div>
+</div>
+
+@code {
+    private PieChart pieChart1 = default!;
+    private PieChart pieChart2 = default!;
+    private PieChart pieChart3 = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await pieChart1.InitializeAsync(CreateChartData(), new PieChartOptions { Rotation = -90, Circumference = 180 });
+            await pieChart2.InitializeAsync(CreateChartData(), new PieChartOptions { Rotation = -135, Circumference = 270 });
+
+            var gaugeOptions = new PieChartOptions { Rotation = -90, Circumference = 180 };
+            gaugeOptions.Plugins.Legend.Display = false;
+            gaugeOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "72% of target", Position = "bottom" };
+            await pieChart3.InitializeAsync(CreateGaugeData(), gaugeOptions);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData CreateChartData() =>
+        new()
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge", "Opera" },
+            Datasets = new List<IChartDataset>
+            {
+                new PieChartDataset
+                {
+                    Label = "Visitors",
+                    Data = new List<double?> { 45, 25, 15, 10, 5 },
+                    BackgroundColor = Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList(),
+                },
+            },
+        };
+
+    private static ChartData CreateGaugeData() =>
+        new()
+        {
+            Labels = new List<string> { "Done", "Remaining" },
+            Datasets = new List<IChartDataset>
+            {
+                new PieChartDataset
+                {
+                    Label = "Progress",
+                    Data = new List<double?> { 72, 28 },
+                    BackgroundColor = new List<string> { ColorUtility.CategoricalTwelveColors[2].ToColor().ToRgbString(), "rgb(230, 230, 230)" },
+                },
+            },
+        };
+}

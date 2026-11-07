@@ -1,0 +1,72 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">No padding (default): <code>Layout.Padding = 0</code></p>
+        <ScatterChart @ref="noPaddingChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">All sides: <code>Layout.Padding = 20</code></p>
+        <ScatterChart @ref="allSidesChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Per side: <code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code></p>
+        <ScatterChart @ref="perSideChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
+    </div>
+</div>
+
+@code {
+    private ScatterChart noPaddingChart = default!;
+    private ScatterChart allSidesChart = default!;
+    private ScatterChart perSideChart = default!;
+    private ScatterChartOptions noPaddingOptions = default!;
+    private ScatterChartOptions allSidesOptions = default!;
+    private ScatterChartOptions perSideOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        noPaddingOptions = new ScatterChartOptions();
+
+        allSidesOptions = new ScatterChartOptions();
+        allSidesOptions.Layout.Padding = 20; // 20px inside the canvas on every side
+
+        perSideOptions = new ScatterChartOptions();
+        perSideOptions.Layout.PaddingSides = new() { Left = 60, Top = 10 }; // sent instead of Padding when set
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await noPaddingChart.InitializeAsync(GetChartData(), noPaddingOptions);
+            await allSidesChart.InitializeAsync(GetChartData(), allSidesOptions);
+            await perSideChart.InitializeAsync(GetChartData(), perSideOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Datasets =
+        [
+            CreateDataset("Group A", 0, [new(5, 12), new(15, 28), new(25, 20), new(35, 42), new(45, 38), new(55, 60), new(65, 52), new(75, 70)]),
+            CreateDataset("Group B", 1, [new(10, 40), new(20, 35), new(30, 55), new(40, 48), new(50, 30), new(60, 45), new(70, 25), new(80, 35)])
+        ]
+    };
+
+    private static ScatterChartDataset CreateDataset(string label, int colorIndex, List<ScatterChartDataPoint> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new ScatterChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.5),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

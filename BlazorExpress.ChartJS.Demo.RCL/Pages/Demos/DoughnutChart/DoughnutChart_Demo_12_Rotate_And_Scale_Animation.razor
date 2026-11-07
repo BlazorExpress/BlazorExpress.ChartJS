@@ -1,0 +1,85 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="mb-2"><code>AnimateRotate = true</code>, <code>AnimateScale = false</code> (the Chart.js default)</p>
+        <DoughnutChart @ref="doughnutChart1" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>AnimateRotate = false</code>, <code>AnimateScale = true</code></p>
+        <DoughnutChart @ref="doughnutChart2" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>AnimateRotate = true</code>, <code>AnimateScale = true</code></p>
+        <DoughnutChart @ref="doughnutChart3" />
+    </div>
+</div>
+
+<div class="mt-3">
+    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="ReplayAsync">Replay</Button>
+</div>
+
+@code {
+    private DoughnutChart doughnutChart1 = default!;
+    private DoughnutChart doughnutChart2 = default!;
+    private DoughnutChart doughnutChart3 = default!;
+
+    private ChartData chartData1 = default!;
+    private ChartData chartData2 = default!;
+    private ChartData chartData3 = default!;
+
+    private DoughnutChartOptions doughnutChartOptions1 = default!;
+    private DoughnutChartOptions doughnutChartOptions2 = default!;
+    private DoughnutChartOptions doughnutChartOptions3 = default!;
+
+    protected override void OnInitialized()
+    {
+        chartData1 = CreateChartData();
+        chartData2 = CreateChartData();
+        chartData3 = CreateChartData();
+
+        doughnutChartOptions1 = new DoughnutChartOptions { Animation = new ChartAnimation { AnimateRotate = true, AnimateScale = false, Duration = 1500 } };
+        doughnutChartOptions2 = new DoughnutChartOptions { Animation = new ChartAnimation { AnimateRotate = false, AnimateScale = true, Duration = 1500 } };
+        doughnutChartOptions3 = new DoughnutChartOptions { Animation = new ChartAnimation { AnimateRotate = true, AnimateScale = true, Duration = 1500 } };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await doughnutChart1.InitializeAsync(chartData1, doughnutChartOptions1);
+            await doughnutChart2.InitializeAsync(chartData2, doughnutChartOptions2);
+            await doughnutChart3.InitializeAsync(chartData3, doughnutChartOptions3);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task ReplayAsync()
+    {
+        await ReplayChartAsync(doughnutChart1, chartData1, doughnutChartOptions1);
+        await ReplayChartAsync(doughnutChart2, chartData2, doughnutChartOptions2);
+        await ReplayChartAsync(doughnutChart3, chartData3, doughnutChartOptions3);
+    }
+
+    // Stop first: a running animation would draw over the reset state on its next frame.
+    private static async Task ReplayChartAsync(DoughnutChart chart, ChartData chartData, DoughnutChartOptions options)
+    {
+        await chart.StopAsync();
+        await chart.ResetAsync();
+        await chart.UpdateAsync(chartData, options);
+    }
+
+    private static ChartData CreateChartData() =>
+        new()
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge", "Opera" },
+            Datasets = new List<IChartDataset>
+            {
+                new DoughnutChartDataset
+                {
+                    Label = "Visitors",
+                    Data = new List<double?> { 45, 25, 15, 10, 5 },
+                    BackgroundColor = Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList(),
+                },
+            },
+        };
+}

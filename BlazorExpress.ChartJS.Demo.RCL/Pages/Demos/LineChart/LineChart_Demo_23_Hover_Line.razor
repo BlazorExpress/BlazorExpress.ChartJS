@@ -1,0 +1,71 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Default: grey, 2 px, dashed</p>
+        <LineChart @ref="defaultChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>TooltipLine = new() { Color = "red", Width = 1, Dash = [] }</code>: solid red</p>
+        <LineChart @ref="styledChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>TooltipLine = new() { Display = false }</code>: no line</p>
+        <LineChart @ref="hiddenChart" />
+    </div>
+</div>
+
+@code {
+    private LineChart defaultChart = default!;
+    private LineChart styledChart = default!;
+    private LineChart hiddenChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var defaultOptions = GetChartOptions(); // TooltipLine is null: the line uses its defaults
+
+            var styledOptions = GetChartOptions();
+            styledOptions.Plugins.TooltipLine = new() { Color = "red", Width = 1, Dash = [] }; // an empty dash list draws a solid line
+
+            var hiddenOptions = GetChartOptions();
+            hiddenOptions.Plugins.TooltipLine = new() { Display = false };
+
+            await defaultChart.InitializeAsync(GetChartData(), defaultOptions);
+            await styledChart.InitializeAsync(GetChartData(), styledOptions);
+            await hiddenChart.InitializeAsync(GetChartData(), hiddenOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    // the line is drawn at the tooltip's point, so show the tooltip anywhere along the x-axis
+    private static LineChartOptions GetChartOptions() =>
+        new() { Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false } };
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Labels = ["January", "February", "March", "April", "May", "June"],
+        Datasets =
+        [
+            CreateDataset("Product A", 0, [35, 48, 42, 61, 55, 70]),
+            CreateDataset("Product B", 1, [22, 30, 38, 33, 46, 41])
+        ]
+    };
+
+    private static LineChartDataset CreateDataset(string label, int colorIndex, List<double?> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new LineChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.5),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

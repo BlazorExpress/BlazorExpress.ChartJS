@@ -1,0 +1,113 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Default title: <code>Display = true</code>, <code>Text</code></p>
+        <BubbleChart @ref="defaultTitleChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Styled title: <code>Color</code>, <code>Font</code>, <code>Padding = 10</code></p>
+        <BubbleChart @ref="styledTitleChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Aligned title: <code>TitleAlignment.Start</code> on x, <code>TitleAlignment.End</code> on y</p>
+        <BubbleChart @ref="alignedTitleChart" />
+    </div>
+</div>
+
+@code {
+    private BubbleChart defaultTitleChart = default!;
+    private BubbleChart styledTitleChart = default!;
+    private BubbleChart alignedTitleChart = default!;
+    private BubbleChartOptions defaultTitleOptions = default!;
+    private BubbleChartOptions styledTitleOptions = default!;
+    private BubbleChartOptions alignedTitleOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        // Color defaults to "black" and Font to bold 12px
+        defaultTitleOptions = CreateOptions();
+        defaultTitleOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Height (cm)" };
+        defaultTitleOptions.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Weight (kg)" };
+
+        var titleColor = ColorUtility.CategoricalTwelveColors[1];
+
+        styledTitleOptions = CreateOptions();
+        styledTitleOptions.Scales.X!.Title = new ChartAxesTitle
+        {
+            Display = true,
+            Text = "Height (cm)",
+            Color = titleColor,
+            Font = new ChartFont { Size = 16, Style = "italic" },
+            Padding = 10
+        };
+        styledTitleOptions.Scales.Y!.Title = new ChartAxesTitle
+        {
+            Display = true,
+            Text = "Weight (kg)",
+            Color = titleColor,
+            Font = new ChartFont { Size = 16, Style = "italic" },
+            Padding = 10
+        };
+
+        alignedTitleOptions = CreateOptions();
+        alignedTitleOptions.Scales.X!.Title = new ChartAxesTitle
+        {
+            Display = true,
+            Text = "Height (cm)",
+            TitleAlignment = TitleAlignment.Start,
+            Padding = new() { Top = 8 }
+        };
+        alignedTitleOptions.Scales.Y!.Title = new ChartAxesTitle
+        {
+            Display = true,
+            Text = "Weight (kg)",
+            TitleAlignment = TitleAlignment.End
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await defaultTitleChart.InitializeAsync(GetChartData(), defaultTitleOptions);
+            await styledTitleChart.InitializeAsync(GetChartData(), styledTitleOptions);
+            await alignedTitleChart.InitializeAsync(GetChartData(), alignedTitleOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    // heights and weights are far from zero, so both axes start at the data minimum
+    private static BubbleChartOptions CreateOptions()
+    {
+        var options = new BubbleChartOptions();
+        options.Scales.X!.BeginAtZero = false;
+        options.Scales.Y!.BeginAtZero = false;
+        return options;
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Datasets =
+        [
+            CreateDataset("Group A", 0, [new(150, 52, 8), new(158, 58, 12), new(163, 61, 6), new(168, 66, 15), new(172, 70, 10), new(178, 74, 7), new(183, 80, 14), new(188, 85, 9)]),
+            CreateDataset("Group B", 1, [new(152, 60, 14), new(157, 55, 10), new(165, 70, 16), new(170, 62, 7), new(175, 82, 12), new(180, 68, 15), new(185, 90, 8), new(190, 78, 13)])
+        ]
+    };
+
+    private static BubbleChartDataset CreateDataset(string label, int colorIndex, List<BubbleChartDataPoint> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new BubbleChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = [c.ToRgbaString(0.5)],
+            BorderColor = [c.ToRgbString()],
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

@@ -217,7 +217,7 @@ public class PieChartDataset : ChartDataset<double?>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("")]
+    [Description("Arc border width when hovered (in pixels).")]
     [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? HoverBorderWidth { get; set; }
@@ -230,7 +230,7 @@ public class PieChartDataset : ChartDataset<double?>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(0)]
-    [Description("")]
+    [Description("Arc offset when hovered (in pixels).")]
     [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? HoverOffset { get; set; }
@@ -271,6 +271,21 @@ public class PieChartDataset : ChartDataset<double?>
     [DefaultValue(0)]
     [Description("Fixed arc offset (in pixels). Similar to <code>Offset</code> but applies to all arcs.")]
     public double Spacing { get; set; }
+
+    /// <summary>
+    /// How the spacing between arcs is measured: <c>"angular"</c> keeps an equal angle, <c>"proportional"</c> scales with each arc,
+    /// and <c>"parallel"</c> keeps the edges of neighbouring arcs parallel.
+    /// <para>
+    /// Default value is <see langword="null" /> (Chart.js uses <c>"angular"</c>).
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/doughnut.html" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("How the spacing between arcs is measured: \"angular\", \"proportional\" or \"parallel\".")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("string?")]
+    public string? SpacingMode { get; set; }
 
     /// <summary>
     /// The relative thickness of the dataset. 

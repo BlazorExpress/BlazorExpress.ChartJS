@@ -1,0 +1,47 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Radius = "80%"</code>, no cutout (the pie default is 0)</p>
+        <PieChart @ref="pieChart1" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Cutout = "50%"</code> (turns the pie into a ring)</p>
+        <PieChart @ref="pieChart2" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Cutout = 40</code> (pixels)</p>
+        <PieChart @ref="pieChart3" />
+    </div>
+</div>
+
+@code {
+    private PieChart pieChart1 = default!;
+    private PieChart pieChart2 = default!;
+    private PieChart pieChart3 = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await pieChart1.InitializeAsync(CreateChartData(), new PieChartOptions { Radius = "80%" });
+            await pieChart2.InitializeAsync(CreateChartData(), new PieChartOptions { Cutout = "50%" });
+            await pieChart3.InitializeAsync(CreateChartData(), new PieChartOptions { Cutout = 40 });
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData CreateChartData() =>
+        new()
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge", "Opera" },
+            Datasets = new List<IChartDataset>
+            {
+                new PieChartDataset
+                {
+                    Label = "Visitors",
+                    Data = new List<double?> { 45, 25, 15, 10, 5 },
+                    BackgroundColor = Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList(),
+                },
+            },
+        };
+}

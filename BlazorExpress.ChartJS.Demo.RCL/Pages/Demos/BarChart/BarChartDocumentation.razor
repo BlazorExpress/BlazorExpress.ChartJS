@@ -218,7 +218,7 @@
 <Section Class="p-0" Size="HeadingSize.H4" Name="Show and hide datasets" PageUrl="@pageUrl" Link="show-and-hide-datasets">
     <Block>
         Show and hide whole datasets or single bars from C#, check whether a dataset is visible and count the visible datasets.
-        Visibility changed at runtime, from C# or a legend click, stays in place when <code>UpdateAsync</code> refreshes the data, because datasets and bars are matched by label.
+        Visibility changed at runtime, from C# or a legend click, stays in place when <code>UpdateAsync</code> refreshes the data, because datasets are matched by <code>Key</code>, or else by label, and bars by label.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
@@ -289,14 +289,249 @@
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Call <code>UpdateAsync(data, options)</code> for the default animated update, or pass <code>ChartUpdateMode.None</code> to apply the change at once. Each update replaces the chart's datasets, so an animated update draws the new data from the chart's starting state.</li>
+                <li>Call <code>UpdateAsync(data, options)</code> for the default animated update, or pass <code>ChartUpdateMode.None</code> to apply the change at once. An animated update moves each matched dataset from its current values to the new ones, and a new dataset grows in. Datasets are matched by <code>Key</code> when set, otherwise by <code>Label</code>; datasets that share a label, or have none, pair in order.</li>
                 <li>Call <code>StopAsync()</code> to end any running animation; the chart stays as it was drawn at that moment. Call <code>UpdateAsync</code> again to animate to new values.</li>
-                <li>Call <code>ResetAsync()</code> to put the chart back in its starting state, before its first animation, and <code>RenderAsync()</code> to draw that state. Stop any running animation first, or its next frame draws over the reset.</li>
+                <li>Call <code>ResetAsync()</code> to put the chart back in its starting state, before its first animation, and <code>RenderAsync()</code> to draw that state. Stop any running animation first, or its next frame draws over the reset. Call <code>ResetAsync()</code> and then <code>UpdateAsync(data, options)</code> to regrow the chart from its starting state, as on first render.</li>
                 <li>Call <code>ClearAsync()</code> to clear the canvas; <code>RenderAsync()</code> draws the chart again. A running animation draws over the cleared canvas on its next frame, so stop it first or wait for it to end.</li>
             </ol>
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_17_Update_Modes)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Multiple axes" PageUrl="@pageUrl" Link="multiple-axes">
+    <Block>
+        Add more axes with <code>Scales.AdditionalAxes</code>, keyed by axis ID, and point a dataset at one with <code>YAxisID</code> or <code>XAxisID</code>. Chart.js works out the direction from the first letter of the ID, so <code>"y1"</code> is a y-axis and <code>"x1"</code> an x-axis.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales.AdditionalAxes = new() { ["y1"] = new ChartAxes { Position = "right" } }</code>.</li>
+                <li>Set <code>Grid = new ChartAxesGrid { DrawOnChartArea = false }</code> on the extra axis so only one set of grid lines crosses the chart.</li>
+                <li>Set <code>YAxisID = "y1"</code> on the dataset that uses the extra axis; the others stay on <code>y</code>.</li>
+                <li>For a horizontal chart (<code>IndexAxis = "y"</code>) the values are on the x-axis: add <code>["x1"]</code> with <code>Position = "top"</code> and set <code>XAxisID = "x1"</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_18_Multiple_Axes)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Axis position and reverse" PageUrl="@pageUrl" Link="axis-position-and-reverse">
+    <Block>
+        Move an axis to another edge with <code>Position</code>, flip its direction with <code>Reverse</code>, or hide it with <code>Display = false</code>. A hidden axis still scales the data; only its labels, ticks and grid lines go.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales.X.Position = "top"</code> or <code>Scales.Y.Position = "right"</code>.</li>
+                <li>Set <code>Scales.Y.Reverse = true</code> to put the highest value at the bottom, so bars hang from the top.</li>
+                <li>Set <code>Scales.X.Reverse = true</code> to list the categories from right to left.</li>
+                <li>Set <code>Scales.Y.Display = false</code> to hide an axis.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_19_Axis_Position_And_Reverse)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Tick options" PageUrl="@pageUrl" Link="tick-options">
+    <Block>
+        <code>ChartAxesTicks</code> controls how many ticks an axis gets and how their labels look. Chart.js picks the tick spacing itself unless you set <code>StepSize</code> or <code>Count</code>, and skips crowded labels unless you set <code>AutoSkip = false</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>StepSize</code> for the gap between ticks, <code>Precision</code> for the number of decimals, or <code>Count</code> for an exact number of ticks on a value axis; <code>MaxTicksLimit</code> caps the number of ticks.</li>
+                <li>Set <code>AutoSkip = false</code> with <code>MinRotation</code> and <code>MaxRotation</code> (degrees) to show every category label, rotated to fit.</li>
+                <li>Set <code>Font = new ChartFont { Size = 14, Weight = "bold" }</code> and <code>Color</code> to style the labels.</li>
+                <li>Set <code>Mirror = true</code> to draw the y labels inside the chart, <code>CrossAlign = "far"</code> to align them away from the axis, and <code>LabelOffset</code> to move labels along the axis, in pixels.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_20_Tick_Options)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Axis title" PageUrl="@pageUrl" Link="axis-title">
+    <Block>
+        Label an axis with <code>ChartAxesTitle</code>. The title is hidden until <code>Display = true</code>, and in this library it defaults to <code>"black"</code> text in a bold 12 px font, where Chart.js uses grey.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales.Y.Title = new ChartAxesTitle { Display = true, Text = "Units sold" }</code>.</li>
+                <li>Set <code>Color</code> and <code>Font = new ChartFont { Size = 14, Style = "italic" }</code> to style it.</li>
+                <li>Set <code>Padding = 10</code> for the same space above and below, or <code>new ChartPadding { Top = 12, Bottom = 0 }</code>.</li>
+                <li>Set <code>TitleAlignment = TitleAlignment.Start</code> or <code>TitleAlignment.End</code> to move it along the axis.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_21_Axis_Title)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Grace and bounds" PageUrl="@pageUrl" Link="grace-and-bounds">
+    <Block>
+        <code>Grace</code> adds space beyond the data, <code>Bounds</code> decides whether the axis ends at the data (<code>"data"</code>) or at a whole tick (<code>"ticks"</code>, the Chart.js default), and <code>SuggestedMin</code> / <code>SuggestedMax</code> extend the range only when the data does not already reach them. Value axes in this library start at zero (<code>BeginAtZero = true</code>).
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales.Y.Grace = "10%"</code> for a share of half the data range (Chart.js measures it from the middle to each end), or <code>Grace = 5</code> for data units.</li>
+                <li>Set <code>Scales.Y.Bounds = "data"</code> to end the axis at the highest value instead of the next tick.</li>
+                <li>Set <code>SuggestedMin = -50</code> or <code>SuggestedMax</code> for a range the data can still go past; <code>Min</code> and <code>Max</code> fix it.</li>
+                <li>To stack two axes on one edge, give both the same <code>Stack</code> and <code>Position</code>, size them with <code>StackWeight</code>, and set <code>Offset = true</code> for space between them.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_22_Grace_And_Bounds)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Floating bars" PageUrl="@pageUrl" Link="floating-bars">
+    <Block>
+        A floating bar spans a <code>(start, end)</code> range instead of growing from the base. Use <code>FloatingData</code> instead of <code>Data</code>; each item is a number, a range or <code>null</code>, and Chart.js draws numbers from the base as usual.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>FloatingData = [(-6, 4), (-4, 7), 15, null]</code> on a <code>BarChartDataset</code>; when set, it is sent instead of <code>Data</code>.</li>
+                <li>Set <code>BorderSkipped = false</code> so the border is drawn on all four sides of each floating bar.</li>
+                <li>Call <code>AddDataAsync(chartData, "July", new BarChartDatasetData("Temperature range (&deg;C)", 14, 29))</code> to add a range to the dataset with that label.</li>
+                <li>Set <code>IndexAxis = "y"</code> for horizontal floating bars, for example a schedule.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_23_Floating_Bars)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Per corner border radius" PageUrl="@pageUrl" Link="per-corner-border-radius">
+    <Block>
+        <code>BorderRadiusCorners</code> rounds each bar corner by its own amount, in pixels, and <code>HoverBorderRadiusCorners</code> does the same while the bar is hovered. Chart.js does not round the corners on a skipped edge, which by default (<code>BorderSkipped = "start"</code>) is the base of the bar.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>BorderRadiusCorners = new ChartBorderRadius { TopLeft = 20, BottomRight = 20 }</code>; when set, it is sent instead of <code>BorderRadius</code>.</li>
+                <li>Set <code>BorderSkipped = false</code> so the bottom corners can be rounded too.</li>
+                <li>Set <code>HoverBorderRadiusCorners</code> for the corners while the bar is hovered.</li>
+                <li>Set <code>BorderColor</code> and <code>BorderWidth</code> to make the rounded outline visible.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_24_Per_Corner_Border_Radius)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Base and inflate amount" PageUrl="@pageUrl" Link="base-and-inflate-amount">
+    <Block>
+        <code>Base</code> sets the value bars grow from instead of zero, <code>InflateAmount</code> widens each drawn bar by a number of pixels (Chart.js uses <code>"auto"</code> to hide hairline gaps), and <code>PointStyle</code> sets the shape used for the dataset in the legend and tooltip.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Base = 50</code> on a <code>BarChartDataset</code> to draw bars up or down from 50.</li>
+                <li>Set <code>InflateAmount = 6</code> for 6 extra pixels on each side, or <code>InflateAmount = 0</code> for none.</li>
+                <li>Set <code>PointStyle = "triangle"</code> (or <code>"rectRot"</code>, <code>"star"</code>, ...) on each dataset.</li>
+                <li>Set <code>Plugins.Legend.Labels = new() { UsePointStyle = true }</code> so the legend shows those shapes.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_25_Base_And_Inflate_Amount)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Title and subtitle" PageUrl="@pageUrl" Link="title-and-subtitle">
+    <Block>
+        <code>Plugins.Title</code> and <code>Plugins.Subtitle</code> draw text outside the chart area; Chart.js places the subtitle between the title and the chart. Both are hidden until <code>Display = true</code>, and in this library their text defaults to <code>"black"</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Monthly sales" }</code>.</li>
+                <li>Set <code>Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "January to June" }</code>.</li>
+                <li>Set <code>Position</code> to <code>"top"</code>, <code>"left"</code>, <code>"bottom"</code> or <code>"right"</code>, and <code>Align</code> to <code>"start"</code>, <code>"center"</code> or <code>"end"</code>.</li>
+                <li>Set <code>Padding = new ChartPadding { Top = 10, Bottom = 20 }</code> for space around the title, and <code>FullSize = false</code> to size it to the chart area instead of the canvas.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_26_Title_And_Subtitle)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Tooltip options" PageUrl="@pageUrl" Link="tooltip-options">
+    <Block>
+        <code>Plugins.Tooltip</code> chooses which items the tooltip lists and how it looks. Its <code>Mode</code> and <code>Intersect</code> override <code>Interaction</code> for the tooltip only; Chart.js uses <code>Nearest</code> with <code>Intersect = true</code> by default.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Plugins.Tooltip = new ChartPluginsTooltip { Mode = InteractionMode.Index, Intersect = false }</code> to list every dataset at the hovered label.</li>
+                <li>Set <code>Position = "average"</code> (the Chart.js default) or <code>"nearest"</code> to place the tooltip.</li>
+                <li>Set <code>Padding</code>, <code>CornerRadius</code>, <code>BorderColor</code> and <code>BorderWidth</code> to style the box, and <code>MultiKeyBackground</code> for the fill behind each color box.</li>
+                <li>Set <code>BoxWidth</code>, <code>BoxHeight</code> and <code>BoxPadding</code> to size the color boxes, or <code>UsePointStyle = true</code> to draw each dataset's <code>PointStyle</code> instead.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_27_Tooltip_Options)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Layout padding" PageUrl="@pageUrl" Link="layout-padding">
+    <Block>
+        <code>Layout</code> adds empty space inside the canvas, around the legend, axes and chart. The dashed borders show the canvas edges.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Layout.Padding = 20</code> for the same padding on every side, in pixels.</li>
+                <li>Set <code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code> for a value per side; when set, it is sent instead of <code>Padding</code>.</li>
+                <li>Leave both unset for no padding.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_28_Layout_Padding)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Aspect ratio and resize delay" PageUrl="@pageUrl" Link="aspect-ratio-and-resize-delay">
+    <Block>
+        With <code>MaintainAspectRatio = true</code>, the canvas height follows its width by <code>AspectRatio</code> (width / height); Chart.js uses 2 for bar charts. <code>ResizeDelay</code> waits the given milliseconds after the container stops resizing before the chart redraws, which saves work while the window is dragged; resize the window to see the wide chart catch up.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>MaintainAspectRatio = true</code> (the default) and <code>AspectRatio = 1</code>, <code>2</code> or <code>3</code>.</li>
+                <li>Set <code>ResizeDelay = 300</code> to redraw once, 300 ms after a resize ends; Chart.js uses 0.</li>
+                <li>Set <code>DevicePixelRatio = 2</code> to draw twice as many canvas pixels, for sharper exported images.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_29_Aspect_Ratio_And_Resize_Delay)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Hover and elements" PageUrl="@pageUrl" Link="hover-and-elements">
+    <Block>
+        <code>Elements</code> sets defaults for every element of a kind, such as every bar, and a dataset value wins over them. <code>Hover</code> sets which elements highlight under the pointer, separately from <code>Interaction</code>, and <code>Events</code> lists the browser events Chart.js listens to.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Elements = new ChartElements { Bar = new ChartElementsBar { BorderRadius = 8, BorderWidth = 3 } }</code> and leave those values unset on the datasets.</li>
+                <li>Set <code>Hover = new ChartHover { Mode = InteractionMode.Index, Intersect = false }</code> to highlight every bar of the hovered label; any value left unset falls back to <code>Interaction</code>.</li>
+                <li>Set <code>HoverBackgroundColor</code> on the datasets to make the highlight easy to see.</li>
+                <li>Set <code>Events = ["click"]</code> to react to clicks only: moving the pointer does nothing and <code>OnHover</code> does not fire; clicking a bar still highlights it and opens its tooltip, and <code>OnClick</code> fires.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_30_Hover_And_Elements)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Colors plugin" PageUrl="@pageUrl" Link="colors-plugin">
+    <Block>
+        The Chart.js colors plugin gives each dataset a color from its built-in palette, but only when no dataset sets a color. Bar datasets send no color unless you set one, so the palette applies on its own; line, radar and scatter datasets always send a default color, so there the palette needs <code>ForceOverride = true</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Leave <code>BackgroundColor</code> and <code>BorderColor</code> unset on the datasets to get the palette (<code>Enabled</code> is <code>true</code> in Chart.js).</li>
+                <li>Set <code>Plugins.Colors = new ChartPluginsColors { Enabled = false }</code> to turn the palette off.</li>
+                <li>Set <code>Plugins.Colors = new ChartPluginsColors { ForceOverride = true }</code> to use the palette even where datasets set their own colors.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_31_Colors_Plugin)" Tabs="true" />
 </Section>
 
 @code {

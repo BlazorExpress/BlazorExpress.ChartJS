@@ -1,0 +1,109 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Grace: <code>Grace = "10%"</code> on y, <code>Grace = 5</code> on x</p>
+        <BubbleChart @ref="graceChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Bounds: <code>Bounds = "data"</code> on x, <code>Bounds = "ticks"</code> with <code>SuggestedMin</code>/<code>SuggestedMax</code> on y</p>
+        <BubbleChart @ref="boundsChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Stacked axes: <code>Stack = "demo"</code>, <code>StackWeight</code> 2 and 1, <code>Offset = true</code></p>
+        <BubbleChart @ref="stackedAxesChart" />
+    </div>
+</div>
+
+@code {
+    private BubbleChart graceChart = default!;
+    private BubbleChart boundsChart = default!;
+    private BubbleChart stackedAxesChart = default!;
+    private BubbleChartOptions graceOptions = default!;
+    private BubbleChartOptions boundsOptions = default!;
+    private BubbleChartOptions stackedAxesOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        // grace adds space beyond the data range, so edge bubbles are not cut off;
+        // the axes start at the data minimum here so it shows on both ends
+        graceOptions = new BubbleChartOptions();
+        graceOptions.Scales.X!.BeginAtZero = false;
+        graceOptions.Scales.X!.Grace = 5; // 5 axis units
+        graceOptions.Scales.Y!.BeginAtZero = false;
+        graceOptions.Scales.Y!.Grace = "10%"; // 10% of half the data range
+
+        boundsOptions = new BubbleChartOptions();
+        boundsOptions.Scales.X!.BeginAtZero = false;
+        boundsOptions.Scales.X!.Bounds = "data"; // axis ends at the first and last bubble center
+        boundsOptions.Scales.Y!.BeginAtZero = false;
+        boundsOptions.Scales.Y!.Bounds = "ticks"; // axis ends at a whole tick (Chart.js default)
+        boundsOptions.Scales.Y!.SuggestedMin = 0;
+        boundsOptions.Scales.Y!.SuggestedMax = 100;
+
+        // y and y2 share the left edge: y takes 2/3 of the height, y2 the other 1/3
+        stackedAxesOptions = new BubbleChartOptions();
+        stackedAxesOptions.Scales.Y!.Position = "left";
+        stackedAxesOptions.Scales.Y!.Stack = "demo";
+        stackedAxesOptions.Scales.Y!.StackWeight = 2;
+        stackedAxesOptions.Scales.Y!.Border = new ChartAxesBorder { Color = ColorUtility.CategoricalTwelveColors[0] };
+        stackedAxesOptions.Scales.AdditionalAxes = new()
+        {
+            ["y2"] = new ChartAxes
+            {
+                Type = ChartAxesType.Linear,
+                Position = "left",
+                Stack = "demo",
+                StackWeight = 1,
+                Offset = true, // extra space at both ends of y2
+                Border = new ChartAxesBorder { Color = ColorUtility.CategoricalTwelveColors[1] }
+            }
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await graceChart.InitializeAsync(GetChartData(), graceOptions);
+            await boundsChart.InitializeAsync(GetChartData(), boundsOptions);
+            await stackedAxesChart.InitializeAsync(GetStackedChartData(), stackedAxesOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Datasets =
+        [
+            CreateDataset("Group A", 0, [new(12, 22, 8), new(18, 31, 12), new(25, 27, 6), new(33, 44, 15), new(41, 39, 10), new(48, 58, 7)]),
+            CreateDataset("Group B", 1, [new(14, 40, 14), new(21, 36, 10), new(29, 52, 16), new(36, 47, 7), new(44, 33, 12), new(52, 46, 9)])
+        ]
+    };
+
+    private static ChartData GetStackedChartData()
+    {
+        var groupA = CreateDataset("Group A (y)", 0, [new(10, 22, 8), new(20, 31, 12), new(30, 27, 6), new(40, 44, 15), new(50, 39, 10), new(60, 58, 7)]);
+
+        var groupB = CreateDataset("Group B (y2)", 1, [new(15, 4, 7), new(25, 7, 10), new(35, 5, 6), new(45, 9, 12), new(55, 6, 8), new(65, 8, 9)]);
+        groupB.YAxisID = "y2";
+
+        return new ChartData { Datasets = [groupA, groupB] };
+    }
+
+    private static BubbleChartDataset CreateDataset(string label, int colorIndex, List<BubbleChartDataPoint> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new BubbleChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = [c.ToRgbaString(0.5)],
+            BorderColor = [c.ToRgbString()],
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

@@ -14,7 +14,7 @@ if (!window.blazorexpress.chartjs) {
     const maxAnimationWaitMs = 5000;
 
     // Per-chart state the library keeps beside Chart.js: event options, the .NET reference, and the
-    // visibility changed at runtime, which `update` re-applies after it swaps in new data objects.
+    // visibility changed at runtime, which `update` re-applies after it hands Chart.js the matched and new datasets.
     const chartStates = new WeakMap();
 
     const applyDataLabelsBackgroundColor = (options) => {
@@ -35,31 +35,35 @@ if (!window.blazorexpress.chartjs) {
         options.plugins.legend.onClick = handleLegendClick;
     };
 
+    // Options come from `options.plugins.tooltipLine` (C# `LineChartPlugins.TooltipLine`). Chart.js falls back to these
+    // defaults for an inline plugin, so an unset option draws the original grey 2 px dashed line.
     const createTooltipLinePlugin = () => ({
         id: 'tooltipLine',
-        beforeDraw: chart => {
-            if (chart.tooltip?._active && chart.tooltip?._active.length) {
-                const ctx = chart.ctx;
-                ctx.save();
-                const activePoint = chart.tooltip._active[0];
+        defaults: { color: 'grey', dash: [5, 5], display: true, width: 2 },
+        beforeDraw: (chart, args, options) => {
+            if (!options.display || !chart.tooltip?._active?.length)
+                return;
 
-                ctx.beginPath();
-                ctx.setLineDash([5, 5]);
-                ctx.moveTo(activePoint.element.x, chart.chartArea.top);
-                ctx.lineTo(activePoint.element.x, activePoint.element.y);
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = 'grey';
-                ctx.stroke();
+            const ctx = chart.ctx;
+            const activePoint = chart.tooltip._active[0];
 
-                ctx.beginPath();
-                ctx.moveTo(activePoint.element.x, activePoint.element.y);
-                ctx.lineTo(activePoint.element.x, chart.chartArea.bottom);
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = 'grey';
-                ctx.stroke();
+            ctx.save();
+            ctx.setLineDash(Array.isArray(options.dash) ? options.dash : []);
+            ctx.lineWidth = options.width;
+            ctx.strokeStyle = options.color;
 
-                ctx.restore();
-            }
+            // Two strokes, so the dash pattern restarts at the hovered point, as it always has.
+            ctx.beginPath();
+            ctx.moveTo(activePoint.element.x, chart.chartArea.top);
+            ctx.lineTo(activePoint.element.x, activePoint.element.y);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(activePoint.element.x, activePoint.element.y);
+            ctx.lineTo(activePoint.element.x, chart.chartArea.bottom);
+            ctx.stroke();
+
+            ctx.restore();
         },
     });
 
@@ -71,10 +75,9 @@ if (!window.blazorexpress.chartjs) {
     const getDataItemCount = (chart) =>
         Math.max(chart.data.labels?.length ?? 0, ...(chart.data.datasets ?? []).map(dataset => dataset?.data?.length ?? 0));
 
-    // A dataset is matched across updates by its label, and a data item by its entry in `labels`.
-    // Missing or duplicate labels fall back to the position. Runs in O(n).
+    // A data item is matched across updates by its entry in `labels`. Missing or duplicate labels fall back
+    // to the position. Runs in O(n).
     const getKeys = (values) => {
-        const isMissing = value => value === undefined || value === null || value === '';
         const counts = new Map();
 
         for (const value of values)
@@ -84,7 +87,24 @@ if (!window.blazorexpress.chartjs) {
         return values.map((value, i) => !isMissing(value) && counts.get(String(value)) === 1 ? `label:${String(value)}` : `#${i}`);
     };
 
-    const getDatasetKeys = (chart) => getKeys((chart.data.datasets ?? []).map(dataset => dataset?.label));
+    // Chart dataset identity across updates (foundation rules): the base is a non-empty `key`, else a non-empty
+    // label, else none, followed by the occurrence of that base in array order. A unique label is `label:Sales#0`
+    // wherever it sits, and duplicate or missing labels pair in order of occurrence. Runs in O(n).
+    const getDatasetIdentityKeys = (datasets) => {
+        const counts = new Map();
+
+        return (datasets ?? []).map(dataset => {
+            const base = !isMissing(dataset?.key) ? `key:${String(dataset.key)}`
+                : !isMissing(dataset?.label) ? `label:${String(dataset.label)}`
+                    : 'none';
+            const occurrence = counts.get(base) ?? 0;
+            counts.set(base, occurrence + 1);
+
+            return `${base}#${occurrence}`;
+        });
+    };
+
+    const getDatasetKeys = (chart) => getDatasetIdentityKeys(chart.data.datasets);
 
     const getDataKeys = (chart) => {
         const labels = chart.data.labels ?? [];
@@ -149,7 +169,13 @@ if (!window.blazorexpress.chartjs) {
         }).catch(() => { });
     };
 
+    const isDirectUpdateMode = mode => mode === 'none' || mode === 'reset';
+
     const isInRange = (index, count) => Number.isInteger(index) && index >= 0 && index < count;
+
+    const isMissing = value => value === undefined || value === null || value === '';
+
+    const isObject = value => value !== null && typeof value === 'object';
 
     const isVersionBelow = (version, minimum) => {
         const actualParts = String(version).split('.').map(part => parseInt(part, 10) || 0);
@@ -164,6 +190,26 @@ if (!window.blazorexpress.chartjs) {
         return false;
     };
 
+    // Reuses the current dataset object for each new dataset with the same identity key and the same `type`.
+    // Chart.js matches metadata by object identity, so it keeps the controller and elements and animates from the
+    // current values. Any other dataset goes in as the new object and grows in from its base.
+    const matchDatasets = (chart, nextDatasets) => {
+        const currentDatasets = chart.data.datasets ?? [];
+        const currentKeys = getDatasetIdentityKeys(currentDatasets);
+        const currentByKey = new Map(currentKeys.map((key, i) => [key, currentDatasets[i]]));
+
+        return getDatasetIdentityKeys(nextDatasets).map((key, i) => {
+            const next = nextDatasets[i];
+            const current = currentByKey.get(key);
+
+            if (!isObject(current) || !isObject(next) || current.type !== next.type)
+                return next;
+
+            replaceDatasetProperties(current, next);
+            return current;
+        });
+    };
+
     const recordDataVisibility = (chart, index) =>
         getState(chart).dataOverrides.set(getDataKeys(chart)[index], !chart.getDataVisibility(index));
 
@@ -176,8 +222,9 @@ if (!window.blazorexpress.chartjs) {
         getState(chart).pointOverrides.set(JSON.stringify([datasetKey, dataKey]), { datasetKey, dataKey, hidden });
     };
 
-    // Runs after `chart.data` is replaced and before `chart.update`: new dataset objects get new metadata,
-    // so runtime dataset and slice visibility has to be set again. Overrides whose item is gone are dropped.
+    // Runs after `chart.data` is replaced and before `chart.update`: unmatched dataset objects get new metadata,
+    // so runtime dataset and slice visibility has to be set again (a matched dataset keeps its metadata, so setting
+    // it again changes nothing). Overrides whose item is gone are dropped.
     const reapplyVisibilityBeforeUpdate = (chart, previousDataCount) => {
         const state = getState(chart);
 
@@ -224,23 +271,51 @@ if (!window.blazorexpress.chartjs) {
 
         const datasetKeys = getDatasetKeys(chart);
         const dataKeys = getDataKeys(chart);
-        let isChanged = false;
+        const hiddenByPosition = new Map();
 
         for (const [key, override] of [...state.pointOverrides]) {
             const datasetIndex = datasetKeys.indexOf(override.datasetKey);
-            const element = datasetIndex < 0 ? undefined : chart.getDatasetMeta(datasetIndex).data[dataKeys.indexOf(override.dataKey)];
+            const index = dataKeys.indexOf(override.dataKey);
+            const element = datasetIndex < 0 || index < 0 ? undefined : chart.getDatasetMeta(datasetIndex).data[index];
 
-            if (!element) {
+            if (!element)
                 state.pointOverrides.delete(key);
-            }
-            else if (element.hidden !== override.hidden) {
-                element.hidden = override.hidden;
-                isChanged = true;
+            else
+                hiddenByPosition.set(`${datasetIndex}:${index}`, override.hidden);
+        }
+
+        // A matched dataset keeps its bar and point elements, and their `hidden` flag stays with the position.
+        // So every element is set, to its override or to visible, which also clears a flag whose item has moved or gone.
+        let isChanged = false;
+
+        for (let datasetIndex = 0; datasetIndex < datasetKeys.length; datasetIndex++) {
+            const elements = chart.getDatasetMeta(datasetIndex).data;
+
+            for (let index = 0; index < elements.length; index++) {
+                const hidden = hiddenByPosition.get(`${datasetIndex}:${index}`) ?? false;
+
+                if (elements[index] && !!elements[index].hidden !== hidden) {
+                    elements[index].hidden = hidden;
+                    isChanged = true;
+                }
             }
         }
 
         if (isChanged)
             chart.render();
+    };
+
+    // Makes `target` hold exactly the own properties of `source`, so the result equals a fresh render of the new
+    // dataset and a property removed in C# no longer applies (foundation rules: chart dataset identity across
+    // updates). `__proto__` is skipped, so a payload property cannot change the object's prototype.
+    const replaceDatasetProperties = (target, source) => {
+        for (const name of Object.keys(target))
+            if (!Object.prototype.hasOwnProperty.call(source, name))
+                delete target[name];
+
+        for (const name of Object.keys(source))
+            if (name !== '__proto__')
+                target[name] = source[name];
     };
 
     // ResizeAsync sends CSS declarations such as "width:300px"; a style property needs only the value ("300px").
@@ -311,6 +386,12 @@ if (!window.blazorexpress.chartjs) {
         recordPointVisibility(chart, datasetIndex, dataIndex, !visible);
     };
 
+    // Chart.js resolves options.events to an array; a library event fires only for an event the chart listens to.
+    const isChartEvent = (chart, eventName) => {
+        const events = chart.options?.events;
+        return !Array.isArray(events) || events.includes(eventName);
+    };
+
     // Shared implementation for every chart type. A per-type module passes hooks for the behavior that differs.
     const core = {
         addClickHandler: (chart, dotNetObjectReference) => {
@@ -318,6 +399,8 @@ if (!window.blazorexpress.chartjs) {
 
             chart.blazorExpressClickHandler = true;
             chart.canvas.addEventListener('click', (event) => {
+                if (!isChartEvent(chart, 'click')) return;
+
                 const activeElements = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
                 if (!activeElements || activeElements.length === 0) return;
 
@@ -350,13 +433,13 @@ if (!window.blazorexpress.chartjs) {
 
             // No hit-test unless an OnHover callback is bound.
             chart.canvas.addEventListener('mousemove', (event) => {
-                if (!isListening()) return;
+                if (!isListening() || !isChartEvent(chart, 'mousemove')) return;
 
                 const activeElements = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
                 notify(activeElements?.[0]);
             });
             chart.canvas.addEventListener('mouseout', () => {
-                if (isListening()) notify(undefined);
+                if (isListening() && isChartEvent(chart, 'mouseout')) notify(undefined);
             });
         },
         addDatasetData: (elementId, dataLabel, data) => {
@@ -574,6 +657,12 @@ if (!window.blazorexpress.chartjs) {
                 applyEventHandlers(options);
 
                 const previousDataCount = getDataItemCount(chart);
+
+                // Matched datasets keep their object, so Chart.js animates them from their current values.
+                // The direct modes ('none', 'reset') have no animation to keep, and Chart.js applies a reused
+                // controller's cached shared element options in them without refreshing it, so they get the new objects.
+                if (data && !isDirectUpdateMode(mode))
+                    data.datasets = matchDatasets(chart, data.datasets ?? []);
 
                 chart.data = data;
                 getState(chart).lastHoverKey = '';

@@ -1,0 +1,85 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Elements.Arc</code> border width, color and <code>BorderAlign = "inner"</code></p>
+        <PolarAreaChart @ref="elementsChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Hover = new() { Mode = InteractionMode.Nearest, Intersect = false }</code></p>
+        <PolarAreaChart @ref="hoverChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Events = ["click"]</code> (pointer moves do nothing; click a slice)</p>
+        <PolarAreaChart @ref="clickOnlyChart" />
+    </div>
+</div>
+
+@code {
+    private PolarAreaChart elementsChart = default!;
+    private PolarAreaChart hoverChart = default!;
+    private PolarAreaChart clickOnlyChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // The datasets set no border, so the Elements.Arc defaults apply to every slice.
+            var elementsOptions = new PolarAreaChartOptions
+            {
+                Elements = new ChartElements
+                {
+                    Arc = new ChartElementsArc { BorderWidth = 6, BorderColor = "#ffffff", BorderAlign = "inner" }
+                }
+            };
+            await elementsChart.InitializeAsync(GetChartData(), elementsOptions);
+
+            // Hover highlights the closest slice even outside it, while the tooltip keeps the default Intersect = true.
+            var hoverOptions = new PolarAreaChartOptions
+            {
+                Hover = new ChartHover { Mode = InteractionMode.Nearest, Intersect = false },
+                Elements = new ChartElements { Arc = new ChartElementsArc { BorderWidth = 2, BorderColor = "#ffffff" } }
+            };
+            await hoverChart.InitializeAsync(GetChartData(), hoverOptions);
+
+            // Only click events reach the chart: moving the pointer does nothing; a click still highlights the item and opens its tooltip.
+            var clickOnlyOptions = new PolarAreaChartOptions
+            {
+                Events = ["click"],
+                Elements = new ChartElements { Arc = new ChartElementsArc { BorderWidth = 2, BorderColor = "#ffffff" } }
+            };
+            await clickOnlyChart.InitializeAsync(GetChartData(), clickOnlyOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() =>
+        new()
+        {
+            Labels = ["North", "East", "South", "West", "Central"],
+            Datasets = [CreateDataset([11, 16, 7, 3, 14])]
+        };
+
+    private static PolarAreaChartDataset CreateDataset(List<double?> data)
+    {
+        var backgroundColors = new List<string>();
+        var hoverBackgroundColors = new List<string>();
+
+        for (var index = 0; index < data.Count; index++)
+        {
+            var c = ColorUtility.CategoricalTwelveColors[index].ToColor();
+            backgroundColors.Add(c.ToRgbaString(0.5));
+            hoverBackgroundColors.Add(c.ToRgbaString(0.9));
+        }
+
+        return new PolarAreaChartDataset
+        {
+            Label = "Sales",
+            Data = data,
+            BackgroundColor = backgroundColors,
+            HoverBackgroundColor = hoverBackgroundColors
+        };
+    }
+
+    #endregion Data Preparation
+}

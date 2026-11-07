@@ -79,7 +79,7 @@
 <Section Class="p-0" Size="HeadingSize.H4" Name="Show and hide datasets" PageUrl="@pageUrl" Link="show-and-hide-datasets">
     <Block>
         Show and hide whole datasets or single points from C#, check whether a dataset is visible and count the visible datasets.
-        Visibility changed at runtime, from C# or a legend click, stays in place when <code>UpdateAsync</code> refreshes the data, because datasets and points are matched by label.
+        Visibility changed at runtime, from C# or a legend click, stays in place when <code>UpdateAsync</code> refreshes the data, because datasets are matched by <code>Key</code>, or else by label, and points by label.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
@@ -150,14 +150,207 @@
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Call <code>UpdateAsync(data, options)</code> for the default animated update, or pass <code>ChartUpdateMode.None</code> to apply the change at once. Each update replaces the chart's datasets, so an animated update draws the new data from the chart's starting state.</li>
+                <li>Call <code>UpdateAsync(data, options)</code> for the default animated update, or pass <code>ChartUpdateMode.None</code> to apply the change at once. An animated update moves each matched dataset from its current values to the new ones, and a new dataset grows in. Datasets are matched by <code>Key</code> when set, otherwise by <code>Label</code>; datasets that share a label, or have none, pair in order.</li>
                 <li>Call <code>StopAsync()</code> to end any running animation; the chart stays as it was drawn at that moment. Call <code>UpdateAsync</code> again to animate to new values.</li>
-                <li>Call <code>ResetAsync()</code> to put the chart back in its starting state, before its first animation, and <code>RenderAsync()</code> to draw that state. Stop any running animation first, or its next frame draws over the reset.</li>
+                <li>Call <code>ResetAsync()</code> to put the chart back in its starting state, before its first animation, and <code>RenderAsync()</code> to draw that state. Stop any running animation first, or its next frame draws over the reset. Call <code>ResetAsync()</code> and then <code>UpdateAsync(data, options)</code> to regrow the chart from its starting state, as on first render.</li>
                 <li>Call <code>ClearAsync()</code> to clear the canvas; <code>RenderAsync()</code> draws the chart again. A running animation draws over the cleared canvas on its next frame, so stop it first or wait for it to end.</li>
             </ol>
         </div>
     </Block>
     <Demo Type="typeof(ScatterChart_Demo_09_Update_Modes)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Multiple axes" PageUrl="@pageUrl" Link="multiple-axes">
+    <Block>
+        Add a second y-axis or x-axis with <code>Scales.AdditionalAxes</code> and point a dataset at it with <code>YAxisID</code> or <code>XAxisID</code>, so two series with different units share one chart.
+        Chart.js lays out each axis on its <code>Position</code>; turn off the extra axis's grid with <code>DrawOnChartArea = false</code> so only one set of grid lines is drawn. Like every axis in this library, an additional axis starts at zero by default (<code>BeginAtZero = true</code>).
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales.AdditionalAxes = new() { ["y1"] = new ChartAxes { ... } }</code>; an ID that starts with <code>x</code> or <code>y</code> sets the axis direction.</li>
+                <li>Give the axis <code>Type = ChartAxesType.Linear</code> and <code>Position = "right"</code> (or <code>"top"</code> for an <code>x1</code> axis).</li>
+                <li>Set <code>Grid = new ChartAxesGrid { DrawOnChartArea = false }</code> on the extra axis.</li>
+                <li>Set <code>YAxisID = "y1"</code> (or <code>XAxisID = "x1"</code>) on the <code>ScatterChartDataset</code> that uses it.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(ScatterChart_Demo_10_Multiple_Axes)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Axis position and reverse" PageUrl="@pageUrl" Link="axis-position-and-reverse">
+    <Block>
+        Move an axis to another edge with <code>Position</code>, flip its direction with <code>Reverse</code>, or hide it with <code>Display = false</code>.
+        Chart.js draws the x-axis at the bottom and the y-axis on the left by default; a hidden axis still scales the data, it only stops drawing its ticks, title and grid.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales.X.Position = "top"</code> and <code>Scales.Y.Position = "right"</code>.</li>
+                <li>Set <code>Scales.Y.Reverse = true</code> to put the largest value at the bottom.</li>
+                <li>Set <code>Scales.X.Display = false</code> to hide the x-axis.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(ScatterChart_Demo_11_Axis_Position_And_Reverse)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Tick options" PageUrl="@pageUrl" Link="tick-options">
+    <Block>
+        Control how many tick labels a linear axis shows, how they are spaced and how they look with <code>ChartAxesTicks</code>.
+        Chart.js picks round step sizes on its own; <code>StepSize</code> and <code>Count</code> override that, and <code>MaxTicksLimit</code> and <code>Precision</code> only limit it.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales.Y.Ticks = new ChartAxesTicks { StepSize = 5 }</code> for a fixed step, or <code>Count = 5</code> for a fixed number of ticks.</li>
+                <li>Limit labels with <code>MaxTicksLimit</code> and round them with <code>Precision</code>.</li>
+                <li>Rotate x labels with <code>MinRotation</code> and <code>MaxRotation</code>, and set <code>AutoSkip = false</code> to keep every label.</li>
+                <li>Style and place labels with <code>Font</code>, <code>Color</code>, <code>CrossAlign</code>, <code>Mirror</code> (y labels inside the chart area) and <code>LabelOffset</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(ScatterChart_Demo_12_Tick_Options)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Axis title" PageUrl="@pageUrl" Link="axis-title">
+    <Block>
+        Label each axis with <code>ChartAxesTitle</code>. Chart.js hides axis titles by default; in this library the title <code>Color</code> defaults to <code>"black"</code> and its <code>Font</code> to bold 12px.
+        The demo sets <code>BeginAtZero = false</code> because axes in this library start at zero by default and the heights and weights are far from zero.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales.X.Title = new ChartAxesTitle { Display = true, Text = "Height (cm)" }</code>, and the same for <code>Scales.Y</code>.</li>
+                <li>Style it with <code>Color</code> and <code>Font = new ChartFont { Size = 16, Style = "italic" }</code>.</li>
+                <li>Add space with <code>Padding = 10</code>, or on one side with <code>Padding = new() { Top = 8 }</code>.</li>
+                <li>Align it along the axis with <code>TitleAlignment = TitleAlignment.Start</code> or <code>TitleAlignment.End</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(ScatterChart_Demo_13_Axis_Title)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Grace and bounds" PageUrl="@pageUrl" Link="grace-and-bounds">
+    <Block>
+        Add room beyond the data with <code>Grace</code>, choose whether the axis ends at the data or at a whole tick with <code>Bounds</code>, and stack two axes on one edge with <code>Stack</code>.
+        Chart.js uses <code>Bounds = "ticks"</code> for linear axes; <code>SuggestedMin</code> and <code>SuggestedMax</code> widen the range only when the data does not reach them. Axes in this library start at zero by default, so the demo sets <code>BeginAtZero = false</code> to show grace and bounds at both ends.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Grace = "10%"</code> (a share of half the data range, measured from the middle to each end) or <code>Grace = 5</code> (axis units).</li>
+                <li>Set <code>Bounds = "data"</code> or <code>Bounds = "ticks"</code>, and <code>SuggestedMin</code>/<code>SuggestedMax</code> for a preferred range.</li>
+                <li>To stack axes, give <code>Scales.Y</code> and an additional axis <code>y2</code> the same <code>Position</code> and <code>Stack = "demo"</code>, and split the height with <code>StackWeight</code>.</li>
+                <li>Set <code>Offset = true</code> for extra space at both ends of an axis, and <code>YAxisID = "y2"</code> on the dataset that uses it.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(ScatterChart_Demo_14_Grace_And_Bounds)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Title and subtitle" PageUrl="@pageUrl" Link="title-and-subtitle">
+    <Block>
+        Show a chart title with <code>Plugins.Title</code> and a second line with <code>Plugins.Subtitle</code>. Both are hidden until <code>Display = true</code>, and in this library their <code>Color</code> defaults to <code>"black"</code>.
+        Chart.js draws the subtitle just below the title and places both at the top, centered, unless <code>Position</code> or <code>Align</code> says otherwise.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "..." }</code>.</li>
+                <li>Set <code>Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "..." }</code>.</li>
+                <li>Move them with <code>Position</code> (<code>"top"</code>, <code>"left"</code>, <code>"bottom"</code>, <code>"right"</code>) and <code>Align</code> (<code>"start"</code>, <code>"center"</code>, <code>"end"</code>).</li>
+                <li>Add space with <code>Padding</code>, and set <code>FullSize = false</code> to keep the title within the chart area.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(ScatterChart_Demo_15_Title_And_Subtitle)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Tooltip options" PageUrl="@pageUrl" Link="tooltip-options">
+    <Block>
+        Choose which points a tooltip lists and how it looks with <code>Plugins.Tooltip</code>. Tooltip <code>Mode</code> and <code>Intersect</code> override the chart <code>Interaction</code> for the tooltip only.
+        In a scatter chart, <code>InteractionMode.Index</code> lists the point at the same position in every dataset, and <code>InteractionMode.Nearest</code> lists only the closest point.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Plugins.Tooltip = new ChartPluginsTooltip { Mode = InteractionMode.Index, Intersect = false }</code>.</li>
+                <li>Set <code>Position = "average"</code> (Chart.js default) or <code>"nearest"</code> to place the tooltip.</li>
+                <li>Style it with <code>Padding</code>, <code>CornerRadius</code>, <code>BorderColor</code> and <code>BorderWidth</code>.</li>
+                <li>Size the color boxes with <code>BoxWidth</code>, <code>BoxHeight</code> and <code>BoxPadding</code>, set <code>MultiKeyBackground</code>, or show the point style with <code>UsePointStyle = true</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(ScatterChart_Demo_16_Tooltip_Options)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Layout padding" PageUrl="@pageUrl" Link="layout-padding">
+    <Block>
+        Add empty space between the canvas edge and the chart with <code>Layout</code>. Chart.js applies it inside the canvas, around the legend, title and axes; the dashed borders in the demo show the canvas edge.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Leave <code>Layout.Padding</code> at <code>0</code> for no padding.</li>
+                <li>Set <code>Layout.Padding = 20</code> for the same padding on every side.</li>
+                <li>Set <code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code> for padding per side; when set, it is sent instead of <code>Padding</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(ScatterChart_Demo_17_Layout_Padding)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Aspect ratio and resize delay" PageUrl="@pageUrl" Link="aspect-ratio-and-resize-delay">
+    <Block>
+        Set the width-to-height ratio of a responsive chart with <code>AspectRatio</code>; Chart.js keeps it while <code>MaintainAspectRatio = true</code> (the default) and uses 2 for scatter charts.
+        <code>ResizeDelay</code> waits the given milliseconds after the container stops resizing before the chart redraws, which saves work while the window is dragged; resize the window to see the middle chart catch up later.
+        <code>DevicePixelRatio</code> renders the canvas at a higher resolution, for sharper exported images.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Keep <code>MaintainAspectRatio = true</code> and set <code>AspectRatio</code> to <code>1</code>, <code>2</code> or <code>3</code>.</li>
+                <li>Set <code>ResizeDelay = 300</code> to debounce redraws on resize.</li>
+                <li>Set <code>DevicePixelRatio = 2</code> before calling <code>ToBase64ImageAsync</code> or <code>DownloadImageAsync</code> for a sharper image.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(ScatterChart_Demo_18_Aspect_Ratio_And_Resize_Delay)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Hover and elements" PageUrl="@pageUrl" Link="hover-and-elements">
+    <Block>
+        Set default point styling for every dataset with <code>Elements.Point</code>, and change what the pointer highlights with <code>Hover</code>. Dataset values such as <code>PointRadius</code> win over the element defaults.
+        <code>Hover</code> overrides <code>Interaction</code> for highlighting only, so the tooltip can still show one point while the whole dataset lights up. With <code>Events = ["click"]</code>, moving the pointer does nothing and <code>OnHover</code> does not fire; clicking a point still highlights it and opens its tooltip, and <code>OnClick</code> fires.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Elements = new ChartElements { Point = new ChartElementsPoint { Radius = 6, PointStyle = "rectRot", HoverRadius = 10 } }</code>.</li>
+                <li>Set <code>Hover = new ChartHover { Mode = InteractionMode.Dataset, Intersect = true }</code> to highlight a whole dataset.</li>
+                <li>Set <code>Events = ["click"]</code> to react to clicks only.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(ScatterChart_Demo_19_Hover_And_Elements)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Colors plugin" PageUrl="@pageUrl" Link="colors-plugin">
+    <Block>
+        The Chart.js colors plugin gives datasets without colors a color from its built-in palette. Configure it with <code>Plugins.Colors</code>.
+        Line, radar and scatter datasets in this library always send a default color (<code>ScatterChartDataset.BackgroundColor</code> and <code>BorderColor</code> are <code>"rgba(0, 0, 0, 0.1)"</code>), so the plugin leaves them gray unless <code>ForceOverride = true</code>, which replaces dataset colors with the palette.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>BackgroundColor</code> and <code>BorderColor</code> on each <code>ScatterChartDataset</code> for your own colors.</li>
+                <li>Set <code>Plugins.Colors = new ChartPluginsColors { Enabled = true }</code> to turn the plugin on (or <code>Enabled = false</code> to turn it off).</li>
+                <li>Add <code>ForceOverride = true</code> to apply the palette to scatter datasets.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(ScatterChart_Demo_20_Colors_Plugin)" Tabs="true" />
 </Section>
 
 @code {

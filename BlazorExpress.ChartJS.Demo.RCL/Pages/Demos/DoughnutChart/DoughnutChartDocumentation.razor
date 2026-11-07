@@ -147,14 +147,179 @@
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Call <code>UpdateAsync(data, options)</code> for the default animated update, or pass <code>ChartUpdateMode.None</code> to apply the change at once. Each update replaces the chart's datasets, so an animated update draws the new data from the chart's starting state.</li>
+                <li>Call <code>UpdateAsync(data, options)</code> for the default animated update, or pass <code>ChartUpdateMode.None</code> to apply the change at once. An animated update moves each matched dataset from its current values to the new ones, and a new dataset grows in. Datasets are matched by <code>Key</code> when set, otherwise by <code>Label</code>; datasets that share a label, or have none, pair in order.</li>
                 <li>Call <code>StopAsync()</code> to end any running animation; the chart stays as it was drawn at that moment. Call <code>UpdateAsync</code> again to animate to new values.</li>
-                <li>Call <code>ResetAsync()</code> to put the chart back in its starting state, before its first animation, and <code>RenderAsync()</code> to draw that state. Stop any running animation first, or its next frame draws over the reset.</li>
+                <li>Call <code>ResetAsync()</code> to put the chart back in its starting state, before its first animation, and <code>RenderAsync()</code> to draw that state. Stop any running animation first, or its next frame draws over the reset. Call <code>ResetAsync()</code> and then <code>UpdateAsync(data, options)</code> to regrow the chart from its starting state, as on first render.</li>
                 <li>Call <code>ClearAsync()</code> to clear the canvas; <code>RenderAsync()</code> draws the chart again. A running animation draws over the cleared canvas on its next frame, so stop it first or wait for it to end.</li>
             </ol>
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_09_Update_Modes)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Cutout and radius" PageUrl="@pageUrl" Link="cutout-and-radius">
+    <Block>
+        <code>Cutout</code> sets the size of the hole in the middle and <code>Radius</code> sets the outer radius. Both take pixels or a percentage string; Chart.js uses a <code>"50%"</code> cutout and a <code>"100%"</code> radius for a doughnut chart.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Create <code>DoughnutChartOptions</code> and set <code>Cutout = "75%"</code> for a percentage of the radius.</li>
+                <li>Set <code>Cutout = 40</code> to use a fixed hole of 40 pixels, whatever the chart size.</li>
+                <li>Set <code>Radius = "80%"</code> to shrink the doughnut inside the available space.</li>
+                <li>Pass the options to <code>InitializeAsync</code> or <code>UpdateAsync</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_10_Cutout_And_Radius)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Half gauge" PageUrl="@pageUrl" Link="half-gauge">
+    <Block>
+        <code>Rotation</code> sets the start angle of the first arc, in degrees from the top, and <code>Circumference</code> sets how far the arcs sweep. Chart.js uses 0 and 360; a rotation of -90 with a circumference of 180 draws a half doughnut, and Chart.js scales it to fill the space.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Rotation = -90</code> and <code>Circumference = 180</code> on <code>DoughnutChartOptions</code> for a half gauge.</li>
+                <li>Use other pairs, such as <code>Rotation = -135</code> with <code>Circumference = 270</code>, for a three-quarter dial.</li>
+                <li>For a single-value gauge, add two slices (the value and the remainder), give the remainder a grey <code>BackgroundColor</code>, and set <code>Plugins.Legend.Display = false</code>.</li>
+                <li>Combine with <code>Cutout</code>, for example <code>"75%"</code>, for a thinner gauge.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_11_Half_Gauge)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Rotate and scale animation" PageUrl="@pageUrl" Link="rotate-and-scale-animation">
+    <Block>
+        <code>ChartAnimation.AnimateRotate</code> sweeps the arcs in from the start angle, and <code>AnimateScale</code> grows the chart from the center. Chart.js uses <code>true</code> and <code>false</code> for doughnut charts. Click <strong>Replay</strong> to run the first-render animation again.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Animation = new ChartAnimation { AnimateRotate = false, AnimateScale = true }</code> on <code>DoughnutChartOptions</code>.</li>
+                <li>Set <code>Duration</code> on the same <code>ChartAnimation</code> to make the animation longer or shorter.</li>
+                <li>To replay, call <code>StopAsync()</code>, then <code>ResetAsync()</code>, then <code>UpdateAsync(chartData, options)</code> on each chart.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_12_Rotate_And_Scale_Animation)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Spacing mode" PageUrl="@pageUrl" Link="spacing-mode">
+    <Block>
+        The dataset <code>Spacing</code> adds a gap between arcs, in pixels, and <code>SpacingMode</code> sets how the gap is measured: <code>"angular"</code> keeps an equal angle (the Chart.js default), <code>"proportional"</code> scales with each arc, and <code>"parallel"</code> keeps the edges of neighbouring arcs parallel.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Spacing = 8</code> on the <code>DoughnutChartDataset</code>.</li>
+                <li>Set <code>SpacingMode</code> on the same dataset to <code>"angular"</code>, <code>"proportional"</code> or <code>"parallel"</code>.</li>
+                <li>Leave <code>SpacingMode</code> as <code>null</code> to use the Chart.js default.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_13_Spacing_Mode)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Title and subtitle" PageUrl="@pageUrl" Link="title-and-subtitle">
+    <Block>
+        <code>Plugins.Title</code> and <code>Plugins.Subtitle</code> draw a title and a smaller line of text, placed by <code>Position</code> and aligned by <code>Align</code>. The subtitle is drawn just after the title on the same side. In this library both default to <code>Color = "black"</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Browser share" }</code>.</li>
+                <li>Set <code>Plugins.Subtitle = new() { Display = true, Text = "Visitors in October" }</code>.</li>
+                <li>Use <code>Position</code> (<code>"top"</code>, <code>"left"</code>, <code>"bottom"</code> or <code>"right"</code>) and <code>Align</code> (<code>"start"</code>, <code>"center"</code> or <code>"end"</code>) to place each one.</li>
+                <li>Set <code>Padding = new() { Top = 10, Bottom = 30 }</code> for more space, and <code>FullSize = false</code> to keep the title within the chart area instead of the full canvas width.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_14_Title_And_Subtitle)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Tooltip options" PageUrl="@pageUrl" Link="tooltip-options">
+    <Block>
+        <code>Plugins.Tooltip</code> sets which items the tooltip lists, where it is placed and how it looks. When <code>Mode</code> and <code>Intersect</code> are not set, the tooltip uses the chart <code>Interaction</code> options; with two rings, <code>InteractionMode.Index</code> lists the same slice of both rings.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Plugins.Tooltip = new ChartPluginsTooltip { Mode = InteractionMode.Index, Intersect = true }</code>, or use <code>InteractionMode.Nearest</code> with <code>Intersect = false</code> to show the closest slice even between slices.</li>
+                <li>Set <code>Position</code> to <code>"average"</code> or <code>"nearest"</code>.</li>
+                <li>Style the box with <code>Padding</code>, <code>CornerRadius</code>, <code>BorderColor</code> and <code>BorderWidth</code>.</li>
+                <li>Style the color boxes with <code>BoxWidth</code>, <code>BoxHeight</code>, <code>BoxPadding</code>, <code>UsePointStyle</code> and <code>MultiKeyBackground</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_15_Tooltip_Options)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Layout padding" PageUrl="@pageUrl" Link="layout-padding">
+    <Block>
+        <code>Layout</code> adds empty space inside the canvas, around the legend, title and chart. The dashed borders show the canvas edges.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Layout.Padding = 20</code> for the same padding on every side, in pixels.</li>
+                <li>Set <code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code> for a value per side; when set, it is sent instead of <code>Padding</code>.</li>
+                <li>Leave both unset for no padding.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_16_Layout_Padding)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Aspect ratio and resize delay" PageUrl="@pageUrl" Link="aspect-ratio-and-resize-delay">
+    <Block>
+        With <code>MaintainAspectRatio = true</code>, the canvas height follows its width by <code>AspectRatio</code> (width / height); Chart.js uses 1 for doughnut charts. <code>ResizeDelay</code> waits the given milliseconds after the container stops resizing before the chart redraws, which saves work while the window is dragged; resize the window to see the wide chart catch up.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Keep <code>MaintainAspectRatio = true</code> (the default) and set <code>AspectRatio</code> to 1, 2 or 3.</li>
+                <li>Set <code>ResizeDelay = 300</code> to redraw only after resizing pauses.</li>
+                <li>Set <code>DevicePixelRatio = 2</code> to draw the canvas at a higher resolution, for sharper images from <code>ToBase64ImageAsync</code> and <code>DownloadImageAsync</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_17_Aspect_Ratio_And_Resize_Delay)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Hover and elements" PageUrl="@pageUrl" Link="hover-and-elements">
+    <Block>
+        <code>Elements.Arc</code> sets defaults for every arc, which dataset settings override. <code>Hover</code> sets which slices are highlighted under the pointer, separately from <code>Interaction</code>, which the tooltip keeps using. <code>Events</code> limits the browser events the chart listens to: with <code>Events = ["click"]</code>, moving the pointer does nothing and <code>OnHover</code> does not fire; clicking a slice still highlights it and opens its tooltip, and <code>OnClick</code> fires.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Elements = new ChartElements { Arc = new ChartElementsArc { BorderWidth = 4, BorderAlign = "inner", BorderRadius = 6 } }</code>.</li>
+                <li>Set <code>Arc.Circular = false</code> to draw the arcs with straight edges.</li>
+                <li>Set <code>Hover = new ChartHover { Mode = InteractionMode.Index, Intersect = true }</code> to highlight the same slice in every ring, and give the datasets a <code>HoverOffset</code> to make the highlight visible.</li>
+                <li>Set <code>Events = ["click"]</code> to react to clicks only.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_18_Hover_And_Elements)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Colors plugin" PageUrl="@pageUrl" Link="colors-plugin">
+    <Block>
+        The built-in Chart.js colors plugin gives datasets that set no colors a default palette, one color per slice on a doughnut chart. It does nothing when any dataset sets its own colors, unless <code>ForceOverride = true</code>. Line, radar and scatter datasets send a default color, so on those charts the palette needs <code>ForceOverride = true</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Leave <code>BackgroundColor</code> unset on the <code>DoughnutChartDataset</code>.</li>
+                <li>Set <code>Plugins.Colors = new() { Enabled = true }</code>, or leave it unset, to use the palette; <code>Enabled = false</code> leaves the slices in the Chart.js default grey.</li>
+                <li>Set <code>Plugins.Colors = new() { ForceOverride = true }</code> to replace the colors the dataset sets.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_19_Colors_Plugin)" Tabs="true" />
 </Section>
 
 @code {

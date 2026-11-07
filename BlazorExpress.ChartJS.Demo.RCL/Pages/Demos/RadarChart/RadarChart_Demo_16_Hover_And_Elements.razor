@@ -1,0 +1,85 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Elements.Point</code> radius, style and hover radius; <code>Elements.Line</code> dash</p>
+        <RadarChart @ref="elementsChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Hover = new() { Mode = InteractionMode.Index, Intersect = false }</code></p>
+        <RadarChart @ref="hoverChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Events = ["click"]</code> (pointer moves do nothing; click a point)</p>
+        <RadarChart @ref="clickOnlyChart" />
+    </div>
+</div>
+
+@code {
+    private RadarChart elementsChart = default!;
+    private RadarChart hoverChart = default!;
+    private RadarChart clickOnlyChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var elementsOptions = new RadarChartOptions
+            {
+                Elements = new ChartElements
+                {
+                    Point = new ChartElementsPoint { Radius = 5, PointStyle = "rectRot", HoverRadius = 9, HoverBorderWidth = 3 },
+                    Line = new ChartElementsLine { BorderDash = [6, 4] }
+                }
+            };
+            await elementsChart.InitializeAsync(GetChartData(), elementsOptions);
+
+            // Hover highlights every point on the hovered axis, while the tooltip keeps the default nearest-point interaction.
+            var hoverOptions = new RadarChartOptions
+            {
+                Hover = new ChartHover { Mode = InteractionMode.Index, Intersect = false },
+                Elements = new ChartElements { Point = new ChartElementsPoint { Radius = 3, HoverRadius = 8 } }
+            };
+            await hoverChart.InitializeAsync(GetChartData(), hoverOptions);
+
+            // Only click events reach the chart: moving the pointer does nothing; a click still highlights the item and opens its tooltip.
+            var clickOnlyOptions = new RadarChartOptions
+            {
+                Events = ["click"],
+                Elements = new ChartElements { Point = new ChartElementsPoint { Radius = 3, HoverRadius = 8 } }
+            };
+            await clickOnlyChart.InitializeAsync(GetChartData(), clickOnlyOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() =>
+        new()
+        {
+            Labels = ["Speed", "Power", "Defense", "Stamina", "Agility", "Skill"],
+            Datasets =
+            [
+                CreateDataset("Team A", [65, 59, 90, 81, 56, 55], 0),
+                CreateDataset("Team B", [28, 48, 40, 19, 96, 27], 1)
+            ]
+        };
+
+    private static RadarChartDataset CreateDataset(string label, List<double?> data, int colorIndex)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        // Tension and BorderWidth are always sent by radar datasets, so they are set here rather than in Elements.Line.
+        return new RadarChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.2),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2,
+            Tension = 0.2,
+            Fill = true
+        };
+    }
+
+    #endregion Data Preparation
+}

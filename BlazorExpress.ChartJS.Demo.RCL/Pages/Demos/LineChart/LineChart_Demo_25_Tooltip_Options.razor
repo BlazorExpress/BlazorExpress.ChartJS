@@ -1,0 +1,94 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Mode = Index</code>, <code>Intersect = false</code>, <code>Position = "average"</code>, <code>Padding</code>, <code>CornerRadius</code>, border, <code>MultiKeyBackground</code></p>
+        <LineChart @ref="indexChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Mode = Nearest</code>, <code>Intersect = true</code>, <code>Position = "nearest"</code>, <code>BoxWidth</code> / <code>BoxHeight</code> / <code>BoxPadding</code></p>
+        <LineChart @ref="nearestChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>UsePointStyle = true</code>: the color boxes use each dataset's <code>PointStyle</code></p>
+        <LineChart @ref="pointStyleChart" />
+    </div>
+</div>
+
+@code {
+    private LineChart indexChart = default!;
+    private LineChart nearestChart = default!;
+    private LineChart pointStyleChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var indexOptions = new LineChartOptions();
+            indexOptions.Plugins.Tooltip = new ChartPluginsTooltip
+            {
+                Mode = InteractionMode.Index, // every dataset at the hovered label
+                Intersect = false, // shows without the pointer being on a point
+                Position = "average",
+                Padding = 12,
+                CornerRadius = 10,
+                BorderColor = ColorUtility.CategoricalTwelveColors[2],
+                BorderWidth = 2,
+                MultiKeyBackground = "#ffe08a" // behind each color box when the tooltip lists several items
+            };
+
+            var nearestOptions = new LineChartOptions();
+            nearestOptions.Plugins.Tooltip = new ChartPluginsTooltip
+            {
+                Mode = InteractionMode.Nearest, // only the point under the pointer
+                Intersect = true,
+                Position = "nearest",
+                BoxWidth = 24,
+                BoxHeight = 8,
+                BoxPadding = 6
+            };
+
+            var pointStyleOptions = new LineChartOptions();
+            pointStyleOptions.Plugins.Tooltip = new ChartPluginsTooltip
+            {
+                Mode = InteractionMode.Index,
+                Intersect = false,
+                UsePointStyle = true,
+                BoxPadding = 4
+            };
+
+            await indexChart.InitializeAsync(GetChartData(), indexOptions);
+            await nearestChart.InitializeAsync(GetChartData(), nearestOptions);
+            await pointStyleChart.InitializeAsync(GetChartData(), pointStyleOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Labels = ["January", "February", "March", "April", "May", "June"],
+        Datasets =
+        [
+            CreateDataset("Product A", 0, "triangle", [35, 48, 42, 61, 55, 70]),
+            CreateDataset("Product B", 1, "rectRot", [22, 30, 38, 33, 46, 41])
+        ]
+    };
+
+    private static LineChartDataset CreateDataset(string label, int colorIndex, string pointStyle, List<double?> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new LineChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.5),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2,
+            PointRadius = [5],
+            PointStyle = [pointStyle] // also used by the tooltip when UsePointStyle = true
+        };
+    }
+
+    #endregion Data Preparation
+}

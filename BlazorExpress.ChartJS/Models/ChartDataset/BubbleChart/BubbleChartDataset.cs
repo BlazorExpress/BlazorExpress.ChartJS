@@ -189,5 +189,31 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? PointStyle { get; set; }
 
+    /// <summary>
+    /// The ID of the x-axis to plot this dataset on, for example an additional axis from <c>Scales.AdditionalAxes</c>.
+    /// <para>
+    /// Default value is <see langword="null" /> (Chart.js uses the first x-axis).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("The ID of the x-axis to plot this dataset on, for example an additional axis from Scales.AdditionalAxes.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("string?")]
+    public string? XAxisID { get; set; }
+
+    /// <summary>
+    /// The ID of the y-axis to plot this dataset on, for example an additional axis from <c>Scales.AdditionalAxes</c>.
+    /// <para>
+    /// Default value is <see langword="null" /> (Chart.js uses the first y-axis).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("The ID of the y-axis to plot this dataset on, for example an additional axis from Scales.AdditionalAxes.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("string?")]
+    public string? YAxisID { get; set; }
+
     #endregion
 }

@@ -1,0 +1,77 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>BorderRadiusCorners</code> top-left and bottom-right 20, <code>BorderSkipped = false</code></p>
+        <BarChart @ref="leafChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">All four corners 12 with the default <code>BorderSkipped</code> (<code>"start"</code>): the base stays square</p>
+        <BarChart @ref="skippedChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>HoverBorderRadiusCorners</code>: square bars that round on hover</p>
+        <BarChart @ref="hoverChart" />
+    </div>
+</div>
+
+@code {
+    private BarChart leafChart = default!;
+    private BarChart skippedChart = default!;
+    private BarChart hoverChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var leafData = GetChartData(dataset =>
+            {
+                dataset.BorderRadiusCorners = new ChartBorderRadius { TopLeft = 20, TopRight = 0, BottomRight = 20, BottomLeft = 0 };
+                dataset.BorderSkipped = false; // no edge is skipped, so the bottom corners can be rounded too
+            });
+
+            var skippedData = GetChartData(dataset =>
+            {
+                // the bottom corners touch the base ("start"), which is skipped, so they are not rounded
+                dataset.BorderRadiusCorners = new ChartBorderRadius { TopLeft = 12, TopRight = 12, BottomRight = 12, BottomLeft = 12 };
+            });
+
+            var hoverData = GetChartData(dataset =>
+            {
+                dataset.BorderRadiusCorners = new ChartBorderRadius { TopLeft = 0, TopRight = 0, BottomRight = 0, BottomLeft = 0 };
+                dataset.HoverBorderRadiusCorners = new ChartBorderRadius { TopLeft = 16, TopRight = 16, BottomRight = 16, BottomLeft = 16 };
+                dataset.BorderSkipped = false;
+            });
+
+            await leafChart.InitializeAsync(leafData, new BarChartOptions());
+            await skippedChart.InitializeAsync(skippedData, new BarChartOptions());
+            await hoverChart.InitializeAsync(hoverData, new BarChartOptions());
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData(Action<BarChartDataset> configure)
+    {
+        var datasets = new List<IChartDataset>();
+
+        for (var index = 0; index < 2; index++)
+        {
+            var c = ColorUtility.CategoricalTwelveColors[index].ToColor();
+
+            var dataset = new BarChartDataset
+            {
+                Label = $"Product {index + 1}",
+                Data = index == 0 ? new List<double?> { 35, 48, 42, 61, 55 } : new List<double?> { 22, 30, 38, 33, 46 },
+                BackgroundColor = [c.ToRgbaString(0.5)],
+                BorderColor = [c.ToRgbString()],
+                BorderWidth = [2]
+            };
+            configure(dataset);
+            datasets.Add(dataset);
+        }
+
+        return new ChartData { Labels = ["January", "February", "March", "April", "May"], Datasets = datasets };
+    }
+
+    #endregion Data Preparation
+}

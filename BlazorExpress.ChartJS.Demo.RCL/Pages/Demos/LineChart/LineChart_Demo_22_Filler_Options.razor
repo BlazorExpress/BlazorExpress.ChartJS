@@ -1,0 +1,75 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Propagate = true</code>: Store C fills past the hidden Store B down to Store A</p>
+        <LineChart @ref="propagateChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Propagate = false</code>: Store C's fill target is hidden, so Store C is not filled</p>
+        <LineChart @ref="noPropagateChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>DrawTime = "beforeDraw"</code>: the fills are drawn under the grid lines</p>
+        <LineChart @ref="drawTimeChart" />
+    </div>
+</div>
+
+<p class="mt-2">Click <strong>Store B</strong> in a legend to show or hide it.</p>
+
+@code {
+    private LineChart propagateChart = default!;
+    private LineChart noPropagateChart = default!;
+    private LineChart drawTimeChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var propagateOptions = new LineChartOptions();
+            propagateOptions.Plugins.Filler = new ChartPluginsFiller { Propagate = true }; // Chart.js default
+
+            var noPropagateOptions = new LineChartOptions();
+            noPropagateOptions.Plugins.Filler = new ChartPluginsFiller { Propagate = false };
+
+            var drawTimeOptions = new LineChartOptions();
+            drawTimeOptions.Plugins.Filler = new ChartPluginsFiller { Propagate = true, DrawTime = "beforeDraw" }; // Chart.js default is "beforeDatasetDraw"
+
+            await propagateChart.InitializeAsync(GetChartData(0.3), propagateOptions);
+            await noPropagateChart.InitializeAsync(GetChartData(0.3), noPropagateOptions);
+            await drawTimeChart.InitializeAsync(GetChartData(0.8), drawTimeOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData(double fillAlpha)
+    {
+        var storeA = CreateDataset("Store A", 0, fillAlpha, [20, 25, 22, 30, 28, 33]);
+        storeA.Fill = "origin"; // fill down to zero
+
+        var storeB = CreateDataset("Store B", 1, fillAlpha, [35, 42, 38, 47, 45, 50]);
+        storeB.Fill = "-1"; // fill to the dataset before it (Store A)
+        storeB.Hidden = true;
+
+        var storeC = CreateDataset("Store C", 2, fillAlpha, [50, 58, 55, 62, 60, 68]);
+        storeC.Fill = "-1"; // fill to Store B, which is hidden
+
+        return new ChartData { Labels = ["January", "February", "March", "April", "May", "June"], Datasets = [storeA, storeB, storeC] };
+    }
+
+    private static LineChartDataset CreateDataset(string label, int colorIndex, double fillAlpha, List<double?> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new LineChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(fillAlpha),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

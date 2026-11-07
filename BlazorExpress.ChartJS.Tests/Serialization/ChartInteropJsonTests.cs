@@ -11,7 +11,7 @@ public class ChartInteropJsonTests : BunitContext
 
     private static readonly Dictionary<string, string[]> datasetProperties = new()
     {
-        ["bar"] = ["barPercentage", "borderRadius", "borderSkipped", "categoryPercentage", "data", "datalabels", "grouped", "hidden", "label", "oid", "order", "skipNull", "type"],
+        ["bar"] = ["barPercentage", "borderSkipped", "categoryPercentage", "data", "datalabels", "grouped", "hidden", "label", "oid", "order", "skipNull", "type"],
         ["bubble"] = ["borderWidth", "data", "datalabels", "hidden", "label", "oid", "order"],
         ["doughnut"] = ["borderDashOffset", "data", "datalabels", "hidden", "label", "oid", "order", "spacing", "weight"],
         ["line"] = ["backgroundColor", "borderCapStyle", "borderColor", "borderDashOffset", "borderJoinStyle", "borderWidth", "cubicInterpolationMode", "data", "datalabels", "fill", "hidden", "hoverBorderJoinStyle", "indexAxis", "label", "oid", "order", "showLine", "stepped", "tension", "type"],
@@ -24,12 +24,12 @@ public class ChartInteropJsonTests : BunitContext
     private static readonly Dictionary<string, string[]> optionProperties = new()
     {
         ["bar"] = ["interaction", "layout", "maintainAspectRatio", "plugins", "responsive", "scales"],
-        ["bubble"] = ["maintainAspectRatio", "responsive"],
-        ["doughnut"] = ["maintainAspectRatio", "plugins", "responsive"],
+        ["bubble"] = ["interaction", "layout", "maintainAspectRatio", "plugins", "responsive", "scales"],
+        ["doughnut"] = ["interaction", "layout", "maintainAspectRatio", "plugins", "responsive"],
         ["line"] = ["interaction", "layout", "maintainAspectRatio", "plugins", "responsive", "scales"],
-        ["pie"] = ["maintainAspectRatio", "plugins", "responsive"],
-        ["polarArea"] = ["maintainAspectRatio", "plugins", "responsive"],
-        ["radar"] = ["maintainAspectRatio", "responsive"],
+        ["pie"] = ["interaction", "layout", "maintainAspectRatio", "plugins", "responsive"],
+        ["polarArea"] = ["interaction", "layout", "maintainAspectRatio", "plugins", "responsive", "scales"],
+        ["radar"] = ["interaction", "layout", "maintainAspectRatio", "plugins", "responsive", "scales"],
         ["scatter"] = ["interaction", "layout", "maintainAspectRatio", "plugins", "responsive", "scales"]
     };
 
@@ -38,6 +38,19 @@ public class ChartInteropJsonTests : BunitContext
     #region Methods
 
     #region Public Methods
+
+    [Theory]
+    [MemberData(nameof(ChartTestData.ChartTypes), MemberType = typeof(ChartTestData))]
+    public async Task InitializeAsync_SendsDatasetKeyWhenSet(string chartType)
+    {
+        var chartData = ChartTestData.CreateChartData(chartType);
+        SetKey(chartData.Datasets![0], "sales");
+
+        var dataset = (await InitializeAsync(chartType, chartData)).Data.GetProperty("datasets")[0];
+
+        Assert.Equal("sales", dataset.GetProperty("key").GetString());
+        Assert.Equal(datasetProperties[chartType].Append("key").Order(), dataset.EnumerateObject().Select(p => p.Name).Order());
+    }
 
     [Theory]
     [MemberData(nameof(ChartTestData.ChartTypes), MemberType = typeof(ChartTestData))]
@@ -87,7 +100,7 @@ public class ChartInteropJsonTests : BunitContext
             Assert.Equal(["datalabels", "legend", "title"], plugins.EnumerateObject().Select(p => p.Name).Order());
 
         if (options.TryGetProperty("scales", out var scales))
-            Assert.Equal(["x", "y"], scales.EnumerateObject().Select(p => p.Name).Order());
+            Assert.Equal(chartType is "polarArea" or "radar" ? ["r"] : ["x", "y"], scales.EnumerateObject().Select(p => p.Name).Order());
     }
 
     [Fact]
@@ -106,12 +119,16 @@ public class ChartInteropJsonTests : BunitContext
 
     #region Private Methods
 
-    private async Task<SentChart> InitializeAsync(string chartType)
+    // Key is declared on the generic ChartDataset<TData>, so it is set through reflection for every dataset type.
+    private static void SetKey(IChartDataset dataset, string key) =>
+        dataset.GetType().GetProperty(nameof(ChartDataset<double?>.Key))!.SetValue(dataset, key);
+
+    private async Task<SentChart> InitializeAsync(string chartType, ChartData? chartData = null)
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
 
         var chart = ChartTestData.RenderChart(this, chartType);
-        await chart.InitializeAsync(ChartTestData.CreateChartData(chartType), ChartTestData.CreateOptions(chartType));
+        await chart.InitializeAsync(chartData ?? ChartTestData.CreateChartData(chartType), ChartTestData.CreateOptions(chartType));
 
         var invocation = JSInterop.Invocations.Last(i => i.Identifier.EndsWith(".initialize", StringComparison.Ordinal));
 

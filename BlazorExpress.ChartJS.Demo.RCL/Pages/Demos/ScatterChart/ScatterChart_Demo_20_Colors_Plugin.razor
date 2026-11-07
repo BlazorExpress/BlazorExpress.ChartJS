@@ -1,0 +1,76 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Dataset colors set: <code>BackgroundColor</code>, <code>BorderColor</code></p>
+        <ScatterChart @ref="datasetColorsChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">No dataset colors, <code>Colors = new() { Enabled = true }</code>: the default gray stays</p>
+        <ScatterChart @ref="enabledChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">No dataset colors, <code>ForceOverride = true</code>: Chart.js palette</p>
+        <ScatterChart @ref="forceOverrideChart" />
+    </div>
+</div>
+
+@code {
+    private ScatterChart datasetColorsChart = default!;
+    private ScatterChart enabledChart = default!;
+    private ScatterChart forceOverrideChart = default!;
+    private ScatterChartOptions datasetColorsOptions = default!;
+    private ScatterChartOptions enabledOptions = default!;
+    private ScatterChartOptions forceOverrideOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        datasetColorsOptions = new ScatterChartOptions();
+
+        // ScatterChartDataset always sends a BackgroundColor and BorderColor ("rgba(0, 0, 0, 0.1)"),
+        // so the plugin sees colored datasets and leaves them alone
+        enabledOptions = new ScatterChartOptions();
+        enabledOptions.Plugins.Colors = new ChartPluginsColors { Enabled = true };
+
+        // ForceOverride replaces the dataset colors with the Chart.js palette
+        forceOverrideOptions = new ScatterChartOptions();
+        forceOverrideOptions.Plugins.Colors = new ChartPluginsColors { Enabled = true, ForceOverride = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await datasetColorsChart.InitializeAsync(GetChartData(withColors: true), datasetColorsOptions);
+            await enabledChart.InitializeAsync(GetChartData(withColors: false), enabledOptions);
+            await forceOverrideChart.InitializeAsync(GetChartData(withColors: false), forceOverrideOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData(bool withColors) => new()
+    {
+        Datasets =
+        [
+            CreateDataset("Group A", 0, withColors, [new(5, 12), new(15, 28), new(25, 20), new(35, 42), new(45, 38), new(55, 60)]),
+            CreateDataset("Group B", 1, withColors, [new(10, 40), new(20, 35), new(30, 55), new(40, 48), new(50, 30), new(60, 45)]),
+            CreateDataset("Group C", 2, withColors, [new(8, 62), new(18, 50), new(28, 66), new(38, 58), new(48, 72), new(58, 68)])
+        ]
+    };
+
+    private static ScatterChartDataset CreateDataset(string label, int colorIndex, bool withColors, List<ScatterChartDataPoint> data)
+    {
+        var dataset = new ScatterChartDataset { Label = label, Data = data, BorderWidth = 2, PointRadius = [5] };
+
+        if (withColors)
+        {
+            var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+            dataset.BackgroundColor = c.ToRgbaString(0.5);
+            dataset.BorderColor = c.ToRgbString();
+        }
+
+        return dataset;
+    }
+
+    #endregion Data Preparation
+}

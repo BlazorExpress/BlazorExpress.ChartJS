@@ -1,0 +1,47 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Cutout = "50%"</code> (the doughnut default)</p>
+        <DoughnutChart @ref="doughnutChart1" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Cutout = "75%"</code> and <code>Radius = "80%"</code></p>
+        <DoughnutChart @ref="doughnutChart2" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Cutout = 40</code> (pixels)</p>
+        <DoughnutChart @ref="doughnutChart3" />
+    </div>
+</div>
+
+@code {
+    private DoughnutChart doughnutChart1 = default!;
+    private DoughnutChart doughnutChart2 = default!;
+    private DoughnutChart doughnutChart3 = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await doughnutChart1.InitializeAsync(CreateChartData(), new DoughnutChartOptions { Cutout = "50%" });
+            await doughnutChart2.InitializeAsync(CreateChartData(), new DoughnutChartOptions { Cutout = "75%", Radius = "80%" });
+            await doughnutChart3.InitializeAsync(CreateChartData(), new DoughnutChartOptions { Cutout = 40 });
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData CreateChartData() =>
+        new()
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge", "Opera" },
+            Datasets = new List<IChartDataset>
+            {
+                new DoughnutChartDataset
+                {
+                    Label = "Visitors",
+                    Data = new List<double?> { 45, 25, 15, 10, 5 },
+                    BackgroundColor = Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList(),
+                },
+            },
+        };
+}

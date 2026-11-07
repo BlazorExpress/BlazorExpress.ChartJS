@@ -1,0 +1,53 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="mb-2"><code>AspectRatio = 1</code> (the pie default)</p>
+        <PieChart @ref="pieChart1" />
+    </div>
+    <div class="column is-two-thirds">
+        <p class="mb-2"><code>AspectRatio = 2</code>, <code>DevicePixelRatio = 2</code></p>
+        <PieChart @ref="pieChart2" />
+    </div>
+    <div class="column is-full">
+        <p class="mb-2"><code>AspectRatio = 3</code>, <code>ResizeDelay = 300</code> (resize the window to see the delay)</p>
+        <PieChart @ref="pieChart3" />
+    </div>
+</div>
+
+@code {
+    private PieChart pieChart1 = default!;
+    private PieChart pieChart2 = default!;
+    private PieChart pieChart3 = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await pieChart1.InitializeAsync(CreateChartData(), new PieChartOptions { MaintainAspectRatio = true, AspectRatio = 1 });
+
+            var wideOptions = new PieChartOptions { MaintainAspectRatio = true, AspectRatio = 2, DevicePixelRatio = 2 };
+            wideOptions.Plugins.Legend.Position = "right";
+            await pieChart2.InitializeAsync(CreateChartData(), wideOptions);
+
+            var widestOptions = new PieChartOptions { MaintainAspectRatio = true, AspectRatio = 3, ResizeDelay = 300 };
+            widestOptions.Plugins.Legend.Position = "right";
+            await pieChart3.InitializeAsync(CreateChartData(), widestOptions);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData CreateChartData() =>
+        new()
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge", "Opera" },
+            Datasets = new List<IChartDataset>
+            {
+                new PieChartDataset
+                {
+                    Label = "Visitors",
+                    Data = new List<double?> { 45, 25, 15, 10, 5 },
+                    BackgroundColor = Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList(),
+                },
+            },
+        };
+}

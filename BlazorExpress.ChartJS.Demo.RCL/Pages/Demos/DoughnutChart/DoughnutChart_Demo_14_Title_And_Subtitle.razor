@@ -1,0 +1,66 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="mb-2">Title and subtitle on top (<code>Position = "top"</code>)</p>
+        <DoughnutChart @ref="doughnutChart1" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2">Title <code>Position = "left"</code>, subtitle <code>Position = "bottom"</code></p>
+        <DoughnutChart @ref="doughnutChart2" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Align = "start"</code>, extra <code>Padding</code>, <code>FullSize = false</code> beside a left legend</p>
+        <DoughnutChart @ref="doughnutChart3" />
+    </div>
+</div>
+
+@code {
+    private DoughnutChart doughnutChart1 = default!;
+    private DoughnutChart doughnutChart2 = default!;
+    private DoughnutChart doughnutChart3 = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var topOptions = new DoughnutChartOptions();
+            topOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Browser share", Position = "top", Font = new ChartFont { Size = 16 } };
+            topOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October" };
+            await doughnutChart1.InitializeAsync(CreateChartData(), topOptions);
+
+            var sideOptions = new DoughnutChartOptions();
+            sideOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Browser share", Position = "left" };
+            sideOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October", Position = "bottom" };
+            await doughnutChart2.InitializeAsync(CreateChartData(), sideOptions);
+
+            var startOptions = new DoughnutChartOptions();
+            startOptions.Plugins.Legend.Position = "left";
+            startOptions.Plugins.Title = new ChartPluginsTitle
+            {
+                Display = true,
+                Text = "Browser share",
+                Align = "start",
+                Padding = new() { Top = 10, Bottom = 30 },
+                FullSize = false,
+            };
+            startOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October", Align = "start" };
+            await doughnutChart3.InitializeAsync(CreateChartData(), startOptions);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData CreateChartData() =>
+        new()
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge", "Opera" },
+            Datasets = new List<IChartDataset>
+            {
+                new DoughnutChartDataset
+                {
+                    Label = "Visitors",
+                    Data = new List<double?> { 45, 25, 15, 10, 5 },
+                    BackgroundColor = Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList(),
+                },
+            },
+        };
+}
