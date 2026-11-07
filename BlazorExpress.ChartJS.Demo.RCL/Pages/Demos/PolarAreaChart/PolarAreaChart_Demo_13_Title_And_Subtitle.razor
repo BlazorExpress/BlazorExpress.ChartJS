@@ -1,0 +1,95 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2">Title and subtitle on top</p>
+        <PolarAreaChart @ref="topChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2">Title <code>Position = "left"</code>, subtitle <code>Position = "bottom"</code></p>
+        <PolarAreaChart @ref="leftBottomChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Align = "start"</code>, extra <code>Padding</code>, <code>FullSize = false</code></p>
+        <PolarAreaChart @ref="startAlignedChart" />
+    </div>
+</div>
+
+@code {
+    private PolarAreaChart topChart = default!;
+    private PolarAreaChart leftBottomChart = default!;
+    private PolarAreaChart startAlignedChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var topOptions = new PolarAreaChartOptions();
+            topOptions.Plugins.Title = new ChartPluginsTitle
+            {
+                Display = true,
+                Text = "Sales by region",
+                Position = "top",
+                Font = new ChartFont { Size = 16 }
+            };
+            topOptions.Plugins.Subtitle = new() { Display = true, Text = "Q1 2026" };
+            await topChart.InitializeAsync(GetChartData(), topOptions);
+
+            var leftBottomOptions = new PolarAreaChartOptions();
+            leftBottomOptions.Plugins.Title = new ChartPluginsTitle
+            {
+                Display = true,
+                Text = "Sales by region",
+                Position = "left",
+                Font = new ChartFont { Size = 16 }
+            };
+            leftBottomOptions.Plugins.Subtitle = new() { Display = true, Text = "Q1 2026", Position = "bottom" };
+            await leftBottomChart.InitializeAsync(GetChartData(), leftBottomOptions);
+
+            var startAlignedOptions = new PolarAreaChartOptions();
+            startAlignedOptions.Plugins.Title = new ChartPluginsTitle
+            {
+                Display = true,
+                Text = "Sales by region",
+                Align = "start",
+                Padding = new ChartPadding { Top = 10, Bottom = 20 },
+                FullSize = false,
+                Color = "#4046ca",
+                Font = new ChartFont { Size = 16 }
+            };
+            startAlignedOptions.Plugins.Subtitle = new() { Display = true, Text = "Q1 2026", Align = "start", Padding = new ChartPadding { Bottom = 10 } };
+            await startAlignedChart.InitializeAsync(GetChartData(), startAlignedOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() =>
+        new()
+        {
+            Labels = ["North", "East", "South", "West", "Central"],
+            Datasets = [CreateDataset([11, 16, 7, 3, 14])]
+        };
+
+    private static PolarAreaChartDataset CreateDataset(List<double?> data)
+    {
+        var backgroundColors = new List<string>();
+        var borderColors = new List<string>();
+
+        for (var index = 0; index < data.Count; index++)
+        {
+            var c = ColorUtility.CategoricalTwelveColors[index].ToColor();
+            backgroundColors.Add(c.ToRgbaString(0.5));
+            borderColors.Add(c.ToRgbString());
+        }
+
+        return new PolarAreaChartDataset
+        {
+            Label = "Sales",
+            Data = data,
+            BackgroundColor = backgroundColors,
+            BorderColor = borderColors
+        };
+    }
+
+    #endregion Data Preparation
+}

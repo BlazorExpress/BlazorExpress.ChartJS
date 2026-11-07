@@ -353,6 +353,19 @@ public class RadarChartDataset : ChartDataset<double?>
     public List<string>? PointStyle { get; set; }
 
     /// <summary>
+    /// The ID of the radial (<c>r</c>) axis to plot this dataset on.
+    /// <para>
+    /// Default value is <see langword="null" /> (Chart.js uses the first <c>r</c> axis).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("The ID of the radial (r) axis to plot this dataset on.")]
+    [ParameterTypeName("string?")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? RAxisID { get; set; }
+
+    /// <summary>
     /// If <see langword="true" />, lines will be drawn between points with no or null data.
     /// If <see langword="false" />, points with null data will create a break in the line.
     /// Can also be a number specifying the maximum gap length to span.

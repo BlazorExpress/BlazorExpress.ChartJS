@@ -1,0 +1,70 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Colors = new() { Enabled = true }</code> only: line datasets send a default grey, so the palette does not apply</p>
+        <LineChart @ref="enabledChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>ForceOverride = true</code>, datasets without colors: Chart.js palette</p>
+        <LineChart @ref="forceOverrideChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>ForceOverride = true</code>: the palette replaces colors set on the datasets</p>
+        <LineChart @ref="replaceColorsChart" />
+    </div>
+</div>
+
+@code {
+    private LineChart enabledChart = default!;
+    private LineChart forceOverrideChart = default!;
+    private LineChart replaceColorsChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var enabledOptions = new LineChartOptions();
+            enabledOptions.Plugins.Colors = new ChartPluginsColors { Enabled = true }; // Chart.js default
+
+            var forceOverrideOptions = new LineChartOptions();
+            forceOverrideOptions.Plugins.Colors = new ChartPluginsColors { ForceOverride = true };
+
+            var replaceColorsOptions = new LineChartOptions();
+            replaceColorsOptions.Plugins.Colors = new ChartPluginsColors { Enabled = true, ForceOverride = true };
+
+            await enabledChart.InitializeAsync(GetChartData(setColors: false), enabledOptions);
+            await forceOverrideChart.InitializeAsync(GetChartData(setColors: false), forceOverrideOptions);
+            await replaceColorsChart.InitializeAsync(GetChartData(setColors: true), replaceColorsOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData(bool setColors) => new()
+    {
+        Labels = ["January", "February", "March", "April", "May", "June"],
+        Datasets =
+        [
+            CreateDataset("Product A", setColors, 0, [35, 48, 42, 61, 55, 70]),
+            CreateDataset("Product B", setColors, 4, [22, 30, 38, 33, 46, 41]),
+            CreateDataset("Product C", setColors, 8, [15, 24, 20, 28, 31, 26])
+        ]
+    };
+
+    private static LineChartDataset CreateDataset(string label, bool setColors, int colorIndex, List<double?> data)
+    {
+        // without colors, BackgroundColor and BorderColor keep their default "rgba(0, 0, 0, 0.1)", which is still sent
+        var dataset = new LineChartDataset { Label = label, Data = data, BorderWidth = 2 };
+
+        if (setColors)
+        {
+            var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+            dataset.BackgroundColor = c.ToRgbaString(0.5);
+            dataset.BorderColor = c.ToRgbString();
+        }
+
+        return dataset;
+    }
+
+    #endregion Data Preparation
+}

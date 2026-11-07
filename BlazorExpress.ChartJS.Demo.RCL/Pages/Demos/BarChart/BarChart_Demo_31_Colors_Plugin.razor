@@ -1,0 +1,70 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Colors = new() { Enabled = true }</code>, datasets without colors: Chart.js palette</p>
+        <BarChart @ref="enabledChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Enabled = false</code>, datasets without colors: Chart.js default grey</p>
+        <BarChart @ref="disabledChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>ForceOverride = true</code>: the palette replaces the dataset colors</p>
+        <BarChart @ref="forceOverrideChart" />
+    </div>
+</div>
+
+@code {
+    private BarChart enabledChart = default!;
+    private BarChart disabledChart = default!;
+    private BarChart forceOverrideChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var enabledOptions = new BarChartOptions();
+            enabledOptions.Plugins.Colors = new ChartPluginsColors { Enabled = true }; // Chart.js default
+
+            var disabledOptions = new BarChartOptions();
+            disabledOptions.Plugins.Colors = new ChartPluginsColors { Enabled = false };
+
+            var forceOverrideOptions = new BarChartOptions();
+            forceOverrideOptions.Plugins.Colors = new ChartPluginsColors { ForceOverride = true };
+
+            await enabledChart.InitializeAsync(GetChartData(setColors: false), enabledOptions);
+            await disabledChart.InitializeAsync(GetChartData(setColors: false), disabledOptions);
+            await forceOverrideChart.InitializeAsync(GetChartData(setColors: true), forceOverrideOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData(bool setColors) => new()
+    {
+        Labels = ["January", "February", "March", "April", "May", "June"],
+        Datasets =
+        [
+            CreateDataset("Product A", setColors, [35, 48, 42, 61, 55, 70]),
+            CreateDataset("Product B", setColors, [22, 30, 38, 33, 46, 41]),
+            CreateDataset("Product C", setColors, [15, 24, 20, 28, 31, 26])
+        ]
+    };
+
+    private static BarChartDataset CreateDataset(string label, bool setColors, List<double?> data)
+    {
+        var dataset = new BarChartDataset { Label = label, Data = data };
+
+        if (setColors)
+        {
+            // one grey for every dataset; ForceOverride replaces it with the palette
+            dataset.BackgroundColor = ["rgba(128, 128, 128, 0.5)"];
+            dataset.BorderColor = ["rgb(128, 128, 128)"];
+            dataset.BorderWidth = [2];
+        }
+
+        return dataset;
+    }
+
+    #endregion Data Preparation
+}

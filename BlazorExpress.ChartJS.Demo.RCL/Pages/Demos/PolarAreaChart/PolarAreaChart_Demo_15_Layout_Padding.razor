@@ -1,0 +1,75 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2">No padding (default)</p>
+        <div style="border: 1px dashed #b5b5b5;">
+            <PolarAreaChart @ref="noPaddingChart" />
+        </div>
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Layout.Padding = 20</code> (all sides)</p>
+        <div style="border: 1px dashed #b5b5b5;">
+            <PolarAreaChart @ref="allSidesChart" />
+        </div>
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code></p>
+        <div style="border: 1px dashed #b5b5b5;">
+            <PolarAreaChart @ref="perSideChart" />
+        </div>
+    </div>
+</div>
+
+@code {
+    private PolarAreaChart noPaddingChart = default!;
+    private PolarAreaChart allSidesChart = default!;
+    private PolarAreaChart perSideChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await noPaddingChart.InitializeAsync(GetChartData(), new PolarAreaChartOptions());
+
+            var allSidesOptions = new PolarAreaChartOptions();
+            allSidesOptions.Layout.Padding = 20;
+            await allSidesChart.InitializeAsync(GetChartData(), allSidesOptions);
+
+            var perSideOptions = new PolarAreaChartOptions();
+            perSideOptions.Layout.PaddingSides = new() { Left = 60, Top = 10 };
+            await perSideChart.InitializeAsync(GetChartData(), perSideOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() =>
+        new()
+        {
+            Labels = ["North", "East", "South", "West", "Central"],
+            Datasets = [CreateDataset([11, 16, 7, 3, 14])]
+        };
+
+    private static PolarAreaChartDataset CreateDataset(List<double?> data)
+    {
+        var backgroundColors = new List<string>();
+        var borderColors = new List<string>();
+
+        for (var index = 0; index < data.Count; index++)
+        {
+            var c = ColorUtility.CategoricalTwelveColors[index].ToColor();
+            backgroundColors.Add(c.ToRgbaString(0.5));
+            borderColors.Add(c.ToRgbString());
+        }
+
+        return new PolarAreaChartDataset
+        {
+            Label = "Sales",
+            Data = data,
+            BackgroundColor = backgroundColors,
+            BorderColor = borderColors
+        };
+    }
+
+    #endregion Data Preparation
+}

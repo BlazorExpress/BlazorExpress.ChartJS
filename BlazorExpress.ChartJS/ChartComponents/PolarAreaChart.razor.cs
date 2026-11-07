@@ -148,6 +148,8 @@ public partial class PolarAreaChart : ChartComponentBase
     [MethodReturnTypeName(nameof(Task))]
     public override async Task InitializeAsync(ChartData chartData, IChartOptions chartOptions, string[]? plugins = null)
     {
+        ChartOptionsValidator.ThrowIfInvalid(chartOptions);
+
         if (chartData is not null && chartData.Datasets is not null)
         {
             var datasets = chartData.Datasets.OfType<PolarAreaChartDataset>();
@@ -184,6 +186,8 @@ public partial class PolarAreaChart : ChartComponentBase
     [MethodReturnTypeName(nameof(Task))]
     public override async Task UpdateAsync(ChartData chartData, IChartOptions chartOptions, ChartUpdateMode mode)
     {
+        ChartOptionsValidator.ThrowIfInvalid(chartOptions);
+
         if (chartData is not null && chartData.Datasets is not null)
         {
             var datasets = chartData.Datasets.OfType<PolarAreaChartDataset>();

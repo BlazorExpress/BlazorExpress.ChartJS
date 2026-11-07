@@ -252,6 +252,258 @@
     <Demo Type="typeof(LineChart_Demo_14_Update_Modes)" Tabs="true" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Multiple axes" PageUrl="@pageUrl" Link="multiple-axes">
+    <Block>
+        Add more axes with <code>Scales.AdditionalAxes</code>, keyed by axis ID, and point a dataset at one with <code>YAxisID</code>. Chart.js works out the direction from the first letter of the ID, so <code>"y1"</code> is a y-axis, and orders axes on the same edge by <code>Weight</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales.AdditionalAxes = new() { ["y1"] = new ChartAxes { Position = "right" } }</code>.</li>
+                <li>Set <code>Grid = new ChartAxesGrid { DrawOnChartArea = false }</code> on the extra axis so only one set of grid lines crosses the chart.</li>
+                <li>Set <code>YAxisID = "y1"</code> on the dataset that uses the extra axis; the others stay on <code>y</code>.</li>
+                <li>To put both axes on the same edge, set <code>Position = "left"</code> on both; the axis with the higher <code>Weight</code> is further from the chart.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_15_Multiple_Axes)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Axis position and reverse" PageUrl="@pageUrl" Link="axis-position-and-reverse">
+    <Block>
+        Move an axis to another edge with <code>Position</code>, flip its direction with <code>Reverse</code>, or hide it with <code>Display = false</code>. A hidden axis still scales the data; only its labels, ticks and grid lines go.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales.X.Position = "top"</code> or <code>Scales.Y.Position = "right"</code>.</li>
+                <li>Set <code>Scales.Y.Reverse = true</code> to put the lowest value at the top, for example for a ranking where 1 is best.</li>
+                <li>Set <code>Scales.X.Reverse = true</code> to list the labels from right to left.</li>
+                <li>Set <code>Scales.Y.Display = false</code> to hide an axis.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_16_Axis_Position_And_Reverse)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Tick options" PageUrl="@pageUrl" Link="tick-options">
+    <Block>
+        <code>ChartAxesTicks</code> controls how many ticks an axis gets and how their labels look. Chart.js picks the tick spacing itself unless you set <code>StepSize</code> or <code>Count</code>, and skips crowded labels unless you set <code>AutoSkip = false</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>StepSize</code> for the gap between ticks, <code>Precision</code> for the number of decimals, or <code>Count</code> for an exact number of ticks on a value axis; <code>MaxTicksLimit</code> caps the number of ticks.</li>
+                <li>Set <code>AutoSkip = false</code> with <code>MinRotation</code> and <code>MaxRotation</code> (degrees) to show every label, rotated to fit.</li>
+                <li>Set <code>Font = new ChartFont { Size = 14, Weight = "bold" }</code> and <code>Color</code> to style the labels.</li>
+                <li>Set <code>Mirror = true</code> to draw the y labels inside the chart, <code>CrossAlign = "far"</code> to align them away from the axis, and <code>LabelOffset</code> to move labels along the axis, in pixels.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_17_Tick_Options)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Axis title" PageUrl="@pageUrl" Link="axis-title">
+    <Block>
+        Label an axis with <code>ChartAxesTitle</code>. The title is hidden until <code>Display = true</code>, and in this library it defaults to <code>"black"</code> text in a bold 12 px font, where Chart.js uses grey.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales.Y.Title = new ChartAxesTitle { Display = true, Text = "Visitors (k)" }</code>.</li>
+                <li>Set <code>Color</code> and <code>Font = new ChartFont { Size = 14, Style = "italic" }</code> to style it.</li>
+                <li>Set <code>Padding = 10</code> for the same space above and below, or <code>new ChartPadding { Top = 12, Bottom = 0 }</code>.</li>
+                <li>Set <code>TitleAlignment = TitleAlignment.Start</code> or <code>TitleAlignment.End</code> to move it along the axis.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_18_Axis_Title)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Grace and bounds" PageUrl="@pageUrl" Link="grace-and-bounds">
+    <Block>
+        <code>Grace</code> adds space beyond the data, <code>Bounds</code> decides whether the axis ends at the data (<code>"data"</code>) or at a whole tick (<code>"ticks"</code>, the Chart.js default), and <code>SuggestedMin</code> / <code>SuggestedMax</code> extend the range only when the data does not already reach them. Value axes in this library start at zero (<code>BeginAtZero = true</code>), so the demos set <code>BeginAtZero = false</code> to show both ends.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales.Y.Grace = "10%"</code> for a share of half the data range (Chart.js measures it from the middle to each end), or <code>Grace = 5</code> for data units.</li>
+                <li>Set <code>Scales.Y.Bounds = "data"</code> to end the axis at the lowest and highest values instead of the nearest ticks.</li>
+                <li>Set <code>SuggestedMax = 100</code> or <code>SuggestedMin</code> for a range the data can still go past; <code>Min</code> and <code>Max</code> fix it.</li>
+                <li>To stack two axes on one edge, give both the same <code>Stack</code> and <code>Position</code>, size them with <code>StackWeight</code>, and set <code>Offset = true</code> for space between them.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_19_Grace_And_Bounds)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Span gaps" PageUrl="@pageUrl" Link="span-gaps">
+    <Block>
+        A <code>null</code> value leaves a gap, and by default Chart.js breaks the line there. <code>SpanGaps = true</code> joins the points on either side, and <code>MaxSpanGap</code> breaks the line only where two neighbouring points are further apart on the index axis than that number.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Put <code>null</code> in <code>Data</code> where a value is missing, for example <code>[12, 15, null, 18]</code>.</li>
+                <li>Set <code>SpanGaps = true</code> on the <code>LineChartDataset</code> to draw the line across the gaps.</li>
+                <li>Set <code>MaxSpanGap = 1</code> to join points at most 1 unit apart; when set, it is sent as <code>spanGaps</code> instead of <code>SpanGaps</code>.</li>
+                <li><code>MaxSpanGap</code> is measured in index-axis units, and on a category axis every label is 1 unit apart, so use it on a linear or time x-axis (<code>Scales.X.Type = ChartAxesType.Linear</code>) with missing points.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_20_Span_Gaps)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Clip" PageUrl="@pageUrl" Link="clip">
+    <Block>
+        When an axis has a fixed <code>Min</code> or <code>Max</code>, Chart.js cuts the line at the edge of the chart area. <code>ClipSides</code> moves that edge per side, in pixels: a positive value lets the line overflow, a negative value cuts it inside the chart area.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales.Y.Min = 0</code> and <code>Scales.Y.Max = 100</code> with data that goes past them.</li>
+                <li>Set <code>ClipSides = new ChartClip { Top = 20, Bottom = 20, Left = 0, Right = 0 }</code> on the dataset to let it overflow by 20 px at the top and bottom.</li>
+                <li>Set negative values, such as <code>-10</code> on every side, to cut the line inside the chart area.</li>
+                <li>A side you leave unset is sent as <code>0</code> (clip at the chart area), because Chart.js needs all four. When set, <code>ClipSides</code> is sent instead of <code>Clip</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_21_Clip)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Filler options" PageUrl="@pageUrl" Link="filler-options">
+    <Block>
+        <code>Plugins.Filler</code> sets how the area under filled lines is drawn. With <code>Propagate = true</code> (the Chart.js default), a dataset whose fill target is hidden fills to that target's own target instead; <code>DrawTime</code> sets when the fills are drawn.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Fill = "origin"</code> on the first dataset and <code>Fill = "-1"</code> on the next ones to fill to the dataset before.</li>
+                <li>Set <code>Hidden = true</code> on a middle dataset, or click it in the legend.</li>
+                <li>Set <code>Plugins.Filler = new ChartPluginsFiller { Propagate = true }</code> to fill past the hidden dataset, or <code>Propagate = false</code> to leave that fill out.</li>
+                <li>Set <code>DrawTime = "beforeDraw"</code> to draw the fills under the grid lines, <code>"beforeDatasetsDraw"</code> to draw them before any line, or leave the default <code>"beforeDatasetDraw"</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_22_Filler_Options)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Hover line" PageUrl="@pageUrl" Link="hover-line">
+    <Block>
+        Line charts draw a vertical line through the point the tooltip shows. It is a plugin of this library, not of Chart.js, and draws a grey 2 px dashed line unless you set <code>Plugins.TooltipLine</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false }</code> so the tooltip, and the line, follow the pointer along the x-axis.</li>
+                <li>Leave <code>Plugins.TooltipLine</code> unset for the default line.</li>
+                <li>Set <code>Plugins.TooltipLine = new() { Color = "red", Width = 1, Dash = [] }</code> for a solid red 1 px line; an empty <code>Dash</code> draws a solid line.</li>
+                <li>Set <code>Plugins.TooltipLine = new() { Display = false }</code> to hide it.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_23_Hover_Line)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Title and subtitle" PageUrl="@pageUrl" Link="title-and-subtitle">
+    <Block>
+        <code>Plugins.Title</code> and <code>Plugins.Subtitle</code> draw text outside the chart area; Chart.js places the subtitle between the title and the chart. Both are hidden until <code>Display = true</code>, and in this library their text defaults to <code>"black"</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Website visitors" }</code>.</li>
+                <li>Set <code>Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "January to June" }</code>.</li>
+                <li>Set <code>Position</code> to <code>"top"</code>, <code>"left"</code>, <code>"bottom"</code> or <code>"right"</code>, and <code>Align</code> to <code>"start"</code>, <code>"center"</code> or <code>"end"</code>.</li>
+                <li>Set <code>Padding = new ChartPadding { Top = 10, Bottom = 20 }</code> for space around the title, and <code>FullSize = false</code> to size it to the chart area instead of the canvas.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_24_Title_And_Subtitle)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Tooltip options" PageUrl="@pageUrl" Link="tooltip-options">
+    <Block>
+        <code>Plugins.Tooltip</code> chooses which items the tooltip lists and how it looks. Its <code>Mode</code> and <code>Intersect</code> override <code>Interaction</code> for the tooltip only; Chart.js uses <code>Nearest</code> with <code>Intersect = true</code> by default.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Plugins.Tooltip = new ChartPluginsTooltip { Mode = InteractionMode.Index, Intersect = false }</code> to list every dataset at the hovered label.</li>
+                <li>Set <code>Position = "average"</code> (the Chart.js default) or <code>"nearest"</code> to place the tooltip.</li>
+                <li>Set <code>Padding</code>, <code>CornerRadius</code>, <code>BorderColor</code> and <code>BorderWidth</code> to style the box, and <code>MultiKeyBackground</code> for the fill behind each color box.</li>
+                <li>Set <code>BoxWidth</code>, <code>BoxHeight</code> and <code>BoxPadding</code> to size the color boxes, or <code>UsePointStyle = true</code> to draw each dataset's <code>PointStyle</code> instead.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_25_Tooltip_Options)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Layout padding" PageUrl="@pageUrl" Link="layout-padding">
+    <Block>
+        <code>Layout</code> adds empty space inside the canvas, around the legend, axes and chart. The dashed borders show the canvas edges.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Layout.Padding = 20</code> for the same padding on every side, in pixels.</li>
+                <li>Set <code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code> for a value per side; when set, it is sent instead of <code>Padding</code>.</li>
+                <li>Leave both unset for no padding.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_26_Layout_Padding)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Aspect ratio and resize delay" PageUrl="@pageUrl" Link="aspect-ratio-and-resize-delay">
+    <Block>
+        With <code>MaintainAspectRatio = true</code>, the canvas height follows its width by <code>AspectRatio</code> (width / height); Chart.js uses 2 for line charts. <code>ResizeDelay</code> waits the given milliseconds after the container stops resizing before the chart redraws, which saves work while the window is dragged; resize the window to see the wide chart catch up.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>MaintainAspectRatio = true</code> (the default) and <code>AspectRatio = 1</code>, <code>2</code> or <code>3</code>.</li>
+                <li>Set <code>ResizeDelay = 300</code> to redraw once, 300 ms after a resize ends; Chart.js uses 0.</li>
+                <li>Set <code>DevicePixelRatio = 2</code> to draw twice as many canvas pixels, for sharper exported images.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_27_Aspect_Ratio_And_Resize_Delay)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Hover and elements" PageUrl="@pageUrl" Link="hover-and-elements">
+    <Block>
+        <code>Elements</code> sets defaults for every element of a kind, such as every point or line, and a dataset value wins over them. <code>Hover</code> sets which elements react to the pointer, separately from <code>Interaction</code>, and <code>Events</code> lists the browser events Chart.js listens to.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Elements = new ChartElements { Point = new ChartElementsPoint { Radius = 5, PointStyle = "rectRot", HoverRadius = 9 } }</code> and leave the point settings unset on the datasets.</li>
+                <li>Set <code>Elements.Line = new ChartElementsLine { BorderDash = [6, 4] }</code> for dashed lines. A <code>LineChartDataset</code> always sends its own <code>Tension</code> and <code>BorderWidth</code>, so set those on the dataset.</li>
+                <li>Set <code>Hover = new ChartHover { Mode = InteractionMode.Index, Intersect = false }</code> to enlarge every point of the hovered label; any value left unset falls back to <code>Interaction</code>.</li>
+                <li>Set <code>Events = ["click"]</code> to react to clicks only: moving the pointer does nothing and <code>OnHover</code> does not fire; clicking a point still highlights it and opens its tooltip, and <code>OnClick</code> fires.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_28_Hover_And_Elements)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Colors plugin" PageUrl="@pageUrl" Link="colors-plugin">
+    <Block>
+        The Chart.js colors plugin gives each dataset a color from its built-in palette, but only when no dataset sets a color. Line, radar and scatter datasets always send a default color (<code>"rgba(0, 0, 0, 0.1)"</code>), so on a line chart the palette needs <code>ForceOverride = true</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Plugins.Colors = new ChartPluginsColors { ForceOverride = true }</code> to color the datasets from the palette.</li>
+                <li><code>ForceOverride = true</code> also replaces <code>BackgroundColor</code> and <code>BorderColor</code> set on the datasets.</li>
+                <li>Without <code>ForceOverride</code>, <code>Enabled = true</code> (the Chart.js default) has no effect on line datasets; set <code>Enabled = false</code> to turn the plugin off.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_29_Colors_Plugin)" Tabs="true" />
+</Section>
+
 @code {
     private const string pageUrl = DemoRouteConstants.Demos_LineChart;
     private const string pageTitle = "Line Chart";

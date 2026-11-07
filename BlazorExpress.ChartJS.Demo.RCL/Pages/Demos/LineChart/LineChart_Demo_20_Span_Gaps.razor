@@ -1,0 +1,67 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Default: the line breaks at each <code>null</code> value</p>
+        <LineChart @ref="defaultChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>SpanGaps = true</code>: the line is drawn across the <code>null</code> values</p>
+        <LineChart @ref="spanGapsChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>MaxSpanGap = 1</code> on a linear x-axis: breaks where days are missing</p>
+        <LineChart @ref="maxSpanGapChart" />
+    </div>
+</div>
+
+@code {
+    private LineChart defaultChart = default!;
+    private LineChart spanGapsChart = default!;
+    private LineChart maxSpanGapChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var defaultDataset = CreateDataset("Readings", 0, [12, 15, null, 18, 21, null, null, 17, 19]);
+
+            var spanGapsDataset = CreateDataset("Readings", 1, [12, 15, null, 18, 21, null, null, 17, 19]);
+            spanGapsDataset.SpanGaps = true;
+
+            // the x values come from the labels; days 4, 7 and 8 have no reading at all
+            var maxSpanGapDataset = CreateDataset("Readings", 2, [12, 15, 14, 18, 21, 17, 19]);
+            maxSpanGapDataset.MaxSpanGap = 1; // join points at most 1 day apart; sent as spanGaps
+
+            var maxSpanGapOptions = new LineChartOptions();
+            maxSpanGapOptions.Scales.X!.Type = ChartAxesType.Linear;
+            maxSpanGapOptions.Scales.X!.BeginAtZero = false;
+            maxSpanGapOptions.Scales.X!.Ticks = new ChartAxesTicks { StepSize = 1 };
+            maxSpanGapOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Day" };
+
+            await defaultChart.InitializeAsync(new ChartData { Labels = GetDayLabels(), Datasets = [defaultDataset] }, new LineChartOptions());
+            await spanGapsChart.InitializeAsync(new ChartData { Labels = GetDayLabels(), Datasets = [spanGapsDataset] }, new LineChartOptions());
+            await maxSpanGapChart.InitializeAsync(new ChartData { Labels = ["1", "2", "3", "5", "6", "9", "10"], Datasets = [maxSpanGapDataset] }, maxSpanGapOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static List<string> GetDayLabels() => ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7", "Day 8", "Day 9"];
+
+    private static LineChartDataset CreateDataset(string label, int colorIndex, List<double?> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new LineChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.5),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2,
+            PointRadius = [4]
+        };
+    }
+
+    #endregion Data Preparation
+}

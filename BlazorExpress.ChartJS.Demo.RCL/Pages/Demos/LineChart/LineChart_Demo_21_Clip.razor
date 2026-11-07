@@ -1,0 +1,72 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Default: with y <code>Min = 0</code> / <code>Max = 100</code>, the line is cut at the chart area</p>
+        <LineChart @ref="defaultChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>ClipSides</code> top and bottom 20: the line overflows by up to 20 px</p>
+        <LineChart @ref="overflowChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>ClipSides</code> all sides -10: the line is cut 10 px inside the chart area</p>
+        <LineChart @ref="insideChart" />
+    </div>
+</div>
+
+@code {
+    private LineChart defaultChart = default!;
+    private LineChart overflowChart = default!;
+    private LineChart insideChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // every side is sent; a side left unset is 0 (clip at the chart area)
+            var overflow = new ChartClip { Top = 20, Bottom = 20, Left = 0, Right = 0 };
+            var inside = new ChartClip { Top = -10, Bottom = -10, Left = -10, Right = -10 };
+
+            await defaultChart.InitializeAsync(GetChartData(0, null), GetChartOptions());
+            await overflowChart.InitializeAsync(GetChartData(1, overflow), GetChartOptions());
+            await insideChart.InitializeAsync(GetChartData(2, inside), GetChartOptions());
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static LineChartOptions GetChartOptions()
+    {
+        var options = new LineChartOptions();
+
+        // a fixed range the data goes past: 130 is above Max and -25 below Min
+        options.Scales.Y!.Min = 0;
+        options.Scales.Y!.Max = 100;
+
+        return options;
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData(int colorIndex, ChartClip? clipSides)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new ChartData
+        {
+            Labels = ["January", "February", "March", "April", "May", "June"],
+            Datasets =
+            [
+                new LineChartDataset
+                {
+                    Label = "Load (%)",
+                    Data = [40, 130, 70, -25, 85, 60],
+                    BackgroundColor = c.ToRgbaString(0.5),
+                    BorderColor = c.ToRgbString(),
+                    BorderWidth = 4,
+                    ClipSides = clipSides // when set, it is sent as clip
+                }
+            ]
+        };
+    }
+
+    #endregion Data Preparation
+}

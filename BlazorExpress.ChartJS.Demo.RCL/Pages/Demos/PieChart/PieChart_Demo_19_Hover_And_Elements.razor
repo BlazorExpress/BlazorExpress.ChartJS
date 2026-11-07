@@ -1,0 +1,71 @@
+<div class="columns is-multiline">
+    <div class="column is-half">
+        <p class="mb-2"><code>Elements.Arc</code>: <code>BorderWidth = 4</code>, <code>BorderAlign = "inner"</code>, <code>BorderRadius = 6</code></p>
+        <PieChart @ref="pieChart1" />
+    </div>
+    <div class="column is-half">
+        <p class="mb-2"><code>Elements.Arc</code>: <code>Circular = false</code> (straight arc edges)</p>
+        <PieChart @ref="pieChart2" />
+    </div>
+    <div class="column is-half">
+        <p class="mb-2"><code>Hover = new ChartHover { Mode = InteractionMode.Index }</code>: hovering a slice highlights it in both rings; the tooltip keeps the <code>Interaction</code> mode</p>
+        <PieChart @ref="pieChart3" />
+    </div>
+    <div class="column is-half">
+        <p class="mb-2"><code>Events = ["click"]</code>: pointer moves do nothing; click a slice to highlight it and see its tooltip</p>
+        <PieChart @ref="pieChart4" />
+    </div>
+</div>
+
+@code {
+    private PieChart pieChart1 = default!;
+    private PieChart pieChart2 = default!;
+    private PieChart pieChart3 = default!;
+    private PieChart pieChart4 = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var borderOptions = new PieChartOptions
+            {
+                Elements = new ChartElements
+                {
+                    Arc = new ChartElementsArc { BorderWidth = 4, BorderColor = "rgb(255, 255, 255)", BorderAlign = "inner", BorderRadius = 6 },
+                },
+            };
+            await pieChart1.InitializeAsync(CreateChartData(ringCount: 1), borderOptions);
+
+            var straightOptions = new PieChartOptions { Elements = new ChartElements { Arc = new ChartElementsArc { Circular = false } } };
+            await pieChart2.InitializeAsync(CreateChartData(ringCount: 1), straightOptions);
+
+            var hoverOptions = new PieChartOptions
+            {
+                Interaction = new Interaction { Mode = InteractionMode.Nearest, Intersect = true },
+                Hover = new ChartHover { Mode = InteractionMode.Index, Intersect = true },
+            };
+            await pieChart3.InitializeAsync(CreateChartData(ringCount: 2), hoverOptions);
+
+            await pieChart4.InitializeAsync(CreateChartData(ringCount: 1), new PieChartOptions { Events = ["click"] });
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData CreateChartData(int ringCount)
+    {
+        var datasets = new List<IChartDataset>();
+        for (var ring = 0; ring < ringCount; ring++)
+        {
+            datasets.Add(new PieChartDataset
+            {
+                Label = ring == 0 ? "2024" : "2023",
+                Data = ring == 0 ? new List<double?> { 45, 25, 15, 10, 5 } : new List<double?> { 40, 25, 20, 10, 5 },
+                BackgroundColor = Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList(),
+                HoverOffset = new List<double> { 12 },
+            });
+        }
+
+        return new ChartData { Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge", "Opera" }, Datasets = datasets };
+    }
+}

@@ -1,0 +1,60 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>AspectRatio = 1</code> (square)</p>
+        <BarChart @ref="squareChart" />
+    </div>
+    <div class="column is-two-thirds">
+        <p class="has-text-weight-semibold mb-2"><code>AspectRatio = 2</code> (the bar chart default), <code>DevicePixelRatio = 2</code></p>
+        <BarChart @ref="defaultRatioChart" />
+    </div>
+    <div class="column is-full">
+        <p class="has-text-weight-semibold mb-2"><code>AspectRatio = 3</code>, <code>ResizeDelay = 300</code> (resize the window to see the delay)</p>
+        <BarChart @ref="wideChart" />
+    </div>
+</div>
+
+@code {
+    private BarChart squareChart = default!;
+    private BarChart defaultRatioChart = default!;
+    private BarChart wideChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await squareChart.InitializeAsync(GetChartData(), new BarChartOptions { MaintainAspectRatio = true, AspectRatio = 1 });
+
+            // twice as many canvas pixels as CSS pixels, for sharper exported images
+            await defaultRatioChart.InitializeAsync(GetChartData(), new BarChartOptions { MaintainAspectRatio = true, AspectRatio = 2, DevicePixelRatio = 2 });
+
+            // redraws 300 ms after the container stops resizing, instead of on every resize step
+            await wideChart.InitializeAsync(GetChartData(), new BarChartOptions { MaintainAspectRatio = true, AspectRatio = 3, ResizeDelay = 300 });
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData()
+    {
+        var c = ColorUtility.CategoricalTwelveColors[0].ToColor();
+
+        return new ChartData
+        {
+            Labels = ["January", "February", "March", "April", "May", "June"],
+            Datasets =
+            [
+                new BarChartDataset
+                {
+                    Label = "Sales",
+                    Data = [35, 48, 42, 61, 55, 70],
+                    BackgroundColor = [c.ToRgbaString(0.5)],
+                    BorderColor = [c.ToRgbString()],
+                    BorderWidth = [2]
+                }
+            ]
+        };
+    }
+
+    #endregion Data Preparation
+}

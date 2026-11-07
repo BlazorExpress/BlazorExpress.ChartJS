@@ -1,0 +1,94 @@
+<div class="columns is-multiline">
+    <div class="column is-half">
+        <p class="is-size-7 has-text-weight-semibold mb-2">Default: <code>BeginAtZero = true</code></p>
+        <PolarAreaChart @ref="defaultChart" />
+    </div>
+    <div class="column is-half">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>BeginAtZero = false</code> (starts from the data minimum)</p>
+        <PolarAreaChart @ref="dataMinimumChart" />
+    </div>
+    <div class="column is-half">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Min = 40</code>, <code>Max = 80</code>, <code>StepSize = 10</code>, <code>ShowLabelBackdrop = false</code>, <code>Circular = false</code></p>
+        <PolarAreaChart @ref="fixedRangeChart" />
+    </div>
+    <div class="column is-half">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Reverse = true</code></p>
+        <PolarAreaChart @ref="reverseChart" />
+    </div>
+</div>
+
+@code {
+    private PolarAreaChart defaultChart = default!;
+    private PolarAreaChart dataMinimumChart = default!;
+    private PolarAreaChart fixedRangeChart = default!;
+    private PolarAreaChart reverseChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await defaultChart.InitializeAsync(GetChartData(), new PolarAreaChartOptions());
+
+            var dataMinimumOptions = new PolarAreaChartOptions
+            {
+                Scales = new RadialScales { R = new ChartRadialAxes { BeginAtZero = false } }
+            };
+            await dataMinimumChart.InitializeAsync(GetChartData(), dataMinimumOptions);
+
+            // Polar area grids are round by default; Circular = false draws polygon rings.
+            var fixedRangeOptions = new PolarAreaChartOptions
+            {
+                Scales = new RadialScales
+                {
+                    R = new ChartRadialAxes
+                    {
+                        Min = 40,
+                        Max = 80,
+                        Ticks = new ChartAxesTicks { StepSize = 10, ShowLabelBackdrop = false },
+                        Grid = new ChartAxesGrid { Circular = false }
+                    }
+                }
+            };
+            await fixedRangeChart.InitializeAsync(GetChartData(), fixedRangeOptions);
+
+            var reverseOptions = new PolarAreaChartOptions
+            {
+                Scales = new RadialScales { R = new ChartRadialAxes { Reverse = true } }
+            };
+            await reverseChart.InitializeAsync(GetChartData(), reverseOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() =>
+        new()
+        {
+            Labels = ["North", "East", "South", "West", "Central"],
+            Datasets = [CreateDataset([52, 64, 48, 70, 58])]
+        };
+
+    private static PolarAreaChartDataset CreateDataset(List<double?> data)
+    {
+        var backgroundColors = new List<string>();
+        var borderColors = new List<string>();
+
+        for (var index = 0; index < data.Count; index++)
+        {
+            var c = ColorUtility.CategoricalTwelveColors[index].ToColor();
+            backgroundColors.Add(c.ToRgbaString(0.5));
+            borderColors.Add(c.ToRgbString());
+        }
+
+        return new PolarAreaChartDataset
+        {
+            Label = "Sales",
+            Data = data,
+            BackgroundColor = backgroundColors,
+            BorderColor = borderColors
+        };
+    }
+
+    #endregion Data Preparation
+}

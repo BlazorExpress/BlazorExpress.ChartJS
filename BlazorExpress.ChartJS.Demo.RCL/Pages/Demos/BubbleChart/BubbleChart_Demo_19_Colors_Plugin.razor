@@ -1,0 +1,76 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">No dataset colors, <code>Colors = new() { Enabled = true }</code>: Chart.js palette</p>
+        <BubbleChart @ref="paletteChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">No dataset colors, <code>Enabled = false</code>: Chart.js default gray</p>
+        <BubbleChart @ref="disabledChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Dataset colors set, <code>ForceOverride = true</code>: palette replaces them</p>
+        <BubbleChart @ref="forceOverrideChart" />
+    </div>
+</div>
+
+@code {
+    private BubbleChart paletteChart = default!;
+    private BubbleChart disabledChart = default!;
+    private BubbleChart forceOverrideChart = default!;
+    private BubbleChartOptions paletteOptions = default!;
+    private BubbleChartOptions disabledOptions = default!;
+    private BubbleChartOptions forceOverrideOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        // BubbleChartDataset sends no color unless you set one, so the plugin colors these datasets
+        paletteOptions = new BubbleChartOptions();
+        paletteOptions.Plugins.Colors = new ChartPluginsColors { Enabled = true };
+
+        disabledOptions = new BubbleChartOptions();
+        disabledOptions.Plugins.Colors = new ChartPluginsColors { Enabled = false };
+
+        // ForceOverride replaces the dataset colors with the Chart.js palette
+        forceOverrideOptions = new BubbleChartOptions();
+        forceOverrideOptions.Plugins.Colors = new ChartPluginsColors { Enabled = true, ForceOverride = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await paletteChart.InitializeAsync(GetChartData(withColors: false), paletteOptions);
+            await disabledChart.InitializeAsync(GetChartData(withColors: false), disabledOptions);
+            await forceOverrideChart.InitializeAsync(GetChartData(withColors: true), forceOverrideOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData(bool withColors) => new()
+    {
+        Datasets =
+        [
+            CreateDataset("Group A", 0, withColors, [new(5, 12, 8), new(15, 28, 12), new(25, 20, 6), new(35, 42, 15), new(45, 38, 10), new(55, 60, 7)]),
+            CreateDataset("Group B", 1, withColors, [new(10, 40, 14), new(20, 35, 10), new(30, 55, 16), new(40, 48, 7), new(50, 30, 12), new(60, 45, 15)]),
+            CreateDataset("Group C", 2, withColors, [new(8, 62, 9), new(18, 50, 13), new(28, 66, 7), new(38, 58, 11), new(48, 72, 8), new(58, 68, 12)])
+        ]
+    };
+
+    private static BubbleChartDataset CreateDataset(string label, int colorIndex, bool withColors, List<BubbleChartDataPoint> data)
+    {
+        var dataset = new BubbleChartDataset { Label = label, Data = data, BorderWidth = 2 };
+
+        if (withColors)
+        {
+            var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+            dataset.BackgroundColor = [c.ToRgbaString(0.5)];
+            dataset.BorderColor = [c.ToRgbString()];
+        }
+
+        return dataset;
+    }
+
+    #endregion Data Preparation
+}

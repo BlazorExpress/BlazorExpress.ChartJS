@@ -1,0 +1,88 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Point defaults: <code>Elements.Point</code> with <code>PointStyle</code>, <code>HoverRadius</code>, <code>HoverBorderWidth</code></p>
+        <BubbleChart @ref="elementsChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Hover a whole dataset: <code>Hover = new ChartHover { Mode = InteractionMode.Dataset }</code></p>
+        <BubbleChart @ref="hoverChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Click only: <code>Events = ["click"]</code> (pointer moves do nothing; click a bubble)</p>
+        <BubbleChart @ref="clickOnlyChart" />
+    </div>
+</div>
+
+@code {
+    private BubbleChart elementsChart = default!;
+    private BubbleChart hoverChart = default!;
+    private BubbleChart clickOnlyChart = default!;
+    private BubbleChartOptions elementsOptions = default!;
+    private BubbleChartOptions hoverOptions = default!;
+    private BubbleChartOptions clickOnlyOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        // defaults for every bubble; the size still comes from each point's R,
+        // and in a bubble chart HoverRadius is added to that radius on hover
+        elementsOptions = new BubbleChartOptions
+        {
+            Elements = new ChartElements
+            {
+                Point = new ChartElementsPoint { PointStyle = "rectRounded", HoverRadius = 6, HoverBorderWidth = 4 }
+            }
+        };
+
+        // hover highlights every bubble of the dataset, while the tooltip still follows Interaction (nearest bubble)
+        hoverOptions = new BubbleChartOptions
+        {
+            Elements = new ChartElements { Point = new ChartElementsPoint { HoverRadius = 4, HoverBorderWidth = 3 } },
+            Hover = new ChartHover { Mode = InteractionMode.Dataset, Intersect = true }
+        };
+
+        // only click events reach the chart: moving the pointer does nothing and OnHover does not fire; a click still highlights the item, opens its tooltip and fires OnClick
+        clickOnlyOptions = new BubbleChartOptions
+        {
+            Elements = new ChartElements { Point = new ChartElementsPoint { HoverRadius = 4, HoverBorderWidth = 3 } },
+            Events = ["click"]
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await elementsChart.InitializeAsync(GetChartData(), elementsOptions);
+            await hoverChart.InitializeAsync(GetChartData(), hoverOptions);
+            await clickOnlyChart.InitializeAsync(GetChartData(), clickOnlyOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Datasets =
+        [
+            CreateDataset("Group A", 0, [new(5, 12, 8), new(15, 28, 12), new(25, 20, 6), new(35, 42, 15), new(45, 38, 10), new(55, 60, 7), new(65, 52, 14), new(75, 70, 9)]),
+            CreateDataset("Group B", 1, [new(10, 40, 14), new(20, 35, 10), new(30, 55, 16), new(40, 48, 7), new(50, 30, 12), new(60, 45, 15), new(70, 25, 8), new(80, 35, 13)])
+        ]
+    };
+
+    private static BubbleChartDataset CreateDataset(string label, int colorIndex, List<BubbleChartDataPoint> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new BubbleChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = [c.ToRgbaString(0.5)],
+            BorderColor = [c.ToRgbString()],
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

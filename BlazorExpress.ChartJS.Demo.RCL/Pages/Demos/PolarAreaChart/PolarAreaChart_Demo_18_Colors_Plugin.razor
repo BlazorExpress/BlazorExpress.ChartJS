@@ -1,0 +1,70 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Colors = new() { Enabled = true }</code>, no dataset colors</p>
+        <PolarAreaChart @ref="enabledChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Enabled = false</code>, no dataset colors</p>
+        <PolarAreaChart @ref="disabledChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>ForceOverride = true</code> replacing dataset colors</p>
+        <PolarAreaChart @ref="overrideChart" />
+    </div>
+</div>
+
+@code {
+    private PolarAreaChart enabledChart = default!;
+    private PolarAreaChart disabledChart = default!;
+    private PolarAreaChart overrideChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Polar area datasets send no color unless one is set, so the palette colors each slice.
+            var enabledOptions = new PolarAreaChartOptions();
+            enabledOptions.Plugins.Colors = new() { Enabled = true };
+            await enabledChart.InitializeAsync(GetChartData(withColors: false), enabledOptions);
+
+            var disabledOptions = new PolarAreaChartOptions();
+            disabledOptions.Plugins.Colors = new() { Enabled = false };
+            await disabledChart.InitializeAsync(GetChartData(withColors: false), disabledOptions);
+
+            var overrideOptions = new PolarAreaChartOptions();
+            overrideOptions.Plugins.Colors = new() { Enabled = true, ForceOverride = true };
+            await overrideChart.InitializeAsync(GetChartData(withColors: true), overrideOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData(bool withColors) =>
+        new()
+        {
+            Labels = ["North", "East", "South", "West", "Central"],
+            Datasets = [CreateDataset([11, 16, 7, 3, 14], withColors)]
+        };
+
+    private static PolarAreaChartDataset CreateDataset(List<double?> data, bool withColors)
+    {
+        var dataset = new PolarAreaChartDataset { Label = "Sales", Data = data };
+
+        if (withColors)
+        {
+            // Per-slice colors, which ForceOverride replaces with the Chart.js palette.
+            var backgroundColors = new List<string>();
+            for (var index = 0; index < data.Count; index++)
+            {
+                backgroundColors.Add(ColorUtility.CategoricalTwelveColors[index + 6].ToColor().ToRgbaString(0.5));
+            }
+
+            dataset.BackgroundColor = backgroundColors;
+        }
+
+        return dataset;
+    }
+
+    #endregion Data Preparation
+}

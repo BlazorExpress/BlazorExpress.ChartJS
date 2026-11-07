@@ -1,0 +1,84 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Elements.Point</code>: <code>Radius = 5</code>, <code>PointStyle = "rectRot"</code>, <code>HoverRadius = 9</code>; <code>Elements.Line.BorderDash</code></p>
+        <LineChart @ref="elementsChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Hover = new() { Mode = Index, Intersect = false }</code>: every point of the month grows, the tooltip still needs a point</p>
+        <LineChart @ref="hoverChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Events = ["click"]</code>: pointer moves do nothing; click a point to highlight it and open its tooltip</p>
+        <LineChart @ref="eventsChart" />
+    </div>
+</div>
+
+@code {
+    private LineChart elementsChart = default!;
+    private LineChart hoverChart = default!;
+    private LineChart eventsChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // defaults for every point and line; a value set on a dataset wins over these
+            var elementsOptions = new LineChartOptions
+            {
+                Elements = new ChartElements
+                {
+                    Point = new ChartElementsPoint { Radius = 5, PointStyle = "rectRot", HoverRadius = 9 },
+                    Line = new ChartElementsLine { BorderDash = [6, 4] }
+                }
+            };
+
+            // hover effects differ from the tooltip, which keeps the interaction defaults (nearest, intersect)
+            var hoverOptions = new LineChartOptions
+            {
+                Elements = new ChartElements { Point = new ChartElementsPoint { Radius = 4, HoverRadius = 8 } },
+                Hover = new ChartHover { Mode = InteractionMode.Index, Intersect = false }
+            };
+
+            // only clicks reach the chart: moving the pointer does nothing and OnHover does not fire; a click still highlights the item, opens its tooltip and fires OnClick
+            var eventsOptions = new LineChartOptions
+            {
+                Elements = new ChartElements { Point = new ChartElementsPoint { Radius = 4, HoverRadius = 8 } },
+                Events = ["click"]
+            };
+
+            await elementsChart.InitializeAsync(GetChartData(), elementsOptions);
+            await hoverChart.InitializeAsync(GetChartData(), hoverOptions);
+            await eventsChart.InitializeAsync(GetChartData(), eventsOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Labels = ["January", "February", "March", "April", "May", "June"],
+        Datasets =
+        [
+            CreateDataset("Product A", 0, [35, 48, 42, 61, 55, 70]),
+            CreateDataset("Product B", 1, [22, 30, 38, 33, 46, 41])
+        ]
+    };
+
+    private static LineChartDataset CreateDataset(string label, int colorIndex, List<double?> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        // no point or dash settings here, so the Elements defaults apply
+        return new LineChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.5),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

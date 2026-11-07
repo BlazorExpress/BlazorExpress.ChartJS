@@ -1,0 +1,85 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Step size and limits: <code>StepSize = 5</code> on y, <code>Precision = 0</code> and <code>MaxTicksLimit = 5</code> on x</p>
+        <ScatterChart @ref="stepChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Count and rotation: <code>Count = 5</code> and <code>CrossAlign = "far"</code> on y, <code>AutoSkip = false</code> and <code>MinRotation = 45</code> on x</p>
+        <ScatterChart @ref="countChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Font and placement: <code>Mirror = true</code> and <code>Font</code> on y, <code>LabelOffset = 12</code> on x</p>
+        <ScatterChart @ref="fontChart" />
+    </div>
+</div>
+
+@code {
+    private ScatterChart stepChart = default!;
+    private ScatterChart countChart = default!;
+    private ScatterChart fontChart = default!;
+    private ScatterChartOptions stepOptions = default!;
+    private ScatterChartOptions countOptions = default!;
+    private ScatterChartOptions fontOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        stepOptions = new ScatterChartOptions();
+        stepOptions.Scales.Y!.Ticks = new ChartAxesTicks { StepSize = 5 };
+        stepOptions.Scales.X!.Ticks = new ChartAxesTicks { Precision = 0, MaxTicksLimit = 5 };
+
+        countOptions = new ScatterChartOptions();
+        countOptions.Scales.Y!.Ticks = new ChartAxesTicks { Count = 5, CrossAlign = "far" };
+        countOptions.Scales.X!.Ticks = new ChartAxesTicks { StepSize = 5, AutoSkip = false, MinRotation = 45, MaxRotation = 90 };
+
+        fontOptions = new ScatterChartOptions();
+        fontOptions.Scales.Y!.Ticks = new ChartAxesTicks
+        {
+            Mirror = true, // labels drawn inside the chart area
+            Color = ColorUtility.CategoricalTwelveColors[3],
+            Font = new ChartFont { Size = 14 } // ChartFont is bold by default
+        };
+        fontOptions.Scales.X!.Ticks = new ChartAxesTicks
+        {
+            LabelOffset = 12, // shift labels 12px along the axis
+            Font = new ChartFont { Style = "italic", Weight = "normal" }
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await stepChart.InitializeAsync(GetChartData(), stepOptions);
+            await countChart.InitializeAsync(GetChartData(), countOptions);
+            await fontChart.InitializeAsync(GetChartData(), fontOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Datasets =
+        [
+            CreateDataset("Group A", 0, [new(5, 12), new(15, 28), new(25, 20), new(35, 42), new(45, 38), new(55, 60), new(65, 52), new(75, 70)]),
+            CreateDataset("Group B", 1, [new(10, 40), new(20, 35), new(30, 55), new(40, 48), new(50, 30), new(60, 45), new(70, 25), new(80, 35)])
+        ]
+    };
+
+    private static ScatterChartDataset CreateDataset(string label, int colorIndex, List<ScatterChartDataPoint> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new ScatterChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.5),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

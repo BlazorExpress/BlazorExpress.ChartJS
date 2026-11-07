@@ -1,0 +1,75 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Elements.Bar</code>: <code>BorderRadius = 8</code>, <code>BorderWidth = 3</code> for every dataset</p>
+        <BarChart @ref="elementsChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Hover = new() { Mode = Index, Intersect = false }</code>: the whole month highlights, the tooltip still needs a bar</p>
+        <BarChart @ref="hoverChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Events = ["click"]</code>: pointer moves do nothing; click a bar to highlight it and open its tooltip</p>
+        <BarChart @ref="eventsChart" />
+    </div>
+</div>
+
+@code {
+    private BarChart elementsChart = default!;
+    private BarChart hoverChart = default!;
+    private BarChart eventsChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // defaults for every bar; a value set on a dataset wins over these
+            var elementsOptions = new BarChartOptions
+            {
+                Elements = new ChartElements { Bar = new ChartElementsBar { BorderRadius = 8, BorderWidth = 3 } }
+            };
+
+            // hover highlights differ from the tooltip, which keeps the interaction defaults (nearest, intersect)
+            var hoverOptions = new BarChartOptions
+            {
+                Hover = new ChartHover { Mode = InteractionMode.Index, Intersect = false }
+            };
+
+            // only clicks reach the chart: moving the pointer does nothing and OnHover does not fire; a click still highlights the item, opens its tooltip and fires OnClick
+            var eventsOptions = new BarChartOptions { Events = ["click"] };
+
+            await elementsChart.InitializeAsync(GetChartData(), elementsOptions);
+            await hoverChart.InitializeAsync(GetChartData(), hoverOptions);
+            await eventsChart.InitializeAsync(GetChartData(), eventsOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Labels = ["January", "February", "March", "April", "May", "June"],
+        Datasets =
+        [
+            CreateDataset("Product A", 0, [35, 48, 42, 61, 55, 70]),
+            CreateDataset("Product B", 1, [22, 30, 38, 33, 46, 41])
+        ]
+    };
+
+    private static BarChartDataset CreateDataset(string label, int colorIndex, List<double?> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        // no BorderWidth or BorderRadius here, so the Elements.Bar defaults apply
+        return new BarChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = [c.ToRgbaString(0.5)],
+            BorderColor = [c.ToRgbString()],
+            HoverBackgroundColor = [c.ToRgbString()]
+        };
+    }
+
+    #endregion Data Preparation
+}

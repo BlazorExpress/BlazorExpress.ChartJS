@@ -1,0 +1,68 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>SpacingMode = "angular"</code></p>
+        <PolarAreaChart @ref="angularChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>SpacingMode = "proportional"</code> (Chart.js default for polar area)</p>
+        <PolarAreaChart @ref="proportionalChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>SpacingMode = "parallel"</code></p>
+        <PolarAreaChart @ref="parallelChart" />
+    </div>
+</div>
+
+@code {
+    private PolarAreaChart angularChart = default!;
+    private PolarAreaChart proportionalChart = default!;
+    private PolarAreaChart parallelChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await angularChart.InitializeAsync(GetChartData("angular"), new PolarAreaChartOptions());
+            await proportionalChart.InitializeAsync(GetChartData("proportional"), new PolarAreaChartOptions());
+            await parallelChart.InitializeAsync(GetChartData("parallel"), new PolarAreaChartOptions());
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData(string spacingMode) =>
+        new()
+        {
+            Labels = ["North", "East", "South", "West", "Central"],
+            Datasets = [CreateDataset([11, 16, 7, 3, 14], spacingMode)]
+        };
+
+    private static PolarAreaChartDataset CreateDataset(List<double?> data, string spacingMode)
+    {
+        var backgroundColors = new List<string>();
+        var borderColors = new List<string>();
+        var borderWidths = new List<double>();
+
+        for (var index = 0; index < data.Count; index++)
+        {
+            var c = ColorUtility.CategoricalTwelveColors[index].ToColor();
+            backgroundColors.Add(c.ToRgbaString(0.5));
+            borderColors.Add("#ffffff");
+            borderWidths.Add(4);
+        }
+
+        return new PolarAreaChartDataset
+        {
+            Label = "Sales",
+            Data = data,
+            BackgroundColor = backgroundColors,
+            BorderColor = borderColors,
+            BorderWidth = borderWidths,
+            Spacing = 8,
+            SpacingMode = spacingMode
+        };
+    }
+
+    #endregion Data Preparation
+}

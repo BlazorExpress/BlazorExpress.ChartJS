@@ -1,0 +1,100 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Index mode: <code>Mode = InteractionMode.Index</code>, <code>Intersect = false</code>, <code>Position = "average"</code></p>
+        <ScatterChart @ref="indexChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Nearest point: <code>Mode = InteractionMode.Nearest</code>, <code>Intersect = true</code>, <code>Position = "nearest"</code>, <code>UsePointStyle = true</code></p>
+        <ScatterChart @ref="nearestChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Styled: <code>Padding</code>, <code>CornerRadius</code>, <code>BorderColor</code>/<code>BorderWidth</code>, <code>BoxWidth</code>/<code>BoxHeight</code>/<code>BoxPadding</code>, <code>MultiKeyBackground</code></p>
+        <ScatterChart @ref="styledChart" />
+    </div>
+</div>
+
+@code {
+    private ScatterChart indexChart = default!;
+    private ScatterChart nearestChart = default!;
+    private ScatterChart styledChart = default!;
+    private ScatterChartOptions indexOptions = default!;
+    private ScatterChartOptions nearestOptions = default!;
+    private ScatterChartOptions styledOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        // one tooltip lists the point at the same index in every dataset
+        indexOptions = new ScatterChartOptions();
+        indexOptions.Plugins.Tooltip = new ChartPluginsTooltip
+        {
+            Mode = InteractionMode.Index,
+            Intersect = false,
+            Position = "average"
+        };
+
+        // only the point under the pointer, with its point style as the color box
+        nearestOptions = new ScatterChartOptions();
+        nearestOptions.Plugins.Tooltip = new ChartPluginsTooltip
+        {
+            Mode = InteractionMode.Nearest,
+            Intersect = true,
+            Position = "nearest",
+            UsePointStyle = true
+        };
+
+        styledOptions = new ScatterChartOptions();
+        styledOptions.Plugins.Tooltip = new ChartPluginsTooltip
+        {
+            Mode = InteractionMode.Index,
+            Intersect = false,
+            Padding = 12,
+            CornerRadius = 0,
+            BorderColor = ColorUtility.CategoricalTwelveColors[2],
+            BorderWidth = 2,
+            BoxWidth = 20,
+            BoxHeight = 10,
+            BoxPadding = 6,
+            MultiKeyBackground = "#000000" // fills behind the color boxes when several items are shown
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await indexChart.InitializeAsync(GetChartData(), indexOptions);
+            await nearestChart.InitializeAsync(GetChartData(), nearestOptions);
+            await styledChart.InitializeAsync(GetChartData(), styledOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Datasets =
+        [
+            CreateDataset("Group A", 0, "circle", [new(5, 12), new(15, 28), new(25, 20), new(35, 42), new(45, 38), new(55, 60), new(65, 52), new(75, 70)]),
+            CreateDataset("Group B", 1, "triangle", [new(10, 40), new(20, 35), new(30, 55), new(40, 48), new(50, 30), new(60, 45), new(70, 25), new(80, 35)])
+        ]
+    };
+
+    private static ScatterChartDataset CreateDataset(string label, int colorIndex, string pointStyle, List<ScatterChartDataPoint> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new ScatterChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.5),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2,
+            PointStyle = [pointStyle],
+            PointRadius = [5]
+        };
+    }
+
+    #endregion Data Preparation
+}

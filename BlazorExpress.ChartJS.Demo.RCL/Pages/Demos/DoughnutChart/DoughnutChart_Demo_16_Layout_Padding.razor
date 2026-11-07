@@ -1,0 +1,47 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="mb-2">No padding (the default)</p>
+        <DoughnutChart @ref="doughnutChart1" ContainerStyle="border: 1px dashed #b5b5b5;" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Layout.Padding = 20</code> (all sides)</p>
+        <DoughnutChart @ref="doughnutChart2" ContainerStyle="border: 1px dashed #b5b5b5;" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code></p>
+        <DoughnutChart @ref="doughnutChart3" ContainerStyle="border: 1px dashed #b5b5b5;" />
+    </div>
+</div>
+
+@code {
+    private DoughnutChart doughnutChart1 = default!;
+    private DoughnutChart doughnutChart2 = default!;
+    private DoughnutChart doughnutChart3 = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await doughnutChart1.InitializeAsync(CreateChartData(), new DoughnutChartOptions());
+            await doughnutChart2.InitializeAsync(CreateChartData(), new DoughnutChartOptions { Layout = new ChartLayout { Padding = 20 } });
+            await doughnutChart3.InitializeAsync(CreateChartData(), new DoughnutChartOptions { Layout = new ChartLayout { PaddingSides = new() { Left = 60, Top = 10 } } });
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData CreateChartData() =>
+        new()
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge", "Opera" },
+            Datasets = new List<IChartDataset>
+            {
+                new DoughnutChartDataset
+                {
+                    Label = "Visitors",
+                    Data = new List<double?> { 45, 25, 15, 10, 5 },
+                    BackgroundColor = Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList(),
+                },
+            },
+        };
+}

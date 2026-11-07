@@ -1,0 +1,47 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="mb-2">No padding (the default)</p>
+        <PieChart @ref="pieChart1" ContainerStyle="border: 1px dashed #b5b5b5;" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Layout.Padding = 20</code> (all sides)</p>
+        <PieChart @ref="pieChart2" ContainerStyle="border: 1px dashed #b5b5b5;" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code></p>
+        <PieChart @ref="pieChart3" ContainerStyle="border: 1px dashed #b5b5b5;" />
+    </div>
+</div>
+
+@code {
+    private PieChart pieChart1 = default!;
+    private PieChart pieChart2 = default!;
+    private PieChart pieChart3 = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await pieChart1.InitializeAsync(CreateChartData(), new PieChartOptions());
+            await pieChart2.InitializeAsync(CreateChartData(), new PieChartOptions { Layout = new ChartLayout { Padding = 20 } });
+            await pieChart3.InitializeAsync(CreateChartData(), new PieChartOptions { Layout = new ChartLayout { PaddingSides = new() { Left = 60, Top = 10 } } });
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData CreateChartData() =>
+        new()
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge", "Opera" },
+            Datasets = new List<IChartDataset>
+            {
+                new PieChartDataset
+                {
+                    Label = "Visitors",
+                    Data = new List<double?> { 45, 25, 15, 10, 5 },
+                    BackgroundColor = Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList(),
+                },
+            },
+        };
+}

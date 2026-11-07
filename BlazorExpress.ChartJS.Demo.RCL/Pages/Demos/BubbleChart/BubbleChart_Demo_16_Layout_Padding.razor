@@ -1,0 +1,72 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">No padding (default): <code>Layout.Padding = 0</code></p>
+        <BubbleChart @ref="noPaddingChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">All sides: <code>Layout.Padding = 20</code></p>
+        <BubbleChart @ref="allSidesChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Per side: <code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code></p>
+        <BubbleChart @ref="perSideChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
+    </div>
+</div>
+
+@code {
+    private BubbleChart noPaddingChart = default!;
+    private BubbleChart allSidesChart = default!;
+    private BubbleChart perSideChart = default!;
+    private BubbleChartOptions noPaddingOptions = default!;
+    private BubbleChartOptions allSidesOptions = default!;
+    private BubbleChartOptions perSideOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        noPaddingOptions = new BubbleChartOptions();
+
+        allSidesOptions = new BubbleChartOptions();
+        allSidesOptions.Layout.Padding = 20; // 20px inside the canvas on every side
+
+        perSideOptions = new BubbleChartOptions();
+        perSideOptions.Layout.PaddingSides = new() { Left = 60, Top = 10 }; // sent instead of Padding when set
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await noPaddingChart.InitializeAsync(GetChartData(), noPaddingOptions);
+            await allSidesChart.InitializeAsync(GetChartData(), allSidesOptions);
+            await perSideChart.InitializeAsync(GetChartData(), perSideOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Datasets =
+        [
+            CreateDataset("Group A", 0, [new(5, 12, 8), new(15, 28, 12), new(25, 20, 6), new(35, 42, 15), new(45, 38, 10), new(55, 60, 7), new(65, 52, 14), new(75, 70, 9)]),
+            CreateDataset("Group B", 1, [new(10, 40, 14), new(20, 35, 10), new(30, 55, 16), new(40, 48, 7), new(50, 30, 12), new(60, 45, 15), new(70, 25, 8), new(80, 35, 13)])
+        ]
+    };
+
+    private static BubbleChartDataset CreateDataset(string label, int colorIndex, List<BubbleChartDataPoint> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new BubbleChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = [c.ToRgbaString(0.5)],
+            BorderColor = [c.ToRgbString()],
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

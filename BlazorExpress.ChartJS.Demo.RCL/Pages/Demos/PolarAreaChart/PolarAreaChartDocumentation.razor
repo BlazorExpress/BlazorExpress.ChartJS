@@ -140,6 +140,173 @@
     <Demo Type="typeof(PolarAreaChart_Demo_08_Update_Modes)" Tabs="true" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Radial scale" PageUrl="@pageUrl" Link="radial-scale">
+    <Block>
+        The polar area chart sizes each slice on one radial axis, <code>Scales.R</code>, sent to Chart.js as <code>scales.r</code>. The axis starts at zero by default (<code>BeginAtZero = true</code>), as in Chart.js, and its rings are round.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales = new RadialScales { R = new ChartRadialAxes { ... } }</code> on <code>PolarAreaChartOptions</code>.</li>
+                <li>Set <code>BeginAtZero = false</code> to start the axis from the data minimum; the smallest slice then has no radius.</li>
+                <li>Fix the range with <code>Min</code> and <code>Max</code>, and set the ring spacing with <code>Ticks = new ChartAxesTicks { StepSize = 10, ShowLabelBackdrop = false }</code>.</li>
+                <li>Set <code>Grid = new ChartAxesGrid { Circular = false }</code> for polygon rings, and <code>Reverse = true</code> to put the maximum at the center.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(PolarAreaChart_Demo_09_Radial_Scale)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Angle lines and point labels" PageUrl="@pageUrl" Link="angle-lines-and-point-labels">
+    <Block>
+        Angle lines run from the center outwards between the slices, and point labels name each slice at the edge of the chart. Chart.js hides both on polar area charts by default, so turn them on with <code>Display = true</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales.R.PointLabels = new ChartAxesPointLabels { Display = true, CenterPointLabels = true }</code> to label each slice in its middle.</li>
+                <li>Set <code>Scales.R.AngleLines = new ChartAxesAngleLines { Display = true }</code>, and style the lines with <code>Color</code>, <code>LineWidth</code> and <code>BorderDash</code> (for example <code>[6, 4]</code>).</li>
+                <li>Style the labels with <code>Color</code>, <code>Font = new ChartFont { Size = 14 }</code>, <code>Padding</code>, <code>BackdropColor</code> and <code>BorderRadius</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(PolarAreaChart_Demo_10_Angle_Lines_And_Point_Labels)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Start angle" PageUrl="@pageUrl" Link="start-angle">
+    <Block>
+        <code>Scales.R.StartAngle</code> rotates the slices, in degrees clockwise from the top. Chart.js uses 0, which starts the first slice at the top.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales = new RadialScales { R = new ChartRadialAxes { StartAngle = 45 } }</code>.</li>
+                <li>Use 0, 45 or 90 (or any angle) to choose where the first slice starts.</li>
+                <li>Turn on <code>PointLabels</code> to follow the rotation more easily, as the demo does.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(PolarAreaChart_Demo_11_Start_Angle)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Spacing mode" PageUrl="@pageUrl" Link="spacing-mode">
+    <Block>
+        <code>SpacingMode</code> sets how Chart.js measures the gap between slices: <code>"angular"</code> keeps an equal angle, <code>"proportional"</code> (the Chart.js default for polar area) scales the gap with each slice, and <code>"parallel"</code> keeps the edges of neighbouring slices parallel.
+        The gap itself is set by <code>Spacing</code>, in pixels; without it there is nothing to measure.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Create a <code>PolarAreaChartDataset</code> with per-slice <code>BackgroundColor</code> values.</li>
+                <li>Set <code>Spacing</code> on the dataset, for example <code>Spacing = 8</code>, to open a gap between the slices.</li>
+                <li>Set <code>SpacingMode</code> to <code>"angular"</code>, <code>"proportional"</code> or <code>"parallel"</code> on the dataset.</li>
+                <li>Optionally set <code>BorderColor</code> and <code>BorderWidth</code> per slice to outline the slices.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(PolarAreaChart_Demo_12_Spacing_Mode)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Title and subtitle" PageUrl="@pageUrl" Link="title-and-subtitle">
+    <Block>
+        The title and subtitle plugins draw text around the chart area. Chart.js hides both by default; in this library the title and subtitle color defaults to <code>"black"</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Sales by region" }</code>.</li>
+                <li>Add <code>Plugins.Subtitle = new() { Display = true, Text = "Q1 2026" }</code>; it is drawn below the title.</li>
+                <li>Move either one with <code>Position</code> (<code>"top"</code>, <code>"left"</code>, <code>"bottom"</code>, <code>"right"</code>) and align it with <code>Align</code> (<code>"start"</code>, <code>"center"</code>, <code>"end"</code>).</li>
+                <li>Add space with <code>Padding = new ChartPadding { Top = 10, Bottom = 20 }</code>, and set <code>FullSize = false</code> to keep the title within the chart area width.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(PolarAreaChart_Demo_13_Title_And_Subtitle)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Tooltip options" PageUrl="@pageUrl" Link="tooltip-options">
+    <Block>
+        Tooltip options decide which slices a tooltip lists, where it opens and how it looks. Values left <code>null</code> use the chart's <code>Interaction</code> options and the Chart.js defaults.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Plugins.Tooltip = new() { ... }</code> on <code>PolarAreaChartOptions</code>.</li>
+                <li>Set <code>Mode</code> to <code>InteractionMode.Nearest</code> or <code>InteractionMode.Index</code>, and <code>Intersect = false</code> to open the tooltip for the closest slice even when the pointer is outside it.</li>
+                <li>Set <code>Position</code> to <code>"average"</code> (the middle of the listed slices) or <code>"nearest"</code> (the point closest to the pointer).</li>
+                <li>Style it with <code>Padding</code>, <code>CornerRadius</code>, <code>BorderColor</code>, <code>BorderWidth</code>, <code>BoxWidth</code>, <code>BoxHeight</code>, <code>BoxPadding</code>, <code>UsePointStyle</code> and <code>MultiKeyBackground</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(PolarAreaChart_Demo_14_Tooltip_Options)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Layout padding" PageUrl="@pageUrl" Link="layout-padding">
+    <Block>
+        Layout padding adds space between the canvas edge and the chart, legend and title. Chart.js uses no padding by default; the dashed border in the demo shows the canvas edge.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Layout.Padding = 20</code> to add 20 pixels on every side.</li>
+                <li>Set <code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code> for a value per side; when set, it is sent instead of <code>Padding</code>.</li>
+                <li>Leave both unset for no padding.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(PolarAreaChart_Demo_15_Layout_Padding)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Aspect ratio and resize delay" PageUrl="@pageUrl" Link="aspect-ratio-and-resize-delay">
+    <Block>
+        A responsive chart keeps its width-to-height ratio while <code>MaintainAspectRatio</code> is <code>true</code>; Chart.js uses a ratio of 1 for polar area charts. <code>ResizeDelay</code> waits the given milliseconds after the last resize before redrawing, so dragging the window edge causes one redraw instead of many; resize the window to see it.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Keep <code>MaintainAspectRatio = true</code> (the default) and set <code>AspectRatio</code> to 1, 2 or 3.</li>
+                <li>Set <code>ResizeDelay = 250</code> to redraw 250 ms after resizing stops.</li>
+                <li>Set <code>DevicePixelRatio = 2</code> to draw the canvas at twice the resolution, for sharper exported images.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(PolarAreaChart_Demo_16_Aspect_Ratio_And_Resize_Delay)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Hover and elements" PageUrl="@pageUrl" Link="hover-and-elements">
+    <Block>
+        <code>Elements</code> sets default styles for every arc the chart draws, and <code>Hover</code> decides which slices are highlighted under the pointer, separately from <code>Interaction</code>, which the tooltip keeps using.
+        Values set on the dataset win over <code>Elements</code>; polar area datasets always send <code>Circular = true</code>, so set <code>Circular</code> on the dataset.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Elements = new ChartElements { Arc = new ChartElementsArc { BorderWidth = 6, BorderColor = "#ffffff", BorderAlign = "inner" } }</code>; <code>"inner"</code> keeps the border inside each slice.</li>
+                <li>Set <code>Hover = new ChartHover { Mode = InteractionMode.Nearest, Intersect = false }</code> to highlight the closest slice even when the pointer is outside it, while the tooltip still needs the pointer on a slice.</li>
+                <li>Set <code>HoverBackgroundColor</code> on the dataset to show the highlight more clearly.</li>
+                <li>Set <code>Events = ["click"]</code> to listen to clicks only: moving the pointer does nothing and <code>OnHover</code> does not fire; clicking a slice still highlights it and opens its tooltip, and <code>OnClick</code> fires.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(PolarAreaChart_Demo_17_Hover_And_Elements)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Colors plugin" PageUrl="@pageUrl" Link="colors-plugin">
+    <Block>
+        The Chart.js colors plugin gives datasets that set no colors a color from its built-in palette; on polar area charts it colors each slice. Polar area datasets send no color unless you set one, so the palette applies without <code>ForceOverride</code>. Line, radar and scatter datasets do send a default color, so there the palette needs <code>ForceOverride = true</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Leave <code>BackgroundColor</code> unset on the dataset and set <code>Plugins.Colors = new() { Enabled = true }</code> to color the slices from the palette.</li>
+                <li>Set <code>Enabled = false</code> to turn the plugin off; slices without colors are then drawn in the Chart.js default grey.</li>
+                <li>Set <code>ForceOverride = true</code> to replace the colors you set on the dataset with the palette.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(PolarAreaChart_Demo_18_Colors_Plugin)" Tabs="true" />
+</Section>
+
 @code {
     private const string pageUrl = DemoRouteConstants.Demos_PolarAreaChart;
     private const string pageTitle = "PolarArea Chart";

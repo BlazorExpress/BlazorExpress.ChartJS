@@ -278,6 +278,21 @@ public class DoughnutChartDataset : ChartDataset<double?>
     public double Spacing { get; set; }
 
     /// <summary>
+    /// How the spacing between arcs is measured: <c>"angular"</c> keeps an equal angle, <c>"proportional"</c> scales with each arc,
+    /// and <c>"parallel"</c> keeps the edges of neighbouring arcs parallel.
+    /// <para>
+    /// Default value is <see langword="null" /> (Chart.js uses <c>"angular"</c>).
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/doughnut.html" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("How the spacing between arcs is measured: \"angular\", \"proportional\" or \"parallel\".")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("string?")]
+    public string? SpacingMode { get; set; }
+
+    /// <summary>
     /// The relative thickness of the dataset. 
     /// Providing a value for weight will cause the pie or doughnut dataset to be drawn 
     /// with a thickness relative to the sum of all the dataset weight values.

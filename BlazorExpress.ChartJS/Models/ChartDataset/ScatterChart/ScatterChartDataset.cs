@@ -398,6 +398,21 @@ public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
     //https://www.chartjs.org/docs/latest/charts/line.html#segment
 
     /// <summary>
+    /// Line segment styles, as on <see cref="LineChartDataset.Segment" />: an object whose <c>Border*</c> and <c>BackgroundColor</c>
+    /// values apply to each section of the line between points. Applies when <c>ShowLine</c> draws a line.
+    /// <para>
+    /// Default value is <see langword="null"/>.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Line segment styles, as on LineChartDataset.Segment: an object whose Border* and BackgroundColor values apply to each section of the line between points.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("object?")]
+    public object? Segment { get; set; }
+
+    /// <summary>
     /// If <see langword="false" />, the line is not drawn for this dataset.
     /// <para>
     /// Default value is <see langword="true"/>.

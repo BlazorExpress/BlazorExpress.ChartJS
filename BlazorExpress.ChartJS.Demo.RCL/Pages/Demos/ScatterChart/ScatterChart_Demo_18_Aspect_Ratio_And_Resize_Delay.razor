@@ -1,0 +1,73 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Square: <code>AspectRatio = 1</code></p>
+        <ScatterChart @ref="squareChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Default width: <code>AspectRatio = 2</code>, <code>ResizeDelay = 300</code></p>
+        <ScatterChart @ref="defaultRatioChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Wide: <code>AspectRatio = 3</code>, <code>DevicePixelRatio = 2</code></p>
+        <ScatterChart @ref="wideChart" />
+    </div>
+</div>
+
+@code {
+    private ScatterChart squareChart = default!;
+    private ScatterChart defaultRatioChart = default!;
+    private ScatterChart wideChart = default!;
+    private ScatterChartOptions squareOptions = default!;
+    private ScatterChartOptions defaultRatioOptions = default!;
+    private ScatterChartOptions wideOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        // AspectRatio (width / height) only applies while MaintainAspectRatio is true (the default)
+        squareOptions = new ScatterChartOptions { MaintainAspectRatio = true, AspectRatio = 1 };
+
+        // wait 300 ms after the last resize event before redrawing; resize the window to see it
+        defaultRatioOptions = new ScatterChartOptions { MaintainAspectRatio = true, AspectRatio = 2, ResizeDelay = 300 };
+
+        // render at twice the screen resolution for sharper exported images
+        wideOptions = new ScatterChartOptions { MaintainAspectRatio = true, AspectRatio = 3, DevicePixelRatio = 2 };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await squareChart.InitializeAsync(GetChartData(), squareOptions);
+            await defaultRatioChart.InitializeAsync(GetChartData(), defaultRatioOptions);
+            await wideChart.InitializeAsync(GetChartData(), wideOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Datasets =
+        [
+            CreateDataset("Group A", 0, [new(5, 12), new(15, 28), new(25, 20), new(35, 42), new(45, 38), new(55, 60), new(65, 52), new(75, 70)]),
+            CreateDataset("Group B", 1, [new(10, 40), new(20, 35), new(30, 55), new(40, 48), new(50, 30), new(60, 45), new(70, 25), new(80, 35)])
+        ]
+    };
+
+    private static ScatterChartDataset CreateDataset(string label, int colorIndex, List<ScatterChartDataPoint> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new ScatterChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.5),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

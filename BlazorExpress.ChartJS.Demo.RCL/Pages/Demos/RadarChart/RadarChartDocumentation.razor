@@ -141,6 +141,156 @@
     <Demo Type="typeof(RadarChart_Demo_08_Update_Modes)" Tabs="true" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Radial scale" PageUrl="@pageUrl" Link="radial-scale">
+    <Block>
+        The radar chart draws its values on one radial axis, <code>Scales.R</code>, sent to Chart.js as <code>scales.r</code>. Chart.js starts a radar axis at the data minimum, but this library sets <code>BeginAtZero = true</code> by default, so the axis starts at zero unless you turn it off.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales = new RadialScales { R = new ChartRadialAxes { ... } }</code> on <code>RadarChartOptions</code>.</li>
+                <li>Set <code>BeginAtZero = false</code> to start the axis from the data minimum, as Chart.js does, so values close together are easier to compare.</li>
+                <li>Fix the range with <code>Min</code> and <code>Max</code>, and set the ring spacing with <code>Ticks = new ChartAxesTicks { StepSize = 10, ShowLabelBackdrop = false }</code>.</li>
+                <li>Set <code>Grid = new ChartAxesGrid { Circular = true }</code> for round rings instead of polygons, and <code>Reverse = true</code> to put the maximum at the center.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(RadarChart_Demo_09_Radial_Scale)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Angle lines and point labels" PageUrl="@pageUrl" Link="angle-lines-and-point-labels">
+    <Block>
+        Angle lines run from the center to each label, and point labels name each spoke of the radar. Chart.js shows both on radar charts by default.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales.R.AngleLines = new ChartAxesAngleLines { ... }</code> with <code>Display</code>, <code>Color</code>, <code>LineWidth</code> and <code>BorderDash</code> (for example <code>[6, 4]</code>).</li>
+                <li>Set <code>Scales.R.PointLabels = new ChartAxesPointLabels { ... }</code> with <code>Display</code>, <code>Color</code>, <code>Font = new ChartFont { Size = 14 }</code> and <code>Padding</code>.</li>
+                <li>Give the labels a background with <code>BackdropColor</code> and round it with <code>BorderRadius</code>.</li>
+                <li>Set <code>Display = false</code> on either one to hide it.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(RadarChart_Demo_10_Angle_Lines_And_Point_Labels)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Start angle" PageUrl="@pageUrl" Link="start-angle">
+    <Block>
+        <code>Scales.R.StartAngle</code> rotates the whole radar, in degrees clockwise from the top. Chart.js uses 0, which puts the first label at the top.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Scales = new RadialScales { R = new ChartRadialAxes { StartAngle = 45 } }</code>.</li>
+                <li>Use 0, 45 or 90 (or any angle) to choose where the first label sits.</li>
+                <li>Leave it <code>null</code> to keep the Chart.js default of 0.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(RadarChart_Demo_11_Start_Angle)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Title and subtitle" PageUrl="@pageUrl" Link="title-and-subtitle">
+    <Block>
+        The title and subtitle plugins draw text around the chart area. Chart.js hides both by default; in this library the title and subtitle color defaults to <code>"black"</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Team skills" }</code>.</li>
+                <li>Add <code>Plugins.Subtitle = new() { Display = true, Text = "Season 2026" }</code>; it is drawn below the title.</li>
+                <li>Move either one with <code>Position</code> (<code>"top"</code>, <code>"left"</code>, <code>"bottom"</code>, <code>"right"</code>) and align it with <code>Align</code> (<code>"start"</code>, <code>"center"</code>, <code>"end"</code>).</li>
+                <li>Add space with <code>Padding = new ChartPadding { Top = 10, Bottom = 20 }</code>, and set <code>FullSize = false</code> to keep the title within the chart area width.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(RadarChart_Demo_12_Title_And_Subtitle)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Tooltip options" PageUrl="@pageUrl" Link="tooltip-options">
+    <Block>
+        Tooltip options decide which points a tooltip lists, where it opens and how it looks. Values left <code>null</code> use the chart's <code>Interaction</code> options and the Chart.js defaults.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Plugins.Tooltip = new() { ... }</code> on <code>RadarChartOptions</code>.</li>
+                <li>Set <code>Mode = InteractionMode.Index</code> with <code>Intersect = false</code> to list every team on the hovered spoke, or <code>InteractionMode.Nearest</code> for the closest point only.</li>
+                <li>Set <code>Position</code> to <code>"average"</code> (the middle of the listed points) or <code>"nearest"</code> (the point closest to the pointer).</li>
+                <li>Style it with <code>Padding</code>, <code>CornerRadius</code>, <code>BorderColor</code>, <code>BorderWidth</code>, <code>BoxWidth</code>, <code>BoxHeight</code>, <code>BoxPadding</code>, <code>UsePointStyle</code> and <code>MultiKeyBackground</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(RadarChart_Demo_13_Tooltip_Options)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Layout padding" PageUrl="@pageUrl" Link="layout-padding">
+    <Block>
+        Layout padding adds space between the canvas edge and the chart, legend and title. Chart.js uses no padding by default; the dashed border in the demo shows the canvas edge.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Layout.Padding = 20</code> to add 20 pixels on every side.</li>
+                <li>Set <code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code> for a value per side; when set, it is sent instead of <code>Padding</code>.</li>
+                <li>Leave both unset for no padding.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(RadarChart_Demo_14_Layout_Padding)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Aspect ratio and resize delay" PageUrl="@pageUrl" Link="aspect-ratio-and-resize-delay">
+    <Block>
+        A responsive chart keeps its width-to-height ratio while <code>MaintainAspectRatio</code> is <code>true</code>; Chart.js uses a ratio of 1 for radar charts. <code>ResizeDelay</code> waits the given milliseconds after the last resize before redrawing, so dragging the window edge causes one redraw instead of many; resize the window to see it.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Keep <code>MaintainAspectRatio = true</code> (the default) and set <code>AspectRatio</code> to 1, 2 or 3.</li>
+                <li>Set <code>ResizeDelay = 250</code> to redraw 250 ms after resizing stops.</li>
+                <li>Set <code>DevicePixelRatio = 2</code> to draw the canvas at twice the resolution, for sharper exported images.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(RadarChart_Demo_15_Aspect_Ratio_And_Resize_Delay)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Hover and elements" PageUrl="@pageUrl" Link="hover-and-elements">
+    <Block>
+        <code>Elements</code> sets default styles for every point and line the chart draws, and <code>Hover</code> decides which points are highlighted under the pointer, separately from <code>Interaction</code>, which the tooltip keeps using.
+        Radar datasets always send their own <code>Tension</code> and <code>BorderWidth</code>, so set those on the dataset; dataset values win over <code>Elements</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Elements = new ChartElements { Point = new ChartElementsPoint { Radius = 5, PointStyle = "rectRot", HoverRadius = 9 } }</code>.</li>
+                <li>Add <code>Line = new ChartElementsLine { BorderDash = [6, 4] }</code> to dash every radar outline.</li>
+                <li>Set <code>Hover = new ChartHover { Mode = InteractionMode.Index, Intersect = false }</code> to highlight all points on the hovered spoke while the tooltip still needs a point under the pointer.</li>
+                <li>Set <code>Events = ["click"]</code> to listen to clicks only: moving the pointer does nothing and <code>OnHover</code> does not fire; clicking a point still highlights it and opens its tooltip, and <code>OnClick</code> fires.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(RadarChart_Demo_16_Hover_And_Elements)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Colors plugin" PageUrl="@pageUrl" Link="colors-plugin">
+    <Block>
+        The Chart.js colors plugin gives datasets that set no colors a color from its built-in palette. Line, radar and scatter datasets in this library always send a default color, so on a radar chart the palette applies only with <code>ForceOverride = true</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Plugins.Colors = new() { Enabled = true }</code>; radar datasets without colors stay grey, because they send <code>"rgba(0, 0, 0, 0.1)"</code>.</li>
+                <li>Add <code>ForceOverride = true</code> to color every dataset from the palette.</li>
+                <li>With <code>ForceOverride = true</code>, the palette also replaces colors you set on the datasets; set <code>Enabled = false</code> to turn the plugin off.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(RadarChart_Demo_17_Colors_Plugin)" Tabs="true" />
+</Section>
+
 @code {
     private const string pageUrl = DemoRouteConstants.Demos_RadarChart;
     private const string pageTitle = "Radar Chart";

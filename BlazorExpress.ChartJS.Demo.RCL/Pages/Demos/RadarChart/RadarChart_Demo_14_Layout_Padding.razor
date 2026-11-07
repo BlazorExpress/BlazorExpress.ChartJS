@@ -1,0 +1,73 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2">No padding (default)</p>
+        <div style="border: 1px dashed #b5b5b5;">
+            <RadarChart @ref="noPaddingChart" />
+        </div>
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Layout.Padding = 20</code> (all sides)</p>
+        <div style="border: 1px dashed #b5b5b5;">
+            <RadarChart @ref="allSidesChart" />
+        </div>
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code></p>
+        <div style="border: 1px dashed #b5b5b5;">
+            <RadarChart @ref="perSideChart" />
+        </div>
+    </div>
+</div>
+
+@code {
+    private RadarChart noPaddingChart = default!;
+    private RadarChart allSidesChart = default!;
+    private RadarChart perSideChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await noPaddingChart.InitializeAsync(GetChartData(), new RadarChartOptions());
+
+            var allSidesOptions = new RadarChartOptions();
+            allSidesOptions.Layout.Padding = 20;
+            await allSidesChart.InitializeAsync(GetChartData(), allSidesOptions);
+
+            var perSideOptions = new RadarChartOptions();
+            perSideOptions.Layout.PaddingSides = new() { Left = 60, Top = 10 };
+            await perSideChart.InitializeAsync(GetChartData(), perSideOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() =>
+        new()
+        {
+            Labels = ["Speed", "Power", "Defense", "Stamina", "Agility", "Skill"],
+            Datasets =
+            [
+                CreateDataset("Team A", [65, 59, 90, 81, 56, 55], 0),
+                CreateDataset("Team B", [28, 48, 40, 19, 96, 27], 1)
+            ]
+        };
+
+    private static RadarChartDataset CreateDataset(string label, List<double?> data, int colorIndex)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new RadarChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.2),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2,
+            Fill = true
+        };
+    }
+
+    #endregion Data Preparation
+}

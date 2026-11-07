@@ -1,0 +1,67 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>StartAngle = 0</code> (Chart.js default)</p>
+        <RadarChart @ref="zeroDegreesChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>StartAngle = 45</code></p>
+        <RadarChart @ref="fortyFiveDegreesChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>StartAngle = 90</code></p>
+        <RadarChart @ref="ninetyDegreesChart" />
+    </div>
+</div>
+
+@code {
+    private RadarChart zeroDegreesChart = default!;
+    private RadarChart fortyFiveDegreesChart = default!;
+    private RadarChart ninetyDegreesChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await zeroDegreesChart.InitializeAsync(GetChartData(), GetOptions(0));
+            await fortyFiveDegreesChart.InitializeAsync(GetChartData(), GetOptions(45));
+            await ninetyDegreesChart.InitializeAsync(GetChartData(), GetOptions(90));
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static RadarChartOptions GetOptions(double startAngle) =>
+        new()
+        {
+            Scales = new RadialScales { R = new ChartRadialAxes { StartAngle = startAngle } }
+        };
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() =>
+        new()
+        {
+            Labels = ["Speed", "Power", "Defense", "Stamina", "Agility", "Skill"],
+            Datasets =
+            [
+                CreateDataset("Team A", [65, 59, 90, 81, 56, 55], 0),
+                CreateDataset("Team B", [28, 48, 40, 19, 96, 27], 1)
+            ]
+        };
+
+    private static RadarChartDataset CreateDataset(string label, List<double?> data, int colorIndex)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new RadarChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.2),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2,
+            Fill = true
+        };
+    }
+
+    #endregion Data Preparation
+}

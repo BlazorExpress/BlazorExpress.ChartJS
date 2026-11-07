@@ -1,0 +1,101 @@
+<div class="columns is-multiline">
+    <div class="column is-half">
+        <p class="has-text-weight-semibold mb-2">Second y-axis: <code>AdditionalAxes["y1"]</code> on the right, <code>YAxisID = "y1"</code></p>
+        <BarChart @ref="verticalChart" />
+    </div>
+    <div class="column is-half">
+        <p class="has-text-weight-semibold mb-2">Horizontal bars: <code>AdditionalAxes["x1"]</code> on top, <code>XAxisID = "x1"</code></p>
+        <BarChart @ref="horizontalChart" />
+    </div>
+</div>
+
+@code {
+    private BarChart verticalChart = default!;
+    private BarChart horizontalChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await verticalChart.InitializeAsync(GetVerticalChartData(), GetVerticalChartOptions());
+            await horizontalChart.InitializeAsync(GetHorizontalChartData(), GetHorizontalChartOptions());
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static BarChartOptions GetVerticalChartOptions()
+    {
+        var options = new BarChartOptions { Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false } };
+
+        options.Scales.Y!.Position = "left";
+        options.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Revenue ($k)" };
+        options.Scales.AdditionalAxes = new()
+        {
+            ["y1"] = new ChartAxes
+            {
+                Type = ChartAxesType.Linear,
+                Position = "right",
+                Grid = new ChartAxesGrid { DrawOnChartArea = false }, // keep only the grid lines of the left axis
+                Title = new ChartAxesTitle { Display = true, Text = "Orders" }
+            }
+        };
+
+        return options;
+    }
+
+    private static BarChartOptions GetHorizontalChartOptions()
+    {
+        var options = new BarChartOptions { IndexAxis = "y", Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false } };
+
+        // in a horizontal bar chart the values are on the x-axis, so the second value axis is an x-axis
+        options.Scales.AdditionalAxes = new()
+        {
+            ["x1"] = new ChartAxes
+            {
+                Type = ChartAxesType.Linear,
+                Position = "top",
+                Grid = new ChartAxesGrid { DrawOnChartArea = false }
+            }
+        };
+
+        return options;
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetVerticalChartData()
+    {
+        var revenue = CreateDataset("Revenue ($k, y)", 0, [120, 150, 135, 180, 210, 190]);
+
+        var orders = CreateDataset("Orders (y1)", 1, [12, 18, 14, 25, 31, 27]);
+        orders.YAxisID = "y1";
+
+        return new ChartData { Labels = ["January", "February", "March", "April", "May", "June"], Datasets = [revenue, orders] };
+    }
+
+    private static ChartData GetHorizontalChartData()
+    {
+        var visitors = CreateDataset("Visitors (x)", 2, [5400, 4200, 3100, 2600]);
+
+        var conversion = CreateDataset("Conversion % (x1)", 3, [3.2, 4.1, 2.5, 5.0]);
+        conversion.XAxisID = "x1";
+
+        return new ChartData { Labels = ["Search", "Social", "Email", "Direct"], Datasets = [visitors, conversion] };
+    }
+
+    private static BarChartDataset CreateDataset(string label, int colorIndex, List<double?> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new BarChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = [c.ToRgbaString(0.5)],
+            BorderColor = [c.ToRgbString()],
+            BorderWidth = [2]
+        };
+    }
+
+    #endregion Data Preparation
+}

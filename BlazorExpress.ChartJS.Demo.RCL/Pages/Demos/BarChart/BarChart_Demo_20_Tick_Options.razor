@@ -1,0 +1,88 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">y <code>StepSize = 250</code>, <code>Precision = 0</code>, <code>CrossAlign = "far"</code>; x <code>Font</code> size 14</p>
+        <BarChart @ref="stepSizeChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">y <code>Count = 5</code>; x <code>AutoSkip = false</code>, <code>MinRotation = 45</code>, <code>MaxRotation = 90</code></p>
+        <BarChart @ref="countChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">y <code>MaxTicksLimit = 4</code>, <code>Mirror = true</code>; x <code>LabelOffset = 12</code></p>
+        <BarChart @ref="mirrorChart" />
+    </div>
+</div>
+
+@code {
+    private BarChart stepSizeChart = default!;
+    private BarChart countChart = default!;
+    private BarChart mirrorChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var stepSizeOptions = new BarChartOptions();
+            stepSizeOptions.Scales.Y!.Ticks = new ChartAxesTicks
+            {
+                StepSize = 250, // a tick every 250 units
+                Precision = 0, // no decimals in the tick labels
+                CrossAlign = "far" // labels aligned away from the axis line
+            };
+            stepSizeOptions.Scales.X!.Ticks = new ChartAxesTicks
+            {
+                Font = new ChartFont { Size = 14, Weight = "bold" },
+                Color = ColorUtility.CategoricalTwelveColors[1]
+            };
+
+            var countOptions = new BarChartOptions();
+            countOptions.Scales.Y!.Ticks = new ChartAxesTicks { Count = 5 }; // exactly five ticks
+            countOptions.Scales.X!.Ticks = new ChartAxesTicks
+            {
+                AutoSkip = false, // show all 12 labels, even when they are crowded
+                MinRotation = 45,
+                MaxRotation = 90
+            };
+
+            var mirrorOptions = new BarChartOptions();
+            mirrorOptions.Scales.Y!.Ticks = new ChartAxesTicks
+            {
+                MaxTicksLimit = 4, // at most four ticks
+                Mirror = true // labels drawn inside the chart area
+            };
+            mirrorOptions.Scales.X!.Ticks = new ChartAxesTicks { LabelOffset = 12 }; // labels moved 12 px along the axis
+
+            await stepSizeChart.InitializeAsync(GetChartData(6, [320, 1480, 760, 1120, 540, 1350]), stepSizeOptions);
+            await countChart.InitializeAsync(GetChartData(12, [42, 55, 61, 48, 73, 66, 80, 77, 59, 64, 70, 85]), countOptions);
+            await mirrorChart.InitializeAsync(GetChartData(6, [42, 55, 61, 48, 73, 66]), mirrorOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static readonly string[] months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    private static ChartData GetChartData(int count, List<double?> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[0].ToColor();
+
+        return new ChartData
+        {
+            Labels = months.Take(count).ToList(),
+            Datasets =
+            [
+                new BarChartDataset
+                {
+                    Label = "Sales",
+                    Data = data,
+                    BackgroundColor = [c.ToRgbaString(0.5)],
+                    BorderColor = [c.ToRgbString()],
+                    BorderWidth = [2]
+                }
+            ]
+        };
+    }
+
+    #endregion Data Preparation
+}

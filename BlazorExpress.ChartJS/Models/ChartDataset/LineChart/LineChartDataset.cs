@@ -12,7 +12,7 @@ namespace BlazorExpress.ChartJS;
 /// </summary>
 public class LineChartDataset : ChartDataset<double?>
 {
-    #region Constructors
+    #region Constructors and Finalizers
 
     public LineChartDataset()
     {
@@ -377,6 +377,21 @@ public class LineChartDataset : ChartDataset<double?>
     public string? IndexAxis { get; set; } = "x";
 
     /// <summary>
+    /// The longest gap to span, in units of the index axis: lines are drawn across gaps up to this length and break at longer ones.
+    /// When set, it is sent as <c>spanGaps</c> instead of <see cref="SpanGaps" />.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#line-styling" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("The longest gap to span, in units of the index axis: lines are drawn across gaps up to this length and break at longer ones.")]
+    [JsonIgnore]
+    [ParameterTypeName("double?")]
+    public double? MaxSpanGap { get; set; }
+
+    /// <summary>
     /// The fill color for points.
     /// <para>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
@@ -550,34 +565,25 @@ public class LineChartDataset : ChartDataset<double?>
     /// <summary>
     /// If <see langword="true" />, lines will be drawn between points with no or null data.
     /// If <see langword="false" />, points with null data will create a break in the line.
-    /// Can also be a number specifying the maximum gap length to span.
-    /// The unit of the value depends on the scale used.
+    /// Use <see cref="MaxSpanGap" /> to span only gaps up to a given length; when set, it is sent instead of this value.
     /// <para>
     /// Default value is <see langword="null"/>.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("If true, lines will be drawn between points with no or null data. If false, points with null data will create a break in the line. Can also be a number specifying the maximum gap length to span. The unit of the value depends on the scale used.")]
+    [Description("If true, lines will be drawn between points with no or null data. If false, points with null data will create a break in the line. Use MaxSpanGap to span only gaps up to a given length.")]
+    [JsonIgnore]
     [ParameterTypeName("bool?")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? SpanGaps { get; set; }
 
     /// <summary>
-    /// The ID of the group to which this dataset belongs. On a stacked scale,
-    /// datasets sharing the same stack are stacked together; datasets with
-    /// different stacks are drawn independently.
-    /// <para>
-    /// Default value is <see langword="null" />.
-    /// </para>
-    /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#general" />
+    /// Gets the value sent as <c>spanGaps</c>: <see cref="MaxSpanGap" /> when set, otherwise <see cref="SpanGaps" />.
     /// </summary>
-    [AddedVersion("1.2.3")]
-    [DefaultValue(null)]
-    [Description("The ID of the group to which this dataset belongs. Datasets sharing the same stack are stacked together; datasets with different stacks are drawn independently.")]
-    [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? Stack { get; set; }
+    [JsonInclude]
+    [JsonPropertyName("spanGaps")]
+    internal object? SpanGapsValue => MaxSpanGap is double maxSpanGap ? maxSpanGap : SpanGaps;
 
     /// <summary>
     /// If the stepped value is set to anything other than <see langword="false"/>, tension will be ignored.

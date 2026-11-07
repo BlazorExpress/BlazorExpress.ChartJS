@@ -1,0 +1,66 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="mb-2">Title and subtitle on top (<code>Position = "top"</code>)</p>
+        <PieChart @ref="pieChart1" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2">Title <code>Position = "left"</code>, subtitle <code>Position = "bottom"</code></p>
+        <PieChart @ref="pieChart2" />
+    </div>
+    <div class="column is-one-third">
+        <p class="mb-2"><code>Align = "start"</code>, extra <code>Padding</code>, <code>FullSize = false</code> beside a left legend</p>
+        <PieChart @ref="pieChart3" />
+    </div>
+</div>
+
+@code {
+    private PieChart pieChart1 = default!;
+    private PieChart pieChart2 = default!;
+    private PieChart pieChart3 = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var topOptions = new PieChartOptions();
+            topOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Browser share", Position = "top", Font = new ChartFont { Size = 16 } };
+            topOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October" };
+            await pieChart1.InitializeAsync(CreateChartData(), topOptions);
+
+            var sideOptions = new PieChartOptions();
+            sideOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Browser share", Position = "left" };
+            sideOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October", Position = "bottom" };
+            await pieChart2.InitializeAsync(CreateChartData(), sideOptions);
+
+            var startOptions = new PieChartOptions();
+            startOptions.Plugins.Legend.Position = "left";
+            startOptions.Plugins.Title = new ChartPluginsTitle
+            {
+                Display = true,
+                Text = "Browser share",
+                Align = "start",
+                Padding = new() { Top = 10, Bottom = 30 },
+                FullSize = false,
+            };
+            startOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October", Align = "start" };
+            await pieChart3.InitializeAsync(CreateChartData(), startOptions);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData CreateChartData() =>
+        new()
+        {
+            Labels = new List<string> { "Chrome", "Safari", "Firefox", "Edge", "Opera" },
+            Datasets = new List<IChartDataset>
+            {
+                new PieChartDataset
+                {
+                    Label = "Visitors",
+                    Data = new List<double?> { 45, 25, 15, 10, 5 },
+                    BackgroundColor = Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList(),
+                },
+            },
+        };
+}

@@ -1,0 +1,112 @@
+<div class="columns is-multiline">
+    <div class="column is-half">
+        <p class="has-text-weight-semibold mb-2"><code>FloatingData</code> mixing <code>(start, end)</code> ranges, a number (April) and <code>null</code> (June)</p>
+        <BarChart @ref="temperatureChart" />
+        <div class="mt-3">
+            <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="AddMonthAsync"> Add month </Button>
+        </div>
+    </div>
+    <div class="column is-half">
+        <p class="has-text-weight-semibold mb-2">Horizontal floating bars (<code>IndexAxis = "y"</code>) as a simple schedule</p>
+        <BarChart @ref="scheduleChart" />
+    </div>
+</div>
+
+@code {
+    private BarChart temperatureChart = default!;
+    private BarChart scheduleChart = default!;
+    private ChartData temperatureChartData = default!;
+    private BarChartOptions temperatureChartOptions = default!;
+
+    private const string temperatureDatasetLabel = "Temperature range (°C)";
+    private readonly string[] extraMonths = ["July", "August", "September", "October", "November", "December"];
+    private readonly (double Start, double End)[] extraRanges = [(14, 29), (13, 28), (9, 23), (4, 16), (-1, 10), (-4, 7)];
+    private int nextMonthIndex;
+
+    protected override void OnInitialized()
+    {
+        var c = ColorUtility.CategoricalTwelveColors[0].ToColor();
+
+        temperatureChartData = new ChartData
+        {
+            Labels = ["January", "February", "March", "April", "May", "June"],
+            Datasets =
+            [
+                new BarChartDataset
+                {
+                    Label = temperatureDatasetLabel,
+                    FloatingData = [(-6, 4), (-4, 7), (0, 12), 15, (8, 22), null],
+                    BackgroundColor = [c.ToRgbaString(0.5)],
+                    BorderColor = [c.ToRgbString()],
+                    BorderWidth = [2],
+                    BorderSkipped = false // draw the border on all four sides of a floating bar
+                }
+            ]
+        };
+
+        temperatureChartOptions = new BarChartOptions();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var scheduleOptions = new BarChartOptions { IndexAxis = "y" };
+            scheduleOptions.Scales.X!.BeginAtZero = false;
+            scheduleOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Week" };
+
+            await temperatureChart.InitializeAsync(temperatureChartData, temperatureChartOptions);
+            await scheduleChart.InitializeAsync(GetScheduleChartData(), scheduleOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task AddMonthAsync()
+    {
+        if (nextMonthIndex >= extraMonths.Length)
+            return;
+
+        var (start, end) = extraRanges[nextMonthIndex];
+
+        // a (start, end) range is added to the dataset with this label as a floating bar
+        temperatureChartData = await temperatureChart.AddDataAsync(temperatureChartData, extraMonths[nextMonthIndex], new BarChartDatasetData(temperatureDatasetLabel, start, end));
+
+        nextMonthIndex++;
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetScheduleChartData()
+    {
+        var planned = ColorUtility.CategoricalTwelveColors[1].ToColor();
+        var actual = ColorUtility.CategoricalTwelveColors[2].ToColor();
+
+        return new ChartData
+        {
+            Labels = ["Design", "Build", "Test", "Release"],
+            Datasets =
+            [
+                new BarChartDataset
+                {
+                    Label = "Planned",
+                    FloatingData = [(1, 3), (3, 7), (6, 9), (9, 10)],
+                    BackgroundColor = [planned.ToRgbaString(0.5)],
+                    BorderColor = [planned.ToRgbString()],
+                    BorderWidth = [2],
+                    BorderSkipped = false
+                },
+                new BarChartDataset
+                {
+                    Label = "Actual",
+                    FloatingData = [(1, 4), (4, 8), (7, 10), null], // not released yet
+                    BackgroundColor = [actual.ToRgbaString(0.5)],
+                    BorderColor = [actual.ToRgbString()],
+                    BorderWidth = [2],
+                    BorderSkipped = false
+                }
+            ]
+        };
+    }
+
+    #endregion Data Preparation
+}

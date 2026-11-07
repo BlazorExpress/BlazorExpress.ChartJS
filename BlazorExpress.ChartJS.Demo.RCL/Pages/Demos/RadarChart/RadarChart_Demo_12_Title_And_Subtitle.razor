@@ -1,0 +1,93 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2">Title and subtitle on top</p>
+        <RadarChart @ref="topChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2">Title <code>Position = "left"</code>, subtitle <code>Position = "bottom"</code></p>
+        <RadarChart @ref="leftBottomChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Align = "start"</code>, extra <code>Padding</code>, <code>FullSize = false</code></p>
+        <RadarChart @ref="startAlignedChart" />
+    </div>
+</div>
+
+@code {
+    private RadarChart topChart = default!;
+    private RadarChart leftBottomChart = default!;
+    private RadarChart startAlignedChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var topOptions = new RadarChartOptions();
+            topOptions.Plugins.Title = new ChartPluginsTitle
+            {
+                Display = true,
+                Text = "Team skills",
+                Position = "top",
+                Font = new ChartFont { Size = 16 }
+            };
+            topOptions.Plugins.Subtitle = new() { Display = true, Text = "Season 2026" };
+            await topChart.InitializeAsync(GetChartData(), topOptions);
+
+            var leftBottomOptions = new RadarChartOptions();
+            leftBottomOptions.Plugins.Title = new ChartPluginsTitle
+            {
+                Display = true,
+                Text = "Team skills",
+                Position = "left",
+                Font = new ChartFont { Size = 16 }
+            };
+            leftBottomOptions.Plugins.Subtitle = new() { Display = true, Text = "Season 2026", Position = "bottom" };
+            await leftBottomChart.InitializeAsync(GetChartData(), leftBottomOptions);
+
+            var startAlignedOptions = new RadarChartOptions();
+            startAlignedOptions.Plugins.Title = new ChartPluginsTitle
+            {
+                Display = true,
+                Text = "Team skills",
+                Align = "start",
+                Padding = new ChartPadding { Top = 10, Bottom = 20 },
+                FullSize = false,
+                Color = "#4046ca",
+                Font = new ChartFont { Size = 16 }
+            };
+            startAlignedOptions.Plugins.Subtitle = new() { Display = true, Text = "Season 2026", Align = "start", Padding = new ChartPadding { Bottom = 10 } };
+            await startAlignedChart.InitializeAsync(GetChartData(), startAlignedOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() =>
+        new()
+        {
+            Labels = ["Speed", "Power", "Defense", "Stamina", "Agility", "Skill"],
+            Datasets =
+            [
+                CreateDataset("Team A", [65, 59, 90, 81, 56, 55], 0),
+                CreateDataset("Team B", [28, 48, 40, 19, 96, 27], 1)
+            ]
+        };
+
+    private static RadarChartDataset CreateDataset(string label, List<double?> data, int colorIndex)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new RadarChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.2),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2,
+            Fill = true
+        };
+    }
+
+    #endregion Data Preparation
+}

@@ -35,31 +35,35 @@ if (!window.blazorexpress.chartjs) {
         options.plugins.legend.onClick = handleLegendClick;
     };
 
+    // Options come from `options.plugins.tooltipLine` (C# `LineChartPlugins.TooltipLine`). Chart.js falls back to these
+    // defaults for an inline plugin, so an unset option draws the original grey 2 px dashed line.
     const createTooltipLinePlugin = () => ({
         id: 'tooltipLine',
-        beforeDraw: chart => {
-            if (chart.tooltip?._active && chart.tooltip?._active.length) {
-                const ctx = chart.ctx;
-                ctx.save();
-                const activePoint = chart.tooltip._active[0];
+        defaults: { color: 'grey', dash: [5, 5], display: true, width: 2 },
+        beforeDraw: (chart, args, options) => {
+            if (!options.display || !chart.tooltip?._active?.length)
+                return;
 
-                ctx.beginPath();
-                ctx.setLineDash([5, 5]);
-                ctx.moveTo(activePoint.element.x, chart.chartArea.top);
-                ctx.lineTo(activePoint.element.x, activePoint.element.y);
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = 'grey';
-                ctx.stroke();
+            const ctx = chart.ctx;
+            const activePoint = chart.tooltip._active[0];
 
-                ctx.beginPath();
-                ctx.moveTo(activePoint.element.x, activePoint.element.y);
-                ctx.lineTo(activePoint.element.x, chart.chartArea.bottom);
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = 'grey';
-                ctx.stroke();
+            ctx.save();
+            ctx.setLineDash(Array.isArray(options.dash) ? options.dash : []);
+            ctx.lineWidth = options.width;
+            ctx.strokeStyle = options.color;
 
-                ctx.restore();
-            }
+            // Two strokes, so the dash pattern restarts at the hovered point, as it always has.
+            ctx.beginPath();
+            ctx.moveTo(activePoint.element.x, chart.chartArea.top);
+            ctx.lineTo(activePoint.element.x, activePoint.element.y);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(activePoint.element.x, activePoint.element.y);
+            ctx.lineTo(activePoint.element.x, chart.chartArea.bottom);
+            ctx.stroke();
+
+            ctx.restore();
         },
     });
 
@@ -382,6 +386,12 @@ if (!window.blazorexpress.chartjs) {
         recordPointVisibility(chart, datasetIndex, dataIndex, !visible);
     };
 
+    // Chart.js resolves options.events to an array; a library event fires only for an event the chart listens to.
+    const isChartEvent = (chart, eventName) => {
+        const events = chart.options?.events;
+        return !Array.isArray(events) || events.includes(eventName);
+    };
+
     // Shared implementation for every chart type. A per-type module passes hooks for the behavior that differs.
     const core = {
         addClickHandler: (chart, dotNetObjectReference) => {
@@ -389,6 +399,8 @@ if (!window.blazorexpress.chartjs) {
 
             chart.blazorExpressClickHandler = true;
             chart.canvas.addEventListener('click', (event) => {
+                if (!isChartEvent(chart, 'click')) return;
+
                 const activeElements = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
                 if (!activeElements || activeElements.length === 0) return;
 
@@ -421,13 +433,13 @@ if (!window.blazorexpress.chartjs) {
 
             // No hit-test unless an OnHover callback is bound.
             chart.canvas.addEventListener('mousemove', (event) => {
-                if (!isListening()) return;
+                if (!isListening() || !isChartEvent(chart, 'mousemove')) return;
 
                 const activeElements = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
                 notify(activeElements?.[0]);
             });
             chart.canvas.addEventListener('mouseout', () => {
-                if (isListening()) notify(undefined);
+                if (isListening() && isChartEvent(chart, 'mouseout')) notify(undefined);
             });
         },
         addDatasetData: (elementId, dataLabel, data) => {

@@ -1,0 +1,74 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">x on top, y on the right: <code>Position = "top"</code>, <code>Position = "right"</code></p>
+        <BubbleChart @ref="positionChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Reversed y-axis: <code>Reverse = true</code></p>
+        <BubbleChart @ref="reverseChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Hidden x-axis: <code>Display = false</code></p>
+        <BubbleChart @ref="hiddenAxisChart" />
+    </div>
+</div>
+
+@code {
+    private BubbleChart positionChart = default!;
+    private BubbleChart reverseChart = default!;
+    private BubbleChart hiddenAxisChart = default!;
+    private BubbleChartOptions positionOptions = default!;
+    private BubbleChartOptions reverseOptions = default!;
+    private BubbleChartOptions hiddenAxisOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        positionOptions = new BubbleChartOptions();
+        positionOptions.Scales.X!.Position = "top";
+        positionOptions.Scales.Y!.Position = "right";
+
+        reverseOptions = new BubbleChartOptions();
+        reverseOptions.Scales.Y!.Reverse = true; // largest value at the bottom
+
+        hiddenAxisOptions = new BubbleChartOptions();
+        hiddenAxisOptions.Scales.X!.Display = false; // no ticks, title or grid for x
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await positionChart.InitializeAsync(GetChartData(), positionOptions);
+            await reverseChart.InitializeAsync(GetChartData(), reverseOptions);
+            await hiddenAxisChart.InitializeAsync(GetChartData(), hiddenAxisOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Datasets =
+        [
+            CreateDataset("Group A", 0, [new(5, 12, 8), new(15, 28, 12), new(25, 20, 6), new(35, 42, 15), new(45, 38, 10), new(55, 60, 7), new(65, 52, 14), new(75, 70, 9)]),
+            CreateDataset("Group B", 1, [new(10, 40, 14), new(20, 35, 10), new(30, 55, 16), new(40, 48, 7), new(50, 30, 12), new(60, 45, 15), new(70, 25, 8), new(80, 35, 13)])
+        ]
+    };
+
+    private static BubbleChartDataset CreateDataset(string label, int colorIndex, List<BubbleChartDataPoint> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new BubbleChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = [c.ToRgbaString(0.5)],
+            BorderColor = [c.ToRgbString()],
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

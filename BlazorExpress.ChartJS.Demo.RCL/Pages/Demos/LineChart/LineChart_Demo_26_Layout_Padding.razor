@@ -1,0 +1,56 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">No padding (the default)</p>
+        <LineChart @ref="noPaddingChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Layout.Padding = 20</code> (all sides)</p>
+        <LineChart @ref="paddingChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2"><code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code></p>
+        <LineChart @ref="paddingSidesChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
+    </div>
+</div>
+
+@code {
+    private LineChart noPaddingChart = default!;
+    private LineChart paddingChart = default!;
+    private LineChart paddingSidesChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await noPaddingChart.InitializeAsync(GetChartData(), new LineChartOptions());
+            await paddingChart.InitializeAsync(GetChartData(), new LineChartOptions { Layout = new ChartLayout { Padding = 20 } });
+            await paddingSidesChart.InitializeAsync(GetChartData(), new LineChartOptions { Layout = new ChartLayout { PaddingSides = new() { Left = 60, Top = 10 } } });
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData()
+    {
+        var c = ColorUtility.CategoricalTwelveColors[0].ToColor();
+
+        return new ChartData
+        {
+            Labels = ["January", "February", "March", "April", "May", "June"],
+            Datasets =
+            [
+                new LineChartDataset
+                {
+                    Label = "Visitors",
+                    Data = [35, 48, 42, 61, 55, 70],
+                    BackgroundColor = c.ToRgbaString(0.5),
+                    BorderColor = c.ToRgbString(),
+                    BorderWidth = 2
+                }
+            ]
+        };
+    }
+
+    #endregion Data Preparation
+}

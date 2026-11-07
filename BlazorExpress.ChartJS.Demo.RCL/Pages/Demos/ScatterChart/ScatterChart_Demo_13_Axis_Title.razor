@@ -1,0 +1,113 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Default title: <code>Display = true</code>, <code>Text</code></p>
+        <ScatterChart @ref="defaultTitleChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Styled title: <code>Color</code>, <code>Font</code>, <code>Padding = 10</code></p>
+        <ScatterChart @ref="styledTitleChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="has-text-weight-semibold mb-2">Aligned title: <code>TitleAlignment.Start</code> on x, <code>TitleAlignment.End</code> on y</p>
+        <ScatterChart @ref="alignedTitleChart" />
+    </div>
+</div>
+
+@code {
+    private ScatterChart defaultTitleChart = default!;
+    private ScatterChart styledTitleChart = default!;
+    private ScatterChart alignedTitleChart = default!;
+    private ScatterChartOptions defaultTitleOptions = default!;
+    private ScatterChartOptions styledTitleOptions = default!;
+    private ScatterChartOptions alignedTitleOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        // Color defaults to "black" and Font to bold 12px
+        defaultTitleOptions = CreateOptions();
+        defaultTitleOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Height (cm)" };
+        defaultTitleOptions.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Weight (kg)" };
+
+        var titleColor = ColorUtility.CategoricalTwelveColors[1];
+
+        styledTitleOptions = CreateOptions();
+        styledTitleOptions.Scales.X!.Title = new ChartAxesTitle
+        {
+            Display = true,
+            Text = "Height (cm)",
+            Color = titleColor,
+            Font = new ChartFont { Size = 16, Style = "italic" },
+            Padding = 10
+        };
+        styledTitleOptions.Scales.Y!.Title = new ChartAxesTitle
+        {
+            Display = true,
+            Text = "Weight (kg)",
+            Color = titleColor,
+            Font = new ChartFont { Size = 16, Style = "italic" },
+            Padding = 10
+        };
+
+        alignedTitleOptions = CreateOptions();
+        alignedTitleOptions.Scales.X!.Title = new ChartAxesTitle
+        {
+            Display = true,
+            Text = "Height (cm)",
+            TitleAlignment = TitleAlignment.Start,
+            Padding = new() { Top = 8 }
+        };
+        alignedTitleOptions.Scales.Y!.Title = new ChartAxesTitle
+        {
+            Display = true,
+            Text = "Weight (kg)",
+            TitleAlignment = TitleAlignment.End
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await defaultTitleChart.InitializeAsync(GetChartData(), defaultTitleOptions);
+            await styledTitleChart.InitializeAsync(GetChartData(), styledTitleOptions);
+            await alignedTitleChart.InitializeAsync(GetChartData(), alignedTitleOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    // heights and weights are far from zero, so both axes start at the data minimum
+    private static ScatterChartOptions CreateOptions()
+    {
+        var options = new ScatterChartOptions();
+        options.Scales.X!.BeginAtZero = false;
+        options.Scales.Y!.BeginAtZero = false;
+        return options;
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData() => new()
+    {
+        Datasets =
+        [
+            CreateDataset("Group A", 0, [new(150, 52), new(158, 58), new(163, 61), new(168, 66), new(172, 70), new(178, 74), new(183, 80), new(188, 85)]),
+            CreateDataset("Group B", 1, [new(152, 60), new(157, 55), new(165, 70), new(170, 62), new(175, 82), new(180, 68), new(185, 90), new(190, 78)])
+        ]
+    };
+
+    private static ScatterChartDataset CreateDataset(string label, int colorIndex, List<ScatterChartDataPoint> data)
+    {
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new ScatterChartDataset
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = c.ToRgbaString(0.5),
+            BorderColor = c.ToRgbString(),
+            BorderWidth = 2
+        };
+    }
+
+    #endregion Data Preparation
+}

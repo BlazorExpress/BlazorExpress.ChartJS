@@ -1,0 +1,75 @@
+<div class="columns is-multiline">
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Colors = new() { Enabled = true }</code>, no dataset colors (stays grey)</p>
+        <RadarChart @ref="enabledChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>Enabled = true</code>, <code>ForceOverride = true</code>, no dataset colors</p>
+        <RadarChart @ref="paletteChart" />
+    </div>
+    <div class="column is-one-third">
+        <p class="is-size-7 has-text-weight-semibold mb-2"><code>ForceOverride = true</code> replacing dataset colors</p>
+        <RadarChart @ref="overrideChart" />
+    </div>
+</div>
+
+@code {
+    private RadarChart enabledChart = default!;
+    private RadarChart paletteChart = default!;
+    private RadarChart overrideChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Radar datasets always send a default color, so the palette is not applied without ForceOverride.
+            var enabledOptions = new RadarChartOptions();
+            enabledOptions.Plugins.Colors = new() { Enabled = true };
+            await enabledChart.InitializeAsync(GetChartData(withColors: false), enabledOptions);
+
+            var paletteOptions = new RadarChartOptions();
+            paletteOptions.Plugins.Colors = new() { Enabled = true, ForceOverride = true };
+            await paletteChart.InitializeAsync(GetChartData(withColors: false), paletteOptions);
+
+            var overrideOptions = new RadarChartOptions();
+            overrideOptions.Plugins.Colors = new() { Enabled = true, ForceOverride = true };
+            await overrideChart.InitializeAsync(GetChartData(withColors: true), overrideOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region Data Preparation
+
+    private static ChartData GetChartData(bool withColors) =>
+        new()
+        {
+            Labels = ["Speed", "Power", "Defense", "Stamina", "Agility", "Skill"],
+            Datasets =
+            [
+                CreateDataset("Team A", [65, 59, 90, 81, 56, 55], withColors ? 4 : null),
+                CreateDataset("Team B", [28, 48, 40, 19, 96, 27], withColors ? 9 : null)
+            ]
+        };
+
+    private static RadarChartDataset CreateDataset(string label, List<double?> data, int? colorIndex)
+    {
+        var dataset = new RadarChartDataset
+        {
+            Label = label,
+            Data = data,
+            BorderWidth = 2,
+            Fill = true
+        };
+
+        if (colorIndex is int index)
+        {
+            var c = ColorUtility.CategoricalTwelveColors[index].ToColor();
+            dataset.BackgroundColor = c.ToRgbaString(0.2);
+            dataset.BorderColor = c.ToRgbString();
+        }
+
+        return dataset;
+    }
+
+    #endregion Data Preparation
+}
