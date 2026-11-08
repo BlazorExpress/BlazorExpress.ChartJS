@@ -392,6 +392,395 @@ if (!window.blazorexpress.chartjs) {
         return !Array.isArray(events) || events.includes(eventName);
     };
 
+    // ---------------------------------------------------------------------------------------------------------------
+    // Built-in Chart.js date adapter for time and timeseries axes (rule "built-in date adapter and .NET date formats").
+    // Dates arrive as the ISO 8601 strings C# `ChartTimeValue` writes (rule "date values and time zones"): without an
+    // offset they are wall-clock values in the browser's zone, with `Z` or an offset they are instants. Formats are .NET
+    // date format strings; names come from `Intl` for the chart's locale. Nothing here evaluates or injects markup.
+    // ---------------------------------------------------------------------------------------------------------------
+
+    const dateUnitMs = { millisecond: 1, second: 1000, minute: 60000, hour: 3600000 };
+
+    const defaultDateFormats = {
+        datetime: 'G',
+        millisecond: 'HH:mm:ss.fff',
+        second: 'T',
+        minute: 't',
+        hour: 't',
+        day: 'd MMM',
+        week: 'd MMM',
+        month: 'MMM yyyy',
+        quarter: 'MMM yyyy',
+        year: 'yyyy',
+    };
+
+    const isoDatePattern = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2})(?::(\d{2})(?:\.(\d{1,3}))?)?)?(Z|[+-]\d{2}:\d{2})?$/;
+
+    const dateFormatters = new Map();
+    const warnedLocales = new Set();
+
+    const getDateFormatter = (locale, options) => {
+        const key = `${locale ?? ''}|${JSON.stringify(options)}`;
+        let formatter = dateFormatters.get(key);
+
+        if (!formatter) {
+            try {
+                formatter = new Intl.DateTimeFormat(locale, options);
+            } catch {
+                if (!warnedLocales.has(locale)) {
+                    warnedLocales.add(locale);
+                    console.warn(`BlazorExpress.ChartJS: the locale '${locale}' is not valid; the browser's locale is used for dates.`);
+                }
+                formatter = new Intl.DateTimeFormat(undefined, options);
+            }
+            dateFormatters.set(key, formatter);
+        }
+
+        return formatter;
+    };
+
+    const getDatePart = (time, locale, options, type) =>
+        getDateFormatter(locale, options).formatToParts(time).find(part => part.type === type)?.value ?? '';
+
+    const padNumber = (value, length) => String(Math.abs(value)).padStart(length, '0');
+
+    const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
+
+    const parseDateValue = (value) => {
+        if (value === null || value === undefined)
+            return null;
+
+        if (typeof value === 'number')
+            return Number.isFinite(value) ? value : null;
+
+        if (value instanceof Date) {
+            const time = value.getTime();
+            return Number.isNaN(time) ? null : time;
+        }
+
+        if (typeof value !== 'string')
+            return null;
+
+        const match = isoDatePattern.exec(value.trim());
+        if (!match)
+            return null;
+
+        const [, y, mo, d, h = '0', mi = '0', s = '0', ms = '0', zone] = match;
+        const year = +y, month = +mo - 1, day = +d;
+
+        if (month > 11 || day < 1 || day > daysInMonth(year, month) || +h > 23 || +mi > 59 || +s > 59)
+            return null;
+
+        const milliseconds = +ms.padEnd(3, '0');
+
+        if (!zone) {
+            // Built from local parts, never Date.parse, which reads a date-only string as UTC.
+            const date = new Date(2000, 0, 1);
+            date.setFullYear(year, month, day);
+            date.setHours(+h, +mi, +s, milliseconds);
+            return date.getTime();
+        }
+
+        let time = Date.UTC(2000, 0, 1);
+        const date = new Date(time);
+        date.setUTCFullYear(year, month, day);
+        date.setUTCHours(+h, +mi, +s, milliseconds);
+        time = date.getTime();
+
+        if (zone !== 'Z') {
+            const sign = zone[0] === '-' ? -1 : 1;
+            const [offsetHours, offsetMinutes] = zone.slice(1).split(':').map(Number);
+            time -= sign * (offsetHours * 60 + offsetMinutes) * 60000;
+        }
+
+        return time;
+    };
+
+    const addMonths = (time, amount) => {
+        const date = new Date(time);
+        const day = date.getDate();
+        date.setDate(1);
+        date.setMonth(date.getMonth() + amount);
+        date.setDate(Math.min(day, daysInMonth(date.getFullYear(), date.getMonth())));
+        return date.getTime();
+    };
+
+    const addDateUnits = (time, amount, unit) => {
+        if (unit in dateUnitMs)
+            return time + amount * dateUnitMs[unit];
+
+        // Calendar units keep the wall-clock time, so a 23- or 25-hour DST day still counts as one day.
+        const date = new Date(time);
+        switch (unit) {
+            case 'day':
+                date.setDate(date.getDate() + amount);
+                return date.getTime();
+            case 'week':
+            case 'isoWeek':
+                date.setDate(date.getDate() + amount * 7);
+                return date.getTime();
+            case 'month':
+                return addMonths(time, amount);
+            case 'quarter':
+                return addMonths(time, amount * 3);
+            case 'year':
+                return addMonths(time, amount * 12);
+            default:
+                return time;
+        }
+    };
+
+    const timeOfDay = (date) => ((date.getHours() * 60 + date.getMinutes()) * 60 + date.getSeconds()) * 1000 + date.getMilliseconds();
+
+    // Whole units between two times, truncated toward zero.
+    const diffDateUnits = (max, min, unit) => {
+        if (unit in dateUnitMs)
+            return Math.trunc((max - min) / dateUnitMs[unit]);
+
+        const a = new Date(max), b = new Date(min);
+        const sign = max >= min ? 1 : -1;
+
+        if (unit === 'day' || unit === 'week' || unit === 'isoWeek') {
+            let days = Math.round((Date.UTC(a.getFullYear(), a.getMonth(), a.getDate()) - Date.UTC(b.getFullYear(), b.getMonth(), b.getDate())) / 86400000);
+            if (sign > 0 && days > 0 && timeOfDay(a) < timeOfDay(b))
+                days--;
+            else if (sign < 0 && days < 0 && timeOfDay(a) > timeOfDay(b))
+                days++;
+            return unit === 'day' ? days : Math.trunc(days / 7);
+        }
+
+        let months = (a.getFullYear() - b.getFullYear()) * 12 + a.getMonth() - b.getMonth();
+        const aRest = a.getDate() * 86400000 + timeOfDay(a), bRest = b.getDate() * 86400000 + timeOfDay(b);
+        if (sign > 0 && months > 0 && aRest < bRest)
+            months--;
+        else if (sign < 0 && months < 0 && aRest > bRest)
+            months++;
+
+        switch (unit) {
+            case 'month':
+                return months;
+            case 'quarter':
+                return Math.trunc(months / 3);
+            case 'year':
+                return Math.trunc(months / 12);
+            default:
+                return 0;
+        }
+    };
+
+    const startOfDateUnit = (time, unit, weekday) => {
+        const date = new Date(time);
+
+        switch (unit) {
+            case 'millisecond':
+                return time;
+            case 'second':
+                date.setMilliseconds(0);
+                return date.getTime();
+            case 'minute':
+                date.setSeconds(0, 0);
+                return date.getTime();
+            case 'hour':
+                date.setMinutes(0, 0, 0);
+                return date.getTime();
+            case 'day':
+                date.setHours(0, 0, 0, 0);
+                return date.getTime();
+            case 'week':
+            case 'isoWeek': {
+                // Chart.js passes isoWeekday: true means Monday, a number is the first day (0 is Sunday).
+                const firstDay = unit === 'week' ? 0 : (weekday === true ? 1 : (Number(weekday) || 0) % 7);
+                date.setHours(0, 0, 0, 0);
+                date.setDate(date.getDate() - ((date.getDay() - firstDay + 7) % 7));
+                return date.getTime();
+            }
+            case 'month':
+                date.setHours(0, 0, 0, 0);
+                date.setDate(1);
+                return date.getTime();
+            case 'quarter':
+                date.setHours(0, 0, 0, 0);
+                date.setMonth(date.getMonth() - (date.getMonth() % 3), 1);
+                return date.getTime();
+            case 'year':
+                date.setHours(0, 0, 0, 0);
+                date.setMonth(0, 1);
+                return date.getTime();
+            default:
+                return time;
+        }
+    };
+
+    const endOfDateUnit = (time, unit) => {
+        const calendarUnit = unit === 'isoWeek' ? 'week' : unit;
+        return addDateUnits(startOfDateUnit(time, unit, 1), 1, calendarUnit) - 1;
+    };
+
+    // .NET standard date formats, mapped to the locale's own Intl patterns.
+    const standardDateFormats = {
+        d: { year: 'numeric', month: 'numeric', day: 'numeric' },
+        D: { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' },
+        f: { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' },
+        F: { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', second: '2-digit' },
+        g: { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit' },
+        G: { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit', second: '2-digit' },
+        M: { month: 'long', day: 'numeric' },
+        m: { month: 'long', day: 'numeric' },
+        t: { hour: 'numeric', minute: '2-digit' },
+        T: { hour: 'numeric', minute: '2-digit', second: '2-digit' },
+        Y: { year: 'numeric', month: 'long' },
+        y: { year: 'numeric', month: 'long' },
+    };
+
+    const sortableDateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss";
+
+    const customDateSpecifiers = 'dfFghHKmMstyz';
+
+    const formatOffset = (time, length) => {
+        const offset = -new Date(time).getTimezoneOffset();
+        const sign = offset < 0 ? '-' : '+';
+        const hours = Math.trunc(Math.abs(offset) / 60), minutes = Math.abs(offset) % 60;
+        if (length === 1)
+            return `${sign}${hours}`;
+        if (length === 2)
+            return `${sign}${padNumber(hours, 2)}`;
+        return `${sign}${padNumber(hours, 2)}:${padNumber(minutes, 2)}`;
+    };
+
+    const formatDateToken = (time, date, letter, length, locale) => {
+        switch (letter) {
+            case 'd':
+                if (length === 1) return String(date.getDate());
+                if (length === 2) return padNumber(date.getDate(), 2);
+                return getDatePart(time, locale, { weekday: length === 3 ? 'short' : 'long' }, 'weekday');
+            case 'f':
+            case 'F': {
+                const digits = (padNumber(date.getMilliseconds(), 3) + '0000').slice(0, Math.min(length, 7));
+                return letter === 'f' ? digits : digits.replace(/0+$/, '');
+            }
+            case 'g':
+                return getDatePart(time, locale, { era: 'short' }, 'era');
+            case 'h':
+                return length === 1 ? String(date.getHours() % 12 || 12) : padNumber(date.getHours() % 12 || 12, 2);
+            case 'H':
+                return length === 1 ? String(date.getHours()) : padNumber(date.getHours(), 2);
+            case 'K':
+                return formatOffset(time, 3);
+            case 'm':
+                return length === 1 ? String(date.getMinutes()) : padNumber(date.getMinutes(), 2);
+            case 'M':
+                if (length === 1) return String(date.getMonth() + 1);
+                if (length === 2) return padNumber(date.getMonth() + 1, 2);
+                return getDatePart(time, locale, { month: length === 3 ? 'short' : 'long' }, 'month');
+            case 's':
+                return length === 1 ? String(date.getSeconds()) : padNumber(date.getSeconds(), 2);
+            case 't': {
+                const designator = getDatePart(time, locale, { hour: 'numeric', hour12: true }, 'dayPeriod');
+                return length === 1 ? designator.slice(0, 1) : designator;
+            }
+            case 'y': {
+                const year = date.getFullYear();
+                if (length === 1) return String(year % 100);
+                if (length === 2) return padNumber(year % 100, 2);
+                return (year < 0 ? '-' : '') + padNumber(year, length);
+            }
+            case 'z':
+                return formatOffset(time, Math.min(length, 3));
+            default:
+                return letter.repeat(length);
+        }
+    };
+
+    // Formats `time` with a .NET date format string: a single letter is a standard format, anything else a custom one.
+    const formatDateValue = (time, format, locale) => {
+        if (typeof format !== 'string' || format.trim() === '')
+            format = defaultDateFormats.datetime;
+
+        if (format.length === 1) {
+            if (format === 's')
+                format = sortableDateFormat;
+            else if (standardDateFormats[format])
+                return getDateFormatter(locale, standardDateFormats[format]).format(time);
+        }
+
+        const date = new Date(time);
+        let result = '';
+
+        for (let i = 0; i < format.length;) {
+            const char = format[i];
+
+            if (char === "'" || char === '"') {
+                const end = format.indexOf(char, i + 1);
+                result += end < 0 ? format.slice(i + 1) : format.slice(i + 1, end);
+                i = end < 0 ? format.length : end + 1;
+            } else if (char === '\\') {
+                result += format[i + 1] ?? '';
+                i += 2;
+            } else if (char === '%') {
+                i++;
+            } else if (customDateSpecifiers.includes(char)) {
+                let length = 1;
+                while (format[i + length] === char)
+                    length++;
+
+                const token = formatDateToken(time, date, char, length, locale);
+                // As in .NET, an all-zero F fraction is dropped together with the separator in front of it.
+                result = token === '' && char === 'F' && result.endsWith('.') ? result.slice(0, -1) : result + token;
+                i += length;
+            } else {
+                result += char;
+                i++;
+            }
+        }
+
+        return result;
+    };
+
+    const dateAdapter = {
+        formats: () => ({ ...defaultDateFormats }),
+        parse(value) {
+            return parseDateValue(value);
+        },
+        format(time, format) {
+            return formatDateValue(time, format, this.options?.locale);
+        },
+        add: (time, amount, unit) => addDateUnits(time, amount, unit),
+        diff: (max, min, unit) => diffDateUnits(max, min, unit),
+        startOf: (time, unit, weekday) => startOfDateUnit(time, unit, weekday),
+        endOf: (time, unit) => endOfDateUnit(time, unit),
+    };
+
+    // Chart.js has one date adapter per page. Registered on load and before each chart is created, so it is the one in use.
+    const registerDateAdapter = () => {
+        if (typeof Chart !== 'undefined' && Chart._adapters?._date)
+            Chart._adapters._date.override(dateAdapter);
+    };
+
+    const isTimeScale = scale => scale && (scale.type === 'time' || scale.type === 'timeseries');
+
+    // Passes the chart locale to the adapter of each time scale, and drops empty formats so the unit default applies.
+    const applyTimeScaleOptions = (options) => {
+        if (!options?.scales)
+            return;
+
+        Object.values(options.scales).filter(isTimeScale).forEach(scale => {
+            scale.adapters ??= {};
+            scale.adapters.date = { ...(scale.adapters.date ?? {}), locale: options.locale };
+
+            const time = scale.time;
+            if (!time)
+                return;
+
+            if (typeof time.tooltipFormat === 'string' && time.tooltipFormat.trim() === '')
+                delete time.tooltipFormat;
+
+            if (time.displayFormats)
+                Object.keys(time.displayFormats)
+                    .filter(unit => typeof time.displayFormats[unit] !== 'string' || time.displayFormats[unit].trim() === '')
+                    .forEach(unit => delete time.displayFormats[unit]);
+        });
+    };
+
     // Shared implementation for every chart type. A per-type module passes hooks for the behavior that differs.
     const core = {
         addClickHandler: (chart, dotNetObjectReference) => {
@@ -462,6 +851,16 @@ if (!window.blazorexpress.chartjs) {
                 }
             }
         },
+        // Appends a time point ({ x, y } or { x, y, r }) to the dataset with that label; no label is added.
+        addDatasetPoint: (elementId, datasetLabel, point) => {
+            const chart = core.get(elementId);
+            const dataset = chart?.data.datasets?.find(d => d.label === datasetLabel);
+            if (!dataset || !point)
+                return;
+
+            (dataset.data ??= []).push(point);
+            chart.update();
+        },
         addDatasetsData: (elementId, dataLabel, data, hooks = {}) => {
             let chart = core.get(elementId);
             if (chart && data) {
@@ -504,6 +903,8 @@ if (!window.blazorexpress.chartjs) {
             }
 
             applyEventHandlers(options);
+            applyTimeScaleOptions(options);
+            registerDateAdapter();
 
             // https://www.chartjs.org/docs/latest/configuration/#configuration-object-structure
             const config = {
@@ -655,6 +1056,7 @@ if (!window.blazorexpress.chartjs) {
                 }
 
                 applyEventHandlers(options);
+                applyTimeScaleOptions(options);
 
                 const previousDataCount = getDataItemCount(chart);
 
@@ -697,6 +1099,8 @@ if (!window.blazorexpress.chartjs) {
     };
 
     Object.assign(window.blazorexpress.chartjs, core);
+
+    registerDateAdapter();
 
     window.blazorexpress.chartjs.bar = createChartTypeModule({ applyDataLabelsBackgroundColorOnCreate: true });
     window.blazorexpress.chartjs.bubble = createChartTypeModule();

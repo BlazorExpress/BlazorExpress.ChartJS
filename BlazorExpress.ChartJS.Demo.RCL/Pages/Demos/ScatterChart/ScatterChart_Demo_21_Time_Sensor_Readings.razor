@@ -1,0 +1,63 @@
+<ScatterChart @ref="scatterChart" Width="560" Height="400" />
+
+@code {
+    private ScatterChart scatterChart = default!;
+    private ScatterChartOptions scatterChartOptions = default!;
+    private ChartData chartData = default!;
+
+    protected override void OnInitialized()
+    {
+        var sensorAColor = ColorUtility.CategoricalTwelveColors[4].ToColor();
+        var sensorBColor = ColorUtility.CategoricalTwelveColors[5].ToColor();
+
+        chartData = new ChartData
+        {
+            Datasets = new List<IChartDataset>
+            {
+                new ScatterChartDataset
+                {
+                    Label = "Sensor A",
+                    // Instants in UTC: each browser shows them in its own local time.
+                    TimeData = new List<ChartTimePoint>
+                    {
+                        new(new DateTimeOffset(2026, 1, 5, 9, 0, 0, TimeSpan.Zero), 21.5),
+                        new(new DateTimeOffset(2026, 1, 5, 9, 7, 0, TimeSpan.Zero), 22.1),
+                        new(new DateTimeOffset(2026, 1, 5, 9, 31, 0, TimeSpan.Zero), 23.4),
+                    },
+                    BackgroundColor = sensorAColor.ToRgbaString(),
+                    BorderColor = sensorAColor.ToRgbString(),
+                    BorderWidth = 2,
+                },
+                new ScatterChartDataset
+                {
+                    Label = "Sensor B",
+                    TimeData = new List<ChartTimePoint>
+                    {
+                        new(new DateTimeOffset(2026, 1, 5, 9, 3, 0, TimeSpan.Zero), 19.8),
+                        new(new DateTimeOffset(2026, 1, 5, 9, 18, 0, TimeSpan.Zero), 20.6),
+                        new(new DateTimeOffset(2026, 1, 5, 9, 45, 0, TimeSpan.Zero), 21.0),
+                    },
+                    BackgroundColor = sensorBColor.ToRgbaString(),
+                    BorderColor = sensorBColor.ToRgbString(),
+                    BorderWidth = 2,
+                },
+            },
+        };
+
+        scatterChartOptions = new ScatterChartOptions();
+        scatterChartOptions.Scales.X = new ChartAxes
+        {
+            Type = ChartAxesType.Time,
+            Time = new ChartAxesTime { Unit = ChartTimeUnit.Minute, DisplayFormats = new ChartAxesTimeDisplayFormats { Minute = "HH:mm" }, TooltipFormat = "HH:mm 'local'" },
+        };
+        scatterChartOptions.Scales.Y = new ChartAxes { BeginAtZero = false };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await scatterChart.InitializeAsync(chartData, scatterChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

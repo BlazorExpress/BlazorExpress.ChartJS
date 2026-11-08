@@ -186,9 +186,9 @@ public class BarChartDataset : ChartDataset<double?>
     public BarChartDatasetDataLabels Datalabels { get; set; } = new();
 
     /// <summary>
-    /// Gets the value sent as <c>data</c>: <see cref="FloatingData" /> when set, otherwise <c>Data</c>.
+    /// Gets the value sent as <c>data</c>: <see cref="TimeData" /> when set, then <see cref="FloatingData" />, otherwise <c>Data</c>.
     /// </summary>
-    internal override object? DataValue => (object?)FloatingData ?? Data;
+    internal override object? DataValue => (object?)TimeData ?? (object?)FloatingData ?? Data;
 
     /// <summary>
     /// The bar values when some or all bars are floating: each item is a number, drawn from the base, a <c>(start, end)</c> range,
@@ -376,6 +376,22 @@ public class BarChartDataset : ChartDataset<double?>
     [Description("If <b>true</b>, null or undefined values will not be used for spacing calculations when determining bar size.")]
     public bool SkipNull { get; set; }
 
+
+    /// <summary>
+    /// The bar values of a time or timeseries x-axis, each at its own date, for example
+    /// <c>TimeData = [new(new DateOnly(2026, 1, 5), 12), new(new DateOnly(2026, 1, 9), 15)]</c>.
+    /// A <see langword="null" /> <c>Y</c> leaves a gap. When set, it is sent instead of <see cref="FloatingData" /> and <c>Data</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/axes/cartesian/time.html" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("The bar values of a time or timeseries x-axis, each at its own date. A null Y leaves a gap. When set, it is sent instead of FloatingData and Data.")]
+    [JsonIgnore]
+    [ParameterTypeName("List<ChartTimePoint>?")]
+    public List<ChartTimePoint>? TimeData { get; set; }
 
     /// <summary>
     /// The ID of the x-axis to plot this dataset on.

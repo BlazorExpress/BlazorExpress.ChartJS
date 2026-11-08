@@ -36,6 +36,9 @@ public partial class BubbleChart : ChartComponentBase
         if (data is null)
             throw new ArgumentNullException(nameof(data));
 
+        if (TimeDataSupport.IsTimePoint(data))
+            return await AddTimePointAsync(chartData, dataLabel, data, dataset => dataset is BubbleChartDataset, BubbleChartInterop.AddDatasetPoint);
+
         foreach (var dataset in chartData.Datasets)
             if (dataset is BubbleChartDataset bubbleChartDataset && bubbleChartDataset.Label == dataLabel)
                 if (data is BubbleChartDatasetData bubbleChartDatasetData && bubbleChartDatasetData.Data is BubbleChartDataPoint bubbleChartDataPoint)
@@ -161,7 +164,7 @@ public partial class BubbleChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartOptions));
 
         var datasets = chartData.Datasets.OfType<BubbleChartDataset>();
-        var data = new { chartData.Labels, Datasets = datasets };
+        var data = new { Labels = chartData.LabelsValue, Datasets = datasets };
         await SafeInvokeVoidAsync(BubbleChartInterop.Initialize, Id, GetChartType(), data, (BubbleChartOptions)chartOptions, plugins, DotNetObjectReference, EventOptions);
     }
 
@@ -206,7 +209,7 @@ public partial class BubbleChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartOptions));
 
         var datasets = chartData.Datasets.OfType<BubbleChartDataset>();
-        var data = new { chartData.Labels, Datasets = datasets };
+        var data = new { Labels = chartData.LabelsValue, Datasets = datasets };
         await SafeInvokeVoidAsync(BubbleChartInterop.Update, [Id, GetChartType(), data, (BubbleChartOptions)chartOptions, .. GetUpdateModeArguments(mode)]);
     }
 

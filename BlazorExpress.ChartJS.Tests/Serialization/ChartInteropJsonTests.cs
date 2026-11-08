@@ -115,6 +115,42 @@ public class ChartInteropJsonTests : BunitContext
         Assert.Equal([1d, 2d], bar.EnumerateArray().Select(v => v.GetDouble()));
     }
 
+    [Fact]
+    public async Task InitializeAndUpdate_SendTimeLabelsInsteadOfLabels()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        var chart = Render<LineChart>().Instance;
+        var chartData = new ChartData
+        {
+            Labels = ["ignored"],
+            TimeLabels = [new DateOnly(2026, 1, 1), new DateOnly(2026, 1, 5)],
+            Datasets = [new LineChartDataset { Label = "Sales", Data = [1, 2] }]
+        };
+
+        await chart.InitializeAsync(chartData, new LineChartOptions());
+        await chart.UpdateAsync(chartData, new LineChartOptions());
+
+        foreach (var name in new[] { ".initialize", ".update" })
+        {
+            var sent = ChartTestData.Serialize(JSInterop.Invocations.Last(i => i.Identifier.EndsWith(name, StringComparison.Ordinal)).Arguments[2]);
+            Assert.Equal("[\"2026-01-01\",\"2026-01-05\"]", sent.GetProperty("labels").GetRawText());
+        }
+    }
+
+    [Fact]
+    public async Task InitializeAsync_SendsTimeDataPoints()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        var chart = Render<ScatterChart>().Instance;
+        var chartData = new ChartData { Datasets = [new ScatterChartDataset { Label = "Sensor", TimeData = [new(new DateTime(2026, 1, 5, 9, 0, 0), 21.5)] }] };
+
+        await chart.InitializeAsync(chartData, new ScatterChartOptions());
+
+        var sent = ChartTestData.Serialize(JSInterop.Invocations.Last(i => i.Identifier.EndsWith(".initialize", StringComparison.Ordinal)).Arguments[2]);
+        Assert.Equal("[{\"x\":\"2026-01-05T09:00:00.000\",\"y\":21.5}]", sent.GetProperty("datasets")[0].GetProperty("data").GetRawText());
+        Assert.Equal(JsonValueKind.Null, sent.GetProperty("labels").ValueKind);
+    }
+
     #endregion
 
     #region Private Methods

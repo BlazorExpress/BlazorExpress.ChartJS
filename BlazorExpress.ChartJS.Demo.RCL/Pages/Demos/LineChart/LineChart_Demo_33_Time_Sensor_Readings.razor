@@ -1,0 +1,70 @@
+<LineChart @ref="lineChart" Width="600" />
+
+@code {
+    private LineChart lineChart = default!;
+    private LineChartOptions lineChartOptions = default!;
+    private ChartData chartData = default!;
+
+    protected override void OnInitialized()
+    {
+        var sensorAColor = ColorUtility.CategoricalTwelveColors[4].ToColor();
+        var sensorBColor = ColorUtility.CategoricalTwelveColors[5].ToColor();
+
+        chartData = new ChartData
+        {
+            // No shared labels: each sensor reports at its own times, so each value carries its own date.
+            Datasets = new List<IChartDataset>
+            {
+                new LineChartDataset
+                {
+                    Label = "Sensor A",
+                    TimeData = new List<ChartTimePoint>
+                    {
+                        new(new DateTime(2026, 1, 5, 9, 0, 0), 21.5),
+                        new(new DateTime(2026, 1, 5, 9, 7, 0), 22.1),
+                        new(new DateTime(2026, 1, 5, 9, 31, 0), 23.4),
+                        new(new DateTime(2026, 1, 5, 9, 48, 0), 23.0),
+                    },
+                    BackgroundColor = sensorAColor.ToRgbaString(),
+                    BorderColor = sensorAColor.ToRgbString(),
+                    PointRadius = new List<double> { 4 },
+                },
+                new LineChartDataset
+                {
+                    Label = "Sensor B",
+                    TimeData = new List<ChartTimePoint>
+                    {
+                        new(new DateTime(2026, 1, 5, 9, 3, 0), 19.8),
+                        new(new DateTime(2026, 1, 5, 9, 18, 0), 20.6),
+                        new(new DateTime(2026, 1, 5, 9, 24, 0), null), // no reading: a gap in the line
+                        new(new DateTime(2026, 1, 5, 9, 45, 0), 21.0),
+                    },
+                    BackgroundColor = sensorBColor.ToRgbaString(),
+                    BorderColor = sensorBColor.ToRgbString(),
+                    PointRadius = new List<double> { 4 },
+                },
+            },
+        };
+
+        lineChartOptions = new LineChartOptions { Responsive = true };
+        lineChartOptions.Scales.X = new ChartAxes
+        {
+            Type = ChartAxesType.Time,
+            Time = new ChartAxesTime
+            {
+                Unit = ChartTimeUnit.Minute,
+                DisplayFormats = new ChartAxesTimeDisplayFormats { Minute = "HH:mm" },
+                TooltipFormat = "HH:mm:ss",
+            },
+        };
+        lineChartOptions.Scales.Y = new ChartAxes { BeginAtZero = false, Title = new ChartAxesTitle { Display = true, Text = "°C" } };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await lineChart.InitializeAsync(chartData, lineChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

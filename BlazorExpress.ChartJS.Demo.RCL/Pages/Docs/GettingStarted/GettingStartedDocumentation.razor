@@ -57,6 +57,12 @@
     </table>
 </div>
 
+<div class="notification is-info is-light">
+    <strong>Time axes need no extra script.</strong> From 1.3.0, <code>time</code> and <code>timeseries</code> axes work with only Chart.js and
+    <code>blazorexpress.chartjs.js</code>: the library registers its own date adapter. Do not add a third-party date adapter such as
+    <code>chartjs-adapter-date-fns</code>; the library's adapter replaces it. See the <a href="@DemoRouteConstants.Docs_LineChart#time-axis">time axis documentation</a>.
+</div>
+
 <section class="be-release-spotlight be-release-spotlight--compact">
     <p class="be-release-kicker">Guides</p>
     <h3 class="be-release-title">Project Setup Documentation</h3>

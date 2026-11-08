@@ -1,0 +1,105 @@
+@attribute [Route(pageUrl)]
+@layout DemosMainLayout
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
+
+@* Unlisted page: not linked from the navigation. It runs the built-in date adapter's checks in this browser's time zone. *@
+<HeadContent>
+    <meta name="robots" content="noindex, nofollow" />
+</HeadContent>
+
+<PageHero Title="Time axis self-check" />
+
+<Block>
+    Runs the built-in date adapter's checks in this browser's time zone. To check another zone, open DevTools,
+    then <strong>More tools → Sensors → Location</strong>, set a <strong>Timezone ID</strong> (for example <code>America/New_York</code>), and reload this page with DevTools open.
+</Block>
+
+@if (result is null)
+{
+    <Block>Running…</Block>
+}
+else
+{
+    <Block>
+        <strong>Time zone:</strong> <code>@result.Zone</code> ·
+        <strong>Passed:</strong> @result.Passed ·
+        <strong>Failed:</strong> <span class="@(result.Failed > 0 ? "has-text-danger" : "has-text-success")">@result.Failed</span> ·
+        <strong>Skipped:</strong> @result.Skipped
+    </Block>
+
+    <div class="table-container">
+        <table class="table is-fullwidth is-narrow is-striped">
+            <thead>
+                <tr><th>Status</th><th>Case</th><th>Expected</th><th>Actual</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var item in result.Cases)
+                {
+                    <tr class="@(item.Status == "fail" ? "has-background-danger-light" : null)">
+                        <td>@item.Status</td>
+                        <td>@item.Name</td>
+                        <td><code>@item.Expected</code></td>
+                        <td><code>@item.Actual</code></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<Block>
+    <strong>Bubble chart on a time axis</strong>: three bubbles at 09:00, 09:20 and 10:00 (wall clock) on 5 Jan 2026.
+</Block>
+<div style="overflow-x: auto;">
+    <BubbleChart @ref="bubbleChart" Width="560" Height="320" />
+</div>
+
+@code {
+    private const string pageUrl = DemoRouteConstants.Demos_TimeAxisSelfCheck;
+
+    private BubbleChart bubbleChart = default!;
+    private SelfCheckResult? result;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var chartData = new ChartData
+            {
+                Datasets =
+                [
+                    new BubbleChartDataset
+                    {
+                        Label = "Readings",
+                        TimeData =
+                        [
+                            new(new DateTime(2026, 1, 5, 9, 0, 0), 21.5, 8),
+                            new(new DateTime(2026, 1, 5, 9, 20, 0), 22.4, 12),
+                            new(new DateTime(2026, 1, 5, 10, 0, 0), 20.9, 6)
+                        ]
+                    }
+                ]
+            };
+
+            var options = new BubbleChartOptions();
+            options.Scales.X = new ChartAxes
+            {
+                Type = ChartAxesType.Time,
+                Time = new() { Unit = ChartTimeUnit.Minute, DisplayFormats = new() { Minute = "HH:mm" }, TooltipFormat = "ddd, dd MMM yyyy HH:mm" }
+            };
+            options.Scales.Y = new ChartAxes { BeginAtZero = false };
+
+            await bubbleChart.InitializeAsync(chartData, options);
+
+            result = await JS.InvokeAsync<SelfCheckResult>("runTimeAxisSelfCheck");
+            StateHasChanged();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private sealed record SelfCheckCase(string Name, string Expected, string Actual, string Status);
+
+    private sealed record SelfCheckResult(string Zone, List<SelfCheckCase> Cases, int Passed, int Failed, int Skipped);
+}
