@@ -131,6 +131,31 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     public virtual async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data) => await Task.FromResult(chartData);
 
     /// <summary>
+    /// Asynchronously adds a date to <see cref="ChartData.TimeLabels" /> with one value for the matching dataset,
+    /// for example <c>AddDataAsync(chartData, new DateOnly(2026, 3, 1), new LineChartDatasetData("Coffee", 30))</c>.
+    /// Line and bar charts support it; other charts return <paramref name="chartData" /> unchanged.
+    /// </summary>
+    /// <param name="chartData">The chart data to which the date and value are added.</param>
+    /// <param name="dataLabel">The date: a <see cref="DateOnly" />, <see cref="DateTime" /> or <see cref="DateTimeOffset" />.</param>
+    /// <param name="data">The value for the dataset named in it.</param>
+    /// <returns>A task representing the asynchronous operation, with a result of the updated <see cref="ChartData"/>.</returns>
+    [AddedVersion("1.3.0")]
+    [Description("Asynchronously adds a date to ChartData.TimeLabels with one value for the matching dataset. Line and bar charts support it.")]
+    public virtual async Task<ChartData> AddDataAsync(ChartData chartData, ChartTimeValue dataLabel, IChartDatasetData data) => await Task.FromResult(chartData);
+
+    /// <summary>
+    /// Asynchronously adds a date to <see cref="ChartData.TimeLabels" /> with one value for each dataset.
+    /// Line and bar charts support it; other charts return <paramref name="chartData" /> unchanged.
+    /// </summary>
+    /// <param name="chartData">The chart data to which the date and values are added.</param>
+    /// <param name="dataLabel">The date: a <see cref="DateOnly" />, <see cref="DateTime" /> or <see cref="DateTimeOffset" />.</param>
+    /// <param name="data">One value per dataset.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the updated chart data.</returns>
+    [AddedVersion("1.3.0")]
+    [Description("Asynchronously adds a date to ChartData.TimeLabels with one value for each dataset. Line and bar charts support it.")]
+    public virtual async Task<ChartData> AddDataAsync(ChartData chartData, ChartTimeValue dataLabel, IReadOnlyCollection<IChartDatasetData> data) => await Task.FromResult(chartData);
+
+    /// <summary>
     /// Asynchronously adds a dataset to the specified chart data.
     /// </summary>
     /// <param name="chartData">The chart data to which the dataset will be added.</param>
@@ -576,6 +601,90 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     #region Internal Methods
 
     /// <summary>
+    /// Adds a date with one value per dataset to a line or bar chart, in <see cref="ChartData.TimeLabels" /> and in the browser.
+    /// </summary>
+    internal async Task<ChartData> AddTimeLabelDataAsync(ChartData chartData, ChartTimeValue dataLabel, IChartDatasetData data, string interopIdentifier)
+    {
+        TimeDataSupport.ValidateTimeLabel(chartData, dataLabel, data);
+
+        var chartDatasetData = BarLineChartSupport.GetSupportedDatasetData(data);
+
+        if (chartDatasetData is null || TimeDataSupport.IsTimePoint(chartDatasetData) || !BarLineChartSupport.CanAppend(chartData.Datasets!, chartDatasetData))
+            return chartData;
+
+        if (!chartData.TimeLabels!.Contains(dataLabel))
+            chartData.TimeLabels.Add(dataLabel);
+
+        foreach (var dataset in chartData.Datasets!.Where(BarLineChartSupport.IsSupportedDataset))
+            BarLineChartSupport.AppendDataPoint(dataset, chartDatasetData);
+
+        await SafeInvokeVoidAsync(interopIdentifier, Id, dataLabel.ToString(), chartDatasetData);
+
+        return chartData;
+    }
+
+    /// <summary>
+    /// Adds a date with one value for each dataset to a line or bar chart, in <see cref="ChartData.TimeLabels" /> and in the browser.
+    /// </summary>
+    internal async Task<ChartData> AddTimeLabelDataAsync(ChartData chartData, ChartTimeValue dataLabel, IReadOnlyCollection<IChartDatasetData> data, string interopIdentifier)
+    {
+        TimeDataSupport.ValidateTimeLabel(chartData, dataLabel, data);
+
+        if (!data.Any())
+            throw new ArgumentException($"{nameof(data)} cannot be empty.", nameof(data));
+
+        var supportedDatasets = chartData.Datasets!.Where(BarLineChartSupport.IsSupportedDataset).ToList();
+        var supportedData = BarLineChartSupport.GetSupportedDatasetData(data)
+            .Where(x => !TimeDataSupport.IsTimePoint(x) && BarLineChartSupport.CanAppend(supportedDatasets, x))
+            .ToList();
+
+        if (!supportedDatasets.Any() || !supportedData.Any())
+            return chartData;
+
+        if (supportedDatasets.Count != supportedData.Count)
+            throw new InvalidDataException("The chart dataset count and the new data points count do not match.");
+
+        if (chartData.TimeLabels!.Contains(dataLabel))
+            throw new ArgumentException($"{dataLabel} already exists.", nameof(dataLabel));
+
+        chartData.TimeLabels.Add(dataLabel);
+
+        foreach (var dataset in supportedDatasets)
+        {
+            var label = dataset switch
+            {
+                BarChartDataset barChartDataset => barChartDataset.Label,
+                LineChartDataset lineChartDataset => lineChartDataset.Label,
+                _ => null,
+            };
+
+            var chartDatasetData = supportedData.FirstOrDefault(x => x.DatasetLabel == label);
+
+            if (chartDatasetData is not null)
+                BarLineChartSupport.AppendDataPoint(dataset, chartDatasetData);
+        }
+
+        await SafeInvokeVoidAsync(interopIdentifier, Id, dataLabel.ToString(), supportedData);
+
+        return chartData;
+    }
+
+    /// <summary>
+    /// Appends a time point to the <c>TimeData</c> of the dataset named by <paramref name="dataLabel" />, in C# and in the browser.
+    /// </summary>
+    internal async Task<ChartData> AddTimePointAsync(ChartData chartData, string dataLabel, IChartDatasetData data, Func<IChartDataset, bool> isSupportedDataset, string interopIdentifier)
+    {
+        if (dataLabel is null)
+            throw new ArgumentNullException(nameof(dataLabel));
+
+        var (datasetLabel, point) = TimeDataSupport.AppendTimePoint(chartData, dataLabel, data, isSupportedDataset);
+
+        await SafeInvokeVoidAsync(interopIdentifier, Id, datasetLabel, point);
+
+        return chartData;
+    }
+
+    /// <summary>
     /// Gets the trailing JavaScript <c>update</c> argument for <paramref name="mode" />: none for <see cref="ChartUpdateMode.Default" />,
     /// so a default update sends the same call as before update modes existed.
     /// </summary>
@@ -704,7 +813,8 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
                 else if (dataset is ScatterChartDataset)
                     datasets.Add((ScatterChartDataset)dataset);
 
-        var data = new { chartData?.Labels, Datasets = datasets };
+        // TimeLabels, when set, are sent instead of Labels (as in ChartData's own JSON).
+        var data = new { Labels = chartData?.LabelsValue, Datasets = datasets };
 
         return data;
     }

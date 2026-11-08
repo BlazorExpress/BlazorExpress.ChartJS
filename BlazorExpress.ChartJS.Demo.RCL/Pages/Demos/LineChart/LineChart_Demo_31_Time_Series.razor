@@ -1,0 +1,54 @@
+<LineChart @ref="lineChart" Width="600" />
+
+@code {
+    private LineChart lineChart = default!;
+    private LineChartOptions lineChartOptions = default!;
+    private ChartData chartData = default!;
+
+    protected override void OnInitialized()
+    {
+        var color = ColorUtility.CategoricalTwelveColors[1].ToColor();
+
+        chartData = new ChartData
+        {
+            // The same uneven dates as the time axis demo: a time series axis gives each one the same width.
+            TimeLabels = new List<ChartTimeValue>
+            {
+                new DateOnly(2026, 1, 1), new DateOnly(2026, 1, 2), new DateOnly(2026, 1, 5),
+                new DateOnly(2026, 1, 12), new DateOnly(2026, 1, 26), new DateOnly(2026, 2, 1)
+            },
+            Datasets = new List<IChartDataset>
+            {
+                new LineChartDataset
+                {
+                    Label = "Daily sales",
+                    Data = new List<double?> { 12, 15, 9, 22, 18, 30 },
+                    BackgroundColor = color.ToRgbaString(),
+                    BorderColor = color.ToRgbString(),
+                    PointRadius = new List<double> { 4 },
+                },
+            },
+        };
+
+        lineChartOptions = new LineChartOptions { Responsive = true };
+        lineChartOptions.Scales.X = new ChartAxes
+        {
+            Type = ChartAxesType.Timeseries,
+            Ticks = new ChartAxesTicks { Source = "labels" },
+            Time = new ChartAxesTime
+            {
+                Unit = ChartTimeUnit.Day,
+                DisplayFormats = new ChartAxesTimeDisplayFormats { Day = "dd MMM" },
+                TooltipFormat = "dddd, dd MMMM yyyy",
+            },
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await lineChart.InitializeAsync(chartData, lineChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

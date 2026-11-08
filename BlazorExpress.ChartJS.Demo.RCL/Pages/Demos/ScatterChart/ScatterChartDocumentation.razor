@@ -353,6 +353,22 @@
     <Demo Type="typeof(ScatterChart_Demo_20_Colors_Plugin)" Tabs="true" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Sensor readings over time" PageUrl="@pageUrl" Link="time-sensor-readings">
+    <Block>
+        A scatter chart can plot points against a <strong>time axis</strong>, each point at its own date and time, without any extra script.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>TimeData</code> on each <code>ScatterChartDataset</code> to a list of <code>new ChartTimePoint(date, value)</code>.</li>
+                <li>Set <code>Scales.X = new ChartAxes { Type = ChartAxesType.Time }</code> with a <code>Time.Unit</code> and .NET date formats.</li>
+                <li>Points given as <code>DateTimeOffset</code> or UTC <code>DateTime</code> are exact instants, shown in each viewer's local time.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(ScatterChart_Demo_21_Time_Sensor_Readings)" Tabs="true" />
+</Section>
+
 @code {
     private const string pageUrl = DemoRouteConstants.Demos_ScatterChart;
     private const string pageTitle = "Scatter Chart";

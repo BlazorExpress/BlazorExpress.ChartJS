@@ -36,6 +36,9 @@ public partial class ScatterChart : ChartComponentBase
         if (data is null)
             throw new ArgumentNullException(nameof(data));
 
+        if (TimeDataSupport.IsTimePoint(data))
+            return await AddTimePointAsync(chartData, dataLabel, data, dataset => dataset is ScatterChartDataset, ScatterChartInterop.AddDatasetPoint);
+
         foreach (var dataset in chartData.Datasets)
             if (dataset is ScatterChartDataset scatterChartDataset && scatterChartDataset.Label == dataLabel)
                 if (data is ScatterChartDatasetData scatterChartDatasetData && scatterChartDatasetData.Data is ScatterChartDataPoint scatterChartDataPoint)
@@ -161,7 +164,7 @@ public partial class ScatterChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartOptions));
 
         var datasets = chartData.Datasets.OfType<ScatterChartDataset>();
-        var data = new { chartData.Labels, Datasets = datasets };
+        var data = new { Labels = chartData.LabelsValue, Datasets = datasets };
         await SafeInvokeVoidAsync(ScatterChartInterop.Initialize, Id, GetChartType(), data, (ScatterChartOptions)chartOptions, plugins, DotNetObjectReference, EventOptions);
     }
 
@@ -206,7 +209,7 @@ public partial class ScatterChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartOptions));
 
         var datasets = chartData.Datasets.OfType<ScatterChartDataset>();
-        var data = new { chartData.Labels, Datasets = datasets };
+        var data = new { Labels = chartData.LabelsValue, Datasets = datasets };
         await SafeInvokeVoidAsync(ScatterChartInterop.Update, [Id, GetChartType(), data, (ScatterChartOptions)chartOptions, .. GetUpdateModeArguments(mode)]);
     }
 

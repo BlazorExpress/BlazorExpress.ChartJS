@@ -1,0 +1,104 @@
+<LineChart @ref="lineChart" Width="600" />
+
+<div class="mt-3">
+    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="AddReadingAsync">Add reading</Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="AddDayAsync">Add day</Button>
+</div>
+
+<div class="mt-4">
+    <LineChart @ref="dailyChart" Width="600" />
+</div>
+
+@code {
+    private LineChart lineChart = default!;
+    private LineChart dailyChart = default!;
+    private LineChartOptions lineChartOptions = default!;
+    private LineChartOptions dailyChartOptions = default!;
+    private ChartData chartData = default!;
+    private ChartData dailyChartData = default!;
+
+    private DateTime lastReading = new(2026, 1, 5, 9, 0, 0);
+    private DateOnly lastDay = new(2026, 1, 5);
+    private Random random = new();
+
+    protected override void OnInitialized()
+    {
+        var sensorColor = ColorUtility.CategoricalTwelveColors[6].ToColor();
+        var salesColor = ColorUtility.CategoricalTwelveColors[7].ToColor();
+
+        // Readings: each one is a time point appended to the dataset's TimeData.
+        chartData = new ChartData
+        {
+            Datasets = new List<IChartDataset>
+            {
+                new LineChartDataset
+                {
+                    Label = "Sensor",
+                    TimeData = new List<ChartTimePoint> { new(lastReading, 21.5) },
+                    BackgroundColor = sensorColor.ToRgbaString(),
+                    BorderColor = sensorColor.ToRgbString(),
+                    PointRadius = new List<double> { 4 },
+                },
+            },
+        };
+
+        lineChartOptions = new LineChartOptions { Responsive = true };
+        lineChartOptions.Scales.X = new ChartAxes
+        {
+            Type = ChartAxesType.Time,
+            Time = new ChartAxesTime { Unit = ChartTimeUnit.Minute, DisplayFormats = new ChartAxesTimeDisplayFormats { Minute = "HH:mm" }, TooltipFormat = "HH:mm" },
+        };
+        lineChartOptions.Scales.Y = new ChartAxes { BeginAtZero = false };
+
+        // Daily totals: each new day is a date label with one value for the dataset.
+        dailyChartData = new ChartData
+        {
+            TimeLabels = new List<ChartTimeValue> { lastDay },
+            Datasets = new List<IChartDataset>
+            {
+                new LineChartDataset
+                {
+                    Label = "Daily sales",
+                    Data = new List<double?> { 18 },
+                    BackgroundColor = salesColor.ToRgbaString(),
+                    BorderColor = salesColor.ToRgbString(),
+                    PointRadius = new List<double> { 4 },
+                },
+            },
+        };
+
+        dailyChartOptions = new LineChartOptions { Responsive = true };
+        dailyChartOptions.Scales.X = new ChartAxes
+        {
+            Type = ChartAxesType.Time,
+            Time = new ChartAxesTime { Unit = ChartTimeUnit.Day, DisplayFormats = new ChartAxesTimeDisplayFormats { Day = "dd MMM" }, TooltipFormat = "dddd, dd MMM" },
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await lineChart.InitializeAsync(chartData, lineChartOptions);
+            await dailyChart.InitializeAsync(dailyChartData, dailyChartOptions);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task AddReadingAsync()
+    {
+        lastReading = lastReading.AddMinutes(random.Next(2, 9));
+        var value = Math.Round(20 + random.NextDouble() * 4, 1);
+
+        // For a time point, the label argument is the dataset's label.
+        await lineChart.AddDataAsync(chartData, "Sensor", new LineChartDatasetData("Sensor", lastReading, value));
+    }
+
+    private async Task AddDayAsync()
+    {
+        lastDay = lastDay.AddDays(1);
+
+        await dailyChart.AddDataAsync(dailyChartData, lastDay, new LineChartDatasetData("Daily sales", random.Next(10, 35)));
+    }
+}

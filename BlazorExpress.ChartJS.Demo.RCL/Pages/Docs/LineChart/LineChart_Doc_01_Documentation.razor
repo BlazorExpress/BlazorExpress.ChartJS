@@ -153,6 +153,73 @@
     <DocxTable TItem="ChartAxesBorder" DocType="DocType.Properties" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Time axis" PageUrl="@pageUrl" Link="time-axis">
+    <Block>
+        Set an x-axis <code>Type</code> to <code>ChartAxesType.Time</code> (points spaced by real time) or <code>ChartAxesType.Timeseries</code> (points spaced equally)
+        and configure it with <code>ChartAxes.Time</code>. No extra script is needed: the library registers its own Chart.js date adapter, built on the browser's
+        <code>Date</code> and <code>Intl</code>. Chart.js has one date adapter per page, so the library's adapter <strong>replaces any other date adapter</strong> on the page,
+        including for charts the library does not create.
+    </Block>
+    <Block>
+        <strong>Dates in data:</strong> give dates as <code>ChartData.TimeLabels</code> (one value per date in each dataset's <code>Data</code>) or as
+        <code>TimeData</code> points on a line, bar, scatter or bubble dataset (each value at its own date). Every date is a <code>ChartTimeValue</code>:
+        assign a <code>DateOnly</code>, <code>DateTime</code> or <code>DateTimeOffset</code> directly. Axis limits take dates through <code>MinTime</code>,
+        <code>MaxTime</code>, <code>SuggestedMinTime</code> and <code>SuggestedMaxTime</code>.
+    </Block>
+    <div class="table-container">
+        <table class="table is-bordered is-striped is-fullwidth">
+            <thead>
+                <tr><th>C# value</th><th>Meaning</th><th>Tokyo browser</th><th>New York browser</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>new DateOnly(2026, 1, 5)</code></td><td>Wall-clock date</td><td>05 Jan</td><td>05 Jan</td></tr>
+                <tr><td><code>new DateTime(2026, 1, 5, 9, 0, 0)</code> (<code>Kind</code> <code>Unspecified</code>)</td><td>Wall-clock time</td><td>09:00</td><td>09:00</td></tr>
+                <tr><td><code>new DateTime(2026, 1, 5, 9, 0, 0, DateTimeKind.Utc)</code></td><td>Exact instant</td><td>18:00</td><td>04:00</td></tr>
+                <tr><td><code>new DateTimeOffset(2026, 1, 5, 9, 0, 0, TimeSpan.Zero)</code></td><td>Exact instant</td><td>18:00</td><td>04:00</td></tr>
+                <tr><td><code>DateTime</code> with <code>Kind</code> <code>Local</code></td><td>Exact instant, converted with the .NET process's zone (the server's in Blazor Server)</td><td colspan="2">Browser local time</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <Block>
+        <strong>Formats:</strong> <code>DisplayFormats</code> (per unit) and <code>TooltipFormat</code> are .NET date format strings. Custom specifiers keep the order you write:
+        <code>d</code>, <code>dd</code>, <code>ddd</code>, <code>dddd</code>, <code>M</code>, <code>MM</code>, <code>MMM</code>, <code>MMMM</code>, <code>y</code>, <code>yy</code>, <code>yyyy</code>,
+        <code>h</code>, <code>hh</code>, <code>H</code>, <code>HH</code>, <code>m</code>, <code>mm</code>, <code>s</code>, <code>ss</code>, <code>f</code> to <code>fffffff</code>,
+        <code>F</code> to <code>FFFFFFF</code>, <code>t</code>, <code>tt</code>, <code>g</code>, <code>z</code>, <code>zz</code>, <code>zzz</code> and <code>K</code> (the browser's offset),
+        quoted literals (<code>'of'</code>), <code>\</code> escapes and <code>%</code>. Other letters are copied as written, and <code>:</code> and <code>/</code> are always printed as written.
+        Single-letter standard formats <code>d</code>, <code>D</code>, <code>f</code>, <code>F</code>, <code>g</code>, <code>G</code>, <code>M</code>, <code>t</code>, <code>T</code>, <code>Y</code>
+        follow the browser's own pattern for the locale, so they can differ slightly from .NET's output; <code>s</code> is <code>yyyy-MM-ddTHH:mm:ss</code>.
+        Month and weekday names follow <code>ChartOptions.Locale</code>, or the browser's language when it is not set.
+    </Block>
+    <div class="table-container">
+        <table class="table is-bordered is-striped">
+            <thead>
+                <tr><th>Unit</th><th>Default format</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Millisecond</td><td><code>HH:mm:ss.fff</code></td></tr>
+                <tr><td>Second</td><td><code>T</code></td></tr>
+                <tr><td>Minute, Hour</td><td><code>t</code></td></tr>
+                <tr><td>Day, Week</td><td><code>d MMM</code></td></tr>
+                <tr><td>Month, Quarter</td><td><code>MMM yyyy</code></td></tr>
+                <tr><td>Year</td><td><code>yyyy</code></td></tr>
+                <tr><td>Tooltip</td><td><code>G</code></td></tr>
+            </tbody>
+        </table>
+    </div>
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartAxesTime Properties" PageUrl="@pageUrl" Link="chart-axes-time-properties">
+    <DocxTable TItem="ChartAxesTime" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartAxesTimeDisplayFormats Properties" PageUrl="@pageUrl" Link="chart-axes-time-display-formats-properties">
+    <DocxTable TItem="ChartAxesTimeDisplayFormats" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartTimePoint Properties" PageUrl="@pageUrl" Link="chart-time-point-properties">
+    <DocxTable TItem="ChartTimePoint" DocType="DocType.Properties" />
+</Section>
+
 <Section Class="p-0" Size="HeadingSize.H4" Name="ChartDimension Properties" PageUrl="@pageUrl" Link="chart-dimension-properties">
     <DocxTable TItem="ChartDimension" DocType="DocType.Properties" />
 </Section>

@@ -504,6 +504,119 @@
     <Demo Type="typeof(LineChart_Demo_29_Colors_Plugin)" Tabs="true" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Time axis" PageUrl="@pageUrl" Link="time-axis">
+    <Block>
+        A <strong>time axis</strong> spaces points by the real time between them: two days apart takes twice the room of one. It needs no extra script; the library draws it with its own date adapter.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>ChartData.TimeLabels</code> to dates (<code>DateOnly</code>, <code>DateTime</code> or <code>DateTimeOffset</code>) and give each dataset one value per date in <code>Data</code>.</li>
+                <li>Set <code>Scales.X = new ChartAxes { Type = ChartAxesType.Time }</code>.</li>
+                <li>Pick the tick unit with <code>Time.Unit</code>, and the label and tooltip formats with .NET date format strings, for example <code>DisplayFormats.Day = "dd MMM"</code> and <code>TooltipFormat = "dddd, dd MMMM yyyy"</code>.</li>
+                <li>A <code>DateOnly</code>, or a <code>DateTime</code> whose <code>Kind</code> is <code>Unspecified</code>, shows the same date and time in every time zone.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_30_Time_Axis)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Time series" PageUrl="@pageUrl" Link="time-series">
+    <Block>
+        A <strong>time series axis</strong> keeps date labels but gives every data point the same width, which suits trading days or data with long gaps.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Use the same <code>TimeLabels</code> and <code>Data</code> as a time axis.</li>
+                <li>Set <code>Type = ChartAxesType.Timeseries</code> on the x-axis.</li>
+                <li>Set <code>Ticks.Source = "labels"</code> to put one tick on each date.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_31_Time_Series)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Combo bar/line over dates" PageUrl="@pageUrl" Link="time-combo-bar-line">
+    <Block>
+        Bars and a line can share a time axis: both datasets take one value per date in <code>TimeLabels</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Add a <code>LineChartDataset</code> and a <code>BarChartDataset</code> to the same <code>ChartData</code>, with <code>TimeLabels</code> set to the first day of each month.</li>
+                <li>Set <code>Time.Unit = ChartTimeUnit.Month</code> and <code>DisplayFormats.Month = "MMM yyyy"</code>.</li>
+                <li>Set <code>Offset = true</code> on the x-axis so the first and last bars are not cut in half.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_32_Time_Combo_Bar_Line)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Sensor readings" PageUrl="@pageUrl" Link="time-sensor-readings">
+    <Block>
+        When each series has its own times, such as sensors reporting at different moments, give every value its own date with <code>TimeData</code> instead of shared labels.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>TimeData</code> on each <code>LineChartDataset</code> to a list of <code>new ChartTimePoint(date, value)</code>. Leave <code>ChartData.TimeLabels</code> and <code>Data</code> unset.</li>
+                <li>A <code>null</code> value leaves a gap in the line.</li>
+                <li>Use <code>Unit = ChartTimeUnit.Minute</code> and <code>DisplayFormats.Minute = "HH:mm"</code> for readings within an hour.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_33_Time_Sensor_Readings)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Live streaming" PageUrl="@pageUrl" Link="time-live-streaming">
+    <Block>
+        Time charts can grow while they are shown: add a reading at its own time, or a new day with a value for each dataset.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>For a reading, call <code>AddDataAsync(chartData, "Sensor", new LineChartDatasetData("Sensor", time, value))</code>. The label argument is the dataset's label, and the point is appended to its <code>TimeData</code>.</li>
+                <li>For a new day, call <code>AddDataAsync(chartData, new DateOnly(2026, 1, 6), new LineChartDatasetData("Daily sales", 24))</code>. The date is added to <code>ChartData.TimeLabels</code>.</li>
+                <li>Click the buttons to add data to each chart.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_34_Time_Live_Streaming)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Time max span" PageUrl="@pageUrl" Link="time-max-span">
+    <Block>
+        Fix the visible part of a time axis to a range of dates, for example the last 14 days of a quarter's data.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>MinTime</code> and <code>MaxTime</code> on the x-axis to dates. They are sent instead of the numeric <code>Min</code> and <code>Max</code>.</li>
+                <li>Use <code>SuggestedMinTime</code> and <code>SuggestedMaxTime</code> instead to widen the range without cutting off data.</li>
+                <li>Change the range and call <code>UpdateAsync</code>; the buttons switch between 14 days, 30 days and all data.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_35_Time_Max_Span)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Localized date formats" PageUrl="@pageUrl" Link="time-localized-formats">
+    <Block>
+        Month and weekday names in date formats follow <code>ChartOptions.Locale</code>, or the browser's language when it is not set.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Locale</code>, for example <code>"fr-FR"</code>; <code>"ddd d MMM"</code> then shows <em>lun. 5 janv.</em></li>
+                <li>Set <code>Unit = ChartTimeUnit.Week</code> and <code>IsoWeekday = DayOfWeek.Monday</code> to start each week on Monday.</li>
+                <li>Click a locale to redraw the chart with its names.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_36_Time_Localized_Formats)" Tabs="true" />
+</Section>
+
 @code {
     private const string pageUrl = DemoRouteConstants.Demos_LineChart;
     private const string pageTitle = "Line Chart";

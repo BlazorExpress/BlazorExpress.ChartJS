@@ -26,6 +26,9 @@ public static class DemoRouteConstants
     public const string Demos_RadarChart = Demos_Prefix + "/radar-chart";
     public const string Demos_ScatterChart = Demos_Prefix + "/scatter-chart";
 
+    // Unlisted: runs the built-in date adapter's checks in the browser's current time zone.
+    public const string Demos_TimeAxisSelfCheck = Demos_Prefix + "/time-axis-self-check";
+
     // Utils
     public const string Demos_Utils_Prefix = Demos_Prefix + "/utils";
     public const string Demos_ColorUtils = Demos_Utils_Prefix + "/color-utility";

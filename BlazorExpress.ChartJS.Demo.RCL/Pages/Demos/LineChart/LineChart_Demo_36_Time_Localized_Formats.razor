@@ -1,0 +1,74 @@
+<div class="mb-3">
+    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="@(() => SetLocaleAsync("fr-FR"))">fr-FR</Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="@(() => SetLocaleAsync("de-DE"))">de-DE</Button>
+    <Button Color="ButtonColor.Link" Size="ButtonSize.Small" @onclick="@(() => SetLocaleAsync("en-US"))">en-US</Button>
+</div>
+
+<LineChart @ref="lineChart" Width="600" />
+
+@code {
+    private LineChart lineChart = default!;
+    private LineChartOptions lineChartOptions = default!;
+    private ChartData chartData = default!;
+
+    protected override void OnInitialized()
+    {
+        var color = ColorUtility.CategoricalTwelveColors[9].ToColor();
+        var weeks = new List<ChartTimeValue>();
+        var values = new List<double?>();
+
+        for (var day = new DateOnly(2026, 1, 5); day <= new DateOnly(2026, 3, 30); day = day.AddDays(7))
+        {
+            weeks.Add(day);
+            values.Add(40 + (day.DayOfYear % 9) * 3);
+        }
+
+        chartData = new ChartData
+        {
+            TimeLabels = weeks,
+            Datasets = new List<IChartDataset>
+            {
+                new LineChartDataset
+                {
+                    Label = "Weekly orders",
+                    Data = values,
+                    BackgroundColor = color.ToRgbaString(),
+                    BorderColor = color.ToRgbString(),
+                    PointRadius = new List<double> { 4 },
+                },
+            },
+        };
+
+        lineChartOptions = new LineChartOptions
+        {
+            Responsive = true,
+            // The locale names the months and weekdays in the .NET date formats below.
+            Locale = "fr-FR",
+        };
+        lineChartOptions.Scales.X = new ChartAxes
+        {
+            Type = ChartAxesType.Time,
+            Time = new ChartAxesTime
+            {
+                Unit = ChartTimeUnit.Week,
+                IsoWeekday = DayOfWeek.Monday,
+                DisplayFormats = new ChartAxesTimeDisplayFormats { Week = "ddd d MMM" },
+                TooltipFormat = "dddd d MMMM yyyy",
+            },
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await lineChart.InitializeAsync(chartData, lineChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task SetLocaleAsync(string locale)
+    {
+        lineChartOptions.Locale = locale;
+        await lineChart.UpdateAsync(chartData, lineChartOptions);
+    }
+}

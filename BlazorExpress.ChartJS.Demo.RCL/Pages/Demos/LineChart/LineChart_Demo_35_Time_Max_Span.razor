@@ -1,0 +1,73 @@
+<LineChart @ref="lineChart" Width="600" />
+
+<div class="mt-3">
+    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="() => ShowRangeAsync(14)">Last 14 days</Button>
+    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="() => ShowRangeAsync(30)">Last 30 days</Button>
+    <Button Color="ButtonColor.Link" Size="ButtonSize.Small" @onclick="() => ShowRangeAsync(null)">All</Button>
+</div>
+
+@code {
+    private LineChart lineChart = default!;
+    private LineChartOptions lineChartOptions = default!;
+    private ChartData chartData = default!;
+
+    private readonly DateOnly firstDay = new(2026, 1, 1);
+    private readonly DateOnly lastDay = new(2026, 3, 31);
+
+    protected override void OnInitialized()
+    {
+        var color = ColorUtility.CategoricalTwelveColors[8].ToColor();
+        var random = new Random(7);
+        var days = new List<ChartTimeValue>();
+        var values = new List<double?>();
+
+        for (var day = firstDay; day <= lastDay; day = day.AddDays(1))
+        {
+            days.Add(day);
+            values.Add(random.Next(20, 60));
+        }
+
+        chartData = new ChartData
+        {
+            TimeLabels = days,
+            Datasets = new List<IChartDataset>
+            {
+                new LineChartDataset
+                {
+                    Label = "Visitors",
+                    Data = values,
+                    BackgroundColor = color.ToRgbaString(),
+                    BorderColor = color.ToRgbString(),
+                    PointRadius = new List<double> { 2 },
+                },
+            },
+        };
+
+        lineChartOptions = new LineChartOptions { Responsive = true };
+        lineChartOptions.Scales.X = new ChartAxes
+        {
+            Type = ChartAxesType.Time,
+            // MinTime and MaxTime fix the visible range to dates; the numeric Min and Max stay for number axes.
+            MinTime = lastDay.AddDays(-13),
+            MaxTime = lastDay,
+            Time = new ChartAxesTime { Unit = ChartTimeUnit.Day, DisplayFormats = new ChartAxesTimeDisplayFormats { Day = "dd MMM" }, TooltipFormat = "ddd, dd MMM yyyy" },
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await lineChart.InitializeAsync(chartData, lineChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task ShowRangeAsync(int? days)
+    {
+        lineChartOptions.Scales.X!.MinTime = days is int count ? lastDay.AddDays(1 - count) : null;
+        lineChartOptions.Scales.X.MaxTime = days is null ? null : lastDay;
+        lineChartOptions.Scales.X.Time!.Unit = days is null ? ChartTimeUnit.Week : ChartTimeUnit.Day;
+
+        await lineChart.UpdateAsync(chartData, lineChartOptions);
+    }
+}

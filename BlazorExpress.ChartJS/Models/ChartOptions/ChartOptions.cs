@@ -454,12 +454,14 @@ public class ChartAxesType
     public static readonly string RadialLinear = "radialLinear";
 
     /// <summary>
-    /// A time axis. Needs a date adapter.
+    /// A time axis: data points are spaced by the real time between them. Set its options with <see cref="ChartAxes.Time" />.
+    /// The library's own date adapter draws it, so no extra script is needed.
     /// </summary>
     public static readonly string Time = "time";
 
     /// <summary>
-    /// A time series axis. Needs a date adapter.
+    /// A time series axis: like <see cref="Time" />, but data points are spaced equally. Set its options with <see cref="ChartAxes.Time" />.
+    /// The library's own date adapter draws it, so no extra script is needed.
     /// </summary>
     public static readonly string Timeseries = "timeseries";
 
@@ -583,29 +585,77 @@ public class ChartAxes
 
     /// <summary>
     /// Gets or sets the user-defined maximum, which overrides the maximum from the data.
+    /// On a time axis, use <see cref="MaxTime" />; when it is set, it is sent instead of this value.
     /// <para>
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Gets or sets the user-defined maximum, which overrides the maximum from the data.")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [Description("Gets or sets the user-defined maximum, which overrides the maximum from the data. On a time axis, use MaxTime.")]
+    [JsonIgnore]
     [ParameterTypeName("double?")]
     public double? Max { get; set; }
 
     /// <summary>
+    /// Gets or sets the user-defined maximum date of a time or timeseries axis, which overrides the maximum from the data.
+    /// When set, it is sent instead of <see cref="Max" />.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/samples/scales/time-max-span.html" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the user-defined maximum date of a time or timeseries axis. When set, it is sent instead of Max.")]
+    [JsonIgnore]
+    [ParameterTypeName("ChartTimeValue?")]
+    public ChartTimeValue? MaxTime { get; set; }
+
+    /// <summary>
+    /// Gets the value sent as <c>max</c>: <see cref="MaxTime" /> when set, otherwise <see cref="Max" />.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonInclude]
+    [JsonPropertyName("max")]
+    internal object? MaxValue => (object?)MaxTime ?? Max;
+
+    /// <summary>
     /// Gets or sets the user-defined minimum, which overrides the minimum from the data.
+    /// On a time axis, use <see cref="MinTime" />; when it is set, it is sent instead of this value.
     /// <para>
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Gets or sets the user-defined minimum, which overrides the minimum from the data.")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [Description("Gets or sets the user-defined minimum, which overrides the minimum from the data. On a time axis, use MinTime.")]
+    [JsonIgnore]
     [ParameterTypeName("double?")]
     public double? Min { get; set; }
+
+    /// <summary>
+    /// Gets or sets the user-defined minimum date of a time or timeseries axis, which overrides the minimum from the data.
+    /// When set, it is sent instead of <see cref="Min" />.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/samples/scales/time-max-span.html" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the user-defined minimum date of a time or timeseries axis. When set, it is sent instead of Min.")]
+    [JsonIgnore]
+    [ParameterTypeName("ChartTimeValue?")]
+    public ChartTimeValue? MinTime { get; set; }
+
+    /// <summary>
+    /// Gets the value sent as <c>min</c>: <see cref="MinTime" /> when set, otherwise <see cref="Min" />.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonInclude]
+    [JsonPropertyName("min")]
+    internal object? MinValue => (object?)MinTime ?? Min;
 
     /// <summary>
     /// Gets or sets a value indicating whether extra space is added to both edges and the axis is scaled to fit the chart area,
@@ -688,29 +738,75 @@ public class ChartAxes
 
     /// <summary>
     /// Gets or sets a value used to calculate the maximum, unless the data is larger.
+    /// On a time axis, use <see cref="SuggestedMaxTime" />; when it is set, it is sent instead of this value.
     /// <para>
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Gets or sets a value used to calculate the maximum, unless the data is larger.")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [Description("Gets or sets a value used to calculate the maximum, unless the data is larger. On a time axis, use SuggestedMaxTime.")]
+    [JsonIgnore]
     [ParameterTypeName("double?")]
     public double? SuggestedMax { get; set; }
 
     /// <summary>
+    /// Gets or sets a date the range of a time or timeseries axis is widened to include, unless the data ends later.
+    /// When set, it is sent instead of <see cref="SuggestedMax" />.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets a date the range of a time or timeseries axis is widened to include, unless the data ends later. When set, it is sent instead of SuggestedMax.")]
+    [JsonIgnore]
+    [ParameterTypeName("ChartTimeValue?")]
+    public ChartTimeValue? SuggestedMaxTime { get; set; }
+
+    /// <summary>
+    /// Gets the value sent as <c>suggestedMax</c>: <see cref="SuggestedMaxTime" /> when set, otherwise <see cref="SuggestedMax" />.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonInclude]
+    [JsonPropertyName("suggestedMax")]
+    internal object? SuggestedMaxValue => (object?)SuggestedMaxTime ?? SuggestedMax;
+
+    /// <summary>
     /// Gets or sets a value used to calculate the minimum, unless the data is smaller.
+    /// On a time axis, use <see cref="SuggestedMinTime" />; when it is set, it is sent instead of this value.
     /// <para>
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Gets or sets a value used to calculate the minimum, unless the data is smaller.")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [Description("Gets or sets a value used to calculate the minimum, unless the data is smaller. On a time axis, use SuggestedMinTime.")]
+    [JsonIgnore]
     [ParameterTypeName("double?")]
     public double? SuggestedMin { get; set; }
+
+    /// <summary>
+    /// Gets or sets a date the range of a time or timeseries axis is widened to include, unless the data starts earlier.
+    /// When set, it is sent instead of <see cref="SuggestedMin" />.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets a date the range of a time or timeseries axis is widened to include, unless the data starts earlier. When set, it is sent instead of SuggestedMin.")]
+    [JsonIgnore]
+    [ParameterTypeName("ChartTimeValue?")]
+    public ChartTimeValue? SuggestedMinTime { get; set; }
+
+    /// <summary>
+    /// Gets the value sent as <c>suggestedMin</c>: <see cref="SuggestedMinTime" /> when set, otherwise <see cref="SuggestedMin" />.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonInclude]
+    [JsonPropertyName("suggestedMin")]
+    internal object? SuggestedMinValue => (object?)SuggestedMinTime ?? SuggestedMin;
 
     /// <summary>
     /// Gets or sets the tick configuration.
@@ -724,6 +820,22 @@ public class ChartAxes
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [ParameterTypeName("ChartAxesTicks?")]
     public ChartAxesTicks? Ticks { get; set; }
+
+    /// <summary>
+    /// Gets or sets the options of a <see cref="ChartAxesType.Time" /> or <see cref="ChartAxesType.Timeseries" /> axis:
+    /// units, rounding, first day of the week, and the .NET date formats of the tick labels and tooltips.
+    /// The library draws time axes with its own date adapter, so no extra script is needed.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/axes/cartesian/time.html" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the options of a time or timeseries axis: units, rounding, first day of the week, and the .NET date formats of the tick labels and tooltips.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartAxesTime?")]
+    public ChartAxesTime? Time { get; set; }
 
     /// <summary>
     /// Gets or sets the axis title.
@@ -1348,6 +1460,21 @@ public class ChartAxesTicks
     public bool? ShowLabelBackdrop { get; set; }
 
     /// <summary>
+    /// Gets or sets where the ticks of a time or timeseries axis come from: <c>"auto"</c> picks well-spaced dates,
+    /// <c>"data"</c> puts a tick at every data point, and <c>"labels"</c> puts a tick at every label.
+    /// <para>
+    /// Default value is <see langword="null" /> (Chart.js uses <c>"auto"</c>).
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/axes/cartesian/time.html#ticks-source" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets where the ticks of a time or timeseries axis come from: \"auto\", \"data\" or \"labels\".")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("string?")]
+    public string? Source { get; set; }
+
+    /// <summary>
     /// Gets or sets a fixed step between ticks on a linear axis.
     /// <para>
     /// Default value is <see langword="null" />.
@@ -1569,6 +1696,234 @@ public class ChartAxesTitle
             SetTitleAlignment(value);
         }
     }
+
+    #endregion
+}
+
+/// <summary>
+/// The options of a <see cref="ChartAxesType.Time" /> or <see cref="ChartAxesType.Timeseries" /> axis.
+/// Formats are .NET date format strings, such as <c>"dd MMM yyyy"</c> or <c>"t"</c>; month and weekday names follow
+/// <see cref="ChartOptions.Locale" />, or the browser's language when it is not set.
+/// <para>
+/// See <see href="https://www.chartjs.org/docs/latest/axes/cartesian/time.html#time-axis-specific-options" /> for more information.
+/// </para>
+/// </summary>
+public class ChartAxesTime
+{
+    #region Properties, Indexers
+
+    /// <summary>
+    /// Gets or sets the .NET date format of the tick labels for each time unit, for example <c>Day = "dd MMM"</c>.
+    /// A unit left unset uses the library default for that unit.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the .NET date format of the tick labels for each time unit. A unit left unset uses the library default.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartAxesTimeDisplayFormats?")]
+    public ChartAxesTimeDisplayFormats? DisplayFormats { get; set; }
+
+    /// <summary>
+    /// Gets or sets the first day of the week when the unit is <see cref="ChartTimeUnit.Week" />, for example <see cref="DayOfWeek.Monday" />.
+    /// <para>
+    /// Default value is <see langword="null" /> (Chart.js starts weeks on Sunday).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the first day of the week when the unit is Week, for example DayOfWeek.Monday.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("DayOfWeek?")]
+    public DayOfWeek? IsoWeekday { get; set; }
+
+    /// <summary>
+    /// Gets or sets the smallest unit Chart.js may pick when it chooses the unit itself.
+    /// <para>
+    /// Default value is <see langword="null" /> (Chart.js uses <see cref="ChartTimeUnit.Millisecond" />).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the smallest unit Chart.js may pick when it chooses the unit itself.")]
+    [JsonConverter(typeof(CamelCaseEnumConverter<ChartTimeUnit>))]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartTimeUnit?")]
+    public ChartTimeUnit? MinUnit { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unit every date is rounded down to, for example <see cref="ChartTimeUnit.Hour" /> puts 09:42 at 09:00.
+    /// <para>
+    /// Default value is <see langword="null" /> (no rounding).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the unit every date is rounded down to, for example Hour puts 09:42 at 09:00.")]
+    [JsonConverter(typeof(CamelCaseEnumConverter<ChartTimeUnit>))]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartTimeUnit?")]
+    public ChartTimeUnit? Round { get; set; }
+
+    /// <summary>
+    /// Gets or sets the .NET date format of the tooltip title, for example <c>"ddd, dd MMM yyyy HH:mm"</c>.
+    /// <para>
+    /// Default value is <see langword="null" /> (the library uses <c>"G"</c>, the browser's short date and long time).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the .NET date format of the tooltip title, for example \"ddd, dd MMM yyyy HH:mm\".")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("string?")]
+    public string? TooltipFormat { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unit of the ticks, for example <see cref="ChartTimeUnit.Day" /> for one tick a day.
+    /// <para>
+    /// Default value is <see langword="null" /> (Chart.js picks the unit that fits the data).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the unit of the ticks, for example Day for one tick a day.")]
+    [JsonConverter(typeof(CamelCaseEnumConverter<ChartTimeUnit>))]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartTimeUnit?")]
+    public ChartTimeUnit? Unit { get; set; }
+
+    #endregion
+}
+
+/// <summary>
+/// The .NET date format of the tick labels for each time unit, for example <c>Day = "dd MMM"</c> or <c>Hour = "HH:mm"</c>.
+/// Both custom formats (<c>"ddd, dd MMM yyyy"</c>) and standard formats (<c>"d"</c>, <c>"t"</c>) are supported.
+/// <para>
+/// See <see href="https://www.chartjs.org/docs/latest/axes/cartesian/time.html#display-formats" /> for more information.
+/// </para>
+/// </summary>
+public class ChartAxesTimeDisplayFormats
+{
+    #region Properties, Indexers
+
+    /// <summary>
+    /// Gets or sets the format of day ticks.
+    /// <para>
+    /// Default value is <see langword="null" /> (the library uses <c>"d MMM"</c>).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the format of day ticks.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("string?")]
+    public string? Day { get; set; }
+
+    /// <summary>
+    /// Gets or sets the format of hour ticks.
+    /// <para>
+    /// Default value is <see langword="null" /> (the library uses <c>"t"</c>, the browser's short time).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the format of hour ticks.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("string?")]
+    public string? Hour { get; set; }
+
+    /// <summary>
+    /// Gets or sets the format of millisecond ticks.
+    /// <para>
+    /// Default value is <see langword="null" /> (the library uses <c>"HH:mm:ss.fff"</c>).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the format of millisecond ticks.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("string?")]
+    public string? Millisecond { get; set; }
+
+    /// <summary>
+    /// Gets or sets the format of minute ticks.
+    /// <para>
+    /// Default value is <see langword="null" /> (the library uses <c>"t"</c>, the browser's short time).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the format of minute ticks.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("string?")]
+    public string? Minute { get; set; }
+
+    /// <summary>
+    /// Gets or sets the format of month ticks.
+    /// <para>
+    /// Default value is <see langword="null" /> (the library uses <c>"MMM yyyy"</c>).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the format of month ticks.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("string?")]
+    public string? Month { get; set; }
+
+    /// <summary>
+    /// Gets or sets the format of quarter ticks.
+    /// <para>
+    /// Default value is <see langword="null" /> (the library uses <c>"MMM yyyy"</c>).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the format of quarter ticks.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("string?")]
+    public string? Quarter { get; set; }
+
+    /// <summary>
+    /// Gets or sets the format of second ticks.
+    /// <para>
+    /// Default value is <see langword="null" /> (the library uses <c>"T"</c>, the browser's long time).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the format of second ticks.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("string?")]
+    public string? Second { get; set; }
+
+    /// <summary>
+    /// Gets or sets the format of week ticks.
+    /// <para>
+    /// Default value is <see langword="null" /> (the library uses <c>"d MMM"</c>).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the format of week ticks.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("string?")]
+    public string? Week { get; set; }
+
+    /// <summary>
+    /// Gets or sets the format of year ticks.
+    /// <para>
+    /// Default value is <see langword="null" /> (the library uses <c>"yyyy"</c>).
+    /// </para>
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the format of year ticks.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("string?")]
+    public string? Year { get; set; }
 
     #endregion
 }

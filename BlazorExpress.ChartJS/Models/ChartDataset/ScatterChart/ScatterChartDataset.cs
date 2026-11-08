@@ -473,6 +473,27 @@ public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
     public double Tension { get; set; }
 
     /// <summary>
+    /// The points of a time or timeseries x-axis, each at its own date, for example
+    /// <c>TimeData = [new(new DateTime(2026, 1, 5, 9, 0, 0), 21.5), new(new DateTime(2026, 1, 5, 9, 7, 0), 22.1)]</c>.
+    /// A <see langword="null" /> <c>Y</c> leaves a gap. When set, it is sent instead of <c>Data</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/axes/cartesian/time.html" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("The points of a time or timeseries x-axis, each at its own date. A null Y leaves a gap. When set, it is sent instead of Data.")]
+    [JsonIgnore]
+    [ParameterTypeName("List<ChartTimePoint>?")]
+    public List<ChartTimePoint>? TimeData { get; set; }
+
+    /// <summary>
+    /// Gets the value sent as <c>data</c>: <see cref="TimeData" /> when set, otherwise <c>Data</c>.
+    /// </summary>
+    internal override object? DataValue => (object?)TimeData ?? Data;
+
+    /// <summary>
     /// The ID of the x axis to plot this dataset on.
     /// <para>
     /// Default value is 'first x axis'.

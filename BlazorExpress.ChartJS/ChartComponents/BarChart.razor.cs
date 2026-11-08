@@ -17,13 +17,18 @@ public partial class BarChart : ChartComponentBase
 
     /// <summary>
     /// Asynchronously adds a new data entry to the specified chart data.
+    /// <para>
+    /// For a time point (<c>new BarChartDatasetData("Orders", new DateOnly(2026, 3, 1), 30)</c>), <paramref name="dataLabel" />
+    /// is the label of the dataset, the same as in <paramref name="data" />, and the point is appended to that dataset's <see cref="BarChartDataset.TimeData" />.
+    /// </para>
     /// </summary>
     /// <param name="chartData">The chart data to which the new entry will be added.</param>
-    /// <param name="dataLabel">The label associated with the new data entry.</param>
+    /// <param name="dataLabel">The label associated with the new data entry; for a time point, the label of the dataset.</param>
     /// <param name="data">The dataset containing the data to be added.</param>
     /// <returns>A task representing the asynchronous operation, with a result of the updated <see cref="ChartData"/>.</returns>
+    /// <exception cref="ArgumentException">For a time point: the labels differ, no dataset has the label, or the dataset uses <c>Data</c> or <c>FloatingData</c>.</exception>
     [AddedVersion("1.0.0")]
-    [Description("Asynchronously adds a new data entry to the specified chart data.")]
+    [Description("Asynchronously adds a new data entry to the specified chart data. For a time point, dataLabel is the label of the dataset whose TimeData it is appended to.")]
     [MethodReturnTypeName($"Task<{nameof(ChartData)}>")]
     public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IChartDatasetData data)
     {
@@ -32,6 +37,9 @@ public partial class BarChart : ChartComponentBase
 
         if (chartData.Datasets is null)
             throw new ArgumentNullException(nameof(chartData.Datasets));
+
+        if (TimeDataSupport.IsTimePoint(data))
+            return await AddTimePointAsync(chartData, dataLabel, data, BarLineChartSupport.IsSupportedDataset, BarChartInterop.AddDatasetPoint);
 
         if (chartData.Labels is null)
             throw new ArgumentNullException(nameof(chartData.Labels));
@@ -130,6 +138,37 @@ public partial class BarChart : ChartComponentBase
     }
 
     /// <summary>
+    /// Asynchronously adds a date to <see cref="ChartData.TimeLabels" /> with one value for the matching dataset,
+    /// for example <c>AddDataAsync(chartData, new DateOnly(2026, 3, 1), new BarChartDatasetData("Orders", 30))</c>.
+    /// </summary>
+    /// <param name="chartData">The chart data to which the date and value are added.</param>
+    /// <param name="dataLabel">The date: a <see cref="DateOnly" />, <see cref="DateTime" /> or <see cref="DateTimeOffset" />.</param>
+    /// <param name="data">The value for the dataset named in it.</param>
+    /// <returns>A task representing the asynchronous operation, with a result of the updated <see cref="ChartData"/>.</returns>
+    /// <exception cref="ArgumentException"><see cref="ChartData.TimeLabels" /> is <see langword="null" />.</exception>
+    [AddedVersion("1.3.0")]
+    [Description("Asynchronously adds a date to ChartData.TimeLabels with one value for the matching dataset.")]
+    [MethodReturnTypeName($"Task<{nameof(ChartData)}>")]
+    public override async Task<ChartData> AddDataAsync(ChartData chartData, ChartTimeValue dataLabel, IChartDatasetData data) =>
+        await AddTimeLabelDataAsync(chartData, dataLabel, data, BarChartInterop.AddDatasetData);
+
+    /// <summary>
+    /// Asynchronously adds a date to <see cref="ChartData.TimeLabels" /> with one value for each dataset,
+    /// for example <c>AddDataAsync(chartData, new DateOnly(2026, 3, 1), [new BarChartDatasetData("Orders", 30), new BarChartDatasetData("Returns", 2)])</c>.
+    /// </summary>
+    /// <param name="chartData">The chart data to which the date and values are added.</param>
+    /// <param name="dataLabel">The date: a <see cref="DateOnly" />, <see cref="DateTime" /> or <see cref="DateTimeOffset" />.</param>
+    /// <param name="data">One value per dataset.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the updated chart data.</returns>
+    /// <exception cref="ArgumentException"><see cref="ChartData.TimeLabels" /> is <see langword="null" />, <paramref name="data" /> is empty, or the date already exists.</exception>
+    /// <exception cref="InvalidDataException">The dataset count and the value count differ.</exception>
+    [AddedVersion("1.3.0")]
+    [Description("Asynchronously adds a date to ChartData.TimeLabels with one value for each dataset.")]
+    [MethodReturnTypeName($"Task<{nameof(ChartData)}>")]
+    public override async Task<ChartData> AddDataAsync(ChartData chartData, ChartTimeValue dataLabel, IReadOnlyCollection<IChartDatasetData> data) =>
+        await AddTimeLabelDataAsync(chartData, dataLabel, data, BarChartInterop.AddDatasetsData);
+
+    /// <summary>
     /// Asynchronously adds a dataset to the specified chart data.
     /// </summary>
     /// <param name="chartData">The chart data to which the dataset will be added.</param>
@@ -181,7 +220,7 @@ public partial class BarChart : ChartComponentBase
         if (chartData is not null && chartData.Datasets is not null)
         {
             var datasets = BarLineChartSupport.GetSupportedDatasets(chartData);
-            var data = new { chartData.Labels, Datasets = datasets };
+            var data = new { Labels = chartData.LabelsValue, Datasets = datasets };
             await SafeInvokeVoidAsync(BarChartInterop.Initialize, Id, GetChartType(), data, (BarChartOptions)chartOptions, plugins, DotNetObjectReference, EventOptions);
         }
     }
@@ -220,7 +259,7 @@ public partial class BarChart : ChartComponentBase
         if (chartData is not null && chartData.Datasets is not null)
         {
             var datasets = BarLineChartSupport.GetSupportedDatasets(chartData);
-            var data = new { chartData.Labels, Datasets = datasets };
+            var data = new { Labels = chartData.LabelsValue, Datasets = datasets };
             await SafeInvokeVoidAsync(BarChartInterop.Update, [Id, GetChartType(), data, (BarChartOptions)chartOptions, .. GetUpdateModeArguments(mode)]);
         }
     }
