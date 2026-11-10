@@ -15,12 +15,14 @@ public class ModelMetadataTests
 
     private static readonly Type[] newTypes =
     [
-        typeof(BarChartDataValue), typeof(BubbleChartDataLabels), typeof(BubbleChartDataLabelsFont), typeof(BubbleChartPlugins),
+        typeof(BarChartDataValue), typeof(ChartFunction), typeof(BubbleChartDataLabels), typeof(BubbleChartDataLabelsFont), typeof(BubbleChartPlugins),
         typeof(ChartAxesTime), typeof(ChartAxesTimeDisplayFormats), typeof(ChartTimeValue), typeof(ChartTimePoint), typeof(BubbleChartTimePoint),
         typeof(ChartAxesAngleLines), typeof(ChartAxesPointLabels), typeof(ChartBorderRadius), typeof(ChartClip), typeof(ChartDimension),
         typeof(ChartElements), typeof(ChartElementsArc), typeof(ChartElementsBar), typeof(ChartElementsLine), typeof(ChartElementsPoint),
         typeof(ChartHover), typeof(ChartPadding), typeof(ChartPluginsColors), typeof(ChartPluginsFiller), typeof(ChartPluginsTooltipLine),
-        typeof(ChartRadialAxes), typeof(RadarChartDataLabels), typeof(RadarChartDataLabelsFont), typeof(RadarChartPlugins), typeof(RadialScales)
+        typeof(ChartRadialAxes), typeof(RadarChartDataLabels), typeof(RadarChartDataLabelsFont), typeof(RadarChartPlugins), typeof(RadialScales),
+        // New in 26110205
+        typeof(ChartLineSegment), typeof(ChartNumberFormat), typeof(ChartPluginsTooltipCallbacks)
     ];
 
     private static readonly Type[] touchedTypes =
@@ -44,6 +46,8 @@ public class ModelMetadataTests
         typeof(PieChartDataset), typeof(PolarAreaChartDataset), typeof(RadarChartDataset), typeof(ScatterChartDataset),
         // Touched by 26110204
         typeof(ChartData), typeof(BubbleChartDataset), typeof(BubbleChartDatasetData), typeof(LineChartDatasetData), typeof(ScatterChartDatasetData),
+        // Touched by 26110205
+        typeof(ChartDatasetDataLabels),
         .. newTypes
     ];
 

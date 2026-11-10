@@ -1,0 +1,41 @@
+<LineChart @ref="lineChart" Width="600" />
+
+@code {
+    private LineChart lineChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var chartData = new ChartData
+            {
+                Labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                Datasets =
+                [
+                    new LineChartDataset
+                    {
+                        Label = "Units sold",
+                        Data = [12500, 18200, 15750, 21000, 24300, 30100, 27800],
+                        BackgroundColor = "rgba(75, 192, 192, 0.2)",
+                        BorderColor = "rgb(75, 192, 192)",
+                    }
+                ]
+            };
+
+            var options = new LineChartOptions { Responsive = true };
+
+            // 'demo.thousandsLabel' turns 25000 into "25k units".
+            options.Scales.Y!.Ticks = new ChartAxesTicks { Callback = new ChartFunction("demo.thousandsLabel") };
+
+            // 'demo.unitsTooltipLabel' writes "Units sold: 25,000 units".
+            options.Plugins.Tooltip = new ChartPluginsTooltip
+            {
+                Callbacks = new ChartPluginsTooltipCallbacks { Label = new ChartFunction("demo.unitsTooltipLabel") }
+            };
+
+            await lineChart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

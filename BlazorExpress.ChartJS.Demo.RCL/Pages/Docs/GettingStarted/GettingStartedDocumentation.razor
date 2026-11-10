@@ -63,6 +63,43 @@
     <code>chartjs-adapter-date-fns</code>; the library's adapter replaces it. See the <a href="@DemoRouteConstants.Docs_LineChart#time-axis">time axis documentation</a>.
 </div>
 
+<section id="javascript-functions" class="content mb-5">
+    <h3 class="be-release-title">JavaScript functions</h3>
+    <p>
+        Some Chart.js options take a JavaScript function: tick labels, tooltip text, legend filters and clicks, line segment styles, gradient colours and more.
+        Chart.js calls these functions while it draws, so they must be JavaScript. From 1.3.0 you write them in your own JavaScript file, register each one by name,
+        and reference it from C# with <code>ChartFunction</code>.
+    </p>
+    <ol>
+        <li>
+            Create a JavaScript file in your app, for example <code>wwwroot/js/chart-functions.js</code>, and register your functions:
+            <pre><code>blazorexpress.chartjs.registerFunction('formatCurrency', value =>
+    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value));</code></pre>
+        </li>
+        <li>
+            Load it after <code>blazorexpress.chartjs.js</code>, so <code>registerFunction</code> exists:
+            in <code>wwwroot/index.html</code> for Blazor WebAssembly and .NET MAUI Blazor, or in <code>App.razor</code> (<code>Components/App.razor</code>) for Blazor Web Apps with Server or Auto render modes.
+            <pre><code>&lt;script src="_content/BlazorExpress.ChartJS/blazorexpress.chartjs.js"&gt;&lt;/script&gt;
+&lt;script src="js/chart-functions.js"&gt;&lt;/script&gt;</code></pre>
+        </li>
+        <li>
+            Reference the function by its registered name:
+            <pre><code>options.Scales.Y.Ticks = new ChartAxesTicks { Callback = new ChartFunction("formatCurrency") };</code></pre>
+        </li>
+    </ol>
+    <ul>
+        <li>For currency, percent and compact axis labels, <code>Ticks.Format</code> (<code>ChartNumberFormat</code>) needs no JavaScript at all.</li>
+        <li>Value properties such as <code>BackgroundColor</code> have a function sibling, such as <code>BackgroundColorFunction</code>, which is sent instead when set.</li>
+        <li>A name that isn't registered logs one console error naming the function and the option; the option keeps its Chart.js default. A function you register later is used at the next <code>UpdateAsync</code>.</li>
+        <li>A legend <code>OnClick</code> function replaces Chart.js's default toggle, as in Chart.js. The library still keeps the visibility it changed and still raises <code>OnLegendClick</code>.</li>
+        <li>If a registered function throws, the error is logged to the console once and the chart keeps drawing.</li>
+    </ul>
+    <div class="notification is-warning is-light">
+        <strong>Security:</strong> only functions you register can be referenced. A name is never evaluated as code, and globals such as <code>window.open</code> or <code>fetch</code> can't be reached by name.
+        Register only functions meant to be called with chart data, never general-purpose functions such as navigation or network calls, because chart options can carry values that came from your users.
+    </div>
+</section>
+
 <section class="be-release-spotlight be-release-spotlight--compact">
     <p class="be-release-kicker">Guides</p>
     <h3 class="be-release-title">Project Setup Documentation</h3>

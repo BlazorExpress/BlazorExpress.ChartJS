@@ -25,6 +25,7 @@ public class BarChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// The bar background color.
+    /// Use <see cref="BackgroundColorFunction" /> for a registered JavaScript function; when set, it is sent instead of this value.
     /// <para>
     /// Default value is rgba(0, 0, 0, 0.1).
     /// </para>
@@ -34,8 +35,33 @@ public class BarChartDataset : ChartDataset<double?>
     [DefaultValue("rgba(0, 0, 0, 0.1)")]
     [Description("Gets or sets the bar background color.")]
     [ParameterTypeName("List<string>?")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonIgnore]
     public List<string>? BackgroundColor { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the background color, as the scriptable option <c>(context) =&gt; color</c>;
+    /// it may also return a <c>CanvasGradient</c> or <c>CanvasPattern</c>. <c>context</c> is the Chart.js option context, for example
+    /// <c>context.dataIndex</c>, <c>context.raw</c> and <c>context.chart</c>.
+    /// When set, it is sent instead of <see cref="BackgroundColor" />.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the background color, as the scriptable option (context) => color. When set, it is sent instead of BackgroundColor.")]
+    [JsonIgnore]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? BackgroundColorFunction { get; set; }
+
+    /// <summary>
+    /// Gets the value sent as <c>backgroundColor</c>: <see cref="BackgroundColorFunction" /> when set, otherwise <see cref="BackgroundColor" />.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonInclude]
+    [JsonPropertyName("backgroundColor")]
+    internal object? BackgroundColorValue => (object?)BackgroundColorFunction ?? BackgroundColor;
 
     /// <summary>
     /// Percent (0-1) of the available width each bar should be within the category width. 
@@ -81,6 +107,7 @@ public class BarChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// The bar border color.
+    /// Use <see cref="BorderColorFunction" /> for a registered JavaScript function; when set, it is sent instead of this value.
     /// <para>
     /// Default value is rgba(0, 0, 0, 0.1).
     /// </para>
@@ -90,8 +117,33 @@ public class BarChartDataset : ChartDataset<double?>
     [DefaultValue("rgba(0, 0, 0, 0.1)")]
     [Description("The bar border color.")]
     [ParameterTypeName("List<string>?")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonIgnore]
     public List<string>? BorderColor { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the border color, as the scriptable option <c>(context) =&gt; color</c>;
+    /// it may also return a <c>CanvasGradient</c> or <c>CanvasPattern</c>. <c>context</c> is the Chart.js option context, for example
+    /// <c>context.dataIndex</c>, <c>context.raw</c> and <c>context.chart</c>.
+    /// When set, it is sent instead of <see cref="BorderColor" />.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the border color, as the scriptable option (context) => color. When set, it is sent instead of BorderColor.")]
+    [JsonIgnore]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? BorderColorFunction { get; set; }
+
+    /// <summary>
+    /// Gets the value sent as <c>borderColor</c>: <see cref="BorderColorFunction" /> when set, otherwise <see cref="BorderColor" />.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonInclude]
+    [JsonPropertyName("borderColor")]
+    internal object? BorderColorValue => (object?)BorderColorFunction ?? BorderColor;
 
     /// <summary>
     /// The bar border radius (in pixels).
@@ -221,6 +273,7 @@ public class BarChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// The bar background color when hovered.
+    /// Use <see cref="HoverBackgroundColorFunction" /> for a registered JavaScript function; when set, it is sent instead of this value.
     /// <para>
     /// Default value is <see langword="null" />.
     /// </para>
@@ -230,11 +283,37 @@ public class BarChartDataset : ChartDataset<double?>
     [DefaultValue(null)]
     [Description("The bar background color when hovered.")]
     [ParameterTypeName("List<string>?")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonIgnore]
     public List<string>? HoverBackgroundColor { get; set; }
 
     /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the background color when hovered, as the scriptable option <c>(context) =&gt; color</c>;
+    /// it may also return a <c>CanvasGradient</c> or <c>CanvasPattern</c>. <c>context</c> is the Chart.js option context, for example
+    /// <c>context.dataIndex</c>, <c>context.raw</c> and <c>context.chart</c>.
+    /// When set, it is sent instead of <see cref="HoverBackgroundColor" />.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the background color when hovered, as the scriptable option (context) => color. When set, it is sent instead of HoverBackgroundColor.")]
+    [JsonIgnore]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? HoverBackgroundColorFunction { get; set; }
+
+    /// <summary>
+    /// Gets the value sent as <c>hoverBackgroundColor</c>: <see cref="HoverBackgroundColorFunction" /> when set, otherwise <see cref="HoverBackgroundColor" />.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonInclude]
+    [JsonPropertyName("hoverBackgroundColor")]
+    internal object? HoverBackgroundColorValue => (object?)HoverBackgroundColorFunction ?? HoverBackgroundColor;
+
+    /// <summary>
     /// The bar border color when hovered.
+    /// Use <see cref="HoverBorderColorFunction" /> for a registered JavaScript function; when set, it is sent instead of this value.
     /// <para>
     /// Default value is <see langword="null" />.
     /// </para>
@@ -244,8 +323,33 @@ public class BarChartDataset : ChartDataset<double?>
     [DefaultValue(null)]
     [Description("The bar border color when hovered.")]
     [ParameterTypeName("List<string>?")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonIgnore]
     public List<string>? HoverBorderColor { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the border color when hovered, as the scriptable option <c>(context) =&gt; color</c>;
+    /// it may also return a <c>CanvasGradient</c> or <c>CanvasPattern</c>. <c>context</c> is the Chart.js option context, for example
+    /// <c>context.dataIndex</c>, <c>context.raw</c> and <c>context.chart</c>.
+    /// When set, it is sent instead of <see cref="HoverBorderColor" />.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the border color when hovered, as the scriptable option (context) => color. When set, it is sent instead of HoverBorderColor.")]
+    [JsonIgnore]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? HoverBorderColorFunction { get; set; }
+
+    /// <summary>
+    /// Gets the value sent as <c>hoverBorderColor</c>: <see cref="HoverBorderColorFunction" /> when set, otherwise <see cref="HoverBorderColor" />.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonInclude]
+    [JsonPropertyName("hoverBorderColor")]
+    internal object? HoverBorderColorValue => (object?)HoverBorderColorFunction ?? HoverBorderColor;
 
     /// <summary>
     /// The bar border radius when hovered (in pixels).

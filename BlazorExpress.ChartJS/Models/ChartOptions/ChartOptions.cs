@@ -126,6 +126,51 @@ public class ChartOptions : IChartOptions
     public bool MaintainAspectRatio { get; set; } = true;
 
     /// <summary>
+    /// Gets or sets the registered JavaScript function Chart.js calls when the chart is clicked, as <c>(event, elements, chart) =&gt; void</c>.
+    /// It runs alongside the component's .NET <see cref="ChartComponentBase.OnClick" /> event, which is still raised.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/interactions.html#events" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function Chart.js calls when the chart is clicked, as (event, elements, chart) => void. It runs alongside the component's .NET OnClick event, which is still raised.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? OnClick { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function Chart.js calls when the pointer moves over the chart, as <c>(event, elements, chart) =&gt; void</c>.
+    /// It runs alongside the component's .NET <see cref="ChartComponentBase.OnHover" /> event, which is still raised.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/interactions.html#events" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function Chart.js calls when the pointer moves over the chart, as (event, elements, chart) => void. It runs alongside the component's .NET OnHover event, which is still raised.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? OnHover { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function Chart.js calls after the chart resizes, as <c>(chart, size) =&gt; void</c>,
+    /// where <c>size</c> is <c>{ width, height }</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function Chart.js calls after the chart resizes, as (chart, size) => void, where size is { width, height }.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? OnResize { get; set; }
+
+    /// <summary>
     /// Gets or sets the delay in milliseconds before the chart redraws after a resize, so rapid resizes cause one redraw.
     /// <para>
     /// Default value is <see langword="null" /> (Chart.js uses 0).
@@ -1254,6 +1299,22 @@ public class ChartAxesTicks
     public int? BackdropPadding { get; set; }
 
     /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the text of each tick label, as
+    /// <c>(value, index, ticks) =&gt; string | string[]</c>. Return an array for a label of several lines, or <see langword="null" />
+    /// to hide the tick and its grid line. On a category axis <c>value</c> is the label index; use <c>this.getLabelForValue(value)</c> for the label.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/axes/labelling.html#creating-custom-tick-formats" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the text of each tick label, as (value, index, ticks) => string | string[].")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? Callback { get; set; }
+
+    /// <summary>
     /// Gets or sets the color of the ticks.
     /// <para>
     /// Default value is <see langword="null" />.
@@ -1315,6 +1376,23 @@ public class ChartAxesTicks
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [ParameterTypeName("ChartFont?")]
     public ChartFont? Font { get; set; }
+
+    /// <summary>
+    /// Gets or sets the <c>Intl.NumberFormat</c> options the default tick label formatter of linear, logarithmic and radial linear axes uses,
+    /// with <see cref="ChartOptions.Locale" />, for example <c>Format = new() { Style = "currency", Currency = "USD" }</c>.
+    /// The default tooltip value uses the same formatter. Other axis types ignore it; time axes use <see cref="ChartAxesTime.DisplayFormats" />.
+    /// A <see cref="Callback" /> replaces the default formatter.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/axes/labelling.html" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the Intl.NumberFormat options the default tick label formatter of linear, logarithmic and radial linear axes uses, with Locale. The default tooltip value uses the same formatter. Other axis types ignore it; time axes use Time.DisplayFormats.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartNumberFormat?")]
+    public ChartNumberFormat? Format { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether the minimum and maximum are shown as ticks even when they are not on a step.
@@ -2086,6 +2164,36 @@ public class ChartAnimation
     [Description("Gets or sets a value indicating whether the animations loop endlessly.")]
     [ParameterTypeName("bool?")]
     public bool? Loop { get; set; } = null;
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function Chart.js calls when an animation completes, as <c>(animation) =&gt; void</c>,
+    /// where <c>animation</c> is <c>{ chart, currentStep, initial, numSteps }</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/animations.html#animation-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function Chart.js calls when an animation completes, as (animation) => void.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? OnComplete { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function Chart.js calls on each step of an animation, as <c>(animation) =&gt; void</c>,
+    /// where <c>animation</c> is <c>{ chart, currentStep, initial, numSteps }</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/animations.html#animation-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function Chart.js calls on each step of an animation, as (animation) => void.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? OnProgress { get; set; }
 
     #endregion
 }

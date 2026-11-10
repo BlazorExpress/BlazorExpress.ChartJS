@@ -1,0 +1,225 @@
+@attribute [Route(pageUrl)]
+@layout DemosMainLayout
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
+
+@* Unlisted page: not linked from the navigation. It checks JavaScript function references (ChartFunction) on live charts. *@
+<HeadContent>
+    <meta name="robots" content="noindex, nofollow" />
+</HeadContent>
+
+<PageHero Title="JavaScript functions self-check" />
+
+<Block>
+    Registers test functions, draws the charts below with <code>ChartFunction</code> references, then checks each case on the live charts.
+    The unregistered names, the throwing function and <code>"window.open"</code> are expected to log console errors.
+</Block>
+
+@if (cases is null)
+{
+    <Block>Running…</Block>
+}
+else
+{
+    <Block>
+        <strong>Passed:</strong> @cases.Count(c => c.Status == "pass") ·
+        <strong>Failed:</strong> <span class="@(cases.Any(c => c.Status == "fail") ? "has-text-danger" : "has-text-success")">@cases.Count(c => c.Status == "fail")</span>
+    </Block>
+
+    <div class="table-container">
+        <table class="table is-fullwidth is-narrow is-striped">
+            <thead>
+                <tr><th>Status</th><th>Case</th><th>Expected</th><th>Actual</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var item in cases)
+                {
+                    <tr class="@(item.Status == "fail" ? "has-background-danger-light" : null)">
+                        <td>@item.Status</td>
+                        <td>@item.Name</td>
+                        <td><code>@item.Expected</code></td>
+                        <td><code>@item.Actual</code></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<div class="columns is-multiline">
+    <div class="column is-half"><Block><strong>Ticks, tooltip, gradient, segment</strong></Block><LineChart @ref="ticksChart" Width="420" Height="240" /></div>
+    <div class="column is-half"><Block><strong>Unregistered and late functions</strong></Block><LineChart @ref="missingChart" Width="420" Height="240" /></div>
+    <div class="column is-half"><Block><strong>Throwing tick callback</strong></Block><LineChart @ref="throwsChart" Width="420" Height="240" /></div>
+    <div class="column is-half"><Block><strong>Legend functions</strong></Block><BarChart @ref="legendChart" Width="420" Height="240" OnLegendClick="OnLegendClick" /></div>
+    <div class="column is-half"><Block><strong>Datalabels formatter</strong></Block><BarChart @ref="datalabelsChart" Width="420" Height="240" /></div>
+    <div class="column is-half"><Block><strong>Pie slice colours and add-data</strong></Block><PieChart @ref="pieChart" Width="240" Height="240" /></div>
+    <div class="column is-half"><Block><strong>Ticks.Format currency</strong></Block><LineChart @ref="formatChart" Width="420" Height="240" /></div>
+    <div class="column is-half"><Block><strong>Ticks.Format compact</strong></Block><LineChart @ref="compactChart" Width="420" Height="240" /></div>
+</div>
+
+@code {
+    private const string pageUrl = DemoRouteConstants.Demos_JsFunctionsSelfCheck;
+
+    private LineChart ticksChart = default!;
+    private LineChart missingChart = default!;
+    private LineChart throwsChart = default!;
+    private BarChart legendChart = default!;
+    private BarChart datalabelsChart = default!;
+    private PieChart pieChart = default!;
+    private LineChart formatChart = default!;
+    private LineChart compactChart = default!;
+
+    private List<SelfCheckCase>? cases;
+    private int legendClickCount;
+    private bool? lastLegendHidden;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await RunAsync();
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData LineData(params double?[] values) => new()
+    {
+        Labels = values.Select((_, index) => $"P{index + 1}").ToList(),
+        Datasets = new List<IChartDataset> { new LineChartDataset { Label = "Values", Data = values.ToList() } }
+    };
+
+    private Task OnLegendClick(ChartLegendClickEventArgs args)
+    {
+        legendClickCount++;
+        lastLegendHidden = args.Hidden;
+        return Task.CompletedTask;
+    }
+
+    private async Task RunAsync()
+    {
+        var all = new List<SelfCheckCase>();
+        await JS.InvokeAsync<bool>("jsFunctionsSelfCheck.begin");
+
+        // Ticks, tooltip label, gradient fill, dashed segment over a gap, animation callback.
+        var ticksData = new ChartData
+        {
+            Labels = ["P1", "P2", "P3", "P4", "P5"],
+            Datasets = new List<IChartDataset>
+            {
+                new LineChartDataset
+                {
+                    Label = "Values",
+                    Data = [0, 4, null, 6, 3],
+                    SpanGaps = true,
+                    Fill = true,
+                    BackgroundColorFunction = new ChartFunction("selfCheck.gradient"),
+                    SegmentStyle = new ChartLineSegment { BorderDashFunction = new ChartFunction("selfCheck.segmentDash") },
+                }
+            }
+        };
+        var ticksOptions = new LineChartOptions { Animation = new ChartAnimation { Duration = 300, OnComplete = new ChartFunction("selfCheck.onComplete") } };
+        ticksOptions.Scales.Y!.Ticks = new ChartAxesTicks { Callback = new ChartFunction("selfCheck.currency") };
+        ticksOptions.Plugins.Tooltip = new ChartPluginsTooltip { Callbacks = new ChartPluginsTooltipCallbacks { Label = new ChartFunction("selfCheck.tooltipLabel") } };
+        await ticksChart.InitializeAsync(ticksData, ticksOptions);
+
+        // Unregistered names, browser globals and a function registered only later.
+        var missingData = LineData(0, 2, 4);
+        var missingOptions = new LineChartOptions
+        {
+            OnClick = new ChartFunction("window.open"),
+            OnHover = new ChartFunction("fetch"),
+            OnResize = new ChartFunction("__proto__"),
+        };
+        missingOptions.Plugins.Tooltip = new ChartPluginsTooltip { Callbacks = new ChartPluginsTooltipCallbacks { Title = new ChartFunction("selfCheck.missing") } };
+        missingOptions.Scales.X!.Ticks = new ChartAxesTicks { Callback = new ChartFunction("selfCheck.label") };
+        missingOptions.Scales.Y!.Ticks = new ChartAxesTicks { Callback = new ChartFunction("selfCheck.late") };
+        await missingChart.InitializeAsync(missingData, missingOptions);
+
+        // A tick callback that throws while the chart lays out.
+        var throwsOptions = new LineChartOptions();
+        throwsOptions.Scales.Y!.Ticks = new ChartAxesTicks { Callback = new ChartFunction("selfCheck.throws") };
+        var reachedDotNet = "none";
+        try
+        {
+            await throwsChart.InitializeAsync(LineData(1, 2, 3), throwsOptions);
+        }
+        catch (JSException exception)
+        {
+            reachedDotNet = exception.GetType().Name;
+        }
+        all.Add(new("Throwing function: no exception reaches .NET (AC-15)", "none", reachedDotNet, reachedDotNet == "none" ? "pass" : "fail"));
+
+        // Legend filter, sort, generateLabels and a Shift-only onClick; chart-level onClick.
+        var legendData = new ChartData
+        {
+            Labels = ["Q1", "Q2"],
+            Datasets = new List<IChartDataset>
+            {
+                new BarChartDataset { Label = "Alpha", Data = [3, 5] },
+                new BarChartDataset { Label = "Beta", Data = [4, 2] },
+                new BarChartDataset { Label = "Hidden target", Data = [5, 5] },
+            }
+        };
+        var legendOptions = new BarChartOptions { OnClick = new ChartFunction("selfCheck.chartClick") };
+        legendOptions.Plugins.Legend.OnClick = new ChartFunction("selfCheck.legendShift");
+        legendOptions.Plugins.Legend.Labels = new ChartPluginsLegendLabels
+        {
+            Filter = new ChartFunction("selfCheck.legendFilter"),
+            Sort = new ChartFunction("selfCheck.legendSort"),
+            GenerateLabels = new ChartFunction("selfCheck.generateLabels"),
+        };
+        await legendChart.InitializeAsync(legendData, legendOptions);
+
+        // Datalabels formatter, chart-wide and per dataset. The bars use a function colour, which the library's
+        // datalabels background must turn into a colour for each label.
+        var datalabelsDataset = new BarChartDataset { Label = "Counts", Data = [2, 6], BackgroundColorFunction = new ChartFunction("selfCheck.sliceColor") };
+        datalabelsDataset.Datalabels.Formatter = new ChartFunction("selfCheck.formatter");
+        var datalabelsOptions = new BarChartOptions();
+        datalabelsOptions.Plugins.Datalabels.Formatter = new ChartFunction("selfCheck.formatter");
+        await datalabelsChart.InitializeAsync(new ChartData { Labels = ["A", "B"], Datasets = new List<IChartDataset> { datalabelsDataset } }, datalabelsOptions, ["ChartDataLabels"]);
+
+        // Slice colours from a function, then add a slice.
+        var pieData = new ChartData
+        {
+            Labels = ["A", "B", "C"],
+            Datasets = new List<IChartDataset> { new PieChartDataset { Label = "Slices", Data = [3, 4, 5], BackgroundColorFunction = new ChartFunction("selfCheck.sliceColor") } }
+        };
+        await pieChart.InitializeAsync(pieData, new PieChartOptions());
+
+        // Ticks.Format: currency and compact, with the en-US locale.
+        var formatOptions = new LineChartOptions { Locale = "en-US" };
+        formatOptions.Scales.Y!.Ticks = new ChartAxesTicks { Format = new ChartNumberFormat { Style = "currency", Currency = "USD" } };
+        await formatChart.InitializeAsync(LineData(0, 25000, 50000), formatOptions);
+
+        var compactOptions = new LineChartOptions { Locale = "en-US" };
+        compactOptions.Scales.Y!.Ticks = new ChartAxesTicks { Format = new ChartNumberFormat { Notation = "compact" } };
+        await compactChart.InitializeAsync(LineData(0, 2500000, 5000000), compactOptions);
+
+        await Task.Delay(400);
+
+        var ids = new Dictionary<string, string?>
+        {
+            ["sc-ticks"] = ticksChart.Id, ["sc-missing"] = missingChart.Id, ["sc-throws"] = throwsChart.Id, ["sc-legend"] = legendChart.Id,
+            ["sc-datalabels"] = datalabelsChart.Id, ["sc-pie"] = pieChart.Id, ["sc-format"] = formatChart.Id, ["sc-compact"] = compactChart.Id,
+        };
+        all.AddRange(await JS.InvokeAsync<List<SelfCheckCase>>("jsFunctionsSelfCheck.runInitial", ids));
+
+        // Register the late function, re-register another, then update and add data.
+        await JS.InvokeAsync<bool>("jsFunctionsSelfCheck.registerLate");
+        await missingChart.UpdateAsync(missingData, missingOptions);
+        await legendChart.UpdateAsync(legendData, legendOptions);
+        await ticksChart.UpdateAsync(ticksData, ticksOptions);
+        await ticksChart.AddDatasetAsync(ticksData, new LineChartDataset { Label = "Added", Data = [1, 2, 3, 4, 5], BorderColorFunction = new ChartFunction("selfCheck.sliceColor") }, ticksOptions);
+        await pieChart.AddDataAsync(pieData, "D", new List<IChartDatasetData> { new PieChartDatasetData("Slices", 6, "#000000") });
+
+        await Task.Delay(800);
+
+        all.AddRange(await JS.InvokeAsync<List<SelfCheckCase>>("jsFunctionsSelfCheck.runAfterUpdate"));
+        all.Add(new("OnLegendClick fires on every click (AC-11)", "2", legendClickCount.ToString(), legendClickCount == 2 ? "pass" : "fail"));
+        all.Add(new("OnLegendClick reports the real hidden state (AC-11)", "True", $"{lastLegendHidden}", lastLegendHidden == true ? "pass" : "fail"));
+
+        cases = all;
+        StateHasChanged();
+    }
+
+    private sealed record SelfCheckCase(string Name, string Expected, string Actual, string Status);
+}

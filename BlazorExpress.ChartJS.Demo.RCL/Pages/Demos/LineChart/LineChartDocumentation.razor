@@ -617,6 +617,93 @@
     <Demo Type="typeof(LineChart_Demo_36_Time_Localized_Formats)" Tabs="true" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Tick and tooltip functions" PageUrl="@pageUrl" Link="tick-and-tooltip-functions">
+    <Block>
+        Some Chart.js options take a JavaScript function, for example a tick label or a tooltip line. Register the function in your own JavaScript file, then reference it from C# by name with <code>ChartFunction</code>. See <a href="@DemoRouteConstants.Docs_Getting_Started_Introduction#javascript-functions">JavaScript functions</a> for setup.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>
+                    Register the functions after <code>blazorexpress.chartjs.js</code> has loaded:
+                    <pre><code>blazorexpress.chartjs.registerFunction('demo.thousandsLabel', value => `${value / 1000}k units`);
+blazorexpress.chartjs.registerFunction('demo.unitsTooltipLabel',
+    item => `${item.dataset.label}: ${item.parsed.y.toLocaleString()} units`);</code></pre>
+                </li>
+                <li>Set <code>Scales.Y.Ticks = new ChartAxesTicks { Callback = new ChartFunction("demo.thousandsLabel") }</code>.</li>
+                <li>Set <code>Plugins.Tooltip = new ChartPluginsTooltip { Callbacks = new ChartPluginsTooltipCallbacks { Label = new ChartFunction("demo.unitsTooltipLabel") } }</code>.</li>
+                <li>Hover a point: the tooltip shows the text the function returns.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_37_Tick_And_Tooltip_Functions)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Legend filter function" PageUrl="@pageUrl" Link="legend-filter-function">
+    <Block>
+        A legend <code>Filter</code> function decides which legend items are shown. The datasets it hides are still drawn.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>
+                    Register the filter, which returns <code>true</code> to keep an item:
+                    <pre><code>blazorexpress.chartjs.registerFunction('demo.hideTargetLegendItems', legendItem => !legendItem.text.startsWith('Target'));</code></pre>
+                </li>
+                <li>Set <code>Plugins.Legend.Labels = new ChartPluginsLegendLabels { Filter = new ChartFunction("demo.hideTargetLegendItems") }</code>.</li>
+                <li><code>Sort</code> and <code>GenerateLabels</code> work the same way.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_38_Legend_Filter_Function)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Segment styling" PageUrl="@pageUrl" Link="segment-styling">
+    <Block>
+        <code>SegmentStyle</code> styles each part of the line between two points. Here, segments that span a missing reading are drawn dashed and grey, as in the Chart.js "Line Segment Styling" sample.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>
+                    Register functions that get the segment context (<code>p0</code>, <code>p1</code>) and return a value, or <code>undefined</code> to keep the dataset's style:
+                    <pre><code>const touchesGap = ctx => ctx.p0.skip || ctx.p1.skip;
+blazorexpress.chartjs.registerFunction('demo.dashOverGaps', ctx => touchesGap(ctx) ? [6, 6] : undefined);
+blazorexpress.chartjs.registerFunction('demo.greyOverGaps', ctx => touchesGap(ctx) ? 'rgb(160, 160, 160)' : undefined);</code></pre>
+                </li>
+                <li>Use <code>null</code> for missing values and set <code>SpanGaps = true</code>.</li>
+                <li>Set <code>SegmentStyle = new ChartLineSegment { BorderDashFunction = new ChartFunction("demo.dashOverGaps"), BorderColorFunction = new ChartFunction("demo.greyOverGaps") }</code>. Plain values such as <code>BorderDash = [4, 4]</code> style every segment.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_39_Segment_Styling)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Gradient fill" PageUrl="@pageUrl" Link="gradient-fill">
+    <Block>
+        A colour function can return a canvas gradient. Chart.js calls it while drawing, so the gradient follows the chart area when the chart resizes.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>
+                    Register a function that builds the gradient once the chart area is known:
+                    <pre><code>blazorexpress.chartjs.registerFunction('demo.verticalGradient', context => {
+    const { ctx, chartArea } = context.chart;
+    if (!chartArea) return 'rgba(54, 162, 235, 0.2)';
+    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+    gradient.addColorStop(0, 'rgba(54, 162, 235, 0)');
+    gradient.addColorStop(1, 'rgba(54, 162, 235, 0.6)');
+    return gradient;
+});</code></pre>
+                </li>
+                <li>Set <code>Fill = true</code> and <code>BackgroundColorFunction = new ChartFunction("demo.verticalGradient")</code>. When set, it is sent instead of <code>BackgroundColor</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_40_Gradient_Fill)" Tabs="true" />
+</Section>
+
 @code {
     private const string pageUrl = DemoRouteConstants.Demos_LineChart;
     private const string pageTitle = "Line Chart";

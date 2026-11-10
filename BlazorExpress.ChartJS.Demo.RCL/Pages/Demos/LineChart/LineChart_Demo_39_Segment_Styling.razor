@@ -1,0 +1,41 @@
+<LineChart @ref="lineChart" Width="600" />
+
+@code {
+    private LineChart lineChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var chartData = new ChartData
+            {
+                Labels = ["01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00"],
+                Datasets =
+                [
+                    new LineChartDataset
+                    {
+                        Label = "Sensor reading",
+                        // null marks a missing reading; SpanGaps draws a segment across it.
+                        Data = [21.5, 22.1, null, 23.4, 22.8, null, null, 24.2],
+                        SpanGaps = true,
+                        BorderColor = "rgb(75, 192, 192)",
+                        BackgroundColor = "rgba(75, 192, 192, 0.2)",
+                        SegmentStyle = new ChartLineSegment
+                        {
+                            // Both functions return undefined for normal segments, so those keep the dataset's style.
+                            BorderDashFunction = new ChartFunction("demo.dashOverGaps"),
+                            BorderColorFunction = new ChartFunction("demo.greyOverGaps"),
+                        },
+                    }
+                ]
+            };
+
+            var options = new LineChartOptions { Responsive = true };
+            options.Scales.Y!.BeginAtZero = false;
+
+            await lineChart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

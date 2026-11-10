@@ -66,6 +66,22 @@ public class ScatterChartDataLabels
     public ScatterChartDataLabelsFont Font { get; set; } = new();
 
     /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the text of each label of the chart, as <c>(value, context) =&gt; string</c>.
+    /// Return an array for a label of several lines, or <see langword="null" /> to hide the label. It changes the label text only;
+    /// the library's datalabels background color is unaffected.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://chartjs-plugin-datalabels.netlify.app/guide/formatting.html" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the text of each label of the chart, as (value, context) => string. It changes the label text only; the library's datalabels background color is unaffected.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? Formatter { get; set; }
+
+    /// <summary>
     /// Gets or sets the padding of the labels, in pixels.
     /// <para>
     /// Default value is 6.

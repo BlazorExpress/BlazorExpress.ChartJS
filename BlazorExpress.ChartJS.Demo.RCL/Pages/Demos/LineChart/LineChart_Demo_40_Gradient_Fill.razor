@@ -1,0 +1,32 @@
+<LineChart @ref="lineChart" Width="600" />
+
+@code {
+    private LineChart lineChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var chartData = new ChartData
+            {
+                Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+                Datasets =
+                [
+                    new LineChartDataset
+                    {
+                        Label = "Visitors",
+                        Data = [1200, 1900, 1700, 2600, 3100, 2900, 3800],
+                        Fill = true,
+                        BorderColor = "rgb(54, 162, 235)",
+                        // When set, the function is sent instead of BackgroundColor.
+                        BackgroundColorFunction = new ChartFunction("demo.verticalGradient"),
+                    }
+                ]
+            };
+
+            await lineChart.InitializeAsync(chartData, new LineChartOptions { Responsive = true });
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

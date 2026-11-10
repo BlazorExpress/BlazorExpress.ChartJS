@@ -173,6 +173,52 @@ public class ChartPluginsLegend
     public int? MaxWidth { get; set; }
 
     /// <summary>
+    /// Gets or sets the registered JavaScript function Chart.js calls when a legend item is clicked, as <c>(event, legendItem, legend) =&gt; void</c>.
+    /// As in Chart.js, the function replaces the default click handler, so the dataset no longer toggles on its own; call
+    /// <c>Chart.defaults.plugins.legend.onClick.call(this, e, legendItem, legend)</c> inside it to keep toggling. The library still keeps the
+    /// visibility the click changed across <c>UpdateAsync</c> and still raises the component's <see cref="ChartComponentBase.OnLegendClick" /> event.
+    /// <see cref="ChartComponentBase.LegendClickToggles" /> applies only when no function is set.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/legend.html#configuration-options" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function Chart.js calls when a legend item is clicked, as (event, legendItem, legend) => void. It replaces the default toggle, as in Chart.js: call Chart.defaults.plugins.legend.onClick.call(this, e, legendItem, legend) inside it to keep toggling. The library still keeps the visibility the click changed across UpdateAsync and still raises OnLegendClick; LegendClickToggles applies only when no function is set.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? OnClick { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function Chart.js calls when the pointer moves onto a legend item, as <c>(event, legendItem, legend) =&gt; void</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/legend.html#configuration-options" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function Chart.js calls when the pointer moves onto a legend item, as (event, legendItem, legend) => void.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? OnHover { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function Chart.js calls when the pointer leaves a legend item, as <c>(event, legendItem, legend) =&gt; void</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/legend.html#configuration-options" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function Chart.js calls when the pointer leaves a legend item, as (event, legendItem, legend) => void.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? OnLeave { get; set; }
+
+    /// <summary>
     /// Gets or sets the position of the legend: "top", "left", "bottom", "right" or "chartArea".
     /// <para>
     /// Default value is <c>"top"</c>.
@@ -360,6 +406,21 @@ public class ChartPluginsLegendLabels
     public string? Color { get; set; }
 
     /// <summary>
+    /// Gets or sets the registered JavaScript function that decides which legend items are shown, as <c>(legendItem, data) =&gt; boolean</c>.
+    /// Return <see langword="false" /> to hide the item.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/legend.html#legend-label-configuration" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that decides which legend items are shown, as (legendItem, data) => boolean.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? Filter { get; set; }
+
+    /// <summary>
     /// Gets or sets the font of the labels.
     /// <para>
     /// Default value is <see langword="null" />.
@@ -371,6 +432,21 @@ public class ChartPluginsLegendLabels
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [ParameterTypeName("ChartFont?")]
     public ChartFont? Font { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that builds the legend items, as <c>(chart) =&gt; LegendItem[]</c>. It replaces the
+    /// Chart.js default; call <c>Chart.defaults.plugins.legend.labels.generateLabels(chart)</c> inside it to start from the default items.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/legend.html#legend-item-interface" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that builds the legend items, as (chart) => LegendItem[]. It replaces the Chart.js default.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? GenerateLabels { get; set; }
 
     /// <summary>
     /// Gets or sets the padding between rows of colored boxes.
@@ -410,6 +486,20 @@ public class ChartPluginsLegendLabels
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [ParameterTypeName("int?")]
     public int? PointStyleWidth { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that orders the legend items, as <c>(a, b, data) =&gt; number</c>, like <c>Array.prototype.sort</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/legend.html#legend-label-configuration" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that orders the legend items, as (a, b, data) => number, like Array.prototype.sort.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? Sort { get; set; }
 
     /// <summary>
     /// Gets or sets the horizontal alignment of the label text: "left", "right" or "center".
@@ -697,6 +787,20 @@ public class ChartPluginsTooltip
     public double? BoxWidth { get; set; }
 
     /// <summary>
+    /// Gets or sets the registered JavaScript functions that change the text and colors of the tooltip.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript functions that change the text and colors of the tooltip.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartPluginsTooltipCallbacks?")]
+    public ChartPluginsTooltipCallbacks? Callbacks { get; set; }
+
+    /// <summary>
     /// Gets or sets the extra distance that moves the end of the tooltip arrow away from the tooltip point.
     /// <para>
     /// Default value is 2.
@@ -752,6 +856,36 @@ public class ChartPluginsTooltip
     [DefaultValue(true)]
     [Description("Gets or sets a value indicating whether on-canvas tooltips are enabled.")]
     public bool Enabled { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function Chart.js calls to draw a custom (HTML) tooltip, as <c>(context) =&gt; void</c>,
+    /// where <c>context</c> is <c>{ chart, tooltip }</c>. Set <see cref="Enabled" /> to <see langword="false" /> to hide the on-canvas tooltip.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#external-custom-tooltips" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function Chart.js calls to draw a custom (HTML) tooltip, as (context) => void. Set Enabled to false to hide the on-canvas tooltip.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? External { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that decides which items appear in the tooltip, as
+    /// <c>(tooltipItem, index, tooltipItems, data) =&gt; boolean</c>. Return <see langword="false" /> to leave the item out.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-configuration" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that decides which items appear in the tooltip, as (tooltipItem, index, tooltipItems, data) => boolean.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? Filter { get; set; }
 
     /// <summary>
     /// Gets or sets the horizontal alignment of the footer text lines: "left", "right" or "center".
@@ -820,6 +954,20 @@ public class ChartPluginsTooltip
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [ParameterTypeName("bool?")]
     public bool? Intersect { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that orders the tooltip items, as <c>(a, b, data) =&gt; number</c>, like <c>Array.prototype.sort</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-configuration" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that orders the tooltip items, as (a, b, data) => number, like Array.prototype.sort.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? ItemSort { get; set; }
 
     /// <summary>
     /// Gets or sets which elements appear in the tooltip. See InteractionMode.
@@ -991,6 +1139,219 @@ public class ChartPluginsTooltip
     [Description("Gets or sets the position of the tooltip caret in the Y direction: \"top\", \"center\" or \"bottom\".")]
     [ParameterTypeName("string?")]
     public string? YAlign { get; set; }
+
+    #endregion
+}
+
+/// <summary>
+/// The tooltip callbacks: registered JavaScript functions that change the text and colors of the tooltip.
+/// Chart.js calls each one with the tooltip as <c>this</c>; a function that returns <see langword="undefined" /> keeps the Chart.js default.
+/// <para>
+/// See <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" /> for more information.
+/// </para>
+/// </summary>
+public class ChartPluginsTooltipCallbacks
+{
+    #region Properties, Indexers
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the text after the body, as <c>(tooltipItems) =&gt; string | string[]</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the text after the body, as (tooltipItems) => string | string[].")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? AfterBody { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the text after the footer, as <c>(tooltipItems) =&gt; string | string[]</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the text after the footer, as (tooltipItems) => string | string[].")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? AfterFooter { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the text after each item label, as <c>(tooltipItem) =&gt; string | string[]</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the text after each item label, as (tooltipItem) => string | string[].")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? AfterLabel { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the text after the title, as <c>(tooltipItems) =&gt; string | string[]</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the text after the title, as (tooltipItems) => string | string[].")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? AfterTitle { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the text before the body, as <c>(tooltipItems) =&gt; string | string[]</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the text before the body, as (tooltipItems) => string | string[].")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? BeforeBody { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the text before the footer, as <c>(tooltipItems) =&gt; string | string[]</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the text before the footer, as (tooltipItems) => string | string[].")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? BeforeFooter { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the text before each item label, as <c>(tooltipItem) =&gt; string | string[]</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the text before each item label, as (tooltipItem) => string | string[].")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? BeforeLabel { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the text before the title, as <c>(tooltipItems) =&gt; string | string[]</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the text before the title, as (tooltipItems) => string | string[].")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? BeforeTitle { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the footer text, as <c>(tooltipItems) =&gt; string | string[]</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the footer text, as (tooltipItems) => string | string[].")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? Footer { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the text of each item label, as <c>(tooltipItem) =&gt; string | string[]</c>.
+    /// It replaces the Chart.js default label, which shows the dataset label and the formatted value.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the text of each item label, as (tooltipItem) => string | string[]. It replaces the Chart.js default label.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? Label { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the color box of each item, as
+    /// <c>(tooltipItem) =&gt; { borderColor, backgroundColor, borderWidth, borderDash, borderDashOffset, borderRadius }</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the color box of each item, as (tooltipItem) => { borderColor, backgroundColor, ... }.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? LabelColor { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the point style of each item's color box when
+    /// <see cref="ChartPluginsTooltip.UsePointStyle" /> is <see langword="true" />, as <c>(tooltipItem) =&gt; { pointStyle, rotation }</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the point style of each item's color box when UsePointStyle is true, as (tooltipItem) => { pointStyle, rotation }.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? LabelPointStyle { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the text color of each item label, as <c>(tooltipItem) =&gt; color</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the text color of each item label, as (tooltipItem) => color.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? LabelTextColor { get; set; }
+
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the title text, as <c>(tooltipItems) =&gt; string | string[]</c>.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the title text, as (tooltipItems) => string | string[].")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? Title { get; set; }
 
     #endregion
 }

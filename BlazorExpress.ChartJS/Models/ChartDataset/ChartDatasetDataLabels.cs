@@ -117,5 +117,21 @@ public class ChartDatasetDataLabels
     [JsonPropertyName("anchor")]
     public string? DataLabelsAnchorAsString { get; private set; }
 
+    /// <summary>
+    /// Gets or sets the registered JavaScript function that returns the text of each label of this dataset, as <c>(value, context) =&gt; string</c>.
+    /// Return an array for a label of several lines, or <see langword="null" /> to hide the label. It changes the label text only;
+    /// the library's datalabels background color is unaffected.
+    /// <para>
+    /// Default value is <see langword="null" />.
+    /// </para>
+    /// <see href="https://chartjs-plugin-datalabels.netlify.app/guide/formatting.html" />
+    /// </summary>
+    [AddedVersion("1.3.0")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the registered JavaScript function that returns the text of each label of this dataset, as (value, context) => string. It changes the label text only; the library's datalabels background color is unaffected.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [ParameterTypeName("ChartFunction?")]
+    public ChartFunction? Formatter { get; set; }
+
     #endregion
 }
