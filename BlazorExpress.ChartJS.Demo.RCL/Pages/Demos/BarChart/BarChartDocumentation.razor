@@ -534,6 +534,45 @@
     <Demo Type="typeof(BarChart_Demo_31_Colors_Plugin)" Tabs="true" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="Currency ticks" PageUrl="@pageUrl" Link="currency-ticks">
+    <Block>
+        <code>Ticks.Format</code> formats axis labels with JavaScript's number formatting, so currency, percent and compact labels need no JavaScript of your own. The tooltip value uses the same format.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Locale</code>, for example <code>"en-US"</code>, for the currency symbol and separators.</li>
+                <li>Set <code>Scales.Y.Ticks = new ChartAxesTicks { Format = new ChartNumberFormat { Style = "currency", Currency = "USD", MaximumFractionDigits = 0 } }</code>.</li>
+                <li>Use <code>Style = "percent"</code> for values between 0 and 1, or <code>Notation = "compact"</code> for labels such as <em>2.5M</em>.</li>
+                <li>Chart.js always draws the zero tick as <code>0</code>, without the currency symbol. To format it too, set <code>Ticks.Callback</code> to a registered function instead of <code>Format</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_32_Currency_Ticks_Format)" Tabs="true" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Legend click function" PageUrl="@pageUrl" Link="legend-click-function">
+    <Block>
+        A legend <code>OnClick</code> function replaces Chart.js's default toggle, as in Chart.js. The library still keeps the visibility the click changed across <code>UpdateAsync</code>, and still raises <code>OnLegendClick</code>.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>
+                    Register the function; call Chart.js's default handler inside it to toggle:
+                    <pre><code>blazorexpress.chartjs.registerFunction('demo.toggleOnShiftClick', function (e, legendItem, legend) {
+    if (e.native?.shiftKey)
+        Chart.defaults.plugins.legend.onClick.call(this, e, legendItem, legend);
+});</code></pre>
+                </li>
+                <li>Set <code>Plugins.Legend.OnClick = new ChartFunction("demo.toggleOnShiftClick")</code>. <code>LegendClickToggles</code> applies only when no function is set.</li>
+                <li>Click and Shift-click the legend items; <code>OnLegendClick</code> reports each click with the real hidden state.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_33_Legend_Click_Function)" Tabs="true" />
+</Section>
+
 @code {
     private const string pageUrl = DemoRouteConstants.Demos_BarChart;
     private const string pageUrl2 = DemoRouteConstants.Demos_Prefix;

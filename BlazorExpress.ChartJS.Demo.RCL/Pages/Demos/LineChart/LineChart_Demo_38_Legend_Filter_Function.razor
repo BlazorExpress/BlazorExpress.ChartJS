@@ -1,0 +1,32 @@
+<LineChart @ref="lineChart" Width="600" />
+
+@code {
+    private LineChart lineChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var chartData = new ChartData
+            {
+                Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                Datasets =
+                [
+                    new LineChartDataset { Label = "Sales 2025", Data = [30, 34, 38, 36, 41, 45], BorderColor = "rgb(201, 203, 207)", BackgroundColor = "rgba(201, 203, 207, 0.2)" },
+                    new LineChartDataset { Label = "Sales 2026", Data = [35, 39, 44, 47, 52, 58], BorderColor = "rgb(54, 162, 235)", BackgroundColor = "rgba(54, 162, 235, 0.2)" },
+                    new LineChartDataset { Label = "Target 2026", Data = [40, 42, 44, 46, 48, 50], BorderColor = "rgb(255, 99, 132)", BackgroundColor = "rgba(255, 99, 132, 0.2)", BorderDash = [6, 6] },
+                ]
+            };
+
+            var options = new LineChartOptions { Responsive = true };
+
+            // 'demo.hideTargetLegendItems' keeps every legend item whose text doesn't start with "Target".
+            // The target line is still drawn; only its legend item is hidden.
+            options.Plugins.Legend.Labels = new ChartPluginsLegendLabels { Filter = new ChartFunction("demo.hideTargetLegendItems") };
+
+            await lineChart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

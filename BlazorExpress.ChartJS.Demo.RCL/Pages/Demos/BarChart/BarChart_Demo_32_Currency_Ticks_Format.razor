@@ -1,0 +1,38 @@
+<BarChart @ref="barChart" Width="600" />
+
+@code {
+    private BarChart barChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var chartData = new ChartData
+            {
+                Labels = ["Q1", "Q2", "Q3", "Q4"],
+                Datasets =
+                [
+                    new BarChartDataset
+                    {
+                        Label = "Revenue",
+                        Data = [182000, 214500, 198250, 251000],
+                        BackgroundColor = ["rgba(54, 162, 235, 0.5)"],
+                        BorderColor = ["rgb(54, 162, 235)"],
+                        BorderWidth = [1],
+                    }
+                ]
+            };
+
+            // The locale picks the symbol position and separators; the tooltip value uses the same format.
+            var options = new BarChartOptions { Locale = "en-US", Responsive = true };
+            options.Scales.Y!.Ticks = new ChartAxesTicks
+            {
+                Format = new ChartNumberFormat { Style = "currency", Currency = "USD", MaximumFractionDigits = 0 }
+            };
+
+            await barChart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

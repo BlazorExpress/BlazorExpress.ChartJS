@@ -1,0 +1,38 @@
+<p class="mb-2">Click a legend item: nothing toggles. Shift-click it: the dataset hides or shows.</p>
+
+<BarChart @ref="barChart" Width="600" OnLegendClick="OnLegendClick" />
+
+<p class="mt-2"><strong>OnLegendClick:</strong> @lastClick</p>
+
+@code {
+    private BarChart barChart = default!;
+    private string lastClick = "no click yet";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var chartData = new ChartData
+            {
+                Labels = ["January", "February", "March", "April"],
+                Datasets =
+                [
+                    new BarChartDataset { Label = "Online", Data = [42, 55, 49, 63], BackgroundColor = ["rgba(54, 162, 235, 0.5)"] },
+                    new BarChartDataset { Label = "In store", Data = [30, 28, 35, 31], BackgroundColor = ["rgba(255, 159, 64, 0.5)"] },
+                ]
+            };
+
+            var options = new BarChartOptions { Responsive = true };
+
+            // Registered in JavaScript as 'demo.toggleOnShiftClick'; it replaces Chart.js's default toggle.
+            options.Plugins.Legend.OnClick = new ChartFunction("demo.toggleOnShiftClick");
+
+            await barChart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void OnLegendClick(ChartLegendClickEventArgs args) =>
+        lastClick = $"{args.Text}, hidden: {args.Hidden}";
+}

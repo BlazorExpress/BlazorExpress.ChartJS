@@ -17,22 +17,126 @@ if (!window.blazorexpress.chartjs) {
     // visibility changed at runtime, which `update` re-applies after it hands Chart.js the matched and new datasets.
     const chartStates = new WeakMap();
 
+    // Functions the app registered by name (rule "consumer JS function references"). C# sends a reference as
+    // { "$chartFunction": "<name>" }. Only this map is consulted: names are never looked up on `window` or evaluated as code.
+    const registeredFunctions = new Map();
+    const functionMarkerKey = '$chartFunction';
+
+    const isFunctionMarker = value =>
+        value !== null && typeof value === 'object' && !Array.isArray(value)
+        && typeof value[functionMarkerKey] === 'string' && Object.keys(value).length === 1;
+
+    const getRegisteredFunction = (name, path) => {
+        const fn = registeredFunctions.get(name);
+        if (!fn)
+            console.error(`BlazorExpress.ChartJS: no function is registered as "${name}" for ${path}. `
+                + 'Register it with blazorexpress.chartjs.registerFunction before the chart is created or updated. The option keeps its Chart.js default.');
+
+        return fn;
+    };
+
+    // Swaps every reference in `target` for its registered function, in place. A reference that is not registered is
+    // removed, so Chart.js uses its default. `skipKey` leaves one top-level key alone (a dataset's `data`: points never hold functions).
+    const resolveFunctionReferences = (target, path, skipKey) => {
+        if (target === null || typeof target !== 'object')
+            return;
+
+        const isArray = Array.isArray(target);
+        for (const key of Object.keys(target)) {
+            if (key === skipKey)
+                continue;
+
+            const value = target[key];
+            const childPath = isArray ? `${path}[${key}]` : `${path}.${key}`;
+
+            if (isFunctionMarker(value)) {
+                const fn = getRegisteredFunction(value[functionMarkerKey], childPath);
+                if (fn)
+                    target[key] = fn;
+                else if (isArray)
+                    target[key] = undefined;
+                else
+                    delete target[key];
+            }
+            else if (value !== null && typeof value === 'object') {
+                resolveFunctionReferences(value, childPath);
+            }
+        }
+    };
+
+    const resolveDatasetFunctions = (dataset, path) => resolveFunctionReferences(dataset, path, 'data');
+
+    // Runs once per create, update or added dataset, never per draw.
+    const resolveChartFunctions = (data, options) => {
+        resolveFunctionReferences(options, 'options');
+        (data?.datasets ?? []).forEach((dataset, index) => resolveDatasetFunctions(dataset, `data.datasets[${index}]`));
+    };
+
+    const registerFunction = (name, fn) => {
+        if (typeof name !== 'string' || name.trim() === '') {
+            console.error('BlazorExpress.ChartJS: registerFunction needs a non-empty name.');
+            return false;
+        }
+
+        if (typeof fn !== 'function') {
+            console.error(`BlazorExpress.ChartJS: registerFunction("${name}") needs a function.`);
+            return false;
+        }
+
+        registeredFunctions.set(name, guardRegisteredFunction(name, fn));
+        return true;
+    };
+
+    // Chart.js calls tick and label functions synchronously while the library creates or updates a chart, so a throw would
+    // reach .NET through interop. The guard logs the first error per registration to the console and returns `undefined`,
+    // which Chart.js treats as an unset value, so the chart keeps drawing.
+    const guardRegisteredFunction = (name, fn) => {
+        let hasLoggedError = false;
+
+        return function (...args) {
+            try {
+                return fn.apply(this, args);
+            }
+            catch (error) {
+                if (!hasLoggedError) {
+                    hasLoggedError = true;
+                    console.error(`BlazorExpress.ChartJS: the function registered as "${name}" threw an error.`, error);
+                }
+
+                return undefined;
+            }
+        };
+    };
+
     const applyDataLabelsBackgroundColor = (options) => {
         options.plugins ??= {};
         options.plugins.datalabels ??= {};
         options.plugins.datalabels.backgroundColor = function (context) {
-            return context.dataset.backgroundColor;
+            // A function colour (C# BackgroundColorFunction) is called with the label's context, because the
+            // datalabels plugin resolves a scriptable option only one level deep.
+            const backgroundColor = context.dataset.backgroundColor;
+            return typeof backgroundColor === 'function' ? backgroundColor.call(this, context) : backgroundColor;
         };
     };
 
-    // Options are replaced on every update, so the legend handler is set again each time.
+    // Options are replaced on every update, so the legend handler is set again each time. A registered `onClick`
+    // (C# ChartFunction) replaces Chart.js's default toggle, as in Chart.js (rule "consumer JS function references").
     const applyEventHandlers = (options) => {
         if (!options)
             return;
 
         options.plugins ??= {};
         options.plugins.legend ??= {};
-        options.plugins.legend.onClick = handleLegendClick;
+
+        const current = options.plugins.legend.onClick;
+        const consumerOnClick = typeof current === 'function' && !current.isLibraryLegendHandler ? current : null;
+
+        const onClick = function (e, legendItem, legend) {
+            return handleLegendClick.call(this, e, legendItem, legend, consumerOnClick);
+        };
+        onClick.isLibraryLegendHandler = true;
+
+        options.plugins.legend.onClick = onClick;
     };
 
     // Options come from `options.plugins.tooltipLine` (C# `LineChartPlugins.TooltipLine`). Chart.js falls back to these
@@ -145,11 +249,32 @@ if (!window.blazorexpress.chartjs) {
         return state;
     };
 
-    const handleLegendClick = function (e, legendItem, legend) {
+    // Visibility of every legend item: slices for arc charts, datasets otherwise.
+    const getLegendVisibilities = (chart, isArcChart) => isArcChart
+        ? Array.from({ length: getDataCount(chart, 0) }, (_, index) => chart.getDataVisibility(index))
+        : (chart.data.datasets ?? []).map((_, datasetIndex) => chart.isDatasetVisible(datasetIndex));
+
+    const handleLegendClick = function (e, legendItem, legend, consumerOnClick) {
         const chart = legend.chart;
         const state = getState(chart);
 
-        if (state.eventOptions.legendClickToggles !== false) {
+        if (consumerOnClick) {
+            // The consumer decides what the click does; afterwards the library keeps whatever visibility it changed,
+            // so it survives updates. Items it left alone are not recorded, so they stay under C# control.
+            const before = getLegendVisibilities(chart, state.isArcChart);
+            consumerOnClick.call(this, e, legendItem, legend);
+
+            getLegendVisibilities(chart, state.isArcChart).forEach((visible, index) => {
+                if (visible === before[index])
+                    return;
+
+                if (state.isArcChart)
+                    recordDataVisibility(chart, index);
+                else
+                    recordDatasetVisibility(chart, index);
+            });
+        }
+        else if (state.eventOptions.legendClickToggles !== false) {
             getDefaultLegendClickHandler(chart).call(this, e, legendItem, legend);
 
             if (state.isArcChart)
@@ -883,6 +1008,7 @@ if (!window.blazorexpress.chartjs) {
         addDataset: (elementId, newDataset) => {
             let chart = core.get(elementId);
             if (chart) {
+                resolveDatasetFunctions(newDataset, `data.datasets[${chart.data.datasets.length}]`);
                 chart.data.datasets.push(newDataset);
                 chart.update();
             }
@@ -891,6 +1017,8 @@ if (!window.blazorexpress.chartjs) {
         create: (elementId, type, data, options, plugins, hooks = {}) => {
             let chartEl = document.getElementById(elementId);
             let _plugins = [];
+
+            resolveChartFunctions(data, options);
 
             if (plugins && plugins.length > 0) {
                 // register `ChartDataLabels` plugin
@@ -1050,6 +1178,9 @@ if (!window.blazorexpress.chartjs) {
         update: (elementId, type, data, options, mode) => {
             let chart = core.get(elementId);
             if (chart) {
+                // Before dataset matching, so matched datasets take the resolved functions from the new payload.
+                resolveChartFunctions(data, options);
+
                 if (chart.config.plugins && chart.config.plugins.findIndex(x => x.id == 'datalabels') > -1) {
                     // set datalabel background color
                     applyDataLabelsBackgroundColor(options);
@@ -1093,7 +1224,11 @@ if (!window.blazorexpress.chartjs) {
     });
 
     const arcChartHooks = {
-        afterAddDatasetData: (dataset, chartDatasetData) => dataset.backgroundColor.push(chartDatasetData.backgroundColor),
+        // A function colour (ChartFunction) colours every slice, so there is no per-slice list to extend.
+        afterAddDatasetData: (dataset, chartDatasetData) => {
+            if (Array.isArray(dataset.backgroundColor))
+                dataset.backgroundColor.push(chartDatasetData.backgroundColor);
+        },
         applyDataLabelsBackgroundColorOnCreate: true,
         isArcChart: true,
     };
@@ -1101,6 +1236,9 @@ if (!window.blazorexpress.chartjs) {
     Object.assign(window.blazorexpress.chartjs, core);
 
     registerDateAdapter();
+
+    // Public: the app registers each function it references from C# (`new ChartFunction("<name>")`).
+    window.blazorexpress.chartjs.registerFunction = registerFunction;
 
     window.blazorexpress.chartjs.bar = createChartTypeModule({ applyDataLabelsBackgroundColorOnCreate: true });
     window.blazorexpress.chartjs.bubble = createChartTypeModule();
