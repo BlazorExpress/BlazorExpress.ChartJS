@@ -1,0 +1,58 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+@if (chart is null)
+{
+    @ChildContent
+}
+else if (string.IsNullOrWhiteSpace(Sample))
+{
+    @* Chart overview: the page's hero, then a card for each of its samples. *@
+    @ChildContent
+
+    <h2 class="title is-4 mt-5" id="samples">@chart.Name samples</h2>
+    <p class="mb-4">
+        Each sample has its own page with the demo, its source and links to the API tables.
+        <a href="@DemoRouteConstants.Demos_Samples">Browse every sample in the gallery</a>.
+    </p>
+    <div class="be-sample-grid">
+        @foreach (var item in SampleCatalog.GetByChart(chart.Key))
+        {
+            <SampleCard Sample="item" />
+        }
+    </div>
+}
+else if (sample is null)
+{
+    <SampleNotFound ChartKey="@chart.Key" Slug="@Sample" />
+}
+else
+{
+    <PageMetaTags PageUrl="@sample.Url" Title="@metaTitle" Description="@sample.Description" ImageUrl="@chart.ImageUrl" />
+
+    <nav class="breadcrumb mb-3" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="@DemoRouteConstants.Demos_Samples">Samples</a></li>
+            <li><a href="@chart.Route">@chart.Name</a></li>
+            <li class="is-active"><a href="@sample.Url" aria-current="page">@sample.Title</a></li>
+        </ul>
+    </nav>
+
+    <h1 class="title is-3 mb-2">@sample.Title</h1>
+    <p class="subtitle is-6 mt-1 mb-3">@sample.Description</p>
+
+    <div class="tags mb-4">
+        <a class="tag is-warning is-light" href="@DemoRouteConstants.GetSamplesCategoryUrl(sample.Category)">@sample.Category.GetDisplayName()</a>
+        @foreach (var tag in sample.Tags)
+        {
+            <a class="tag" href="@DemoRouteConstants.GetSamplesTagUrl(tag)">@tag</a>
+        }
+        @if (sample.IsNewIn130)
+        {
+            <a class="tag is-success is-light" href="@DemoRouteConstants.GetSamplesTagUrl(SampleInfo.NewIn130Tag)">New in 1.3.0</a>
+        }
+        @if (sample.UsesJsFunction)
+        {
+            <span class="tag is-info is-light">JS function</span>
+        }
+    </div>
+}

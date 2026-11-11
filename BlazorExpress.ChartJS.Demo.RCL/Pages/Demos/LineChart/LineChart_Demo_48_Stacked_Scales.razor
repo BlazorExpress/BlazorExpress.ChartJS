@@ -1,0 +1,64 @@
+<LineChart @ref="lineChart" Width="600" />
+
+@code {
+    private LineChart lineChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var chartData = new ChartData
+            {
+                Labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                Datasets =
+                [
+                    new LineChartDataset
+                    {
+                        Label = "Temperature (°C)",
+                        Data = [14, 17, 21, 19, 16, 22, 24],
+                        BorderColor = "rgb(213, 94, 0)", // Okabe–Ito vermillion
+                        BackgroundColor = "rgb(213, 94, 0)",
+                        YAxisID = "y",
+                    },
+                    new LineChartDataset
+                    {
+                        Label = "Heating on",
+                        Data = [1, 1, 0, 0, 1, 0, 0],
+                        BorderColor = "rgb(0, 114, 178)", // Okabe–Ito blue
+                        BackgroundColor = "rgb(0, 114, 178)",
+                        Stepped = true,
+                        YAxisID = "y2",
+                    },
+                ]
+            };
+
+            var options = new LineChartOptions { Responsive = true };
+
+            // Axes with the same Stack value share one side of the chart, one above the other.
+            // StackWeight sets how much of the height each one gets: here two thirds for "y".
+            options.Scales.Y!.Position = "left";
+            options.Scales.Y!.Stack = "demo";
+            options.Scales.Y!.StackWeight = 2;
+            options.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "°C" };
+
+            options.Scales.AdditionalAxes = new()
+            {
+                ["y2"] = new ChartAxes
+                {
+                    Position = "left",
+                    Stack = "demo",
+                    StackWeight = 1,
+                    Offset = true, // keeps a gap between the two axes
+                    Min = 0,
+                    Max = 1,
+                    Ticks = new ChartAxesTicks { StepSize = 1 },
+                    Title = new ChartAxesTitle { Display = true, Text = "On/off" },
+                },
+            };
+
+            await lineChart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

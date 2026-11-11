@@ -1,0 +1,58 @@
+<progress id="demo-animation-progress" class="progress is-primary is-small mb-3" style="max-width: 600px;" max="1" value="0" aria-label="Chart animation progress"></progress>
+
+<LineChart @ref="lineChart" Width="600" />
+
+<div class="mt-3">
+    <button type="button" class="button is-primary is-small" @onclick="ReplayAsync">Replay with new data</button>
+</div>
+
+@code {
+    private LineChart lineChart = default!;
+    private readonly LineChartOptions options = new() { Responsive = true };
+
+    protected override void OnInitialized()
+    {
+        // Chart.js calls OnProgress on every animation frame and OnComplete once at the end.
+        // Both name functions registered in JavaScript; they move the <progress> element above.
+        options.Animation = new ChartAnimation
+        {
+            Duration = 2500,
+            Easing = "linear",
+            OnProgress = new ChartFunction("demo.showAnimationProgress"),
+            OnComplete = new ChartFunction("demo.completeAnimationProgress"),
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await lineChart.InitializeAsync(CreateChartData(), options);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData CreateChartData() =>
+        new()
+        {
+            Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+            Datasets =
+            [
+                new LineChartDataset
+                {
+                    Label = "Throughput",
+                    Data = Enumerable.Range(0, 7).Select(_ => (double?)Random.Shared.Next(20, 100)).ToList(),
+                    BorderColor = "rgb(0, 114, 178)", // Okabe–Ito blue
+                    BackgroundColor = "rgb(0, 114, 178)",
+                },
+                new LineChartDataset
+                {
+                    Label = "Errors",
+                    Data = Enumerable.Range(0, 7).Select(_ => (double?)Random.Shared.Next(0, 40)).ToList(),
+                    BorderColor = "rgb(213, 94, 0)", // Okabe–Ito vermillion
+                    BackgroundColor = "rgb(213, 94, 0)",
+                },
+            ]
+        };
+
+    private Task ReplayAsync() => lineChart.UpdateAsync(CreateChartData(), options);
+}

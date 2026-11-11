@@ -1,0 +1,111 @@
+<PlaygroundPanel Code="@csharp">
+    <Controls>
+        <PlaygroundSelect Label="Point style" Options="pointStyles" Value="@pointStyle" ValueChanged="value => SetAsync(() => pointStyle = value)" />
+        <PlaygroundRange Label="Point radius" Min="1" Max="12" Unit=" px" Value="pointRadius" ValueChanged="value => SetAsync(() => pointRadius = value)" />
+        <PlaygroundCheckbox Label="Begin at zero" Value="beginAtZero" ValueChanged="value => SetAsync(() => beginAtZero = value)" />
+        <PlaygroundCheckbox Label="Show grid" Value="showGrid" ValueChanged="value => SetAsync(() => showGrid = value)" />
+        <PlaygroundCommonControls Settings="settings" OnChanged="ApplyAsync" />
+    </Controls>
+    <Chart>
+        <ScatterChart @ref="chart" />
+    </Chart>
+</PlaygroundPanel>
+
+@code {
+    // The Chart.js defaults; a value is listed in the C# only when it differs.
+    private const double DefaultPointRadius = 3;
+    private const double HoverRadiusIncrease = 3;
+    private const string DefaultPointStyle = "circle";
+
+    private static readonly IReadOnlyList<(string Value, string Text)> pointStyles =
+        new[] { "circle", "cross", "crossRot", "rect", "rectRounded", "rectRot", "star", "triangle" }.Select(style => (style, style)).ToList();
+
+    private ScatterChart chart = default!;
+    private readonly PlaygroundSettings settings = new();
+    private string csharp = string.Empty;
+    private bool beginAtZero = true;
+    private double pointRadius = DefaultPointRadius;
+    private string pointStyle = DefaultPointStyle;
+    private bool showGrid = true;
+
+    protected override void OnInitialized() => Build();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var (chartData, options) = Build();
+            await chart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task ApplyAsync()
+    {
+        var (chartData, options) = Build();
+        await chart.UpdateAsync(chartData, options);
+    }
+
+    private async Task SetAsync(Action change)
+    {
+        change();
+        await ApplyAsync();
+    }
+
+    // Builds the chart data and options from the controls, and the C# that gives the same chart.
+    private (ChartData ChartData, ScatterChartOptions Options) Build()
+    {
+        var text = new PlaygroundCode(nameof(ScatterChartOptions), nameof(ScatterChartDataset));
+        var options = new ScatterChartOptions { Responsive = true };
+        settings.Apply(options, options.Plugins, text);
+        settings.ApplyToAxes(options.Scales, text);
+
+        if (!beginAtZero)
+        {
+            options.Scales.X!.BeginAtZero = false;
+            options.Scales.Y!.BeginAtZero = false;
+            text.Option("Scales.X!.BeginAtZero", "false").Option("Scales.Y!.BeginAtZero", "false");
+        }
+
+        if (!showGrid)
+        {
+            options.Scales.X!.Grid = new ChartAxesGrid { Display = false };
+            options.Scales.Y!.Grid = new ChartAxesGrid { Display = false };
+            text.Option("Scales.X!.Grid", "new ChartAxesGrid { Display = false }").Option("Scales.Y!.Grid", "new ChartAxesGrid { Display = false }");
+        }
+
+        if (pointStyle != DefaultPointStyle) text.Dataset("PointStyle", PlaygroundCode.List(pointStyle));
+        if (pointRadius != DefaultPointRadius)
+        {
+            // A hovered point stays larger than the point itself.
+            text.Dataset("PointRadius", PlaygroundCode.List(pointRadius));
+            text.Dataset("PointHoverRadius", PlaygroundCode.List(pointRadius + HoverRadiusIncrease));
+        }
+
+        var chartData = new ChartData
+        {
+            Datasets =
+            [
+                CreateDataset("Group A", [(1200, 34), (1850, 41), (2400, 39), (3100, 52), (3900, 58), (4600, 71), (5200, 66)], 0),
+                CreateDataset("Group B", [(1500, 62), (2100, 55), (2800, 49), (3300, 44), (4100, 37), (4800, 30), (5500, 26)], 1),
+            ]
+        };
+
+        csharp = text.ToString();
+
+        return (chartData, options);
+    }
+
+    private ScatterChartDataset CreateDataset(string label, (double X, double Y)[] points, int colorIndex) =>
+        new()
+        {
+            Label = label,
+            Data = points.Select(point => new ScatterChartDataPoint(point.X, point.Y)).ToList(),
+            BorderColor = DemoPalette.Get(colorIndex),
+            BackgroundColor = DemoPalette.GetTransparent(colorIndex, 0.6),
+            PointRadius = [pointRadius],
+            PointHoverRadius = pointRadius == DefaultPointRadius ? null : [pointRadius + HoverRadiusIncrease],
+            PointStyle = [pointStyle],
+        };
+}

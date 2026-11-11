@@ -1,0 +1,100 @@
+<PlaygroundPanel Code="@csharp">
+    <Controls>
+        <PlaygroundRange Label="Tension" Max="0.6" Step="0.1" Value="tension" ValueChanged="value => SetAsync(() => tension = value)" />
+        <PlaygroundRange Label="Line width" Min="1" Max="8" Unit=" px" Value="borderWidth" ValueChanged="value => SetAsync(() => borderWidth = value)" />
+        <PlaygroundRange Label="Point radius" Max="10" Unit=" px" Value="pointRadius" ValueChanged="value => SetAsync(() => pointRadius = value)" />
+        <PlaygroundCheckbox Label="Fill" Value="fill" ValueChanged="value => SetAsync(() => fill = value)" />
+        <PlaygroundCheckbox Label="Begin at zero" Value="beginAtZero" ValueChanged="value => SetAsync(() => beginAtZero = value)" />
+        <PlaygroundCommonControls Settings="settings" OnChanged="ApplyAsync" />
+    </Controls>
+    <Chart>
+        <RadarChart @ref="chart" />
+    </Chart>
+</PlaygroundPanel>
+
+@code {
+    // The defaults of the library and of Chart.js; a value is listed in the C# only when it differs.
+    private const double DefaultBorderWidth = 3;
+    private const double DefaultPointRadius = 3;
+
+    private RadarChart chart = default!;
+    private readonly PlaygroundSettings settings = new();
+    private string csharp = string.Empty;
+    private bool beginAtZero = true;
+    private double borderWidth = DefaultBorderWidth;
+    private bool fill = true;
+    private double pointRadius = DefaultPointRadius;
+    private double tension;
+
+    protected override void OnInitialized() => Build();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var (chartData, options) = Build();
+            await chart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task ApplyAsync()
+    {
+        var (chartData, options) = Build();
+        await chart.UpdateAsync(chartData, options);
+    }
+
+    private async Task SetAsync(Action change)
+    {
+        change();
+        await ApplyAsync();
+    }
+
+    // Builds the chart data and options from the controls, and the C# that gives the same chart.
+    private (ChartData ChartData, RadarChartOptions Options) Build()
+    {
+        var text = new PlaygroundCode(nameof(RadarChartOptions), nameof(RadarChartDataset));
+        var options = new RadarChartOptions { Responsive = true };
+        settings.Apply(options, options.Plugins, text);
+
+        if (!beginAtZero)
+        {
+            options.Scales.R!.BeginAtZero = false;
+            text.Option("Scales.R!.BeginAtZero", "false");
+        }
+
+        if (tension > 0) text.Dataset("Tension", PlaygroundCode.Literal(tension));
+        if (borderWidth != DefaultBorderWidth) text.Dataset("BorderWidth", PlaygroundCode.Literal(borderWidth));
+        if (pointRadius != DefaultPointRadius) text.Dataset("PointRadius", PlaygroundCode.List(pointRadius));
+        if (fill) text.Dataset("Fill", "true");
+
+        var chartData = new ChartData
+        {
+            Labels = ["Speed", "Reliability", "Comfort", "Safety", "Efficiency", "Design"],
+            Datasets =
+            [
+                // Values in the thousands, so the locale picker changes how the ticks are written.
+                CreateDataset("Model A", [8200, 7400, 6600, 9100, 5800, 7700], 0),
+                CreateDataset("Model B", [6400, 8800, 7900, 7200, 8500, 6100], 1),
+            ]
+        };
+
+        csharp = text.ToString();
+
+        return (chartData, options);
+    }
+
+    private RadarChartDataset CreateDataset(string label, List<double?> data, int colorIndex) =>
+        new()
+        {
+            Label = label,
+            Data = data,
+            BorderColor = DemoPalette.Get(colorIndex),
+            BackgroundColor = DemoPalette.GetTransparent(colorIndex, 0.25),
+            BorderWidth = borderWidth,
+            Fill = fill,
+            PointRadius = [pointRadius],
+            Tension = tension,
+        };
+}

@@ -1,0 +1,36 @@
+<BarChart @ref="barChart" Width="600" />
+
+@code {
+    private BarChart barChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var chartData = new ChartData
+            {
+                Labels = ["Search", "Social", "Email", "Direct", "Referral"],
+                Datasets =
+                [
+                    new BarChartDataset
+                    {
+                        Label = "Visits",
+                        Data = [540, 320, 180, 260, 100],
+                        BackgroundColor = ["rgb(0, 114, 178)"], // Okabe–Ito blue
+                    }
+                ]
+            };
+
+            var options = new BarChartOptions { Responsive = true };
+
+            // 'demo.percentOfTotal' turns each value into its share of the dataset's total.
+            options.Plugins.Datalabels.Formatter = new ChartFunction("demo.percentOfTotal");
+            options.Plugins.Datalabels.Color = "white";
+
+            // Data labels need the chartjs-plugin-datalabels script and the plugin name here.
+            await barChart.InitializeAsync(chartData, options, plugins: ["ChartDataLabels"]);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

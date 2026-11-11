@@ -1,0 +1,8 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+<div class="be-playground-field is-checkbox">
+    <label class="checkbox">
+        <input type="checkbox" checked="@Value" @onchange="e => ValueChanged.InvokeAsync(e.Value is true)" />
+        @Label
+    </label>
+</div>

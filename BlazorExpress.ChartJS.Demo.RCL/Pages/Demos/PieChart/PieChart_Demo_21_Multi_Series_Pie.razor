@@ -1,0 +1,46 @@
+<PieChart @ref="pieChart" Width="420" />
+
+@code {
+    private PieChart pieChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Okabe–Ito colours (colour-blind safe): one per region, reused by both rings.
+            List<string> colors = ["rgb(0, 114, 178)", "rgb(230, 159, 0)", "rgb(0, 158, 115)", "rgb(204, 121, 167)"];
+
+            var chartData = new ChartData
+            {
+                Labels = ["North", "South", "East", "West"],
+                Datasets =
+                [
+                    // Each dataset is one ring. The first dataset is the outer ring.
+                    new PieChartDataset
+                    {
+                        Label = "2025",
+                        Data = [320, 210, 180, 140],
+                        BackgroundColor = colors,
+                        BorderWidth = [2],
+                    },
+                    new PieChartDataset
+                    {
+                        Label = "2024",
+                        Data = [260, 240, 150, 170],
+                        BackgroundColor = colors,
+                        BorderWidth = [2],
+                        // Weight sets a ring's thickness relative to the others. The default is 1.
+                        Weight = 0.6,
+                    },
+                ]
+            };
+
+            var options = new PieChartOptions { Responsive = true };
+            options.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Sales by region: 2025 (outer) and 2024 (inner)", Color = "rgb(153, 153, 153)" };
+
+            await pieChart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

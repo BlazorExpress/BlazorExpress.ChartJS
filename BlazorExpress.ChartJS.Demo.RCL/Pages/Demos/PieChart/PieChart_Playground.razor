@@ -1,0 +1,101 @@
+<PlaygroundPanel Code="@csharp">
+    <Controls>
+        <PlaygroundRange Label="Rotation" Max="360" Step="15" Unit="°" Value="rotation" ValueChanged="value => SetAsync(() => rotation = value)" />
+        <PlaygroundRange Label="Circumference" Min="90" Max="360" Step="15" Unit="°" Value="circumference" ValueChanged="value => SetAsync(() => circumference = value)" />
+        <PlaygroundRange Label="Border width" Max="8" Unit=" px" Value="borderWidth" ValueChanged="value => SetAsync(() => borderWidth = value)" />
+        <PlaygroundRange Label="Hover offset" Max="30" Step="2" Unit=" px" Value="hoverOffset" ValueChanged="value => SetAsync(() => hoverOffset = value)" />
+        <PlaygroundCommonControls Settings="settings" OnChanged="ApplyAsync" />
+    </Controls>
+    <Chart>
+        <PieChart @ref="chart" />
+    </Chart>
+</PlaygroundPanel>
+
+@code {
+    // The Chart.js defaults; a value is listed in the C# only when it differs.
+    private const double DefaultBorderWidth = 2;
+    private const double DefaultCircumference = 360;
+
+    private PieChart chart = default!;
+    private readonly PlaygroundSettings settings = new();
+    private string csharp = string.Empty;
+    private double borderWidth = DefaultBorderWidth;
+    private double circumference = DefaultCircumference;
+    private double hoverOffset;
+    private double rotation;
+
+    protected override void OnInitialized() => Build();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var (chartData, options) = Build();
+            await chart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task ApplyAsync()
+    {
+        var (chartData, options) = Build();
+        await chart.UpdateAsync(chartData, options);
+    }
+
+    private async Task SetAsync(Action change)
+    {
+        change();
+        await ApplyAsync();
+    }
+
+    // Builds the chart data and options from the controls, and the C# that gives the same chart.
+    private (ChartData ChartData, PieChartOptions Options) Build()
+    {
+        var text = new PlaygroundCode(nameof(PieChartOptions), nameof(PieChartDataset));
+        var options = new PieChartOptions { Responsive = true };
+        settings.Apply(options, options.Plugins, text);
+
+        if (rotation > 0)
+        {
+            options.Rotation = rotation;
+            text.Option("Rotation", PlaygroundCode.Literal(rotation));
+        }
+
+        if (circumference != DefaultCircumference)
+        {
+            options.Circumference = circumference;
+            text.Option("Circumference", PlaygroundCode.Literal(circumference));
+        }
+
+        // Room for the slice that moves out on hover.
+        if (hoverOffset > 0)
+        {
+            options.Layout = new ChartLayout { Padding = (int)hoverOffset };
+            text.Option("Layout", $"new ChartLayout {{ Padding = {(int)hoverOffset} }}");
+            text.Dataset("HoverOffset", PlaygroundCode.List(hoverOffset));
+        }
+
+        if (borderWidth != DefaultBorderWidth) text.Dataset("BorderWidth", PlaygroundCode.List(borderWidth));
+
+        var chartData = new ChartData
+        {
+            Labels = ["Desktop", "Mobile", "Tablet", "TV", "Other"],
+            Datasets =
+            [
+                new PieChartDataset
+                {
+                    Label = "Sessions",
+                    Data = [42800, 38100, 14300, 9200, 6100],
+                    BackgroundColor = Enumerable.Range(0, 5).Select(DemoPalette.Get).ToList(),
+                    BorderWidth = [borderWidth],
+                    HoverOffset = [hoverOffset],
+                }
+            ]
+        };
+
+        csharp = text.ToString();
+
+        return (chartData, options);
+    }
+}

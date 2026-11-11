@@ -28,13 +28,47 @@
             <span class="px-1"></span>
             <a href="@nugetUrl" target="_blank"><img alt="Nuget" src="https://img.shields.io/nuget/dt/BlazorExpress.ChartJS"></a>
         </div>
+        <div class="buttons is-centered mb-4">
+            <a class="button is-primary is-medium" href="@DemoRouteConstants.Demos_Samples">Browse @SampleCatalog.All.Count samples</a>
+            <a class="button is-medium" href="@DemoRouteConstants.Docs_Getting_Started_Introduction">Get started</a>
+        </div>
     </div>
 </div>
 
 <div class="container is-max-desktop mb-4">
-    <IndexComponentLinks Title="All Components" Category="@DemoPageLinkCategory.All" />
+    <div class="has-text-centered mb-4">
+        <h2 class="is-size-3 has-text-weight-semibold">Charts</h2>
+    </div>
+    <div class="be-home-charts mb-6">
+        @foreach (var chart in SampleCatalog.Charts)
+        {
+            <a class="be-home-chart" href="@chart.Route">
+                <BootstrapIcon Name="@chart.IconName" />
+                <span class="be-home-chart-name">@chart.Name</span>
+                <span class="be-home-chart-count">@SampleCatalog.GetByChart(chart.Key).Count samples</span>
+            </a>
+        }
+    </div>
 
-    <IndexComponentLinks Title="Utils" Category="@DemoPageLinkCategory.Utils" />
+    <div class="has-text-centered mb-4">
+        <h2 class="is-size-3 has-text-weight-semibold">Browse by category</h2>
+    </div>
+    <div class="tags are-medium is-centered mb-6">
+        @foreach (var category in Enum.GetValues<SampleCategory>())
+        {
+            <a class="tag is-link is-light" href="@DemoRouteConstants.GetSamplesCategoryUrl(category)">@category.GetDisplayName()</a>
+        }
+    </div>
+
+    <div class="has-text-centered mb-4">
+        <h2 class="is-size-3 has-text-weight-semibold">Utils</h2>
+    </div>
+    <div class="has-text-centered has-text-link is-size-5 has-text-weight-semibold mb-6">
+        <a class="be-home-link" href="@DemoRouteConstants.Demos_ColorUtils">
+            <BootstrapIcon Name="BootstrapIconName.Palette2" />
+            <span>Color Utils</span>
+        </a>
+    </div>
 
     <DoYouKnow />
 

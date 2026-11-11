@@ -1,0 +1,18 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+<div class="be-playground">
+    <fieldset class="be-playground-controls">
+        <legend class="has-text-weight-semibold">Options</legend>
+        @Controls
+    </fieldset>
+    <div class="be-playground-chart">
+        @Chart
+    </div>
+</div>
+
+<div class="be-playground-code-header mt-4 mb-2">
+    <span class="has-text-weight-semibold" id="@codeLabelId">C# for these settings</span>
+    <button type="button" class="button is-small" @onclick="CopyAsync">@copyText</button>
+</div>
+@* The generated C# is written as text; it is never parsed as markup. *@
+<pre class="be-playground-code" tabindex="0" aria-labelledby="@codeLabelId"><code>@Code</code></pre>

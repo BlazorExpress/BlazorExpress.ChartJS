@@ -1,0 +1,6 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+<PlaygroundCheckbox Label="Show legend" Value="Settings.LegendDisplay" ValueChanged="value => SetAsync(() => Settings.LegendDisplay = value)" />
+<PlaygroundSelect Label="Legend position" Options="legendPositions" Value="@Settings.LegendPosition" ValueChanged="value => SetAsync(() => Settings.LegendPosition = value)" />
+<PlaygroundSelect Label="Locale" Options="PlaygroundSettings.Locales" Value="@Settings.Locale" ValueChanged="value => SetAsync(() => Settings.Locale = value)" />
+<PlaygroundCheckbox Label="Right to left" Value="Settings.RightToLeft" ValueChanged="value => SetAsync(() => Settings.RightToLeft = value)" />

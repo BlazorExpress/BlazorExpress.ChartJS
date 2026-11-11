@@ -1,19 +1,24 @@
 ﻿@attribute [Route(pageUrl)]
+@attribute [Route(pageUrl + "/{Sample}")]
 @layout DemosMainLayout
 
-<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+<SamplePageHeader ChartKey="@SampleChartKeys.RadarChart" Sample="@Sample">
+    <PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
-<PageHero Title="@pageTitle">
-    <SubTitleTemplate>
-        @((MarkupString)pageDescription)
-    </SubTitleTemplate>
-</PageHero>
+    <PageHero Title="@pageTitle">
+        <SubTitleTemplate>
+            @((MarkupString)pageDescription)
+        </SubTitleTemplate>
+    </PageHero>
 
-<DocsLink Href="@DemoRouteConstants.Docs_RadarChart" />
+    <DocsLink Href="@DemoRouteConstants.Docs_RadarChart" />
 
-<Prerequisites PageUrl="@pageUrl" />
+    <Prerequisites PageUrl="@pageUrl" />
+</SamplePageHeader>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="How it works" PageUrl="@pageUrl" Link="how-it-works">
+@* Each SampleSection renders only on its own sample page, /demos/<chart>/<slug>. *@
+<CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.RadarChart, Sample)">
+<SampleSection Slug="how-it-works">
     <Block>
         The <strong>Radar Chart</strong> component visualizes multivariate data with each variable represented on axes starting from the same point, making it ideal for comparing multiple groups across several categories.
         <br /><br />
@@ -31,16 +36,32 @@
         This demo demonstrates how to set up a Radar Chart, bind your data, and interactively update the chart to fit your application's needs.
     </Block>
     <Demo Type="typeof(RadarChart_Demo_01_Examples)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Click event" PageUrl="@pageUrl" Link="click-event">
+<SampleSection Slug="playground">
+    <Block>
+        Change the main options of a radar chart and watch the chart and its C# update together. The controls cover tension, line width, point radius and fill, plus the legend, the locale and right-to-left layout.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Change a control. The chart is updated with <code>UpdateAsync</code>, so it animates from its current state.</li>
+                <li>Pick a <strong>Locale</strong> to see how numbers are formatted for that region, and switch on <strong>Right to left</strong> to mirror the legend and tooltip.</li>
+                <li>Copy the C# below the chart. It lists only the settings that differ from their defaults, with the property names the library uses.</li>
+            </ol>
+        </div>
+    </Block>
+    <RadarChart_Playground />
+</SampleSection>
+
+<SampleSection Slug="click-event">
     <Block>
         Set the <code>OnClick</code> callback to react when a radar data point is selected. The callback receives <code>ChartClickEventArgs</code> with the dataset, point index, label, and raw value; the demo displays the selected item below the chart.
     </Block>
     <Demo Type="typeof(RadarChart_Demo_02_Click_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Export image" PageUrl="@pageUrl" Link="export-image">
+<SampleSection Slug="export-image">
     <Block>
         Export the chart as an image with <code>ToBase64ImageAsync</code>, which returns a base64 data URL you can show, store or send, or save it straight to a file in the browser with <code>DownloadImageAsync</code>.
         If the chart is still animating, both wait for the animation to finish, and the image is streamed from the browser, so Blazor Server needs no larger message size.
@@ -55,9 +76,9 @@
         </div>
     </Block>
     <Demo Type="typeof(RadarChart_Demo_03_Export_Image)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Show and hide datasets" PageUrl="@pageUrl" Link="show-and-hide-datasets">
+<SampleSection Slug="show-and-hide-datasets">
     <Block>
         Show and hide whole datasets or single points from C#, check whether a dataset is visible and count the visible datasets.
         Visibility changed at runtime, from C# or a legend click, stays in place when <code>UpdateAsync</code> refreshes the data, because datasets are matched by <code>Key</code>, or else by label, and points by label.
@@ -73,9 +94,9 @@
         </div>
     </Block>
     <Demo Type="typeof(RadarChart_Demo_04_Show_Hide_Datasets)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Legend click event" PageUrl="@pageUrl" Link="legend-click-event">
+<SampleSection Slug="legend-click-event">
     <Block>
         Set <code>OnLegendClick</code> to react when a legend item is clicked. The callback receives <code>ChartLegendClickEventArgs</code> with the dataset index, the legend text and whether the dataset is hidden after the click.
         Set <code>LegendClickToggles="false"</code> to stop the legend from hiding datasets, for example to open details instead.
@@ -90,9 +111,9 @@
         </div>
     </Block>
     <Demo Type="typeof(RadarChart_Demo_05_Legend_Click_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Hover event" PageUrl="@pageUrl" Link="hover-event">
+<SampleSection Slug="hover-event">
     <Block>
         Set <code>OnHover</code> to react when the pointer moves onto a different point. The callback receives <code>ChartHoverEventArgs</code> with the same item details as <code>OnClick</code>.
         It is called only when the hovered point changes, and once with a <code>null</code> <code>DatasetIndex</code> when the pointer leaves all points, so it does not flood Blazor Server with calls.
@@ -106,9 +127,9 @@
         </div>
     </Block>
     <Demo Type="typeof(RadarChart_Demo_06_Hover_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Programmatic highlight" PageUrl="@pageUrl" Link="programmatic-highlight">
+<SampleSection Slug="programmatic-highlight">
     <Block>
         Highlight points and show their tooltip from C# with <code>SetActiveElementsAsync</code>, for example to point at a value from a table next to the chart.
         <br /><br />
@@ -121,9 +142,9 @@
         </div>
     </Block>
     <Demo Type="typeof(RadarChart_Demo_07_Programmatic_Highlight)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Update modes and animation control" PageUrl="@pageUrl" Link="update-modes-and-animation-control">
+<SampleSection Slug="update-modes-and-animation-control">
     <Block>
         Choose how <code>UpdateAsync</code> animates with <code>ChartUpdateMode</code>, and control the running animation with <code>StopAsync</code>, <code>RenderAsync</code>, <code>ResetAsync</code> and <code>ClearAsync</code>.
         These map one-to-one to the Chart.js <code>update(mode)</code>, <code>stop()</code>, <code>render()</code>, <code>reset()</code> and <code>clear()</code> methods.
@@ -139,9 +160,9 @@
         </div>
     </Block>
     <Demo Type="typeof(RadarChart_Demo_08_Update_Modes)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Radial scale" PageUrl="@pageUrl" Link="radial-scale">
+<SampleSection Slug="radial-scale">
     <Block>
         The radar chart draws its values on one radial axis, <code>Scales.R</code>, sent to Chart.js as <code>scales.r</code>. Chart.js starts a radar axis at the data minimum, but this library sets <code>BeginAtZero = true</code> by default, so the axis starts at zero unless you turn it off.
         <br /><br />
@@ -156,9 +177,9 @@
         </div>
     </Block>
     <Demo Type="typeof(RadarChart_Demo_09_Radial_Scale)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Angle lines and point labels" PageUrl="@pageUrl" Link="angle-lines-and-point-labels">
+<SampleSection Slug="angle-lines-and-point-labels">
     <Block>
         Angle lines run from the center to each label, and point labels name each spoke of the radar. Chart.js shows both on radar charts by default.
         <br /><br />
@@ -173,9 +194,9 @@
         </div>
     </Block>
     <Demo Type="typeof(RadarChart_Demo_10_Angle_Lines_And_Point_Labels)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Start angle" PageUrl="@pageUrl" Link="start-angle">
+<SampleSection Slug="start-angle">
     <Block>
         <code>Scales.R.StartAngle</code> rotates the whole radar, in degrees clockwise from the top. Chart.js uses 0, which puts the first label at the top.
         <br /><br />
@@ -189,9 +210,9 @@
         </div>
     </Block>
     <Demo Type="typeof(RadarChart_Demo_11_Start_Angle)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Title and subtitle" PageUrl="@pageUrl" Link="title-and-subtitle">
+<SampleSection Slug="title-and-subtitle">
     <Block>
         The title and subtitle plugins draw text around the chart area. Chart.js hides both by default; in this library the title and subtitle color defaults to <code>"black"</code>.
         <br /><br />
@@ -206,9 +227,9 @@
         </div>
     </Block>
     <Demo Type="typeof(RadarChart_Demo_12_Title_And_Subtitle)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Tooltip options" PageUrl="@pageUrl" Link="tooltip-options">
+<SampleSection Slug="tooltip-options">
     <Block>
         Tooltip options decide which points a tooltip lists, where it opens and how it looks. Values left <code>null</code> use the chart's <code>Interaction</code> options and the Chart.js defaults.
         <br /><br />
@@ -223,9 +244,9 @@
         </div>
     </Block>
     <Demo Type="typeof(RadarChart_Demo_13_Tooltip_Options)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Layout padding" PageUrl="@pageUrl" Link="layout-padding">
+<SampleSection Slug="layout-padding">
     <Block>
         Layout padding adds space between the canvas edge and the chart, legend and title. Chart.js uses no padding by default; the dashed border in the demo shows the canvas edge.
         <br /><br />
@@ -239,9 +260,9 @@
         </div>
     </Block>
     <Demo Type="typeof(RadarChart_Demo_14_Layout_Padding)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Aspect ratio and resize delay" PageUrl="@pageUrl" Link="aspect-ratio-and-resize-delay">
+<SampleSection Slug="aspect-ratio-and-resize-delay">
     <Block>
         A responsive chart keeps its width-to-height ratio while <code>MaintainAspectRatio</code> is <code>true</code>; Chart.js uses a ratio of 1 for radar charts. <code>ResizeDelay</code> waits the given milliseconds after the last resize before redrawing, so dragging the window edge causes one redraw instead of many; resize the window to see it.
         <br /><br />
@@ -255,9 +276,9 @@
         </div>
     </Block>
     <Demo Type="typeof(RadarChart_Demo_15_Aspect_Ratio_And_Resize_Delay)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Hover and elements" PageUrl="@pageUrl" Link="hover-and-elements">
+<SampleSection Slug="hover-and-elements">
     <Block>
         <code>Elements</code> sets default styles for every point and line the chart draws, and <code>Hover</code> decides which points are highlighted under the pointer, separately from <code>Interaction</code>, which the tooltip keeps using.
         Radar datasets always send their own <code>Tension</code> and <code>BorderWidth</code>, so set those on the dataset; dataset values win over <code>Elements</code>.
@@ -273,9 +294,9 @@
         </div>
     </Block>
     <Demo Type="typeof(RadarChart_Demo_16_Hover_And_Elements)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Colors plugin" PageUrl="@pageUrl" Link="colors-plugin">
+<SampleSection Slug="colors-plugin">
     <Block>
         The Chart.js colors plugin gives datasets that set no colors a color from its built-in palette. Line, radar and scatter datasets in this library always send a default color, so on a radar chart the palette applies only with <code>ForceOverride = true</code>.
         <br /><br />
@@ -289,9 +310,31 @@
         </div>
     </Block>
     <Demo Type="typeof(RadarChart_Demo_17_Colors_Plugin)" Tabs="true" />
-</Section>
+</SampleSection>
+
+<SampleSection Slug="skip-points">
+    <Block>
+        A <code>null</code> value skips a point on a radar chart. <code>SpanGaps</code> decides whether the line breaks at the gap or bridges it.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Put <code>null</code> in <code>Data</code> for each value that is missing.</li>
+                <li>Leave <code>SpanGaps</code> unset, or set it to <code>false</code>, to break the line at a missing value.</li>
+                <li>Set <code>SpanGaps = true</code> to join the points on either side of it.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(RadarChart_Demo_18_Skip_Points)" Tabs="true" />
+</SampleSection>
+</CascadingValue>
+
+<SamplePageFooter ChartKey="@SampleChartKeys.RadarChart" Sample="@Sample" />
 
 @code {
+    /// <summary>The sample slug from the URL, or <see langword="null" /> on the chart overview.</summary>
+    [Parameter] public string? Sample { get; set; }
+
     private const string pageUrl = DemoRouteConstants.Demos_RadarChart;
     private const string pageTitle = "Radar Chart";
     private const string pageDescription = "Explore interactive <code>Blazor Radar Chart</code> examples with source code. Learn how to visualize categorical data, customize chart appearance, and enhance your Blazor applications using the Radar Chart component. Try live demos and discover practical usage scenarios.";

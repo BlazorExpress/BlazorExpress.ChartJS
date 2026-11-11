@@ -32,6 +32,17 @@ public partial class DemosMainLayout : MainLayoutBase
     {
         var groups = new HashSet<LinkGroup>();
 
+        // SAMPLES: the gallery, then one link per category.
+        groups.Add(new LinkGroup
+        {
+            Name = "Samples",
+            CssClass = "is-size-7 has-text-weight-bold has-text-success",
+            Links = [
+                new Link { Href = DemoRouteConstants.Demos_Samples, Text = "All samples", Match = MenuItemMatch.All },
+                .. Enum.GetValues<SampleCategory>().Select(category => new Link { Href = DemoRouteConstants.GetSamplesCategoryUrl(category), Text = category.GetDisplayName(), Match = MenuItemMatch.All })
+            ]
+        });
+
         // CHARTS
         groups.Add(new LinkGroup
         {

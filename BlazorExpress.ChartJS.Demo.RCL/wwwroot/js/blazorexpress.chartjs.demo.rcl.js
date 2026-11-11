@@ -1,18 +1,18 @@
 async function copyToClipboard(text, dotNetHelper) {
     let isCopied = true;
 
+    // The component that asked for the copy can be gone before a callback runs (the user left the page); that is not an error.
+    const notify = (method, ...args) => dotNetHelper.invokeMethodAsync(method, ...args).catch(() => { });
+
     try {
         await navigator.clipboard.writeText(text);
-        dotNetHelper.invokeMethodAsync('OnCopySuccessJS');
+        notify('OnCopySuccessJS');
     } catch (err) {
         isCopied = false;
-        dotNetHelper.invokeMethodAsync('OnCopyFailJS', err);
+        notify('OnCopyFailJS', err);
     }
 
-    setTimeout(
-        () => { dotNetHelper.invokeMethodAsync('ResetCopyStatusJS'); },
-        isCopied ? 2000 : 3000
-    );
+    setTimeout(() => notify('ResetCopyStatusJS'), isCopied ? 2000 : 3000);
 }
 
 function highlightCode() {
@@ -79,6 +79,7 @@ function setTheme(theme, save = true) {
     }
     showActiveTheme();
     updateDemoCodeThemeCss(state.appliedTheme);
+    applyDemoChartTheme(state.appliedTheme);
 };
 
 function initializeTheme() {
@@ -330,7 +331,100 @@ function runTimeAxisSelfCheck() {
         gradient.addColorStop(1, 'rgba(54, 162, 235, 0.6)');
         return gradient;
     });
+
+    // The four functions below are also shown on their sample pages, from the *_Snippet.js files next to the demos.
+    // Keep each pair in step.
+
+    // External (HTML) tooltip: (context) => void. Builds the tooltip from elements and text only, so chart data is never read as markup.
+    register('demo.htmlTooltip', context => {
+        const { chart, tooltip } = context;
+        const parent = chart.canvas.parentNode;
+
+        let box = parent.querySelector('.demo-html-tooltip');
+        if (!box) {
+            box = document.createElement('div');
+            box.className = 'demo-html-tooltip';
+            Object.assign(box.style, {
+                position: 'absolute', pointerEvents: 'none', transform: 'translate(-50%, 10px)', transition: 'opacity .15s ease',
+                background: 'rgba(0, 0, 0, 0.8)', color: '#fff', borderRadius: '6px', padding: '6px 10px',
+                font: '12px sans-serif', whiteSpace: 'nowrap', zIndex: '10',
+            });
+            parent.style.position = 'relative';
+            parent.appendChild(box);
+        }
+
+        if (tooltip.opacity === 0) {
+            box.style.opacity = '0';
+            return;
+        }
+
+        box.replaceChildren();
+
+        for (const line of tooltip.title ?? []) {
+            const title = document.createElement('div');
+            title.style.fontWeight = '600';
+            title.textContent = line;
+            box.appendChild(title);
+        }
+
+        (tooltip.body ?? []).forEach((body, index) => {
+            const row = document.createElement('div');
+            const swatch = document.createElement('span');
+            Object.assign(swatch.style, {
+                display: 'inline-block', width: '10px', height: '10px', marginRight: '6px', borderRadius: '50%',
+                background: tooltip.labelColors[index].borderColor,
+            });
+            const text = document.createElement('span');
+            text.textContent = body.lines.join(' ');
+            row.append(swatch, text);
+            box.appendChild(row);
+        });
+
+        box.style.opacity = '1';
+        box.style.left = `${chart.canvas.offsetLeft + tooltip.caretX}px`;
+        box.style.top = `${chart.canvas.offsetTop + tooltip.caretY}px`;
+    });
+
+    // Animation onProgress and onComplete: (animation) => void. Moves the <progress> element next to the chart.
+    register('demo.showAnimationProgress', animation => {
+        const bar = document.getElementById('demo-animation-progress');
+        if (bar)
+            bar.value = animation.numSteps > 0 ? animation.currentStep / animation.numSteps : 1;
+    });
+    register('demo.completeAnimationProgress', () => {
+        const bar = document.getElementById('demo-animation-progress');
+        if (bar)
+            bar.value = 1;
+    });
+
+    // Scriptable background colour for arcs: (context) => colour. Each slice fades from a light centre to its full colour at the rim.
+    register('demo.radialGradient', context => {
+        const colors = ['0, 114, 178', '230, 159, 0', '0, 158, 115', '204, 121, 167', '86, 180, 233']; // Okabe–Ito
+        const rgb = colors[context.dataIndex % colors.length];
+        const { ctx, chartArea } = context.chart;
+        if (!chartArea)
+            return `rgb(${rgb})`;
+
+        const centerX = (chartArea.left + chartArea.right) / 2;
+        const centerY = (chartArea.top + chartArea.bottom) / 2;
+        const radius = Math.min(chartArea.right - chartArea.left, chartArea.bottom - chartArea.top) / 2;
+
+        const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+        gradient.addColorStop(0.45, `rgba(${rgb}, 0.25)`);
+        gradient.addColorStop(1, `rgb(${rgb})`);
+        return gradient;
+    });
+
+    // Datalabels formatter: (value, context) => text. Shows each bar as a share of its dataset's total.
+    register('demo.percentOfTotal', (value, context) => {
+        const total = context.dataset.data.reduce((sum, item) => sum + (item ?? 0), 0);
+        return total > 0 ? `${Math.round(value / total * 100)}%` : '';
+    });
 })();
+
+// One self-check case: passes when the expected and the actual value read the same.
+const selfCheckResult = (name, expected, actual) =>
+    ({ name, expected: String(expected), actual: String(actual), status: String(expected) === String(actual) ? 'pass' : 'fail' });
 
 // Unlisted JS functions self-check page: registers its test functions, records console errors, and checks live charts.
 window.jsFunctionsSelfCheck = (() => {
@@ -342,7 +436,7 @@ window.jsFunctionsSelfCheck = (() => {
     // Canvas IDs by self-check key (for example 'sc-ticks'), passed in by the page.
     let chartIds = {};
     const charts = key => Chart.getChart(chartIds[key] ?? key);
-    const result = (name, expected, actual) => ({ name, expected: String(expected), actual: String(actual), status: String(expected) === String(actual) ? 'pass' : 'fail' });
+    const result = selfCheckResult;
     const errorsFor = text => errors.filter(message => message.includes(text)).length;
 
     const begin = () => {
@@ -487,4 +581,508 @@ window.jsFunctionsSelfCheck = (() => {
     };
 
     return { begin, registerLate, runAfterUpdate, runInitial };
+})();
+
+// Theme-aware demo charts (story 26110206 AC-09). The text, grid and border colours of every chart on the demo site follow
+// the site's light or dark theme wherever the chart leaves them at their Chart.js defaults. Colours a demo sets itself, and
+// the colours the library always sends (for example the black title colour), are kept. This is demo-site behaviour only:
+// the same demo code in another app gets the Chart.js defaults.
+//
+// Chart.defaults.borderColor and Chart.defaults.backgroundColor are left alone: the Chart.js Colors plugin gives its palette
+// only while both still hold their original values. The grid, border and angle lines take their colour from the scale
+// defaults instead, which the Colors plugin does not look at.
+const demoChartThemes = {
+    light: { color: '#666', lineColor: 'rgba(0,0,0,0.1)', backdropColor: 'rgba(255, 255, 255, 0.75)' },
+    dark: { color: '#c9d1d9', lineColor: 'rgba(255, 255, 255, 0.18)', backdropColor: 'rgba(0, 0, 0, 0.55)' },
+};
+
+// Scale options that take their default from the theme: [group, property, theme colour].
+const demoScaleThemeColors = [
+    ['ticks', 'color', 'color'], ['ticks', 'backdropColor', 'backdropColor'], ['title', 'color', 'color'], ['pointLabels', 'color', 'color'],
+    ['grid', 'color', 'lineColor'], ['border', 'color', 'lineColor'], ['angleLines', 'color', 'lineColor'],
+];
+let demoChartThemeApplied = null;
+
+// Any value other than 'dark' gets the light colours, which are the Chart.js defaults.
+const getDemoChartThemeColors = theme => demoChartThemes[theme] ?? demoChartThemes.light;
+
+function setDemoChartDefaults(colors) {
+    Chart.defaults.color = colors.color;
+    Chart.defaults.scale.ticks.backdropColor = colors.backdropColor;
+    Chart.defaults.scale.grid.color = colors.lineColor;
+    Chart.defaults.scale.border.color = colors.lineColor;
+
+    const angleLines = Chart.defaults.scales?.radialLinear?.angleLines;
+    if (angleLines)
+        angleLines.color = colors.lineColor;
+}
+
+// Chart.js copies the scale defaults into each chart when the chart is created, so new defaults alone do not reach the scales
+// of a chart that is already drawn. A scale colour that still equals the previous theme's default is removed here, and
+// Chart.js fills it in again from the new defaults on the next update. A colour the demo chose is left alone, unless it is
+// exactly the previous theme's default.
+function releaseDemoScaleColors(chart, previousColors) {
+    for (const scale of Object.values(chart.config.options?.scales ?? {})) {
+        for (const [group, property, key] of demoScaleThemeColors) {
+            if (scale?.[group]?.[property] === previousColors[key])
+                delete scale[group][property];
+        }
+    }
+}
+
+// Called by setTheme: redraws every chart with the new defaults and drops the kept gallery thumbnails.
+function applyDemoChartTheme(theme) {
+    if (!window.Chart || demoChartThemeApplied === theme)
+        return;
+
+    // Charts drawn before the first call used the Chart.js defaults, which are the light colours.
+    const previousColors = getDemoChartThemeColors(demoChartThemeApplied);
+    const isFirst = demoChartThemeApplied === null;
+    demoChartThemeApplied = theme;
+    setDemoChartDefaults(getDemoChartThemeColors(theme));
+
+    Chart.helpers.each(Chart.instances, chart => {
+        try {
+            releaseDemoScaleColors(chart, previousColors);
+            chart.update('none');
+        } catch (error) {
+            // One chart that cannot redraw must not keep the others in the old theme.
+            console.warn('A chart could not be redrawn for the new theme.', error);
+        }
+    });
+
+    if (!isFirst)
+        window.demoThumbnails?.invalidate();
+}
+
+// Keyboard reach for the demo tabs and the copy icon (story 26110206 A-03). The UI package of the demo site renders the
+// "Example / View Source" tabs as links without an href and the copy control as an icon, and the Tab key skips both.
+// This gives them a tab stop, a role and Enter or Space activation, and tells assistive technology which tab is shown.
+// The copy icon sits in the snippet of a demo and in the toolbar of a code block. The package components are unchanged.
+(() => {
+    const selector = '.tabs li > a:not([href]), :is(.be-bulma-doc-example-snippet, .be-bulma-doc-example-toolbar) i[role="button"]';
+
+    const enhance = () => {
+        for (const element of document.querySelectorAll(selector)) {
+            if (!element.hasAttribute('tabindex'))
+                element.setAttribute('tabindex', '0');
+            if (!element.hasAttribute('role'))
+                element.setAttribute('role', 'button');
+            if (element.tagName === 'I' && !element.hasAttribute('aria-label'))
+                element.setAttribute('aria-label', 'Copy the source to the clipboard');
+
+            if (element.tagName === 'A') {
+                const pressed = String(element.parentElement.classList.contains('is-active'));
+                if (element.getAttribute('aria-pressed') !== pressed)
+                    element.setAttribute('aria-pressed', pressed);
+            }
+        }
+    };
+
+    let scheduled = false;
+    const schedule = () => {
+        if (scheduled)
+            return;
+
+        scheduled = true;
+        requestAnimationFrame(() => {
+            scheduled = false;
+            enhance();
+        });
+    };
+
+    document.addEventListener('keydown', event => {
+        if ((event.key === 'Enter' || event.key === ' ') && event.target instanceof Element && event.target.matches(selector)) {
+            event.preventDefault();
+            event.target.click();
+        }
+    });
+
+    // The package marks the shown tab with a class on its list item, so class changes are watched as well.
+    new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+    schedule();
+})();
+
+const demoSleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+// Live gallery thumbnails (story 26110206 R-04). A card asks for its thumbnail when it scrolls into view; the page renders
+// the sample's demo in an invisible host, and `captureInto` turns its first chart into an image. Images are kept in memory
+// per sample and theme, and dropped when the theme changes.
+window.demoThumbnails = (() => {
+    const images = new Map();   // "<sample url>|<theme>" -> data URL
+    const observed = new Map(); // card preview element -> { dotNetRef, key }
+    const cacheKey = key => `${key}|${state.appliedTheme}`;
+    const thumbnailWidth = 480; // in canvas pixels: enough for a card on a high-density screen, far smaller than the capture
+
+    const show = (container, dataUrl) => {
+        const image = container.querySelector('.be-sample-thumb-image');
+        if (image)
+            image.src = dataUrl;
+    };
+
+    const observer = 'IntersectionObserver' in window
+        ? new IntersectionObserver(entries => {
+            for (const entry of entries) {
+                const item = observed.get(entry.target);
+                if (!entry.isIntersecting || !item)
+                    continue;
+
+                observer.unobserve(entry.target);
+                item.dotNetRef.invokeMethodAsync('OnVisibleAsync').catch(() => { /* the card was removed meanwhile */ });
+            }
+        }, { rootMargin: '200px' })
+        : null;
+
+    // Returns true when an image is already kept for this sample and theme; otherwise watches for the card to scroll into view.
+    const observe = (container, dotNetRef, key) => {
+        if (!container)
+            return false;
+
+        observed.set(container, { dotNetRef, key });
+
+        const kept = images.get(cacheKey(key));
+        if (kept) {
+            show(container, kept);
+            return true;
+        }
+
+        observer?.observe(container);
+        return false;
+    };
+
+    const unobserve = container => {
+        if (!container)
+            return;
+
+        observer?.unobserve(container);
+        observed.delete(container);
+    };
+
+    // The kept image is the chart scaled down to the width a card needs, not the full capture.
+    const toSmallImage = source => {
+        const scale = Math.min(1, thumbnailWidth / source.width);
+        const small = document.createElement('canvas');
+        small.width = Math.max(1, Math.round(source.width * scale));
+        small.height = Math.max(1, Math.round(source.height * scale));
+        small.getContext('2d').drawImage(source, 0, 0, small.width, small.height);
+        return small.toDataURL('image/png');
+    };
+
+    // Waits for the first chart in `host`, stops its animation and returns it as a small PNG data URL.
+    // Returns null when no chart with a real size appears in time, or when the capture fails.
+    const capture = async (host, timeoutMs = 5000) => {
+        const end = Date.now() + timeoutMs;
+
+        while (Date.now() < end) {
+            // The card left the page (a filter change, or the user moved on): give the capture queue back at once.
+            if (!host?.isConnected)
+                return null;
+
+            const canvas = host.querySelector('canvas');
+            const chart = canvas ? Chart.getChart(canvas) : null;
+
+            if (chart && chart.width > 0 && chart.height > 0) {
+                try {
+                    chart.stop();
+                    chart.options.animation = false;
+                    chart.update('none');
+                    return toSmallImage(chart.canvas);
+                } catch {
+                    return null;
+                }
+            }
+
+            await demoSleep(100);
+        }
+
+        return null;
+    };
+
+    const captureInto = async (container, host, key, timeoutMs) => {
+        const dataUrl = await capture(host, timeoutMs);
+        if (!dataUrl || !container?.isConnected)
+            return false;
+
+        images.set(cacheKey(key), dataUrl);
+        show(container, dataUrl);
+        return true;
+    };
+
+    // The theme changed: drop the kept images and let the visible cards draw again.
+    const invalidate = () => {
+        images.clear();
+
+        for (const [container, item] of observed) {
+            item.dotNetRef.invokeMethodAsync('OnInvalidated').catch(() => { /* the card was removed meanwhile */ });
+            observer?.unobserve(container);
+            observer?.observe(container);
+        }
+    };
+
+    return { capture, captureInto, invalidate, observe, unobserve };
+})();
+
+// Unlisted samples self-check page (story 26110206 F-01): drives the sample pages in a frame on that page,
+// and reports the charts drawn and the console errors for each one.
+window.samplesSelfCheck = (() => {
+    const waitFor = async (condition, timeoutMs = 8000, stepMs = 100) => {
+        const end = Date.now() + timeoutMs;
+        while (Date.now() < end) {
+            try {
+                if (condition()) return true;
+            } catch {
+                // The frame is between two pages; try again.
+            }
+            await demoSleep(stepMs);
+        }
+        return false;
+    };
+
+    const result = selfCheckResult;
+
+    // Records console errors, uncaught errors and unhandled rejections of the frame's window.
+    const watchErrors = win => {
+        if (win.__samplesSelfCheckErrors)
+            return win.__samplesSelfCheckErrors;
+
+        const errors = win.__samplesSelfCheckErrors = [];
+        const original = win.console.error;
+        win.console.error = (...args) => {
+            errors.push(args.map(a => a?.message ?? String(a)).join(' ').slice(0, 300));
+            original.apply(win.console, args);
+        };
+        win.addEventListener('error', e => errors.push(String(e.message).slice(0, 300)));
+        win.addEventListener('unhandledrejection', e => errors.push(String(e.reason?.message ?? e.reason).slice(0, 300)));
+        return errors;
+    };
+
+    // Waits until the demo site has started in the frame. A frame that never starts stops the run with a clear message,
+    // which the page shows as a failing case.
+    const ready = async frame => {
+        const started = await waitFor(() => frame.contentWindow.Blazor?.navigateTo && frame.contentDocument.querySelector('#app')
+            && !frame.contentDocument.querySelector('.be-loader-shell'), 60000, 200);
+        if (!started)
+            throw new Error('The demo site did not start in the frame within 60 seconds.');
+    };
+
+    // Marks what the frame shows now, so the next page's content can be told apart from it, then navigates inside the frame.
+    const fresh = ':not([data-self-check-old])';
+    const navigate = (frame, url) => {
+        frame.contentDocument.querySelectorAll('.be-sample-content, .be-sample-grid, .be-sample-not-found-slug')
+            .forEach(el => el.setAttribute('data-self-check-old', ''));
+        frame.contentWindow.Blazor.navigateTo(url);
+    };
+
+    // Routing, old anchors, the Colors plugin and the injection cases. `charts` is [{ key, route, count, anchor }];
+    // `colorsUrl` is a sample whose first chart has datasets without colours and the Colors plugin on.
+    const runFrameCases = async (frame, charts, galleryUrl, colorsUrl) => {
+        const cases = [];
+        await ready(frame);
+        const doc = () => frame.contentDocument;
+        const loc = () => frame.contentWindow.location;
+        const literal = '<b>x</b>"\'';
+
+        for (const chart of charts) {
+            // The chart page is an overview with one card per sample.
+            navigate(frame, chart.route);
+            await waitFor(() => loc().pathname === chart.route && doc().querySelector(`.be-sample-grid${fresh}`));
+            cases.push(result(`${chart.key}: overview shows one card per sample`, chart.count,
+                doc().querySelectorAll(`.be-sample-grid${fresh} .be-sample-card`).length));
+            cases.push(result(`${chart.key}: overview draws no chart`, 0, doc().querySelectorAll('.be-sample-content canvas').length));
+
+            // An old anchor opens the sample page (AC-06).
+            navigate(frame, galleryUrl);
+            await waitFor(() => loc().pathname === galleryUrl);
+            navigate(frame, `${chart.route}#${chart.anchor}`);
+            await waitFor(() => loc().pathname === `${chart.route}/${chart.anchor}`, 5000);
+            cases.push(result(`${chart.key}: old anchor #${chart.anchor} opens the sample page`, `${chart.route}/${chart.anchor}`, loc().pathname));
+        }
+
+        if (charts.length > 0) {
+            const first = charts[0];
+
+            // An anchor that is not a sample leaves the overview as it is.
+            navigate(frame, galleryUrl);
+            await waitFor(() => loc().pathname === galleryUrl);
+            navigate(frame, `${first.route}#no-such-sample`);
+            await waitFor(() => loc().pathname === first.route && doc().querySelector(`.be-sample-grid${fresh}`), 5000);
+            cases.push(result('An anchor that is not a sample stays on the overview', first.route, loc().pathname));
+
+            // An unknown slug shows "sample not found", as text (OWASP A05, A10).
+            navigate(frame, `${first.route}/${encodeURIComponent(literal)}`);
+            await waitFor(() => doc().querySelector(`.be-sample-not-found-slug${fresh}`), 5000);
+            const slug = doc().querySelector(`.be-sample-not-found-slug${fresh}`);
+            cases.push(result('Unknown slug is shown as literal text', literal, slug?.textContent));
+            cases.push(result('Unknown slug adds no element', 0, slug ? slug.children.length : -1));
+            cases.push(result('Unknown slug shows the cards of its chart', first.count,
+                doc().querySelectorAll(`.be-sample-grid${fresh} .be-sample-card`).length));
+        }
+
+        if (colorsUrl) {
+            // The Chart.js Colors plugin still gives its palette to datasets without colours, on a chart created in either
+            // theme (AC-02, AC-09). The site's chart theme must not switch the plugin off.
+            const win = frame.contentWindow;
+            const appliedTheme = doc().documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+            const firstChart = () => {
+                const canvas = doc().querySelector(`.be-sample-content${fresh} canvas`);
+                return canvas ? win.Chart.getChart(canvas) : null;
+            };
+
+            for (const theme of ['light', 'dark']) {
+                win.setTheme(theme, false);
+                navigate(frame, galleryUrl);
+                await waitFor(() => loc().pathname === galleryUrl);
+                navigate(frame, colorsUrl);
+                await waitFor(() => loc().pathname === colorsUrl && firstChart()?.data.datasets.some(d => d.backgroundColor), 5000);
+                const datasets = firstChart()?.data.datasets ?? [];
+                cases.push(result(`Colors plugin gives its palette in the ${theme} theme`, true, datasets.length > 0 && datasets.every(d => !!d.backgroundColor)));
+            }
+
+            win.setTheme(appliedTheme, false);
+        }
+
+        // The gallery search text comes from the query string and is shown as text (OWASP A05).
+        navigate(frame, `${galleryUrl}?q=${encodeURIComponent(literal)}`);
+        await waitFor(() => loc().pathname === galleryUrl && doc().querySelector('.be-gallery-search')?.value === literal, 5000);
+        await demoSleep(300);
+        cases.push(result('Gallery search text is kept as literal text', literal, doc().querySelector('.be-gallery-search')?.value));
+        cases.push(result('Gallery search text adds no element', 0, doc().querySelectorAll('.be-gallery b').length));
+        cases.push(result('Gallery "no match" message shows the literal text', true,
+            (doc().querySelector('.be-gallery-empty')?.textContent ?? '').includes(literal)));
+
+        // A thumbnail that cannot be captured yields nothing, so the card keeps its icon (OWASP A10).
+        const capture = window.demoThumbnails?.capture;
+        let captured = 'capture helper missing';
+        if (capture) {
+            const host = document.createElement('div');
+            document.body.appendChild(host);
+            captured = await capture(host, 400);
+            host.remove();
+        }
+        cases.push(result('A thumbnail capture with no chart returns nothing', 'null', captured === null ? 'null' : captured));
+
+        return cases;
+    };
+
+    // Charts get their size and their animation on animation frames. While the page is not drawn (a hidden pane, a
+    // background tab, a minimized window) no frame runs, and a chart can sit at no size through no fault of its own.
+    const framesRun = () => new Promise(resolve => {
+        const timer = setTimeout(() => resolve(false), 1000);
+        requestAnimationFrame(() => {
+            clearTimeout(timer);
+            resolve(true);
+        });
+    });
+
+    const waitUntilDrawn = async () => {
+        while (!(await framesRun()))
+            await demoSleep(500);
+    };
+
+    const notRendered = 'the sample content did not render';
+    const noChart = 'no chart was drawn';
+
+    // Opens one sample page in the frame and reports its charts and its errors.
+    const checkSample = async (frame, url) => {
+        try {
+            // Hooked per sample: a frame that reloaded has a new window with no hook.
+            const win = frame.contentWindow;
+            const errors = watchErrors(win);
+
+            // Checking a sample again: leave its page first, so the page renders anew.
+            if (win.location.pathname === url) {
+                const chartUrl = url.slice(0, url.lastIndexOf('/'));
+                navigate(frame, chartUrl);
+                await waitFor(() => win.location.pathname === chartUrl);
+            }
+
+            navigate(frame, url);
+
+            const content = () => win.document.querySelector(`.be-sample-content${fresh}`);
+            const canvases = () => [...(content()?.querySelectorAll('canvas') ?? [])];
+
+            const shown = await waitFor(() => win.location.pathname === url && content());
+            const drawn = shown && await waitFor(() => canvases().length > 0 && canvases().every(c => win.Chart.getChart(c)));
+            const live = () => canvases().map(c => win.Chart.getChart(c)).filter(Boolean);
+            const hasSize = c => c.width > 0 && c.height > 0;
+
+            // A chart can report no size for a moment while its container is laid out; a chart in a hidden container never gets one.
+            await waitFor(() => live().every(hasSize), 3000);
+
+            // Wait for the first animation to end, so an error raised at its end (for example by an onComplete function)
+            // is still recorded for this sample. A looping animation never ends; the wait gives up after a few seconds.
+            await waitFor(() => live().every(c => !win.Chart.animator.running(c)), 3500);
+            await demoSleep(300);
+
+            // A chart with no size is read again once the page is being drawn: a chart that was only waiting for an
+            // animation frame gets its size then.
+            const notes = [];
+            if (!live().every(hasSize)) {
+                await waitUntilDrawn();
+                await waitFor(() => live().every(hasSize), 3000);
+
+                // A chart created while its tab was still hidden can keep a resize that Chart.js put off until the next
+                // drawing, and no drawing follows. The walk notes the state of such a chart, then completes the resize to
+                // learn whether the chart can draw at all. The sample is then reported as "resized", never as passed: its
+                // chart did not get a size without help. A chart whose container has no width is left alone and fails.
+                live().forEach((chart, index) => {
+                    if (!hasSize(chart) && chart.canvas.parentNode?.clientWidth > 0) {
+                        notes.push(`chart ${index + 1}: no size, ${chart._resizeBeforeDraw ? 'a resize waiting for a drawing' : 'no resize waiting'}, `
+                            + `${win.Chart.animator.running(chart) ? 'animation running' : 'no animation running'}`);
+                        chart.resize();
+                    }
+                });
+
+                if (notes.length > 0)
+                    await waitFor(() => live().every(hasSize), 2000);
+            }
+
+            const charts = live();
+            const zeroSize = charts.filter(c => !hasSize(c)).length;
+
+            // Taken, not copied: an error raised after this point belongs to the next sample, so no error is dropped.
+            const found = errors.splice(0);
+            if (!shown) found.unshift(notRendered);
+            else if (!drawn) found.unshift(noChart);
+
+            const failed = !shown || !drawn || zeroSize > 0 || found.length > 0;
+            return { url, charts: charts.length, zeroSize, resized: notes.length, notes, errors: found, status: failed ? 'fail' : notes.length > 0 ? 'resized' : 'pass' };
+        } catch (e) {
+            return { url, charts: 0, zeroSize: 0, resized: 0, notes: [], errors: [String(e?.message ?? e)], status: 'fail' };
+        }
+    };
+
+    // Opens every sample in turn. `samples` is [{ url }]. A failing sample is reported and the walk continues.
+    // Errors raised while a page is torn down, or between two samples, land on the next sample, so no error is dropped.
+    // The walk waits while the page is not drawn, and checks a sample again when drawing stopped during its check,
+    // so switching away from the page pauses the walk instead of failing samples.
+    const walk = async (frame, samples, dotNetRef) => {
+        await ready(frame);
+
+        for (const sample of samples) {
+            // Console errors of a check that is thrown away, because drawing stopped during it, still count.
+            const earlier = [];
+            let outcome;
+
+            for (;;) {
+                await waitUntilDrawn();
+                outcome = await checkSample(frame, sample.url);
+                if (await framesRun())
+                    break;
+
+                earlier.push(...outcome.errors.filter(error => error !== notRendered && error !== noChart));
+            }
+
+            if (earlier.length > 0) {
+                outcome.errors.unshift(...earlier);
+                outcome.status = 'fail';
+            }
+
+            await dotNetRef.invokeMethodAsync('OnSampleChecked', outcome);
+        }
+
+        await dotNetRef.invokeMethodAsync('OnWalkDone');
+    };
+
+    return { runFrameCases, walk };
 })();

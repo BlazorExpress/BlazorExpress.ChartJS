@@ -1,20 +1,25 @@
 @attribute [Route(pageUrl)]
+@attribute [Route(pageUrl + "/{Sample}")]
 @attribute [Route(pageUrl2)]
 @layout DemosMainLayout
 
-<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+<SamplePageHeader ChartKey="@SampleChartKeys.BarChart" Sample="@Sample">
+    <PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
-<PageHero Title="@pageTitle">
-    <SubTitleTemplate>
-        @((MarkupString)pageDescription)
-    </SubTitleTemplate>
-</PageHero>
+    <PageHero Title="@pageTitle">
+        <SubTitleTemplate>
+            @((MarkupString)pageDescription)
+        </SubTitleTemplate>
+    </PageHero>
 
-<DocsLink Href="@DemoRouteConstants.Docs_BarChart" />
+    <DocsLink Href="@DemoRouteConstants.Docs_BarChart" />
 
-<Prerequisites PageUrl="@pageUrl" />
+    <Prerequisites PageUrl="@pageUrl" />
+</SamplePageHeader>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="How it works" PageUrl="@pageUrl" Link="how-it-works">
+@* Each SampleSection renders only on its own sample page, /demos/<chart>/<slug>. *@
+<CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.BarChart, Sample)">
+<SampleSection Slug="how-it-works">
     <Block>
         The <strong>Bar Chart</strong> component visualizes data as vertical bars, making it easy to compare values across categories or track changes over time.
         <br /><br />
@@ -30,17 +35,33 @@
         This demo showcases the essential setup for a bar chart and demonstrates how to bind your data for quick visualization.
     </Block>
     <Demo Type="typeof(BarChart_Demo_01_Examples)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Click event" PageUrl="@pageUrl" Link="click-event">
+<SampleSection Slug="playground">
+    <Block>
+        Change the main options of a bar chart and watch the chart and its C# update together. The controls cover bar direction, stacking, corner radius and bar width, plus the legend, the locale and right-to-left layout.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Change a control. The chart is updated with <code>UpdateAsync</code>, so it animates from its current state.</li>
+                <li>Pick a <strong>Locale</strong> to see how numbers are formatted for that region, and switch on <strong>Right to left</strong> to mirror the legend and tooltip.</li>
+                <li>Copy the C# below the chart. It lists only the settings that differ from their defaults, with the property names the library uses.</li>
+            </ol>
+        </div>
+    </Block>
+    <BarChart_Playground />
+</SampleSection>
+
+<SampleSection Slug="click-event">
     <Block>
         Set the <code>OnClick</code> callback to react when a chart data item is selected. The callback receives <code>ChartClickEventArgs</code> with the dataset index and label, data-item index and label, and raw value.
         The dedicated demo displays the selected item below the chart.
     </Block>
     <Demo Type="typeof(BarChart_Demo_11_Click_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Combo bar/line" PageUrl="@pageUrl" Link="combo-bar-line">
+<SampleSection Slug="combo-bar-line">
     <Block>
         The <strong>Combo bar/line</strong> demo mixes <code>BarChartDataset</code> and <code>LineChartDataset</code> in the same <code>BarChart</code>.
         <br /><br />
@@ -55,9 +76,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_09_Combo_Bar_Line)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Horizontal bar chart" PageUrl="@pageUrl" Link="horizontal-bar-chart">
+<SampleSection Slug="horizontal-bar-chart">
     <Block>
         The <strong>Horizontal Bar Chart</strong> displays data values as horizontal bars, making it ideal for comparing categories with long labels or when you want to emphasize comparison between values.
         <br /><br />
@@ -72,9 +93,9 @@
         Refer to the demo code below for a working example and configuration options.
     </Block>
     <Demo Type="typeof(BarChart_Demo_02_Horizontal_BarChart)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Stacked bar chart" PageUrl="@pageUrl" Link="stacked-bar-chart">
+<SampleSection Slug="stacked-bar-chart">
     <Block>
         The <strong>Stacked Bar Chart</strong> allows you to display multiple data series stacked on top of each other, making it easy to compare the total and individual contributions of each series for every category.
         <br /><br />
@@ -89,9 +110,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_03_Stacked_BarChart)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Stacked bar chart with groups" PageUrl="@pageUrl" Link="stacked-bar-chart-with-groups">
+<SampleSection Slug="stacked-bar-chart-with-groups">
     <Block>
         The <strong>Stacked Bar Chart with Groups</strong> displays multiple independent stacks side by side for each category. Datasets that share the same <code>Stack</code> value are stacked together, while datasets with different <code>Stack</code> values are rendered as separate groups.
         <br /><br />
@@ -106,9 +127,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_10_Stacked_BarChart_With_Groups)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Stacked bar chart with data labels" PageUrl="@pageUrl" Link="stacked-bar-chart-with-data-labels">
+<SampleSection Slug="stacked-bar-chart-with-data-labels">
     <Block>
         The <strong>Stacked Bar Chart with Data Labels</strong> enhances the standard stacked bar chart by displaying value labels directly on each bar segment. This makes it easier to read and compare the values of each dataset within a category.
         <br /><br />
@@ -124,9 +145,9 @@
         Refer to the demo code below for a working example and further configuration options.
     </Block>
     <Demo Type="typeof(BarChart_Demo_04_Stacked_BarChart_with_Datalabels)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Locale" PageUrl="@pageUrl" Link="locale">
+<SampleSection Slug="locale">
     <Block>
         The <strong>Locale</strong> demo shows how to localize number and date formatting in your bar chart.
         <br /><br />
@@ -141,9 +162,9 @@
         Refer to the demo code below for a working example and configuration options.
     </Block>
     <Demo Type="typeof(BarChart_Demo_05_Locale)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Border radius" PageUrl="@pageUrl" Link="border-radius">
+<SampleSection Slug="border-radius">
     <Block>
         The <strong>Border Radius</strong> feature allows you to create bar charts with rounded corners, giving your charts a modern and visually appealing look. This is especially useful for dashboards and applications where aesthetics are important.
         <br /><br />
@@ -160,9 +181,9 @@
         Using the <code>BorderRadius</code> property, you can easily enhance the style of your bar charts to better match your application's design.
     </Block>
     <Demo Type="typeof(BarChart_Demo_06_Border_Radius)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Animations - Delay" PageUrl="@pageUrl" Link="animations-delay">
+<SampleSection Slug="animations-delay">
     <Block>
         The <strong>Animations - Delay</strong> demo illustrates how to add a delay to the animation of your Bar Chart, making the chart elements appear with a timed entrance effect. This is useful for drawing attention to the chart as it loads or for creating a more engaging user experience.
         <br /><br />
@@ -178,9 +199,9 @@
         Animation delays help you create visually appealing transitions and can be tailored to fit your application's style.
     </Block>
     <Demo Type="typeof(BarChart_Demo_07_Animations_A_Delay)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Animations - Dataset level delay" PageUrl="@pageUrl" Link="animations-dataset-level-delay">
+<SampleSection Slug="animations-dataset-level-delay">
     <Block>
         The <strong>Animations - Dataset level delay</strong> demo demonstrates how to apply different animation delays to each dataset in your Bar Chart. This allows each dataset to animate in sequence, making comparisons clearer and adding a dynamic effect to your data presentation.
         <br /><br />
@@ -196,9 +217,9 @@
         Dataset-level animation delays are ideal for highlighting differences between series and creating engaging, stepwise chart reveals.
     </Block>
     <Demo Type="typeof(BarChart_Demo_08_Animations_B_DataSet_Level_Delay)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Export image" PageUrl="@pageUrl" Link="export-image">
+<SampleSection Slug="export-image">
     <Block>
         Export the chart as an image with <code>ToBase64ImageAsync</code>, which returns a base64 data URL you can show, store or send, or save it straight to a file in the browser with <code>DownloadImageAsync</code>.
         If the chart is still animating, both wait for the animation to finish, and the image is streamed from the browser, so Blazor Server needs no larger message size.
@@ -213,9 +234,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_12_Export_Image)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Show and hide datasets" PageUrl="@pageUrl" Link="show-and-hide-datasets">
+<SampleSection Slug="show-and-hide-datasets">
     <Block>
         Show and hide whole datasets or single bars from C#, check whether a dataset is visible and count the visible datasets.
         Visibility changed at runtime, from C# or a legend click, stays in place when <code>UpdateAsync</code> refreshes the data, because datasets are matched by <code>Key</code>, or else by label, and bars by label.
@@ -231,9 +252,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_13_Show_Hide_Datasets)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Legend click event" PageUrl="@pageUrl" Link="legend-click-event">
+<SampleSection Slug="legend-click-event">
     <Block>
         Set <code>OnLegendClick</code> to react when a legend item is clicked. The callback receives <code>ChartLegendClickEventArgs</code> with the dataset index, the legend text and whether the dataset is hidden after the click.
         Set <code>LegendClickToggles="false"</code> to stop the legend from hiding datasets, for example to open details instead.
@@ -248,9 +269,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_14_Legend_Click_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Hover event" PageUrl="@pageUrl" Link="hover-event">
+<SampleSection Slug="hover-event">
     <Block>
         Set <code>OnHover</code> to react when the pointer moves onto a different bar. The callback receives <code>ChartHoverEventArgs</code> with the same item details as <code>OnClick</code>.
         It is called only when the hovered bar changes, and once with a <code>null</code> <code>DatasetIndex</code> when the pointer leaves all bars, so it does not flood Blazor Server with calls.
@@ -264,9 +285,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_15_Hover_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Programmatic highlight" PageUrl="@pageUrl" Link="programmatic-highlight">
+<SampleSection Slug="programmatic-highlight">
     <Block>
         Highlight bars and show their tooltip from C# with <code>SetActiveElementsAsync</code>, for example to point at a value from a table next to the chart.
         <br /><br />
@@ -279,9 +300,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_16_Programmatic_Highlight)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Update modes and animation control" PageUrl="@pageUrl" Link="update-modes-and-animation-control">
+<SampleSection Slug="update-modes-and-animation-control">
     <Block>
         Choose how <code>UpdateAsync</code> animates with <code>ChartUpdateMode</code>, and control the running animation with <code>StopAsync</code>, <code>RenderAsync</code>, <code>ResetAsync</code> and <code>ClearAsync</code>.
         These map one-to-one to the Chart.js <code>update(mode)</code>, <code>stop()</code>, <code>render()</code>, <code>reset()</code> and <code>clear()</code> methods.
@@ -297,9 +318,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_17_Update_Modes)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Multiple axes" PageUrl="@pageUrl" Link="multiple-axes">
+<SampleSection Slug="multiple-axes">
     <Block>
         Add more axes with <code>Scales.AdditionalAxes</code>, keyed by axis ID, and point a dataset at one with <code>YAxisID</code> or <code>XAxisID</code>. Chart.js works out the direction from the first letter of the ID, so <code>"y1"</code> is a y-axis and <code>"x1"</code> an x-axis.
         <br /><br />
@@ -314,9 +335,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_18_Multiple_Axes)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Axis position and reverse" PageUrl="@pageUrl" Link="axis-position-and-reverse">
+<SampleSection Slug="axis-position-and-reverse">
     <Block>
         Move an axis to another edge with <code>Position</code>, flip its direction with <code>Reverse</code>, or hide it with <code>Display = false</code>. A hidden axis still scales the data; only its labels, ticks and grid lines go.
         <br /><br />
@@ -331,9 +352,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_19_Axis_Position_And_Reverse)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Tick options" PageUrl="@pageUrl" Link="tick-options">
+<SampleSection Slug="tick-options">
     <Block>
         <code>ChartAxesTicks</code> controls how many ticks an axis gets and how their labels look. Chart.js picks the tick spacing itself unless you set <code>StepSize</code> or <code>Count</code>, and skips crowded labels unless you set <code>AutoSkip = false</code>.
         <br /><br />
@@ -348,9 +369,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_20_Tick_Options)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Axis title" PageUrl="@pageUrl" Link="axis-title">
+<SampleSection Slug="axis-title">
     <Block>
         Label an axis with <code>ChartAxesTitle</code>. The title is hidden until <code>Display = true</code>, and in this library it defaults to <code>"black"</code> text in a bold 12 px font, where Chart.js uses grey.
         <br /><br />
@@ -365,9 +386,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_21_Axis_Title)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Grace and bounds" PageUrl="@pageUrl" Link="grace-and-bounds">
+<SampleSection Slug="grace-and-bounds">
     <Block>
         <code>Grace</code> adds space beyond the data, <code>Bounds</code> decides whether the axis ends at the data (<code>"data"</code>) or at a whole tick (<code>"ticks"</code>, the Chart.js default), and <code>SuggestedMin</code> / <code>SuggestedMax</code> extend the range only when the data does not already reach them. Value axes in this library start at zero (<code>BeginAtZero = true</code>).
         <br /><br />
@@ -382,9 +403,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_22_Grace_And_Bounds)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Floating bars" PageUrl="@pageUrl" Link="floating-bars">
+<SampleSection Slug="floating-bars">
     <Block>
         A floating bar spans a <code>(start, end)</code> range instead of growing from the base. Use <code>FloatingData</code> instead of <code>Data</code>; each item is a number, a range or <code>null</code>, and Chart.js draws numbers from the base as usual.
         <br /><br />
@@ -399,9 +420,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_23_Floating_Bars)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Per corner border radius" PageUrl="@pageUrl" Link="per-corner-border-radius">
+<SampleSection Slug="per-corner-border-radius">
     <Block>
         <code>BorderRadiusCorners</code> rounds each bar corner by its own amount, in pixels, and <code>HoverBorderRadiusCorners</code> does the same while the bar is hovered. Chart.js does not round the corners on a skipped edge, which by default (<code>BorderSkipped = "start"</code>) is the base of the bar.
         <br /><br />
@@ -416,9 +437,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_24_Per_Corner_Border_Radius)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Base and inflate amount" PageUrl="@pageUrl" Link="base-and-inflate-amount">
+<SampleSection Slug="base-and-inflate-amount">
     <Block>
         <code>Base</code> sets the value bars grow from instead of zero, <code>InflateAmount</code> widens each drawn bar by a number of pixels (Chart.js uses <code>"auto"</code> to hide hairline gaps), and <code>PointStyle</code> sets the shape used for the dataset in the legend and tooltip.
         <br /><br />
@@ -433,9 +454,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_25_Base_And_Inflate_Amount)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Title and subtitle" PageUrl="@pageUrl" Link="title-and-subtitle">
+<SampleSection Slug="title-and-subtitle">
     <Block>
         <code>Plugins.Title</code> and <code>Plugins.Subtitle</code> draw text outside the chart area; Chart.js places the subtitle between the title and the chart. Both are hidden until <code>Display = true</code>, and in this library their text defaults to <code>"black"</code>.
         <br /><br />
@@ -450,9 +471,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_26_Title_And_Subtitle)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Tooltip options" PageUrl="@pageUrl" Link="tooltip-options">
+<SampleSection Slug="tooltip-options">
     <Block>
         <code>Plugins.Tooltip</code> chooses which items the tooltip lists and how it looks. Its <code>Mode</code> and <code>Intersect</code> override <code>Interaction</code> for the tooltip only; Chart.js uses <code>Nearest</code> with <code>Intersect = true</code> by default.
         <br /><br />
@@ -467,9 +488,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_27_Tooltip_Options)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Layout padding" PageUrl="@pageUrl" Link="layout-padding">
+<SampleSection Slug="layout-padding">
     <Block>
         <code>Layout</code> adds empty space inside the canvas, around the legend, axes and chart. The dashed borders show the canvas edges.
         <br /><br />
@@ -483,9 +504,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_28_Layout_Padding)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Aspect ratio and resize delay" PageUrl="@pageUrl" Link="aspect-ratio-and-resize-delay">
+<SampleSection Slug="aspect-ratio-and-resize-delay">
     <Block>
         With <code>MaintainAspectRatio = true</code>, the canvas height follows its width by <code>AspectRatio</code> (width / height); Chart.js uses 2 for bar charts. <code>ResizeDelay</code> waits the given milliseconds after the container stops resizing before the chart redraws, which saves work while the window is dragged; resize the window to see the wide chart catch up.
         <br /><br />
@@ -499,9 +520,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_29_Aspect_Ratio_And_Resize_Delay)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Hover and elements" PageUrl="@pageUrl" Link="hover-and-elements">
+<SampleSection Slug="hover-and-elements">
     <Block>
         <code>Elements</code> sets defaults for every element of a kind, such as every bar, and a dataset value wins over them. <code>Hover</code> sets which elements highlight under the pointer, separately from <code>Interaction</code>, and <code>Events</code> lists the browser events Chart.js listens to.
         <br /><br />
@@ -516,9 +537,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_30_Hover_And_Elements)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Colors plugin" PageUrl="@pageUrl" Link="colors-plugin">
+<SampleSection Slug="colors-plugin">
     <Block>
         The Chart.js colors plugin gives each dataset a color from its built-in palette, but only when no dataset sets a color. Bar datasets send no color unless you set one, so the palette applies on its own; line, radar and scatter datasets always send a default color, so there the palette needs <code>ForceOverride = true</code>.
         <br /><br />
@@ -532,9 +553,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_31_Colors_Plugin)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Currency ticks" PageUrl="@pageUrl" Link="currency-ticks">
+<SampleSection Slug="currency-ticks">
     <Block>
         <code>Ticks.Format</code> formats axis labels with JavaScript's number formatting, so currency, percent and compact labels need no JavaScript of your own. The tooltip value uses the same format.
         <br /><br />
@@ -549,9 +570,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_32_Currency_Ticks_Format)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Legend click function" PageUrl="@pageUrl" Link="legend-click-function">
+<SampleSection Slug="legend-click-function">
     <Block>
         A legend <code>OnClick</code> function replaces Chart.js's default toggle, as in Chart.js. The library still keeps the visibility the click changed across <code>UpdateAsync</code>, and still raises <code>OnLegendClick</code>.
         <br /><br />
@@ -571,9 +592,65 @@
         </div>
     </Block>
     <Demo Type="typeof(BarChart_Demo_33_Legend_Click_Function)" Tabs="true" />
-</Section>
+</SampleSection>
+
+<SampleSection Slug="stacked-bar-line">
+    <Block>
+        A <code>BarChart</code> can stack its bars and a line together. Datasets with the same <code>Stack</code> value add up, whatever their type, so a line in the stack runs along the total; a dataset with another value is drawn at its own values.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Options.Scales.X.Stacked = true</code> and <code>Options.Scales.Y.Stacked = true</code>.</li>
+                <li>Give the <code>BarChartDataset</code> items that should add up the same <code>Stack</code> value.</li>
+                <li>Add a <code>LineChartDataset</code> to the same <code>ChartData.Datasets</code> with the same <code>Stack</code> value: its values are added on top of the bars. Give it another <code>Stack</code> value to draw it at its own values instead.</li>
+                <li>Keep the line after the bars in <code>Datasets</code>, and leave <code>Order</code> unset: datasets stack by <code>Order</code>, lowest first, which is the reverse of the order they are painted in, so a line with a lower <code>Order</code> would be stacked first, under the bars.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_34_Stacked_Bar_Line)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="legend-position">
+    <Block>
+        <code>Legend.Position</code> places the legend on any side of the chart, and <code>Legend.Align</code> moves it along that side. A legend on the left or right leaves more height for the bars.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Options.Plugins.Legend.Position</code> to <code>"top"</code>, <code>"left"</code>, <code>"bottom"</code> or <code>"right"</code>. The default is <code>"top"</code>.</li>
+                <li>Set <code>Options.Plugins.Legend.Align</code> to <code>"start"</code>, <code>"center"</code> or <code>"end"</code>. The default is <code>"center"</code>.</li>
+                <li>Call <code>UpdateAsync</code> to move the legend on a chart that is already drawn.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_35_Legend_Position)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="datalabels-formatter">
+    <Block>
+        A datalabels <code>Formatter</code> is a registered JavaScript function that turns each value into its label text. The demo shows every bar as a share of the total.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Add the <code>chartjs-plugin-datalabels</code> script to your page, and pass <code>plugins: ["ChartDataLabels"]</code> to <code>InitializeAsync</code>.</li>
+                <li>Register the function shown below in your own script file. The plugin passes it the value and a context with the dataset.</li>
+                <li>Set <code>Options.Plugins.Datalabels.Formatter = new ChartFunction("demo.percentOfTotal")</code>. Set <code>Datalabels.Formatter</code> on a dataset instead to format only that dataset.</li>
+            </ol>
+        </div>
+    </Block>
+    <CodeChunk Class="mb-3" LanguageCode="LanguageCode.JavaScript" FilePath="~\Pages\Demos\BarChart\BarChart_Demo_36_Datalabels_Formatter_Snippet.js" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
+    <Demo Type="typeof(BarChart_Demo_36_Datalabels_Formatter)" Tabs="true" />
+</SampleSection>
+</CascadingValue>
+
+<SamplePageFooter ChartKey="@SampleChartKeys.BarChart" Sample="@Sample" />
 
 @code {
+    /// <summary>The sample slug from the URL, or <see langword="null" /> on the chart overview.</summary>
+    [Parameter] public string? Sample { get; set; }
+
     private const string pageUrl = DemoRouteConstants.Demos_BarChart;
     private const string pageUrl2 = DemoRouteConstants.Demos_Prefix;
     private const string pageTitle = "Bar Chart";

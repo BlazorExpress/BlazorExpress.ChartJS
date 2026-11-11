@@ -309,3 +309,330 @@ h1:focus-visible {
         transform: rotate(360deg);
     }
 }
+
+/* Samples: cards, sample pages and the gallery */
+.be-sample-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.be-sample-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    color: inherit;
+    background-color: var(--bulma-scheme-main);
+    border: 1px solid var(--be-bulma-border-color);
+    border-radius: var(--be-bulma-border-radius);
+    transition: box-shadow .15s ease, transform .15s ease;
+}
+
+a.be-sample-card:hover {
+    color: inherit;
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .14);
+    transform: translateY(-2px);
+}
+
+.be-sample-card.is-unavailable {
+    cursor: not-allowed;
+    border-style: dashed;
+    opacity: .7;
+}
+
+.be-sample-card-preview {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 2 / 1;
+    overflow: hidden;
+    background-color: var(--be-bulma-pre-bg);
+    border-bottom: 1px solid var(--be-bulma-border-color);
+}
+
+    .be-sample-card-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+.be-sample-card-icon {
+    font-size: 2.25rem;
+    opacity: .45;
+}
+
+.be-sample-card-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: .25rem;
+    padding: .75rem .875rem .875rem;
+}
+
+.be-sample-card-chart {
+    font-size: .75rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    opacity: .7;
+}
+
+.be-sample-card-title {
+    font-weight: 600;
+}
+
+.be-sample-card-description {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: .875rem;
+    opacity: .85;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+}
+
+.be-sample-card-flags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+    margin-top: auto;
+    padding-top: .35rem;
+}
+
+.be-sample-footer {
+    border-top: 1px solid var(--be-bulma-border-color);
+}
+
+.be-sample-footer-links {
+    margin: 0;
+    list-style: none;
+}
+
+.be-sample-pager {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    justify-content: space-between;
+}
+
+.be-self-check-frame {
+    width: 100%;
+    height: 720px;
+    border: 1px solid var(--be-bulma-border-color);
+    border-radius: var(--be-bulma-border-radius);
+}
+
+.be-gallery-filters {
+    display: grid;
+    grid-template-columns: minmax(14rem, 2fr) repeat(3, minmax(9rem, 1fr)) auto;
+    gap: .75rem;
+    align-items: end;
+    margin-bottom: 1rem;
+}
+
+    .be-gallery-filters .field {
+        margin-bottom: 0;
+    }
+
+@media screen and (max-width: 1023px) {
+    .be-gallery-filters {
+        grid-template-columns: 1fr 1fr;
+    }
+
+        .be-gallery-filters .is-search {
+            grid-column: 1 / -1;
+        }
+}
+
+.be-sample-thumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.be-sample-thumb-image {
+    display: none;
+    padding: .5rem;
+}
+
+.be-sample-thumb.has-image .be-sample-thumb-image {
+    display: block;
+}
+
+.be-sample-thumb.has-image .be-sample-thumb-placeholder {
+    display: none;
+}
+
+/* The demo behind a thumbnail: laid out at a real size so its chart can be captured, but never seen or focused. */
+.be-sample-thumb-host {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 960px;
+    pointer-events: none;
+    opacity: 0;
+}
+
+/* Playground panels: option controls beside the chart, the generated C# below */
+.be-playground {
+    display: grid;
+    grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+}
+
+.be-playground-controls {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    min-width: 0;
+    padding: .75rem 1rem 1rem;
+    border: 1px solid var(--be-bulma-border-color);
+    border-radius: var(--be-bulma-border-radius);
+}
+
+    .be-playground-controls legend {
+        padding: 0 .35rem;
+    }
+
+.be-playground-field label {
+    display: block;
+    margin-bottom: .2rem;
+    font-size: .875rem;
+}
+
+.be-playground-field input[type=range] {
+    width: 100%;
+}
+
+.be-playground-field.is-checkbox label {
+    display: flex;
+    gap: .4rem;
+    align-items: center;
+    margin: 0;
+}
+
+.be-playground-chart {
+    min-width: 0;
+}
+
+.be-playground-code-header {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.be-playground-code {
+    padding: .75rem 1rem;
+    overflow-x: auto;
+    font-size: .85rem;
+    white-space: pre;
+    background-color: var(--be-bulma-pre-bg);
+    border: 1px solid var(--be-bulma-border-color);
+    border-radius: var(--be-bulma-border-radius);
+}
+
+@media screen and (max-width: 768px) {
+    .be-playground {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Sample pages: the charts of one demo stack one per row until the window is wide enough to read them side by side.
+   Below 769px the columns already stack; from there to 1215px a third of the content area is too narrow for a chart. */
+@media screen and (min-width: 769px) and (max-width: 1215px) {
+    .be-sample-content .columns {
+        display: block;
+    }
+
+        .be-sample-content .columns > .column {
+            flex: none;
+            max-width: 34rem;
+            width: 100%;
+        }
+}
+
+/* Home page: one card per chart type, two across on a phone and four from 768px up, where every name fits on one line */
+.be-home-charts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.be-home-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .25rem;
+    padding: 1.25rem .75rem;
+    color: inherit;
+    text-align: center;
+    background-color: var(--bulma-scheme-main);
+    border: 1px solid var(--be-bulma-border-color);
+    border-radius: var(--be-bulma-border-radius);
+    transition: box-shadow .15s ease, transform .15s ease;
+}
+
+    .be-home-chart:hover {
+        color: inherit;
+        box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .14);
+        transform: translateY(-2px);
+    }
+
+    .be-home-chart i {
+        font-size: 1.75rem;
+        color: var(--bulma-link, #485fc7);
+    }
+
+.be-home-chart-name {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.be-home-chart-count {
+    font-size: .875rem;
+    opacity: .75;
+}
+
+@media screen and (min-width: 768px) {
+    .be-home-charts {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .be-home-chart-name {
+        font-size: 1.125rem;
+    }
+}
+
+/* Keyboard focus: every control added with the samples shows a visible focus ring */
+.be-sample-card:focus-visible,
+.be-sample-pager a:focus-visible,
+.be-sample-footer a:focus-visible,
+.be-sample-content button:focus-visible,
+.tabs a:focus-visible,
+.be-bulma-doc-example-snippet i[role=button]:focus-visible,
+.be-bulma-doc-example-toolbar i[role=button]:focus-visible,
+.be-home-link:focus-visible,
+.be-home-chart:focus-visible,
+.be-gallery input:focus-visible,
+.be-gallery select:focus-visible,
+.be-gallery button:focus-visible,
+.be-playground input:focus-visible,
+.be-playground select:focus-visible,
+.be-playground-code:focus-visible,
+.be-playground-code-header button:focus-visible,
+.breadcrumb a:focus-visible,
+.tags a.tag:focus-visible {
+    outline: 3px solid var(--bulma-link, #485fc7);
+    outline-offset: 2px;
+}
+
+/* The tab list clips what is drawn outside it, so the ring of a tab is drawn inside the tab */
+.tabs a:focus-visible {
+    outline-offset: -3px;
+}

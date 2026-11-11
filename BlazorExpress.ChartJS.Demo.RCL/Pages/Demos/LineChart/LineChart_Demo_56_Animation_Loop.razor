@@ -1,0 +1,60 @@
+<LineChart @ref="lineChart" Width="600" />
+
+<div class="mt-3">
+    <button type="button" class="button is-small mr-1 @(loop ? "is-primary" : null)" @onclick="() => SetLoopAsync(true)">Loop = true</button>
+    <button type="button" class="button is-small @(loop ? null : "is-primary")" @onclick="() => SetLoopAsync(false)">Loop = false</button>
+</div>
+
+@code {
+    private LineChart lineChart = default!;
+    private ChartData chartData = default!;
+    private readonly LineChartOptions options = new() { Responsive = true };
+    private bool loop = true;
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+            Datasets =
+            [
+                new LineChartDataset
+                {
+                    Label = "Signal",
+                    Data = [20, 45, 28, 60, 35, 52, 30],
+                    BorderColor = "rgb(0, 114, 178)", // Okabe–Ito blue
+                    BackgroundColor = "rgba(0, 114, 178, 0.3)",
+                    Fill = true,
+                    Tension = 0.4,
+                },
+            ]
+        };
+
+        ApplyAnimation();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await lineChart.InitializeAsync(chartData, options);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    // With Loop on, Chart.js runs the animation forwards and backwards without end.
+    // A slow, even easing keeps the motion calm.
+    private void ApplyAnimation() =>
+        options.Animation = new ChartAnimation { Duration = 2000, Easing = "easeInOutSine", Loop = loop };
+
+    private async Task SetLoopAsync(bool value)
+    {
+        loop = value;
+        ApplyAnimation();
+
+        // Stop the running animation and put the chart back in its starting state, so the update below animates
+        // from the baseline with the new setting: once with Loop off, without end with Loop on.
+        await lineChart.StopAsync();
+        await lineChart.ResetAsync();
+        await lineChart.UpdateAsync(chartData, options);
+    }
+}

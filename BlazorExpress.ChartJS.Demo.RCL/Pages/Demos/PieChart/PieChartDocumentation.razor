@@ -1,19 +1,24 @@
 ﻿@attribute [Route(pageUrl)]
+@attribute [Route(pageUrl + "/{Sample}")]
 @layout DemosMainLayout
 
-<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+<SamplePageHeader ChartKey="@SampleChartKeys.PieChart" Sample="@Sample">
+    <PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
-<PageHero Title="@pageTitle">
-    <SubTitleTemplate>
-        @((MarkupString)pageDescription)
-    </SubTitleTemplate>
-</PageHero>
+    <PageHero Title="@pageTitle">
+        <SubTitleTemplate>
+            @((MarkupString)pageDescription)
+        </SubTitleTemplate>
+    </PageHero>
 
-<DocsLink Href="@DemoRouteConstants.Docs_LineChart" />
+    <DocsLink Href="@DemoRouteConstants.Docs_LineChart" />
 
-<Prerequisites PageUrl="@pageUrl" />
+    <Prerequisites PageUrl="@pageUrl" />
+</SamplePageHeader>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="How it works" PageUrl="@pageUrl" Link="how-it-works">
+@* Each SampleSection renders only on its own sample page, /demos/<chart>/<slug>. *@
+<CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.PieChart, Sample)">
+<SampleSection Slug="how-it-works">
     <Block>
         The <strong>Pie Chart</strong> component visualizes categorical data as proportional slices of a circle, making it ideal for showing parts of a whole.
         <br /><br />
@@ -31,9 +36,25 @@
         This demo demonstrates how to set up a pie chart, bind your data, and interactively update the chart to fit your application's needs.
     </Block>
     <Demo Type="typeof(PieChart_Demo_01_Examples)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Data labels" PageUrl="@pageUrl" Link="data-labels">
+<SampleSection Slug="playground">
+    <Block>
+        Change the main options of a pie chart and watch the chart and its C# update together. The controls cover rotation, circumference, border width and hover offset, plus the legend, the locale and right-to-left layout.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Change a control. The chart is updated with <code>UpdateAsync</code>, so it animates from its current state.</li>
+                <li>Pick a <strong>Locale</strong> to see how numbers are formatted for that region, and switch on <strong>Right to left</strong> to mirror the legend and tooltip.</li>
+                <li>Copy the C# below the chart. It lists only the settings that differ from their defaults, with the property names the library uses.</li>
+            </ol>
+        </div>
+    </Block>
+    <PieChart_Playground />
+</SampleSection>
+
+<SampleSection Slug="data-labels">
     <Block>
         The <strong>Pie Chart</strong> component supports data labels, allowing you to display values or category names directly on each slice of the chart.
         <br /><br />
@@ -50,9 +71,9 @@
         Data labels make it easier for users to interpret the chart by showing relevant information directly on each pie slice.
     </Block>
     <Demo Type="typeof(PieChart_Demo_02_Datalabels)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Change legend position" PageUrl="@pageUrl" Link="change-legend-position">
+<SampleSection Slug="change-legend-position">
     <Block>
         The <strong>Pie Chart</strong> component allows you to easily change the position of the chart legend to improve readability or match your application's layout.
         <br /><br />
@@ -68,16 +89,16 @@
         Adjusting the legend position helps ensure your chart is clear and fits well within your application's design.
     </Block>
     <Demo Type="typeof(PieChart_Demo_03_Change_Legend_Position)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Click event" PageUrl="@pageUrl" Link="click-event">
+<SampleSection Slug="click-event">
     <Block>
         Set the <code>OnClick</code> callback to react when a pie slice is selected. The callback receives <code>ChartClickEventArgs</code> with the dataset, item index, label, and raw value; the demo displays the selected item below the chart.
     </Block>
     <Demo Type="typeof(PieChart_Demo_04_Click_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Show and hide slices" PageUrl="@pageUrl" Link="show-and-hide-slices">
+<SampleSection Slug="show-and-hide-slices">
     <Block>
         Show and hide single slices from C# and read whether a slice is visible.
         A hidden slice stays hidden when <code>UpdateAsync</code> refreshes the data, even if the slices are re-sorted, because slices are matched by label.
@@ -92,9 +113,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PieChart_Demo_05_Show_Hide_Slices)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Legend click event" PageUrl="@pageUrl" Link="legend-click-event">
+<SampleSection Slug="legend-click-event">
     <Block>
         Set <code>OnLegendClick</code> to react when a legend item is clicked. On pie charts the callback receives the slice <code>Index</code>, the legend text and whether the slice is hidden after the click.
         Set <code>LegendClickToggles="false"</code> to stop the legend from hiding slices.
@@ -109,9 +130,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PieChart_Demo_06_Legend_Click_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Export image" PageUrl="@pageUrl" Link="export-image">
+<SampleSection Slug="export-image">
     <Block>
         Export the chart as an image with <code>ToBase64ImageAsync</code>, which returns a base64 data URL you can show, store or send, or save it straight to a file in the browser with <code>DownloadImageAsync</code>.
         If the chart is still animating, both wait for the animation to finish, and the image is streamed from the browser, so Blazor Server needs no larger message size.
@@ -126,9 +147,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PieChart_Demo_07_Export_Image)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Hover event" PageUrl="@pageUrl" Link="hover-event">
+<SampleSection Slug="hover-event">
     <Block>
         Set <code>OnHover</code> to react when the pointer moves onto a different slice. The callback receives <code>ChartHoverEventArgs</code> with the same item details as <code>OnClick</code>.
         It is called only when the hovered slice changes, and once with a <code>null</code> <code>DatasetIndex</code> when the pointer leaves all slices, so it does not flood Blazor Server with calls.
@@ -142,9 +163,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PieChart_Demo_08_Hover_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Programmatic highlight" PageUrl="@pageUrl" Link="programmatic-highlight">
+<SampleSection Slug="programmatic-highlight">
     <Block>
         Highlight slices and show their tooltip from C# with <code>SetActiveElementsAsync</code>, for example to point at a value from a table next to the chart.
         <br /><br />
@@ -157,9 +178,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PieChart_Demo_09_Programmatic_Highlight)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Update modes and animation control" PageUrl="@pageUrl" Link="update-modes-and-animation-control">
+<SampleSection Slug="update-modes-and-animation-control">
     <Block>
         Choose how <code>UpdateAsync</code> animates with <code>ChartUpdateMode</code>, and control the running animation with <code>StopAsync</code>, <code>RenderAsync</code>, <code>ResetAsync</code> and <code>ClearAsync</code>.
         These map one-to-one to the Chart.js <code>update(mode)</code>, <code>stop()</code>, <code>render()</code>, <code>reset()</code> and <code>clear()</code> methods.
@@ -175,9 +196,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PieChart_Demo_10_Update_Modes)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Cutout and radius" PageUrl="@pageUrl" Link="cutout-and-radius">
+<SampleSection Slug="cutout-and-radius">
     <Block>
         <code>Cutout</code> sets the size of the hole in the middle and <code>Radius</code> sets the outer radius. Both take pixels or a percentage string; Chart.js uses a cutout of 0 and a <code>"100%"</code> radius for a pie chart, so any cutout turns the pie into a ring, like a doughnut chart.
         <br /><br />
@@ -192,9 +213,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PieChart_Demo_11_Cutout_And_Radius)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Half gauge" PageUrl="@pageUrl" Link="half-gauge">
+<SampleSection Slug="half-gauge">
     <Block>
         <code>Rotation</code> sets the start angle of the first arc, in degrees from the top, and <code>Circumference</code> sets how far the arcs sweep. Chart.js uses 0 and 360; a rotation of -90 with a circumference of 180 draws the top half of the pie, and Chart.js scales it to fill the space.
         <br /><br />
@@ -208,9 +229,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PieChart_Demo_12_Half_Gauge)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Rotate and scale animation" PageUrl="@pageUrl" Link="rotate-and-scale-animation">
+<SampleSection Slug="rotate-and-scale-animation">
     <Block>
         <code>ChartAnimation.AnimateRotate</code> sweeps the arcs in from the start angle, and <code>AnimateScale</code> grows the chart from the center. Chart.js uses <code>true</code> and <code>false</code> for pie charts. Click <strong>Replay</strong> to run the first-render animation again.
         <br /><br />
@@ -224,9 +245,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PieChart_Demo_13_Rotate_And_Scale_Animation)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Spacing mode" PageUrl="@pageUrl" Link="spacing-mode">
+<SampleSection Slug="spacing-mode">
     <Block>
         The dataset <code>Spacing</code> adds a gap between arcs, in pixels, and <code>SpacingMode</code> sets how the gap is measured: <code>"angular"</code> keeps an equal angle (the Chart.js default), <code>"proportional"</code> scales with each arc, and <code>"parallel"</code> keeps the edges of neighbouring arcs parallel.
         <br /><br />
@@ -240,9 +261,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PieChart_Demo_14_Spacing_Mode)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Title and subtitle" PageUrl="@pageUrl" Link="title-and-subtitle">
+<SampleSection Slug="title-and-subtitle">
     <Block>
         <code>Plugins.Title</code> and <code>Plugins.Subtitle</code> draw a title and a smaller line of text, placed by <code>Position</code> and aligned by <code>Align</code>. The subtitle is drawn just after the title on the same side. In this library both default to <code>Color = "black"</code>.
         <br /><br />
@@ -257,9 +278,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PieChart_Demo_15_Title_And_Subtitle)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Tooltip options" PageUrl="@pageUrl" Link="tooltip-options">
+<SampleSection Slug="tooltip-options">
     <Block>
         <code>Plugins.Tooltip</code> sets which items the tooltip lists, where it is placed and how it looks. When <code>Mode</code> and <code>Intersect</code> are not set, the tooltip uses the chart <code>Interaction</code> options; with two rings, <code>InteractionMode.Index</code> lists the same slice of both rings.
         <br /><br />
@@ -274,9 +295,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PieChart_Demo_16_Tooltip_Options)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Layout padding" PageUrl="@pageUrl" Link="layout-padding">
+<SampleSection Slug="layout-padding">
     <Block>
         <code>Layout</code> adds empty space inside the canvas, around the legend, title and chart. The dashed borders show the canvas edges.
         <br /><br />
@@ -290,9 +311,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PieChart_Demo_17_Layout_Padding)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Aspect ratio and resize delay" PageUrl="@pageUrl" Link="aspect-ratio-and-resize-delay">
+<SampleSection Slug="aspect-ratio-and-resize-delay">
     <Block>
         With <code>MaintainAspectRatio = true</code>, the canvas height follows its width by <code>AspectRatio</code> (width / height); Chart.js uses 1 for pie charts. <code>ResizeDelay</code> waits the given milliseconds after the container stops resizing before the chart redraws, which saves work while the window is dragged; resize the window to see the wide chart catch up.
         <br /><br />
@@ -306,9 +327,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PieChart_Demo_18_Aspect_Ratio_And_Resize_Delay)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Hover and elements" PageUrl="@pageUrl" Link="hover-and-elements">
+<SampleSection Slug="hover-and-elements">
     <Block>
         <code>Elements.Arc</code> sets defaults for every arc, which dataset settings override. <code>Hover</code> sets which slices are highlighted under the pointer, separately from <code>Interaction</code>, which the tooltip keeps using. <code>Events</code> limits the browser events the chart listens to: with <code>Events = ["click"]</code>, moving the pointer does nothing and <code>OnHover</code> does not fire; clicking a slice still highlights it and opens its tooltip, and <code>OnClick</code> fires.
         <br /><br />
@@ -323,9 +344,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PieChart_Demo_19_Hover_And_Elements)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Colors plugin" PageUrl="@pageUrl" Link="colors-plugin">
+<SampleSection Slug="colors-plugin">
     <Block>
         The built-in Chart.js colors plugin gives datasets that set no colors a default palette, one color per slice on a pie chart. It does nothing when any dataset sets its own colors, unless <code>ForceOverride = true</code>. Line, radar and scatter datasets send a default color, so on those charts the palette needs <code>ForceOverride = true</code>.
         <br /><br />
@@ -339,9 +360,31 @@
         </div>
     </Block>
     <Demo Type="typeof(PieChart_Demo_20_Colors_Plugin)" Tabs="true" />
-</Section>
+</SampleSection>
+
+<SampleSection Slug="multi-series-pie">
+    <Block>
+        A pie chart with more than one dataset draws each dataset as its own ring, with the first dataset outermost. It compares the same categories across two series, such as two years.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Add one <code>PieChartDataset</code> per ring to <code>ChartData.Datasets</code>. Every dataset uses the same <code>Labels</code>.</li>
+                <li>Give the datasets the same <code>BackgroundColor</code> list so a category keeps its colour in every ring.</li>
+                <li>Set <code>Weight</code> on a dataset to make its ring thicker or thinner than the others. The default is 1.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(PieChart_Demo_21_Multi_Series_Pie)" Tabs="true" />
+</SampleSection>
+</CascadingValue>
+
+<SamplePageFooter ChartKey="@SampleChartKeys.PieChart" Sample="@Sample" />
 
 @code {
+    /// <summary>The sample slug from the URL, or <see langword="null" /> on the chart overview.</summary>
+    [Parameter] public string? Sample { get; set; }
+
     private const string pageUrl = DemoRouteConstants.Demos_PieChart;
     private const string pageTitle = "Pie Chart";
     private const string pageDescription = "Explore interactive <code>Blazor Pie Chart</code> examples with source code. Learn how to visualize categorical data, customize chart appearance, and enhance your Blazor applications. Try live demos and discover practical usage scenarios for the Pie Chart component.";

@@ -1,0 +1,58 @@
+<LineChart @ref="lineChart" Width="600" />
+
+@code {
+    private LineChart lineChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var chartData = new ChartData
+            {
+                Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+                Datasets =
+                [
+                    // A plain line: only a colour and a width.
+                    new LineChartDataset
+                    {
+                        Label = "Unfilled",
+                        Data = [35, 48, 40, 59, 52, 66, 61],
+                        BorderColor = "rgb(0, 114, 178)", // Okabe–Ito blue
+                        BackgroundColor = "rgb(0, 114, 178)",
+                        BorderWidth = 2,
+                    },
+                    // A dashed line with round caps: 8 pixels drawn, 10 skipped. A round cap adds half the line width
+                    // to each end of a dash, so the gap is wider than the dash.
+                    new LineChartDataset
+                    {
+                        Label = "Dashed",
+                        Data = [22, 30, 27, 41, 36, 44, 49],
+                        BorderColor = "rgb(213, 94, 0)", // Okabe–Ito vermillion
+                        BackgroundColor = "rgb(213, 94, 0)",
+                        BorderWidth = 4,
+                        BorderDash = [8, 10],
+                        BorderCapStyle = "round",
+                    },
+                    // A filled, thicker line with rounded corners.
+                    new LineChartDataset
+                    {
+                        Label = "Filled",
+                        Data = [10, 16, 13, 21, 18, 26, 23],
+                        BorderColor = "rgb(0, 158, 115)", // Okabe–Ito bluish green
+                        BackgroundColor = "rgba(0, 158, 115, 0.3)",
+                        BorderWidth = 4,
+                        BorderJoinStyle = "round",
+                        Fill = true,
+                    },
+                ]
+            };
+
+            var options = new LineChartOptions { Responsive = true };
+            options.Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false };
+
+            await lineChart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

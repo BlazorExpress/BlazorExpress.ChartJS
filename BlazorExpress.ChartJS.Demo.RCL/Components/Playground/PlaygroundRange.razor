@@ -1,0 +1,6 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+<div class="be-playground-field">
+    <label for="@id">@Label: <output for="@id">@Text(Value)@Unit</output></label>
+    <input id="@id" type="range" min="@Text(Min)" max="@Text(Max)" step="@Text(Step)" value="@Text(Value)" @onchange="OnChangeAsync" />
+</div>

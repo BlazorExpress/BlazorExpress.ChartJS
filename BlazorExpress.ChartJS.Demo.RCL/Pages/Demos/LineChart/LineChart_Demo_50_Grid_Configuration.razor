@@ -1,0 +1,59 @@
+<div class="columns is-multiline">
+    <div class="column is-half">
+        <p class="has-text-weight-semibold mb-2">Colours, widths and a dashed axis border</p>
+        <LineChart @ref="styledChart" />
+    </div>
+    <div class="column is-half">
+        <p class="has-text-weight-semibold mb-2">Tick marks only: <code>DrawOnChartArea = false</code></p>
+        <LineChart @ref="ticksOnlyChart" />
+    </div>
+</div>
+
+@code {
+    private LineChart styledChart = default!;
+    private LineChart ticksOnlyChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var styledOptions = new LineChartOptions { Responsive = true };
+            styledOptions.Scales.X!.Grid = new ChartAxesGrid
+            {
+                Color = "rgba(0, 114, 178, 0.35)", // the grid lines
+                LineWidth = 1,
+                TickColor = "rgb(213, 94, 0)",      // the short marks between the axis and its labels
+                TickLength = 12,
+            };
+            styledOptions.Scales.Y!.Grid = new ChartAxesGrid { Color = "rgba(0, 158, 115, 0.35)", LineWidth = 2 };
+
+            // Border is the axis line itself; Dash applies to the grid lines of that axis.
+            styledOptions.Scales.Y!.Border = new ChartAxesBorder { Color = "rgb(0, 158, 115)", Width = 2, Dash = [6, 4] };
+
+            var ticksOnlyOptions = new LineChartOptions { Responsive = true };
+            ticksOnlyOptions.Scales.X!.Grid = new ChartAxesGrid { DrawOnChartArea = false, TickLength = 10 };
+            ticksOnlyOptions.Scales.Y!.Grid = new ChartAxesGrid { DrawOnChartArea = false, TickLength = 10 };
+
+            await styledChart.InitializeAsync(GetChartData(), styledOptions);
+            await ticksOnlyChart.InitializeAsync(GetChartData(), ticksOnlyOptions);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData GetChartData() =>
+        new()
+        {
+            Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            Datasets =
+            [
+                new LineChartDataset
+                {
+                    Label = "Orders",
+                    Data = [18, 12, 6, 9, 12, 3],
+                    BorderColor = "rgb(153, 153, 153)", // Okabe–Ito grey, so the grid colours stand out
+                    BackgroundColor = "rgb(153, 153, 153)",
+                },
+            ]
+        };
+}

@@ -1,0 +1,96 @@
+<PlaygroundPanel Code="@csharp">
+    <Controls>
+        <PlaygroundRange Label="Cutout" Min="10" Max="90" Step="5" Unit="%" Value="cutout" ValueChanged="value => SetAsync(() => cutout = value)" />
+        <PlaygroundCheckbox Label="Half doughnut (gauge)" Value="half" ValueChanged="value => SetAsync(() => half = value)" />
+        <PlaygroundRange Label="Spacing" Max="20" Unit=" px" Value="spacing" ValueChanged="value => SetAsync(() => spacing = value)" />
+        <PlaygroundRange Label="Border radius" Max="20" Unit=" px" Value="borderRadius" ValueChanged="value => SetAsync(() => borderRadius = value)" />
+        <PlaygroundCommonControls Settings="settings" OnChanged="ApplyAsync" />
+    </Controls>
+    <Chart>
+        <DoughnutChart @ref="chart" />
+    </Chart>
+</PlaygroundPanel>
+
+@code {
+    // The Chart.js default; a value is listed in the C# only when it differs.
+    private const double DefaultCutout = 50;
+
+    private DoughnutChart chart = default!;
+    private readonly PlaygroundSettings settings = new();
+    private string csharp = string.Empty;
+    private double borderRadius;
+    private double cutout = DefaultCutout;
+    private bool half;
+    private double spacing;
+
+    protected override void OnInitialized() => Build();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var (chartData, options) = Build();
+            await chart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task ApplyAsync()
+    {
+        var (chartData, options) = Build();
+        await chart.UpdateAsync(chartData, options);
+    }
+
+    private async Task SetAsync(Action change)
+    {
+        change();
+        await ApplyAsync();
+    }
+
+    // Builds the chart data and options from the controls, and the C# that gives the same chart.
+    private (ChartData ChartData, DoughnutChartOptions Options) Build()
+    {
+        var text = new PlaygroundCode(nameof(DoughnutChartOptions), nameof(DoughnutChartDataset));
+        var options = new DoughnutChartOptions { Responsive = true };
+        settings.Apply(options, options.Plugins, text);
+
+        if (cutout != DefaultCutout)
+        {
+            var percentage = $"{PlaygroundCode.Literal(cutout)}%";
+            options.Cutout = percentage;
+            text.Option("Cutout", PlaygroundCode.Literal(percentage));
+        }
+
+        // Half a circle, starting at the left: a gauge.
+        if (half)
+        {
+            options.Circumference = 180;
+            options.Rotation = -90;
+            text.Option("Circumference", "180").Option("Rotation", "-90");
+        }
+
+        if (spacing > 0) text.Dataset("Spacing", PlaygroundCode.Literal(spacing));
+        if (borderRadius > 0) text.Dataset("BorderRadius", PlaygroundCode.List(borderRadius));
+
+        var chartData = new ChartData
+        {
+            Labels = ["Rent", "Food", "Transport", "Leisure", "Savings"],
+            Datasets =
+            [
+                new DoughnutChartDataset
+                {
+                    Label = "Monthly budget",
+                    Data = [1450, 620, 280, 340, 510],
+                    BackgroundColor = Enumerable.Range(0, 5).Select(DemoPalette.Get).ToList(),
+                    BorderRadius = [borderRadius],
+                    Spacing = spacing,
+                }
+            ]
+        };
+
+        csharp = text.ToString();
+
+        return (chartData, options);
+    }
+}
