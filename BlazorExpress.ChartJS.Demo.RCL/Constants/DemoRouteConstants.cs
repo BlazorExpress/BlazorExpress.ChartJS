@@ -38,6 +38,9 @@ public static class DemoRouteConstants
     // Unlisted: runs the built-in date adapter's checks in the browser's current time zone.
     public const string Demos_TimeAxisSelfCheck = Demos_Prefix + "/time-axis-self-check";
 
+    // Unlisted: checks that charts always end at their container's size, including a resize Chart.js drops at the end of an animation.
+    public const string Demos_ResizeSelfCheck = Demos_Prefix + "/resize-self-check";
+
     // Utils
     public const string Demos_Utils_Prefix = Demos_Prefix + "/utils";
     public const string Demos_ColorUtils = Demos_Utils_Prefix + "/color-utility";

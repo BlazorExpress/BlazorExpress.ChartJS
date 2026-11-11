@@ -1,0 +1,77 @@
+@attribute [Route(pageUrl)]
+@layout DemosMainLayout
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
+
+@* Unlisted page: not linked from the navigation. It checks that charts always end at their container's size. *@
+<HeadContent>
+    <meta name="robots" content="noindex, nofollow" />
+</HeadContent>
+
+<PageHero Title="Resize self-check" />
+
+<Block>
+    Creates charts in hidden and visible containers, shows or resizes them at chosen moments of an animation, and checks that each chart ends at its container's size.
+    The forced cases inject a resize after an animation's last drawn frame, the moment Chart.js can drop it. Keep this tab in front while it runs: with no drawn frames the result is void.
+</Block>
+
+@if (cases is null)
+{
+    <Block>Running…</Block>
+}
+else
+{
+    <Block>
+        <strong>Passed:</strong> @cases.Count(c => c.Status == "pass") ·
+        <strong>Failed:</strong> <span class="@(cases.Any(c => c.Status == "fail") ? "has-text-danger" : "has-text-success")">@cases.Count(c => c.Status == "fail")</span>
+    </Block>
+
+    <div class="table-container">
+        <table class="table is-fullwidth is-narrow is-striped">
+            <thead>
+                <tr><th>Status</th><th>Case</th><th>Expected</th><th>Actual</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var item in cases)
+                {
+                    <tr class="@(item.Status == "fail" ? "has-background-danger-light" : null)">
+                        <td>@item.Status</td>
+                        <td>@item.Name</td>
+                        <td><code>@item.Expected</code></td>
+                        <td><code>@item.Actual</code></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<div id="@hostId"></div>
+
+@code {
+    private const string hostId = "resize-self-check-host";
+    private const string pageUrl = DemoRouteConstants.Demos_ResizeSelfCheck;
+
+    private List<SelfCheckCase>? cases;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                cases = await JS.InvokeAsync<List<SelfCheckCase>>("resizeSelfCheck.run", hostId);
+            }
+            catch (JSException exception)
+            {
+                cases = [new("The self-check ran to the end", "no script error", exception.Message, "fail")];
+            }
+
+            StateHasChanged();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private sealed record SelfCheckCase(string Name, string Expected, string Actual, string Status);
+}
