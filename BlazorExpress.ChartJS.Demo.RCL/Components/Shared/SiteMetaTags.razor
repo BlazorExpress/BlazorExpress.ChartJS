@@ -1,0 +1,25 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+@* One per page. Writes the page title and the head tags search engines, link previews and agents read. *@
+<PageTitle>@fullTitle</PageTitle>
+
+<HeadContent>
+    <meta name="description" content="@description" />
+    @if (!string.IsNullOrWhiteSpace(Robots))
+    {
+        <meta name="robots" content="@Robots" />
+    }
+    <link rel="canonical" href="@absoluteUrl" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="@DemoStringConstants.SiteName" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="@fullTitle" />
+    <meta property="og:description" content="@description" />
+    <meta property="og:url" content="@absoluteUrl" />
+    <meta property="og:image" content="@absoluteImageUrl" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@@blazorexpress" />
+    <meta name="twitter:title" content="@fullTitle" />
+    <meta name="twitter:description" content="@description" />
+    <meta name="twitter:image" content="@absoluteImageUrl" />
+</HeadContent>

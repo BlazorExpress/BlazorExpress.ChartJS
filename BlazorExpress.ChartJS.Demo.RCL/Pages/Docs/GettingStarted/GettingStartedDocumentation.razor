@@ -2,7 +2,7 @@
 @attribute [Route(pageUrl2)]
 @layout DocsMainLayout
 
-<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
 <PageHero Title="@pageTitle">
     <SubTitleTemplate>
@@ -235,7 +235,7 @@
     private const string pageUrl2 = DemoRouteConstants.Docs_Prefix;
     private const string pageTitle = "Getting started with BlazorExpress.ChartJS";
     private const string pageDescription = "Chart.js charts for Blazor, configured in C#. Install the package, add three scripts and draw your first chart.";
-    private const string metaTitle = "Getting started with BlazorExpress.ChartJS - Chart.js charts for Blazor";
+    private const string metaTitle = "Getting Started with Blazor Charts";
     private const string metaDescription = "Install BlazorExpress.ChartJS, add the Chart.js scripts and draw your first Blazor chart in C#. Covers setup guides, supported versions, time axes and JavaScript functions.";
     private const string imageUrl = "https://i.imgur.com/IX3bajc.png";
 }

@@ -2,7 +2,7 @@
 @attribute [Route(pageUrl2)]
 @layout BlogMainLayout
 
-<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
 <PageHero Title="@pageTitle">
     <SubTitleTemplate>
@@ -53,7 +53,7 @@
     private const string pageUrl2 = DemoRouteConstants.Blog_Prefix;
     private const string pageTitle = "BlazorExpress.ChartJS Blog – Tutorials, News & ChartJS Tips for Blazor";
     private const string pageDescription = "Discover tutorials, news, and practical examples for BlazorExpress.ChartJS. Learn how to build interactive charts in Blazor WebAssembly with ChartJS.";
-    private const string metaTitle = "BlazorExpress.ChartJS Blog – Tutorials, News & ChartJS Tips for Blazor";
+    private const string metaTitle = "Blog: Tutorials, News and Release Notes";
     private const string metaDescription = "Explore the official BlazorExpress.ChartJS blog for tutorials, updates, and practical examples on building interactive charts in Blazor WebAssembly using ChartJS.";
     private const string imageUrl = "https://i.imgur.com/IX3bajc.png"; // TODO: update with the actual image URL for the Bar Chart demo
 }

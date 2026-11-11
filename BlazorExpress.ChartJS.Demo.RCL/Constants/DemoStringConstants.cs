@@ -7,7 +7,12 @@ public static class DemoStringConstants
     public const string NugetPackageName = "BlazorExpress.ChartJS";
     public const string NugetPackageDisplayName = "BlazorExpress ChartJS";
 
-    public const string PageTitle_Suffix = " | BlazorExpress ChartJS: An enterprise-grade open-source component library from the Blazor Express team.";
+    // Page head metadata (SiteMetaTags). Keep SiteDefaultTitle and SiteDefaultDescription in step with wwwroot/index.html.
+    public const string SiteName = NugetPackageName;
+    public const string SiteUrl = "https://chartjs.blazorexpress.com";
+    public const string PageTitle_Suffix = " | " + SiteName;
+    public const string SiteDefaultTitle = SiteName + " - Blazor Chart.js Components for .NET";
+    public const string SiteDefaultDescription = "BlazorExpress.ChartJS is an open-source Blazor component library for Chart.js: bar, line, pie and five more chart types, configured in C#.";
 
     public const string Nullable = "Nullable";
     public const string PropertyTypeNameInt16 = "Int16";

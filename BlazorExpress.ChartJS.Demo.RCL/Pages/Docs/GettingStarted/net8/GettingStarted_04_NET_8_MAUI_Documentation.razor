@@ -1,7 +1,7 @@
 @attribute [Route(pageUrl)]
 @layout DocsMainLayout
 
-<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
 <PageHero Title="@pageTitle">
     <SubTitleTemplate>
@@ -102,7 +102,7 @@ await builder.Build().RunAsync();
     private const string pageUrl = DemoRouteConstants.Docs_Getting_Started_MAUI_NET_8;
     private const string pageTitle = "Getting started - MAUI Blazor Hybrid App (.NET 8)";
     private const string pageDescription = "Learn how to quickly set up <code>BlazorExpress.Bulma</code> in your Blazor project using dotnet templates or manual installation, and how to register required services.";
-    private const string metaTitle = "Getting started - MAUI Blazor Hybrid App (.NET 8)";
+    private const string metaTitle = ".NET MAUI Blazor Hybrid Setup Guide";
     private const string metaDescription = "Step-by-step guide to using BlazorExpress.Bulma: dotnet templates, manual install, and service registration for Blazor apps.";
     private const string imageUrl = "https://i.imgur.com/FGgEMp6.jpg"; // TODO: update
 }

@@ -1,6 +1,6 @@
 @attribute [Route(pageUrl)]
 
-<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
 <div class="has-text-centered">
     <div class="container is-max-desktop mb-4">
@@ -122,7 +122,7 @@
     private const string pageUrl = "/";
     private const string pageTitle = $"{DemoStringConstants.NugetPackageName} Components <br /> Fast, Free & Open Source";
     private const string pageDescription = $"Get started with {DemoStringConstants.NugetPackageDisplayName}. Build high-performance, responsive Blazor apps quickly with our free, open-source UI library. Developers, build in minutes!";
-    private const string metaTitle = $"{DemoStringConstants.NugetPackageName} Components: Fast, Free & Open Source";
+    private const string metaTitle = "Blazor Chart.js Components for .NET";
     private const string metaDescription = $"Get started with {DemoStringConstants.NugetPackageDisplayName}. Build high-performance, responsive Blazor apps quickly with our free, open-source UI library. Developers, build in minutes!";
     private const string imageUrl = "https://i.imgur.com/FGgEMp6.jpg"; // TODO: update
 

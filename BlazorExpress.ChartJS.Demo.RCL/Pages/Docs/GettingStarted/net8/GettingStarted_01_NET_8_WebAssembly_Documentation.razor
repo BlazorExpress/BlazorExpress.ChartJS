@@ -1,7 +1,7 @@
 @attribute [Route(pageUrl)]
 @layout DocsMainLayout
 
-<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
 <PageHero Title="@pageTitle">
     <SubTitleTemplate>
@@ -99,7 +99,7 @@
     private const string pageUrl = DemoRouteConstants.Docs_Getting_Started_Blazor_WebAssembly_NET8;
     private const string pageTitle = "Getting started - Blazor WebAssembly (.NET 8)";
     private const string pageDescription = "Learn how to quickly set up <code>BlazorExpress.ChartJS</code> in your Blazor WebAssembly project using dotnet templates or manual installation, and how to register the required services.";
-    private const string metaTitle = "Getting started - Blazor WebAssembly (.NET 8)";
+    private const string metaTitle = "Blazor WebAssembly Setup Guide";
     private const string metaDescription = "Step-by-step guide to using BlazorExpress.ChartJS: dotnet templates, manual install, and service registration for Blazor WebAssembly apps.";
     private const string imageUrl = "https://i.imgur.com/FGgEMp6.jpg"; // TODO: update
 }

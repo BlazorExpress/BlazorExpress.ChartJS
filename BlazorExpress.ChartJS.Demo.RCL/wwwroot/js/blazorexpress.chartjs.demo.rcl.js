@@ -1409,3 +1409,9 @@ window.resizeSelfCheck = (() => {
 
     return { run };
 })();
+
+// SiteMetaTags calls this once its tags are on the page. index.html carries site-wide defaults (marked data-site-default)
+// for clients that do not run the app, such as link previews and agents; removing them leaves one set of tags per page.
+function removeSiteDefaultHeadTags() {
+    document.head.querySelectorAll('[data-site-default]').forEach(tag => tag.remove());
+}
