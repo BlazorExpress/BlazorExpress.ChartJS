@@ -16,6 +16,7 @@ Get started any way you want
 
 - Clone the repo: `git clone https://github.com/BlazorExpress/BlazorExpress.ChartJS`
 - Install with [NuGet](https://www.nuget.org/): `Install-Package BlazorExpress.ChartJS -Version 2.0.0`
+- Upgrading from 1.x? 2.0.0 changes some defaults and behaviour, so read the [2.0.0 release notes](https://github.com/BlazorExpress/BlazorExpress.ChartJS/blob/main/CHANGELOG.md#200) first.
 
 ## Online Demos
 
