@@ -36,7 +36,7 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the background color, as the scriptable option (context) => color. When set, it is sent instead of BackgroundColor.")]
     [JsonIgnore]
@@ -75,7 +75,7 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the border color, as the scriptable option (context) => color. When set, it is sent instead of BorderColor.")]
     [JsonIgnore]
@@ -156,7 +156,7 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the background color when hovered, as the scriptable option (context) => color. When set, it is sent instead of HoverBackgroundColor.")]
     [JsonIgnore]
@@ -195,7 +195,7 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the border color when hovered, as the scriptable option (context) => color. When set, it is sent instead of HoverBorderColor.")]
     [JsonIgnore]
@@ -301,7 +301,7 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/axes/cartesian/time.html" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("The bubbles of a time or timeseries x-axis, each at its own date. When set, it is sent instead of Data.")]
     [JsonIgnore]
@@ -319,7 +319,7 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     /// Default value is <see langword="null" /> (Chart.js uses the first x-axis).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("The ID of the x-axis to plot this dataset on, for example an additional axis from Scales.AdditionalAxes.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -332,7 +332,7 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     /// Default value is <see langword="null" /> (Chart.js uses the first y-axis).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("The ID of the y-axis to plot this dataset on, for example an additional axis from Scales.AdditionalAxes.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

@@ -99,6 +99,6 @@
     {
         lastDay = lastDay.AddDays(1);
 
-        await dailyChart.AddDataAsync(dailyChartData, lastDay, new LineChartDatasetData("Daily sales", random.Next(10, 35)));
+        await dailyChart.AddTimeDataAsync(dailyChartData, lastDay, new LineChartDatasetData("Daily sales", random.Next(10, 35)));
     }
 }

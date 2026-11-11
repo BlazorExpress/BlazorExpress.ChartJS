@@ -18,7 +18,7 @@ public sealed class ChartPadding
     /// Creates padding with the same value on every side.
     /// </summary>
     /// <param name="value">The padding in pixels.</param>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Creates padding with the same value on every side.")]
     public static implicit operator ChartPadding(double value) => new() { Bottom = value, Left = value, Right = value, Top = value };
 
@@ -34,7 +34,7 @@ public sealed class ChartPadding
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the bottom padding in pixels.")]
     [ParameterTypeName("double?")]
@@ -46,7 +46,7 @@ public sealed class ChartPadding
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the left padding in pixels.")]
     [ParameterTypeName("double?")]
@@ -58,7 +58,7 @@ public sealed class ChartPadding
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the right padding in pixels.")]
     [ParameterTypeName("double?")]
@@ -70,7 +70,7 @@ public sealed class ChartPadding
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the top padding in pixels.")]
     [ParameterTypeName("double?")]

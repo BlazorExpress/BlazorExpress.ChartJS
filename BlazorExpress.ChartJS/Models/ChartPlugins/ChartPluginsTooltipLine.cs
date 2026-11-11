@@ -13,7 +13,7 @@ public class ChartPluginsTooltipLine
     /// Default value is <c>"grey"</c>.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue("grey")]
     [Description("Gets or sets the color of the line.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -26,7 +26,7 @@ public class ChartPluginsTooltipLine
     /// Default value is <c>[5, 5]</c>.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue("[5, 5]")]
     [Description("Gets or sets the length and spacing of the dashes; an empty list draws a solid line.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -39,7 +39,7 @@ public class ChartPluginsTooltipLine
     /// Default value is <see langword="true" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(true)]
     [Description("Gets or sets a value indicating whether the line is drawn.")]
     public bool Display { get; set; } = true;
@@ -50,7 +50,7 @@ public class ChartPluginsTooltipLine
     /// Default value is 2.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(2)]
     [Description("Gets or sets the width of the line, in pixels.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

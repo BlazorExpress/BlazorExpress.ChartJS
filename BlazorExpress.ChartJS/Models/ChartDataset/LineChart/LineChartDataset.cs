@@ -163,7 +163,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the background color, as the scriptable option (context) => color. When set, it is sent instead of BackgroundColor.")]
     [JsonIgnore]
@@ -214,7 +214,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the border color, as the scriptable option (context) => color. When set, it is sent instead of BorderColor.")]
     [JsonIgnore]
@@ -355,7 +355,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the background color when hovered, as the scriptable option (context) => color. When set, it is sent instead of HoverBackgroundColor.")]
     [JsonIgnore]
@@ -409,7 +409,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the border color when hovered, as the scriptable option (context) => color. When set, it is sent instead of HoverBorderColor.")]
     [JsonIgnore]
@@ -496,7 +496,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#line-styling" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("The longest gap to span, in units of the index axis: lines are drawn across gaps up to this length and break at longer ones.")]
     [JsonIgnore]
@@ -527,7 +527,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the point fill color, as the scriptable option (context) => color. When set, it is sent instead of PointBackgroundColor.")]
     [JsonIgnore]
@@ -566,7 +566,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the point border color, as the scriptable option (context) => color. When set, it is sent instead of PointBorderColor.")]
     [JsonIgnore]
@@ -631,7 +631,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the point fill color when hovered, as the scriptable option (context) => color. When set, it is sent instead of PointHoverBackgroundColor.")]
     [JsonIgnore]
@@ -670,7 +670,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the point border color when hovered, as the scriptable option (context) => color. When set, it is sent instead of PointHoverBorderColor.")]
     [JsonIgnore]
@@ -776,7 +776,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the style of each line segment, as values or registered JavaScript functions. When set, it is sent as segment instead of Segment.")]
     [JsonIgnore]
@@ -864,7 +864,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/axes/cartesian/time.html" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("The values of a time or timeseries x-axis, each at its own date. A null Y leaves a gap. When set, it is sent instead of Data.")]
     [JsonIgnore]

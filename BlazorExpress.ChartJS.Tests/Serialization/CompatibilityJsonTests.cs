@@ -3,7 +3,7 @@ using BlazorExpress.ChartJS.Tests.Infrastructure;
 namespace BlazorExpress.ChartJS.Tests.Serialization;
 
 /// <summary>
-/// Existing assignments to properties that gained a wider sibling in 1.3.0 still send the JSON they sent at <c>2f475dd</c>,
+/// Existing assignments to properties that gained a wider sibling in 2.0.0 still send the JSON they sent at <c>2f475dd</c>,
 /// and the wider sibling wins when both are set.
 /// </summary>
 public class CompatibilityJsonTests

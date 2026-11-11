@@ -181,7 +181,7 @@ public partial class RadarChart : ChartComponentBase
     /// <param name="chartOptions">The options to configure the chart's appearance and behavior.</param>
     /// <param name="mode">The Chart.js update mode.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously updates the chart with the specified data and options, using a Chart.js update mode.")]
     [MethodReturnTypeName(nameof(Task))]
     public override async Task UpdateAsync(ChartData chartData, IChartOptions chartOptions, ChartUpdateMode mode)

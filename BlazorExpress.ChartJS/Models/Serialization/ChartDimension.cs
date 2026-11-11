@@ -28,7 +28,7 @@ public sealed class ChartDimension
     /// Creates a value from a number.
     /// </summary>
     /// <param name="number">The number, for example pixels or data units.</param>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Creates a value from a number.")]
     public static implicit operator ChartDimension(double number) => new(number, null);
 
@@ -36,7 +36,7 @@ public sealed class ChartDimension
     /// Creates a value from a string, such as <c>"50%"</c> or <c>"auto"</c>. A <see langword="null" /> string gives <see langword="null" />.
     /// </summary>
     /// <param name="text">The string value.</param>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Creates a value from a string, such as \"50%\" or \"auto\".")]
     [return: System.Diagnostics.CodeAnalysis.NotNullIfNotNull(nameof(text))]
     public static implicit operator ChartDimension?(string? text) => text is null ? null : new(null, text);
@@ -53,7 +53,7 @@ public sealed class ChartDimension
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets the number, when the value was created from a number.")]
     [ParameterTypeName("double?")]
@@ -65,7 +65,7 @@ public sealed class ChartDimension
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets the string, when the value was created from a string.")]
     [ParameterTypeName("string?")]

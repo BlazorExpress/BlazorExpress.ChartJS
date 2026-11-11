@@ -24,7 +24,7 @@ public class LineChartPlugins : ChartPlugins
     /// Default value is <see langword="null" /> (the default line is drawn).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the dashed vertical hover line. When null, the default grey dashed line is drawn.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -87,7 +87,7 @@ public class LineChartDataLabels
     /// </para>
     /// <see href="https://chartjs-plugin-datalabels.netlify.app/guide/formatting.html" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the text of each label of the chart, as (value, context) => string. It changes the label text only; the library's datalabels background color is unaffected.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

@@ -26,7 +26,7 @@ public static class EnumExtensions
     /// Converts the update mode to the Chart.js update mode string.
     /// </summary>
     /// <returns>The Chart.js mode, or <see langword="null" /> for <see cref="ChartUpdateMode.Default" />.</returns>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Converts the update mode to the Chart.js update mode string.")]
     public static string? ToChartJsMode(this ChartUpdateMode mode) =>
         mode switch
@@ -59,7 +59,7 @@ public static class EnumExtensions
     /// Gets the file extension, without a dot, for the image type.
     /// </summary>
     /// <returns>The file extension, for example <c>png</c>.</returns>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Gets the file extension, without a dot, for the image type.")]
     public static string ToFileExtension(this ChartImageType imageType) =>
         imageType switch
@@ -85,7 +85,7 @@ public static class EnumExtensions
     /// Gets the MIME type for the image type.
     /// </summary>
     /// <returns>The MIME type, for example <c>image/png</c>.</returns>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Gets the MIME type for the image type.")]
     public static string ToMimeType(this ChartImageType imageType) =>
         imageType switch

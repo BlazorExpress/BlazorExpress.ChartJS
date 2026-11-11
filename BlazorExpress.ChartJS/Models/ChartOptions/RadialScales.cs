@@ -16,7 +16,7 @@ public class RadialScales
     /// Default value is a new <see cref="ChartRadialAxes" /> instance.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue("new()")]
     [Description("Gets or sets the radial axis, sent as r.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

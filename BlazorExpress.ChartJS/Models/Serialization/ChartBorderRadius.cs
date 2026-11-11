@@ -16,7 +16,7 @@ public sealed class ChartBorderRadius
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the bottom-left radius in pixels.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -29,7 +29,7 @@ public sealed class ChartBorderRadius
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the bottom-right radius in pixels.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -42,7 +42,7 @@ public sealed class ChartBorderRadius
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the top-left radius in pixels.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -55,7 +55,7 @@ public sealed class ChartBorderRadius
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the top-right radius in pixels.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

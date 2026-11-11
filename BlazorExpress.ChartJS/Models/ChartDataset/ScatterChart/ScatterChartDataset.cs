@@ -34,7 +34,7 @@ public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the background color, as the scriptable option (context) => color. When set, it is sent instead of BackgroundColor.")]
     [JsonIgnore]
@@ -83,7 +83,7 @@ public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the border color, as the scriptable option (context) => color. When set, it is sent instead of BorderColor.")]
     [JsonIgnore]
@@ -222,7 +222,7 @@ public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the background color when hovered, as the scriptable option (context) => color. When set, it is sent instead of HoverBackgroundColor.")]
     [JsonIgnore]
@@ -274,7 +274,7 @@ public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the border color when hovered, as the scriptable option (context) => color. When set, it is sent instead of HoverBorderColor.")]
     [JsonIgnore]
@@ -509,7 +509,7 @@ public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Line segment styles, as on LineChartDataset.Segment: an object whose Border* and BackgroundColor values apply to each section of the line between points.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -585,7 +585,7 @@ public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/axes/cartesian/time.html" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("The points of a time or timeseries x-axis, each at its own date. A null Y leaves a gap. When set, it is sent instead of Data.")]
     [JsonIgnore]

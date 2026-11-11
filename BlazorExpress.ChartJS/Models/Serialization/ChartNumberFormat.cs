@@ -20,7 +20,7 @@ public sealed class ChartNumberFormat
     /// </para>
     /// <see href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets how compact notation is shown: \"short\" or \"long\". Used only when Notation is \"compact\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -34,7 +34,7 @@ public sealed class ChartNumberFormat
     /// </para>
     /// <see href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the ISO 4217 currency code, for example \"USD\" or \"EUR\". Required when Style is \"currency\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -48,7 +48,7 @@ public sealed class ChartNumberFormat
     /// </para>
     /// <see href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets how the currency is shown: \"symbol\", \"narrowSymbol\", \"code\" or \"name\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -62,7 +62,7 @@ public sealed class ChartNumberFormat
     /// </para>
     /// <see href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the maximum number of fraction digits, from 0 to 100.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -76,7 +76,7 @@ public sealed class ChartNumberFormat
     /// </para>
     /// <see href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the minimum number of fraction digits, from 0 to 100.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -90,7 +90,7 @@ public sealed class ChartNumberFormat
     /// </para>
     /// <see href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the minimum number of integer digits, from 1 to 21; shorter numbers are padded with leading zeros.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -104,7 +104,7 @@ public sealed class ChartNumberFormat
     /// </para>
     /// <see href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the notation: \"standard\", \"scientific\", \"engineering\" or \"compact\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -118,7 +118,7 @@ public sealed class ChartNumberFormat
     /// </para>
     /// <see href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets when the sign is shown: \"auto\", \"always\", \"exceptZero\", \"negative\" or \"never\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -133,7 +133,7 @@ public sealed class ChartNumberFormat
     /// </para>
     /// <see href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the formatting style: \"decimal\", \"currency\", \"percent\" or \"unit\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -147,7 +147,7 @@ public sealed class ChartNumberFormat
     /// </para>
     /// <see href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the unit, for example \"kilometer-per-hour\" or \"celsius\". Required when Style is \"unit\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -161,7 +161,7 @@ public sealed class ChartNumberFormat
     /// </para>
     /// <see href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets how the unit is shown: \"short\", \"narrow\" or \"long\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -175,7 +175,7 @@ public sealed class ChartNumberFormat
     /// </para>
     /// <see href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether grouping separators, such as thousands separators, are used.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

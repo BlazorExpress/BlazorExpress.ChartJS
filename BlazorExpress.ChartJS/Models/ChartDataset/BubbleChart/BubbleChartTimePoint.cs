@@ -11,17 +11,17 @@ namespace BlazorExpress.ChartJS;
 /// <param name="Y">The value.</param>
 /// <param name="R">The radius of the bubble in pixels.</param>
 public record BubbleChartTimePoint(
-    [property: AddedVersion("1.3.0")]
+    [property: AddedVersion("2.0.0")]
     [property: DefaultValue(null)]
     [property: Description("Gets the date: a DateOnly, DateTime or DateTimeOffset.")]
     [property: ParameterTypeName("ChartTimeValue")]
     ChartTimeValue X,
-    [property: AddedVersion("1.3.0")]
+    [property: AddedVersion("2.0.0")]
     [property: DefaultValue(0)]
     [property: Description("Gets the value.")]
     [property: ParameterTypeName("double")]
     double Y,
-    [property: AddedVersion("1.3.0")]
+    [property: AddedVersion("2.0.0")]
     [property: DefaultValue(0)]
     [property: Description("Gets the radius of the bubble in pixels.")]
     [property: ParameterTypeName("double")]

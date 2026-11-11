@@ -12,7 +12,7 @@ public record BarChartDatasetData : ChartDatasetData
     /// <param name="datasetLabel">The label of the dataset the value is added to.</param>
     /// <param name="start">The value where the bar starts.</param>
     /// <param name="end">The value where the bar ends.</param>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Creates a floating bar value from start to end, for AddDataAsync.")]
     public BarChartDatasetData(string? datasetLabel, double start, double end) : base(datasetLabel, new[] { start, end }) { }
 
@@ -23,7 +23,7 @@ public record BarChartDatasetData : ChartDatasetData
     /// <param name="datasetLabel">The label of the dataset the value is added to.</param>
     /// <param name="x">The date: a <see cref="DateOnly" />, <see cref="DateTime" /> or <see cref="DateTimeOffset" />.</param>
     /// <param name="y">The value, or <see langword="null" /> for a gap.</param>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Creates a bar value at a date, for AddDataAsync on a dataset that uses TimeData.")]
     public BarChartDatasetData(string? datasetLabel, ChartTimeValue x, double? y) : base(datasetLabel, new ChartTimePoint(x, y)) { }
 

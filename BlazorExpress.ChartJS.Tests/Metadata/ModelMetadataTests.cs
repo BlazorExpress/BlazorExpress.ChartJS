@@ -5,13 +5,13 @@ namespace BlazorExpress.ChartJS.Tests.Metadata;
 
 /// <summary>
 /// Every public property of the model types in the files 26110203 touched carries the metadata the docs tables read
-/// (rule "metadata backfill in touched model files"), and types new in 1.3.0 carry <c>[AddedVersion("1.3.0")]</c>.
+/// (rule "metadata backfill in touched model files"), and types new in 2.0.0 carry <c>[AddedVersion("2.0.0")]</c>.
 /// </summary>
 public class ModelMetadataTests
 {
     #region Fields and Constants
 
-    private static readonly string[] releasedVersions = ["1.0.0", "1.1.0", "1.2.0", "1.2.1", "1.2.2", "1.2.3", "1.2.4", "1.3.0"];
+    private static readonly string[] releasedVersions = ["1.0.0", "1.1.0", "1.2.0", "1.2.1", "1.2.2", "1.2.3", "1.2.4", "2.0.0"];
 
     private static readonly Type[] newTypes =
     [
@@ -61,7 +61,7 @@ public class ModelMetadataTests
     [MemberData(nameof(NewTypeNames))]
     public void NewTypes_AreAddedIn130(string typeName)
     {
-        var wrong = PublicProperties(Find(typeName)).Where(p => p.GetCustomAttribute<AddedVersionAttribute>()?.Version != "1.3.0").Select(p => p.Name);
+        var wrong = PublicProperties(Find(typeName)).Where(p => p.GetCustomAttribute<AddedVersionAttribute>()?.Version != "2.0.0").Select(p => p.Name);
 
         Assert.Empty(wrong);
     }

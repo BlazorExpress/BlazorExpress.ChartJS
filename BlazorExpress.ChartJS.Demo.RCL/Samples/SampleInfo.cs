@@ -7,8 +7,8 @@ public sealed class SampleInfo
 {
     #region Fields and Constants
 
-    /// <summary>The gallery tag that stands for <see cref="IsNewIn130" />. It is not listed in <see cref="Tags" />.</summary>
-    public const string NewIn130Tag = "new in 1.3.0";
+    /// <summary>The gallery tag that stands for <see cref="IsNewIn200" />. It is not listed in <see cref="Tags" />.</summary>
+    public const string NewIn200Tag = "new in 2.0.0";
 
     #endregion
 
@@ -16,10 +16,10 @@ public sealed class SampleInfo
 
     #region Public Methods
 
-    /// <summary>Whether the sample carries the tag, counting <see cref="NewIn130Tag" /> for a sample that is new in 1.3.0.</summary>
+    /// <summary>Whether the sample carries the tag, counting <see cref="NewIn200Tag" /> for a sample that is new in 2.0.0.</summary>
     public bool HasTag(string tag) =>
         Tags.Contains(tag, StringComparer.OrdinalIgnoreCase)
-        || (IsNewIn130 && string.Equals(tag, NewIn130Tag, StringComparison.OrdinalIgnoreCase));
+        || (IsNewIn200 && string.Equals(tag, NewIn200Tag, StringComparison.OrdinalIgnoreCase));
 
     #endregion
 
@@ -49,9 +49,9 @@ public sealed class SampleInfo
 
     public bool HasPlayground { get; init; }
 
-    public bool IsNewIn130 { get; init; }
+    public bool IsNewIn200 { get; init; }
 
-    /// <summary>The URL segment of the sample. It is also the anchor the section had on the chart page before 1.3.0.</summary>
+    /// <summary>The URL segment of the sample. It is also the anchor the section had on the chart page before 2.0.0.</summary>
     public required string Slug { get; init; }
 
     public IReadOnlyList<string> Tags { get; init; } = [];

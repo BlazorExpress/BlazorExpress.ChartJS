@@ -14,7 +14,7 @@ public partial class SampleSection : ComponentBase
 
     private bool IsCurrent => CurrentSample is not null && string.Equals(CurrentSample.Slug, Slug, StringComparison.OrdinalIgnoreCase);
 
-    /// <summary>The sample's catalog slug; the section link it had before 1.3.0.</summary>
+    /// <summary>The sample's catalog slug; the section link it had before 2.0.0.</summary>
     [Parameter, EditorRequired] public string Slug { get; set; } = default!;
 
     #endregion

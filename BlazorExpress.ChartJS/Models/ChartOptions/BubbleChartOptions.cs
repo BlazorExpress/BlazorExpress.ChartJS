@@ -16,7 +16,7 @@ public class BubbleChartOptions : ChartOptions
     /// Default value is a new <see cref="Interaction" /> instance.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue("new()")]
     [Description("Gets or sets the interaction options of the bubble chart, which also apply to hover and tooltips unless they set their own.")]
     public Interaction Interaction { get; set; } = new();
@@ -27,7 +27,7 @@ public class BubbleChartOptions : ChartOptions
     /// Default value is a new <see cref="ChartLayout" /> instance.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue("new()")]
     [Description("Gets or sets the layout options of the bubble chart.")]
     [ParameterTypeName("ChartLayout")]
@@ -39,7 +39,7 @@ public class BubbleChartOptions : ChartOptions
     /// Default value is a new <see cref="BubbleChartPlugins" /> instance.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue("new()")]
     [Description("Gets or sets the plugin options of the bubble chart.")]
     [ParameterTypeName("BubbleChartPlugins")]
@@ -54,7 +54,7 @@ public class BubbleChartOptions : ChartOptions
     /// Default value is a new <see cref="Scales" /> instance.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue("new()")]
     [Description("Gets or sets the x and y scales of the bubble chart, and any additional axes.")]
     [ParameterTypeName("Scales")]

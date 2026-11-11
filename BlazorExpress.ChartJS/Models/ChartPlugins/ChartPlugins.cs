@@ -16,7 +16,7 @@ public class ChartPlugins
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the options of the built-in colors plugin, which gives datasets without colors a default palette.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -29,7 +29,7 @@ public class ChartPlugins
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the options of the built-in filler plugin, which draws area fills for datasets with fill set.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -53,7 +53,7 @@ public class ChartPlugins
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the subtitle, drawn below the title.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -183,7 +183,7 @@ public class ChartPluginsLegend
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/legend.html#configuration-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function Chart.js calls when a legend item is clicked, as (event, legendItem, legend) => void. It replaces the default toggle, as in Chart.js: call Chart.defaults.plugins.legend.onClick.call(this, e, legendItem, legend) inside it to keep toggling. The library still keeps the visibility the click changed across UpdateAsync and still raises OnLegendClick; LegendClickToggles applies only when no function is set.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -197,7 +197,7 @@ public class ChartPluginsLegend
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/legend.html#configuration-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function Chart.js calls when the pointer moves onto a legend item, as (event, legendItem, legend) => void.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -211,7 +211,7 @@ public class ChartPluginsLegend
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/legend.html#configuration-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function Chart.js calls when the pointer leaves a legend item, as (event, legendItem, legend) => void.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -413,7 +413,7 @@ public class ChartPluginsLegendLabels
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/legend.html#legend-label-configuration" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that decides which legend items are shown, as (legendItem, data) => boolean.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -441,7 +441,7 @@ public class ChartPluginsLegendLabels
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/legend.html#legend-item-interface" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that builds the legend items, as (chart) => LegendItem[]. It replaces the Chart.js default.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -494,7 +494,7 @@ public class ChartPluginsLegendLabels
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/legend.html#legend-label-configuration" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that orders the legend items, as (a, b, data) => number, like Array.prototype.sort.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -507,7 +507,7 @@ public class ChartPluginsLegendLabels
     /// Default value is <see langword="null" /> (Chart.js uses "center").
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the horizontal alignment of the label text: \"left\", \"right\" or \"center\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -605,7 +605,7 @@ public class ChartPluginsTitle
     /// Default value is <see langword="null" /> (Chart.js uses true).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether the title takes the full width of the canvas, moving other boxes.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -618,7 +618,7 @@ public class ChartPluginsTitle
     /// Default value is <see langword="null" /> (Chart.js uses 10).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the padding around the title: a number for top and bottom, or a ChartPadding with Top and Bottom.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -631,7 +631,7 @@ public class ChartPluginsTitle
     /// Default value is <see langword="null" /> (Chart.js uses "top").
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the position of the title: \"top\", \"left\", \"bottom\" or \"right\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -727,7 +727,7 @@ public class ChartPluginsTooltip
     /// Default value is <see langword="null" /> (Chart.js uses "rgba(0, 0, 0, 0)").
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the color of the tooltip border.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -740,7 +740,7 @@ public class ChartPluginsTooltip
     /// Default value is <see langword="null" /> (Chart.js uses 0).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the width of the tooltip border, in pixels.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -753,7 +753,7 @@ public class ChartPluginsTooltip
     /// Default value is <see langword="null" /> (Chart.js uses the body font size).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the height of the color box when DisplayColors is true.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -766,7 +766,7 @@ public class ChartPluginsTooltip
     /// Default value is <see langword="null" /> (Chart.js uses 1).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the padding between the color box and the text.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -779,7 +779,7 @@ public class ChartPluginsTooltip
     /// Default value is <see langword="null" /> (Chart.js uses the body font size).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the width of the color box when DisplayColors is true.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -793,7 +793,7 @@ public class ChartPluginsTooltip
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript functions that change the text and colors of the tooltip.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -828,7 +828,7 @@ public class ChartPluginsTooltip
     /// Default value is <see langword="null" /> (Chart.js uses 6).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the radius of the tooltip corners, in pixels.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -865,7 +865,7 @@ public class ChartPluginsTooltip
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#external-custom-tooltips" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function Chart.js calls to draw a custom (HTML) tooltip, as (context) => void. Set Enabled to false to hide the on-canvas tooltip.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -880,7 +880,7 @@ public class ChartPluginsTooltip
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-configuration" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that decides which items appear in the tooltip, as (tooltipItem, index, tooltipItems, data) => boolean.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -948,7 +948,7 @@ public class ChartPluginsTooltip
     /// Default value is <see langword="null" /> (the interaction value).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether the tooltip applies only when the pointer intersects an item.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -962,7 +962,7 @@ public class ChartPluginsTooltip
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-configuration" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that orders the tooltip items, as (a, b, data) => number, like Array.prototype.sort.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -975,7 +975,7 @@ public class ChartPluginsTooltip
     /// Default value is <see langword="null" /> (the interaction value).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets which elements appear in the tooltip. See InteractionMode.")]
     [JsonConverter(typeof(CamelCaseEnumConverter<InteractionMode>))]
@@ -989,7 +989,7 @@ public class ChartPluginsTooltip
     /// Default value is <see langword="null" /> (Chart.js uses "#fff").
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the color drawn behind the color boxes when several items are in the tooltip.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1002,7 +1002,7 @@ public class ChartPluginsTooltip
     /// Default value is <see langword="null" /> (Chart.js uses 6).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the padding inside the tooltip.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1015,7 +1015,7 @@ public class ChartPluginsTooltip
     /// Default value is <see langword="null" /> (Chart.js uses "average").
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets where the tooltip is placed: \"average\" or \"nearest\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1028,7 +1028,7 @@ public class ChartPluginsTooltip
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether the tooltip is rendered from right to left.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1041,7 +1041,7 @@ public class ChartPluginsTooltip
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the text direction, \"rtl\" or \"ltr\", forced on the canvas for the tooltip regardless of the CSS of the canvas.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1109,7 +1109,7 @@ public class ChartPluginsTooltip
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether the color boxes use the dataset point style instead of a square.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1161,7 +1161,7 @@ public class ChartPluginsTooltipCallbacks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the text after the body, as (tooltipItems) => string | string[].")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1175,7 +1175,7 @@ public class ChartPluginsTooltipCallbacks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the text after the footer, as (tooltipItems) => string | string[].")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1189,7 +1189,7 @@ public class ChartPluginsTooltipCallbacks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the text after each item label, as (tooltipItem) => string | string[].")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1203,7 +1203,7 @@ public class ChartPluginsTooltipCallbacks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the text after the title, as (tooltipItems) => string | string[].")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1217,7 +1217,7 @@ public class ChartPluginsTooltipCallbacks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the text before the body, as (tooltipItems) => string | string[].")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1231,7 +1231,7 @@ public class ChartPluginsTooltipCallbacks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the text before the footer, as (tooltipItems) => string | string[].")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1245,7 +1245,7 @@ public class ChartPluginsTooltipCallbacks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the text before each item label, as (tooltipItem) => string | string[].")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1259,7 +1259,7 @@ public class ChartPluginsTooltipCallbacks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the text before the title, as (tooltipItems) => string | string[].")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1273,7 +1273,7 @@ public class ChartPluginsTooltipCallbacks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the footer text, as (tooltipItems) => string | string[].")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1288,7 +1288,7 @@ public class ChartPluginsTooltipCallbacks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the text of each item label, as (tooltipItem) => string | string[]. It replaces the Chart.js default label.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1303,7 +1303,7 @@ public class ChartPluginsTooltipCallbacks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the color box of each item, as (tooltipItem) => { borderColor, backgroundColor, ... }.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1318,7 +1318,7 @@ public class ChartPluginsTooltipCallbacks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the point style of each item's color box when UsePointStyle is true, as (tooltipItem) => { pointStyle, rotation }.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1332,7 +1332,7 @@ public class ChartPluginsTooltipCallbacks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the text color of each item label, as (tooltipItem) => color.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1346,7 +1346,7 @@ public class ChartPluginsTooltipCallbacks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the title text, as (tooltipItems) => string | string[].")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

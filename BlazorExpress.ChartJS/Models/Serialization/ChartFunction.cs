@@ -26,7 +26,7 @@ public sealed class ChartFunction
     /// </summary>
     /// <param name="name">The name the function was registered with.</param>
     /// <exception cref="ArgumentException"><paramref name="name" /> is <see langword="null" />, empty or white space.</exception>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Creates a reference to the JavaScript function registered under the given name.")]
     public ChartFunction(string name)
     {
@@ -44,7 +44,7 @@ public sealed class ChartFunction
     /// Returns the registered name.
     /// </summary>
     /// <returns>The registered name.</returns>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Returns the registered name.")]
     public override string ToString() => Name;
 
@@ -60,7 +60,7 @@ public sealed class ChartFunction
     /// Default value is none: the constructor always sets the name.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets the name the JavaScript function was registered with.")]
     [ParameterTypeName("string")]

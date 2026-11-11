@@ -16,7 +16,7 @@ public class ChartPluginsColors
     /// Default value is <see langword="null" /> (Chart.js uses true).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether the colors plugin is on.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -29,7 +29,7 @@ public class ChartPluginsColors
     /// Default value is <see langword="null" /> (Chart.js uses false).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether the palette replaces colors the datasets set.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

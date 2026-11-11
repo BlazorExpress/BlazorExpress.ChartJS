@@ -54,7 +54,7 @@ public class ChartDataset<TData> : IChartDataset
     /// Default value is <see langword="null"/>.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the clip per side, in pixels. When set, it is sent instead of Clip.")]
     [JsonIgnore]
@@ -114,7 +114,7 @@ public class ChartDataset<TData> : IChartDataset
     /// Default value is <see langword="null"/>.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a stable identity key for the dataset. It is not drawn on the chart. On <code>UpdateAsync</code>, datasets are matched by this key when set, otherwise by <code>Label</code>, pairing datasets that share a label, or have none, in order. A matched dataset animates from its current values and keeps its runtime visibility.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
