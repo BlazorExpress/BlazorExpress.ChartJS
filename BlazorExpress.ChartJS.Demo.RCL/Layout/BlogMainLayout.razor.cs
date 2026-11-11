@@ -38,7 +38,17 @@ public partial class BlogMainLayout : MainLayoutBase
             Name = "Getting Started",
             CssClass = "is-size-7 has-text-weight-bold has-text-danger",
             Links = [
-                new Link { Href = DemoRouteConstants.Docs_Getting_Started_Prefix, Text = "Getting started" }
+                new Link { Href = DemoRouteConstants.Docs_Getting_Started_Introduction, Text = "Getting started" }
+            ]
+        });
+
+        // RELEASES
+        groups.Add(new LinkGroup
+        {
+            Name = "Releases",
+            CssClass = "is-size-7 has-text-weight-bold has-text-success",
+            Links = [
+                new Link { Href = DemoRouteConstants.Blog_Release_2_0_0, Text = "2.0.0 release notes" }
             ]
         });
 

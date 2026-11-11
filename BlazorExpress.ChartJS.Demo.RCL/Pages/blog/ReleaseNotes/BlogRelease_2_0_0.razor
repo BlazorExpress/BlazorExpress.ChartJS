@@ -1,0 +1,151 @@
+@attribute [Route(pageUrl)]
+@layout BlogMainLayout
+
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<PageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</PageHero>
+
+<div class="notification is-warning is-light">
+    <strong>Upgrading from 1.x?</strong> 2.0.0 changes some defaults and behaviour without any code change.
+    Read <a href="@(pageUrl)#breaking-changes">Breaking changes</a> first: each item says how to keep the 1.2.4 behaviour where there is a way.
+</div>
+
+<nav class="be-release-toc mb-5" aria-label="Release notes sections">
+    <a class="tag is-danger is-light is-medium" href="@(pageUrl)#breaking-changes">Breaking changes</a>
+    <a class="tag is-success is-light is-medium" href="@(pageUrl)#whats-new">What's new</a>
+    <a class="tag is-info is-light is-medium" href="@(pageUrl)#whats-changed">What's changed</a>
+    <a class="tag is-link is-light is-medium" href="@(pageUrl)#fixed">Fixed</a>
+    <a class="tag is-warning is-light is-medium" href="@(pageUrl)#security">Security</a>
+    <a class="tag is-light is-medium" href="@(pageUrl)#docs-and-demos">Docs and demos</a>
+    <a class="tag is-light is-medium" href="@(pageUrl)#for-contributors">For contributors</a>
+</nav>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Install" PageUrl="@pageUrl" Link="install">
+    <Block>
+        <CodeChunk LanguageCode="LanguageCode.Text" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_01_Run_Net_CLI_Command_Snippet.razor" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
+        <p class="mt-3">
+            Chart.js 4.6.1 is the documented version; the script references are in <a href="@(DemoRouteConstants.Docs_Getting_Started_Introduction)#quick-start">Getting started</a>.
+            Apps that load <code>blazorexpress.chartjs.js</code> from the package need no script change.
+        </p>
+    </Block>
+</Section>
+
+<div class="content be-release-notes">
+    @* Generated from CHANGELOG.md ## 2.0.0; keep the wording in step with it. *@
+    <p>2.0.0 is a major release. Code compiled against 1.2.4 keeps working: package validation against 1.2.4 reports no binary break. Some charts look or behave differently without any code change, though, so read <strong>Breaking changes</strong> before you upgrade. Chart.js 4.6.1 is the documented version.</p>
+
+    <Section Class="p-0" Size="HeadingSize.H4" Name="Breaking changes" PageUrl="@pageUrl" Link="breaking-changes">
+        <Block>
+            <p>Each item says how to keep the 1.2.4 behaviour where there is a way.</p>
+            <ul>
+                <li><strong>Radar and bubble axes start at zero.</strong> Like the other charts, radar and bubble charts now start their axes at zero by default. To keep the previous look, set <code>options.Scales.R.BeginAtZero = false</code> (radar) or <code>options.Scales.X.BeginAtZero = false</code> and <code>options.Scales.Y.BeginAtZero = false</code> (bubble).</li>
+                <li><strong>Radar and bubble data labels match the other charts.</strong> Radar and bubble charts that register the <code>ChartDataLabels</code> plugin now get the library's label style: white, bold, 6 px padding and a 4 px corner radius (the new <code>RadarChartPlugins.Datalabels</code> and <code>BubbleChartPlugins.Datalabels</code> defaults). In 1.2.4 they used the plugin's own grey text. To restore it, set <code>options.Plugins.Datalabels.Color = "#666"</code> (the Chart.js default text colour), <code>options.Plugins.Datalabels.Font.Weight = null</code>, <code>options.Plugins.Datalabels.Padding = 4</code> and <code>options.Plugins.Datalabels.BorderRadius = 0</code>.</li>
+                <li><strong>Bar chart data labels use the dataset colour from the first render.</strong> Bar charts that use <code>ChartDataLabels</code> show the dataset-coloured label background from the first render, not only after an update. Bubble charts keep the 1.2.4 behaviour.</li>
+                <li><strong>Hidden datasets stay hidden after <code>UpdateAsync</code>.</strong> A dataset, slice, bar or point hidden at runtime (from C# or by a legend click) now stays hidden after <code>UpdateAsync</code>. In 1.2.4 a legend-hidden dataset reappeared on every update. Items are matched by <code>ChartDataset.Key</code> when set, otherwise by label. To show an item again, call <code>ShowAsync(datasetIndex)</code>, or <code>ShowAsync(datasetIndex, dataIndex)</code> for a slice, bar or point. Setting <code>Hidden</code> in C# does not show an item that was hidden at runtime.</li>
+                <li><strong>Animated updates move from the current values.</strong> With animation on, <code>UpdateAsync</code> animates each dataset still on the chart from its current values to the new ones, as native Chart.js does. New datasets grow in from their base, and removed datasets disappear. Updates with <code>ChartUpdateMode.None</code> or <code>Reset</code> apply the new data directly, as before. The final drawing is unchanged. To replay the 1.2.4 grow-in animation, call <code>ResetAsync()</code> and then <code>UpdateAsync(...)</code>.</li>
+                <li><strong>The built-in date adapter replaces a third-party adapter.</strong> The library registers its own Chart.js date adapter, built on the browser's <code>Date</code> and <code>Intl</code>. On a page that also loads a third-party adapter (for example <code>chartjs-adapter-date-fns</code> or luxon), the library's adapter replaces it. Default tick formats change to the library defaults, and date-fns or luxon tokens in raw Chart.js options are read as .NET date format strings. Remove the third-party adapter script and write .NET date formats such as <code>"dd MMM yyyy"</code>.</li>
+                <li><strong>Removed: the undocumented JavaScript function <code>updateDataValues</code></strong> on <code>window.blazorexpress.chartjs</code>, <code>.radar</code> and <code>.scatter</code>. No C# method called it. Use <code>UpdateAsync</code>.</li>
+                <li><strong><code>blazorexpress.chartjs.js</code> changed.</strong> <code>initialize</code> and <code>update</code> take new optional trailing arguments. Apps that load the script from the package (<code>_content/BlazorExpress.ChartJS/blazorexpress.chartjs.js</code>) need nothing. Apps that copied the file into their own folder must copy the new one.</li>
+            </ul>
+        </Block>
+    </Section>
+
+    <Section Class="p-0" Size="HeadingSize.H4" Name="What's new" PageUrl="@pageUrl" Link="whats-new">
+        <Block>
+            <ul>
+                <li><strong>Time axes.</strong> <code>time</code> and <code>timeseries</code> axes work with only Chart.js and <code>blazorexpress.chartjs.js</code>; no extra script. Date labels (<code>ChartData.TimeLabels</code>), date points on line, bar, scatter and bubble datasets (<code>TimeData</code>), <code>ChartTimeValue</code> (assign a <code>DateOnly</code>, <code>DateTime</code> or <code>DateTimeOffset</code>), time axis options, and .NET date format strings for tick and tooltip formats, localized with <code>ChartOptions.Locale</code>. <code>DateOnly</code> and <code>Unspecified</code> <code>DateTime</code> values are wall-clock values that show the same date and time in every browser time zone; <code>Utc</code> and <code>Local</code> <code>DateTime</code> and <code>DateTimeOffset</code> values are exact instants.</li>
+                <li><strong><code>AddTimeDataAsync</code></strong> on line and bar charts adds a date label with one value for each dataset, the date-label counterpart of <code>AddDataAsync</code>. <code>AddDataAsync</code> also appends a time point to one dataset's <code>TimeData</code> on line, bar, scatter and bubble charts.</li>
+                <li><strong>JavaScript functions.</strong> Options that Chart.js takes as a JavaScript function (tick labels, tooltip text, legend filters and clicks, line segment styles, gradient colours and more) can now be set from C#. Register your function by name in your own JavaScript file with <code>blazorexpress.chartjs.registerFunction('formatCurrency', fn)</code>, load that file <strong>after</strong> <code>blazorexpress.chartjs.js</code>, and reference it with <code>new ChartFunction("formatCurrency")</code>. Value properties such as <code>BackgroundColor</code> have a function sibling, such as <code>BackgroundColorFunction</code>, which is sent instead when set. A legend <code>OnClick</code> function replaces Chart.js's default toggle; the library still raises <code>OnLegendClick</code>. Radar datasets have no <code>SegmentStyle</code>.</li>
+                <li><strong><code>Ticks.Format</code> (<code>ChartNumberFormat</code>)</strong> gives currency, percent and compact axis labels with no JavaScript.</li>
+                <li><strong>Chart methods:</strong> <code>ToBase64ImageAsync</code>, <code>DownloadImageAsync</code>, <code>ResetAsync</code>, <code>RenderAsync</code>, <code>StopAsync</code>, <code>ClearAsync</code> and <code>UpdateAsync(…, ChartUpdateMode)</code>.</li>
+                <li><strong>Visibility methods:</strong> <code>ShowAsync</code>, <code>HideAsync</code>, <code>SetDatasetVisibilityAsync</code>, <code>IsDatasetVisibleAsync</code>, <code>ToggleDataVisibilityAsync</code>, <code>GetVisibleDatasetCountAsync</code> and <code>SetActiveElementsAsync</code>.</li>
+                <li><strong>Events:</strong> <code>OnLegendClick</code> (with <code>LegendClickToggles</code>) and <code>OnHover</code>.</li>
+                <li><strong><code>ChartDataset.Key</code></strong> keeps a dataset's identity across updates when its label changes, for example on relabelling or localization.</li>
+                <li><strong>Options on every chart type.</strong> All eight chart types have <code>Plugins</code>, <code>Interaction</code> and <code>Layout</code>, created by default, so <code>options.Plugins.Title.Text = "Sales"</code> works on all of them. Radar and polar area charts have a radial <code>Scales.R</code> axis, and bubble charts have <code>Scales.X</code> and <code>Scales.Y</code>.</li>
+                <li><strong>Axis options:</strong> additional axes (<code>Scales.AdditionalAxes</code>, for example a right-hand <code>y1</code>), <code>Position</code>, <code>Reverse</code>, <code>Offset</code>, <code>Grace</code>, <code>Bounds</code>, <code>Weight</code>, <code>Stack</code>, <code>StackWeight</code>, <code>Display</code>, <code>BackgroundColor</code> and <code>Axis</code>. Tick options include <code>StepSize</code>, <code>Precision</code>, <code>Count</code>, <code>MaxTicksLimit</code>, <code>AutoSkip</code>, rotation and <code>Font</code>. Axis titles have <code>Padding</code>.</li>
+                <li><strong>Chart-level options:</strong> <code>AspectRatio</code>, <code>ResizeDelay</code>, <code>DevicePixelRatio</code>, <code>Events</code>, <code>Hover</code>, <code>Elements</code>, per-side layout padding (<code>Layout.PaddingSides</code>), and <code>Interaction.Axis</code> and <code>IncludeInvisible</code>.</li>
+                <li><strong>Plugin options:</strong> a subtitle plugin; title <code>FullSize</code>, <code>Padding</code> and <code>Position</code>; 14 tooltip options including <code>Mode</code>, <code>Position</code>, <code>Padding</code>, <code>CornerRadius</code> and <code>UsePointStyle</code>; legend label <code>TextAlign</code>; and the colors and filler plugins.</li>
+                <li><strong>Line charts:</strong> the dashed hover line can be styled or turned off with <code>options.Plugins.TooltipLine</code> (default unchanged).</li>
+                <li><strong>Doughnut and pie:</strong> <code>Cutout</code>, <code>Radius</code>, <code>Rotation</code> and <code>Circumference</code> (for example a half-doughnut gauge), and <code>Animation.AnimateRotate</code> and <code>AnimateScale</code>.</li>
+                <li><strong>Datasets:</strong> floating bars (<code>BarChartDataset.FloatingData</code>, also through <code>AddDataAsync</code> with <code>new BarChartDatasetData(label, start, end)</code>), bar <code>Base</code>, per-corner <code>BorderRadiusCorners</code> and <code>HoverBorderRadiusCorners</code>, <code>InflateAmount</code> and <code>PointStyle</code>; line <code>MaxSpanGap</code>; per-side <code>ClipSides</code>; <code>SpacingMode</code> on arc datasets; scatter <code>Segment</code>; radar <code>RAxisID</code>.</li>
+            </ul>
+        </Block>
+    </Section>
+
+    <Section Class="p-0" Size="HeadingSize.H4" Name="What's changed" PageUrl="@pageUrl" Link="whats-changed">
+        <Block>
+            <ul>
+                <li><strong>Chart.js 4.6.1</strong> is the documented version (a new "2.0.0+" row in the version tables). The browser console shows a one-time warning when a Chart.js version below 4.6.0 is loaded.</li>
+                <li><code>Stack</code> now lives on the shared <code>ChartDataset&lt;TData&gt;</code>, so scatter, bubble and radar datasets have it too. Bar and line code keeps compiling and sends the same JSON.</li>
+                <li>Doughnut, pie and polar area charts now also send default <code>interaction</code> and <code>layout</code> options. They equal the Chart.js defaults, so nothing changes on screen.</li>
+                <li>A bar dataset with no <code>BorderRadius</code> no longer sends <code>"borderRadius": null</code>; it leaves the key out, so <code>options.Elements.Bar.BorderRadius</code> can apply. Nothing changes on screen. Code that inspects the serialized dataset JSON sees one key fewer.</li>
+                <li>Decimation and the <code>parsing</code> and <code>normalized</code> options are not included in 2.0.0.</li>
+            </ul>
+        </Block>
+    </Section>
+
+    <Section Class="p-0" Size="HeadingSize.H4" Name="Fixed" PageUrl="@pageUrl" Link="fixed">
+        <Block>
+            <ul>
+                <li>A chart placed in a container that starts hidden (a tab, accordion, collapsible panel or dialog), or one whose container is resized as an animation ends, could stay blank until the window was resized or the chart was hovered. A responsive chart now always draws at its container's size.</li>
+                <li>Charts are destroyed when the component is disposed, so they no longer pile up across navigation. Chart calls after dispose are ignored, and disconnected circuits no longer raise errors.</li>
+                <li><code>ResizeAsync</code> now resizes the container and redraws the chart; in 1.2.4 it had no effect.</li>
+                <li>The shared <code>ChartComponentBase</code> data path includes bubble datasets.</li>
+                <li>A registered JavaScript function that throws is logged to the console once, and the chart keeps drawing.</li>
+            </ul>
+        </Block>
+    </Section>
+
+    <Section Class="p-0" Size="HeadingSize.H4" Name="Security" PageUrl="@pageUrl" Link="security">
+        <Block>
+            <ul>
+                <li>A <code>ChartFunction</code> names a function you registered with <code>registerFunction</code>. It is looked up only in that registry, never on <code>window</code> or through globals, and never evaluated as code (no <code>eval</code> or <code>new Function</code>). An unregistered name logs one console error naming the function and the option, and the option keeps its Chart.js default.</li>
+            </ul>
+        </Block>
+    </Section>
+
+    <Section Class="p-0" Size="HeadingSize.H4" Name="Docs and demos" PageUrl="@pageUrl" Link="docs-and-demos">
+        <Block>
+            <ul>
+                <li>A samples gallery with a page per sample, each with "How to use" steps and copyable source, covering the official Chart.js samples the library can express.</li>
+                <li>Each chart's docs page lists its Common Parameters, Events and Methods, so inherited members such as <code>ResizeAsync</code> and <code>OnClick</code> are documented too.</li>
+                <li>Getting started covers time axes and JavaScript functions, including the script order for WebAssembly, Server, Auto and MAUI.</li>
+                <li>The Pie chart demo page links to the Pie chart docs, and the README's Getting Started link opens the getting-started page.</li>
+            </ul>
+        </Block>
+    </Section>
+
+    <Section Class="p-0" Size="HeadingSize.H4" Name="For contributors" PageUrl="@pageUrl" Link="for-contributors">
+        <Block>
+            <ul>
+                <li>New test project <code>BlazorExpress.ChartJS.Tests</code> (xUnit v3 and bUnit). Run it with <code>dotnet test --solution BlazorExpress.ChartJS.sln</code>. The root <code>global.json</code> opts in to Microsoft.Testing.Platform, which needs the .NET 10 SDK; older SDKs ignore the setting.</li>
+                <li>The demo site deploys to production only when the workflow is run by hand with "Do you want to release to production?" ticked. Pushes to <code>main</code> no longer deploy, and pull requests still get preview deploys.</li>
+            </ul>
+        </Block>
+    </Section>
+</div>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Links" PageUrl="@pageUrl" Link="links">
+    <Block>
+        <ul>
+            <li><a href="@changelogUrl" target="_blank" rel="noopener">Full changelog on GitHub</a></li>
+            <li><a href="@nugetUrl" target="_blank" rel="noopener">BlazorExpress.ChartJS 2.0.0 on NuGet</a></li>
+            <li><a href="@DemoRouteConstants.Docs_Getting_Started_Introduction">Getting started</a> and the <a href="@DemoRouteConstants.Demos_Samples">samples gallery</a></li>
+        </ul>
+    </Block>
+</Section>
+
+@code {
+    private const string pageUrl = DemoRouteConstants.Blog_Release_2_0_0;
+    private const string pageTitle = "2.0.0 release notes";
+    private const string pageDescription = "Time axes, JavaScript functions, chart methods and events, and wider Chart.js 4.6 options. Read the breaking changes before you upgrade from 1.x.";
+    private const string metaTitle = "BlazorExpress.ChartJS 2.0.0 release notes - breaking changes, what's new and fixes";
+    private const string metaDescription = "What's new, what's changed, breaking changes and fixes in BlazorExpress.ChartJS 2.0.0, with how to keep the 1.2.4 behaviour.";
+    private const string imageUrl = "https://i.imgur.com/IX3bajc.png";
+    private const string changelogUrl = "https://github.com/BlazorExpress/BlazorExpress.ChartJS/blob/main/CHANGELOG.md#200";
+    private const string nugetUrl = "https://www.nuget.org/packages/BlazorExpress.ChartJS/2.0.0";
+}

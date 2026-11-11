@@ -259,39 +259,73 @@ h1:focus-visible {
     background: #2563eb;
 }
 
+/* Getting started introduction and release notes. Colours come from the theme, so light and dark both work. */
 .be-release-spotlight {
-    margin: 0.25rem 0 1rem 0;
+    margin: 0.25rem 0 1.5rem 0;
     padding: 1.1rem 1rem;
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    border-radius: 0.9rem;
-    background: linear-gradient(125deg, rgba(255, 255, 255, 0.95), rgba(246, 252, 255, 0.95));
-}
-
-.be-release-spotlight--compact {
-    margin-top: 1.4rem;
+    border: 1px solid var(--be-bulma-border-color);
+    border-left: 4px solid var(--bulma-primary);
+    border-radius: var(--be-bulma-border-radius);
+    background-color: var(--bulma-scheme-main-bis);
 }
 
 .be-release-kicker {
     margin: 0;
-    font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
     font-size: 0.78rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #0f766e;
+    color: var(--bulma-primary);
     font-weight: 600;
 }
 
 .be-release-title {
     margin: 0.3rem 0 0.4rem 0;
-    font-family: "Sora", "Segoe UI", sans-serif;
-    color: #111827;
+    color: var(--bulma-text-strong);
     font-size: clamp(1.05rem, 1.6vw, 1.28rem);
+    font-weight: 600;
 }
 
 .be-release-copy {
     margin: 0;
-    color: #334155;
+    color: var(--bulma-text);
     line-height: 1.5;
+}
+
+.be-intro-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 1rem;
+}
+
+.be-intro-card {
+    padding: 1rem;
+    background-color: var(--bulma-scheme-main);
+    border: 1px solid var(--be-bulma-border-color);
+    border-radius: var(--be-bulma-border-radius);
+}
+
+.be-intro-card p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.be-intro-card .be-intro-card-title {
+    margin-bottom: 0.35rem;
+    color: var(--bulma-text-strong);
+    font-weight: 600;
+}
+
+/* Long inline code (member paths, script paths) wraps on narrow screens instead of running past the edge. */
+.be-release-notes code,
+.be-intro-card code {
+    overflow-wrap: anywhere;
+}
+
+.be-intro-links,
+.be-release-toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 @keyframes be-loader-spin {
