@@ -3,7 +3,7 @@ namespace BlazorExpress.ChartJS;
 /// <summary>
 /// Identifies one chart data item to highlight with <see cref="ChartComponentBase.SetActiveElementsAsync" />.
 /// </summary>
-[AddedVersion("1.3.0")]
+[AddedVersion("2.0.0")]
 [Description("Identifies one chart data item to highlight.")]
 public class ChartActiveElement
 {
@@ -32,7 +32,7 @@ public class ChartActiveElement
     /// <summary>
     /// Gets or sets the dataset index.
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(0)]
     [Description("Gets or sets the dataset index.")]
     public int DatasetIndex { get; set; }
@@ -40,7 +40,7 @@ public class ChartActiveElement
     /// <summary>
     /// Gets or sets the data index within the dataset.
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(0)]
     [Description("Gets or sets the data index within the dataset.")]
     public int Index { get; set; }

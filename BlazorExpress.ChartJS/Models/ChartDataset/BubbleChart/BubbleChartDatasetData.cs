@@ -14,7 +14,7 @@ public record BubbleChartDatasetData : ChartDatasetData
     /// <param name="x">The date: a <see cref="DateOnly" />, <see cref="DateTime" /> or <see cref="DateTimeOffset" />.</param>
     /// <param name="y">The value.</param>
     /// <param name="r">The radius of the bubble in pixels.</param>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Creates a bubble at a date, for AddDataAsync on a dataset that uses TimeData.")]
     public BubbleChartDatasetData(string? datasetLabel, ChartTimeValue x, double y, double r) : base(datasetLabel, new BubbleChartTimePoint(x, y, r)) { }
 

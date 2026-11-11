@@ -19,7 +19,7 @@ public class ChartElements
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the defaults for arcs, used by doughnut, pie and polar area charts.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -32,7 +32,7 @@ public class ChartElements
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the defaults for bars.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -45,7 +45,7 @@ public class ChartElements
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the defaults for lines, used by line and radar charts.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -58,7 +58,7 @@ public class ChartElements
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the defaults for points, used by line, radar, scatter and bubble charts.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -87,7 +87,7 @@ public class ChartElementsArc
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default angle of each arc on polar area charts, in degrees.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -100,7 +100,7 @@ public class ChartElementsArc
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default fill color of arcs.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -113,7 +113,7 @@ public class ChartElementsArc
     /// Default value is <see langword="null" /> (Chart.js uses "center").
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets where the arc border is drawn: \"center\" or \"inner\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -126,7 +126,7 @@ public class ChartElementsArc
     /// Default value is <see langword="null" /> (Chart.js uses "#fff").
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default border color of arcs.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -139,7 +139,7 @@ public class ChartElementsArc
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default length and spacing of dashes on arc borders.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -155,7 +155,7 @@ public class ChartElementsArc
     /// Doughnut, pie and polar area datasets always send their own value, so this default has no effect on those charts; set <c>BorderDashOffset</c> on the dataset instead.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default offset for arc border dashes.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -168,7 +168,7 @@ public class ChartElementsArc
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default arc border join style: \"bevel\", \"round\" or \"miter\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -181,7 +181,7 @@ public class ChartElementsArc
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default arc border radius, in pixels.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -194,7 +194,7 @@ public class ChartElementsArc
     /// Default value is <see langword="null" /> (Chart.js uses 2).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default arc border width, in pixels.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -210,7 +210,7 @@ public class ChartElementsArc
     /// Polar area datasets always send their own value, so this default has no effect on those charts; set <c>Circular</c> on the dataset instead.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether arcs are curved (true) or flat (false).")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -239,7 +239,7 @@ public class ChartElementsBar
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default fill color of bars.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -252,7 +252,7 @@ public class ChartElementsBar
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default border color of bars.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -265,7 +265,7 @@ public class ChartElementsBar
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default border radius of bars, in pixels.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -281,7 +281,7 @@ public class ChartElementsBar
     /// Bar datasets always send their own value, so this default has no effect on those charts; set <c>BorderSkipped</c> on the dataset instead.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default edge to skip when drawing the border: \"start\", \"end\", \"middle\", \"bottom\", \"left\", \"top\" or \"right\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -294,7 +294,7 @@ public class ChartElementsBar
     /// Default value is <see langword="null" /> (Chart.js uses 0).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default border width of bars, in pixels.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -307,7 +307,7 @@ public class ChartElementsBar
     /// Default value is <see langword="null" /> (Chart.js uses "auto").
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets how many pixels bars are inflated by when drawn, to avoid gaps; a number or \"auto\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -320,7 +320,7 @@ public class ChartElementsBar
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the point style used for bars in the legend when the legend uses point styles.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -352,7 +352,7 @@ public class ChartElementsLine
     /// Line, radar and scatter datasets always send their own value, so this default has no effect on those charts; set <c>BackgroundColor</c> on the dataset instead.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default fill color of lines.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -368,7 +368,7 @@ public class ChartElementsLine
     /// Line, radar and scatter datasets always send their own value, so this default has no effect on those charts; set <c>BorderCapStyle</c> on the dataset instead.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default line cap style: \"butt\", \"round\" or \"square\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -384,7 +384,7 @@ public class ChartElementsLine
     /// Line, radar and scatter datasets always send their own value, so this default has no effect on those charts; set <c>BorderColor</c> on the dataset instead.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default color of lines.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -397,7 +397,7 @@ public class ChartElementsLine
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default length and spacing of dashes on lines.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -413,7 +413,7 @@ public class ChartElementsLine
     /// Line, radar and scatter datasets always send their own value, so this default has no effect on those charts; set <c>BorderDashOffset</c> on the dataset instead.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default offset for line dashes.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -429,7 +429,7 @@ public class ChartElementsLine
     /// Line, radar and scatter datasets always send their own value, so this default has no effect on those charts; set <c>BorderJoinStyle</c> on the dataset instead.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default line join style: \"bevel\", \"round\" or \"miter\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -445,7 +445,7 @@ public class ChartElementsLine
     /// Line, radar and scatter datasets always send their own value, so this default has no effect on those charts; set <c>BorderWidth</c> on the dataset instead.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default width of lines, in pixels.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -458,7 +458,7 @@ public class ChartElementsLine
     /// Default value is <see langword="null" /> (Chart.js uses true).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether control points are kept inside the chart area.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -474,7 +474,7 @@ public class ChartElementsLine
     /// Line and scatter datasets always send their own value, so this default has no effect on those charts; set <c>CubicInterpolationMode</c> on the dataset instead.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default interpolation mode: \"default\" or \"monotone\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -490,7 +490,7 @@ public class ChartElementsLine
     /// Line, radar and scatter datasets always send their own value, so this default has no effect on those charts; set <c>Fill</c> on the dataset instead.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether lines are filled by default.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -506,7 +506,7 @@ public class ChartElementsLine
     /// Line and scatter datasets always send their own value, so this default has no effect on those charts; set <c>Stepped</c> on the dataset instead.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether lines are drawn as stepped lines by default.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -522,7 +522,7 @@ public class ChartElementsLine
     /// Line, radar and scatter datasets always send their own value, so this default has no effect on those charts; set <c>Tension</c> on the dataset instead.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default Bezier curve tension; 0 draws straight lines.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -554,7 +554,7 @@ public class ChartElementsPoint
     /// Line, radar and scatter datasets always send <c>backgroundColor</c>, which Chart.js also uses for their points, so this default has no effect on those charts; set <c>PointBackgroundColor</c> on the dataset instead.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default fill color of points.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -570,7 +570,7 @@ public class ChartElementsPoint
     /// Line, radar and scatter datasets always send <c>borderColor</c>, which Chart.js also uses for their points, so this default has no effect on those charts; set <c>PointBorderColor</c> on the dataset instead.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default border color of points.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -586,7 +586,7 @@ public class ChartElementsPoint
     /// Line, radar, scatter and bubble datasets always send <c>borderWidth</c>, which Chart.js also uses for their points, so this default has no effect on those charts; set <c>PointBorderWidth</c> on the dataset instead (on a bubble dataset, <c>BorderWidth</c>).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default border width of points, in pixels.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -599,7 +599,7 @@ public class ChartElementsPoint
     /// Default value is <see langword="null" /> (Chart.js uses 1).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the extra radius, in pixels, added to points for hit detection.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -612,7 +612,7 @@ public class ChartElementsPoint
     /// Default value is <see langword="null" /> (Chart.js uses 1).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default border width of points when hovered, in pixels.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -625,7 +625,7 @@ public class ChartElementsPoint
     /// Default value is <see langword="null" /> (Chart.js uses 4).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default radius of points when hovered, in pixels.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -638,7 +638,7 @@ public class ChartElementsPoint
     /// Default value is <see langword="null" /> (Chart.js uses "circle").
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default point style: \"circle\", \"cross\", \"crossRot\", \"dash\", \"line\", \"rect\", \"rectRounded\", \"rectRot\", \"star\" or \"triangle\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -651,7 +651,7 @@ public class ChartElementsPoint
     /// Default value is <see langword="null" /> (Chart.js uses 3).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default radius of points, in pixels; 0 hides them.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -664,7 +664,7 @@ public class ChartElementsPoint
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default rotation of points, in degrees.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

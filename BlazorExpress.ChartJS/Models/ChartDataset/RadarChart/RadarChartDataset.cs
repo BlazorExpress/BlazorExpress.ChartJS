@@ -34,7 +34,7 @@ public class RadarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the background color, as the scriptable option (context) => color. When set, it is sent instead of BackgroundColor.")]
     [JsonIgnore]
@@ -85,7 +85,7 @@ public class RadarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the border color, as the scriptable option (context) => color. When set, it is sent instead of BorderColor.")]
     [JsonIgnore]
@@ -198,7 +198,7 @@ public class RadarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the background color when hovered, as the scriptable option (context) => color. When set, it is sent instead of HoverBackgroundColor.")]
     [JsonIgnore]
@@ -252,7 +252,7 @@ public class RadarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the border color when hovered, as the scriptable option (context) => color. When set, it is sent instead of HoverBorderColor.")]
     [JsonIgnore]
@@ -342,7 +342,7 @@ public class RadarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the point fill color, as the scriptable option (context) => color. When set, it is sent instead of PointBackgroundColor.")]
     [JsonIgnore]
@@ -381,7 +381,7 @@ public class RadarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the point border color, as the scriptable option (context) => color. When set, it is sent instead of PointBorderColor.")]
     [JsonIgnore]
@@ -446,7 +446,7 @@ public class RadarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the point fill color when hovered, as the scriptable option (context) => color. When set, it is sent instead of PointHoverBackgroundColor.")]
     [JsonIgnore]
@@ -485,7 +485,7 @@ public class RadarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the point border color when hovered, as the scriptable option (context) => color. When set, it is sent instead of PointHoverBorderColor.")]
     [JsonIgnore]
@@ -574,7 +574,7 @@ public class RadarChartDataset : ChartDataset<double?>
     /// Default value is <see langword="null" /> (Chart.js uses the first <c>r</c> axis).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("The ID of the radial (r) axis to plot this dataset on.")]
     [ParameterTypeName("string?")]

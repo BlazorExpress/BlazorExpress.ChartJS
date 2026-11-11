@@ -126,7 +126,7 @@ public class ChartDatasetDataLabels
     /// </para>
     /// <see href="https://chartjs-plugin-datalabels.netlify.app/guide/formatting.html" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the text of each label of this dataset, as (value, context) => string. It changes the label text only; the library's datalabels background color is unaffected.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

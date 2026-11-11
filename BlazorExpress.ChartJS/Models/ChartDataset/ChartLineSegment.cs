@@ -22,7 +22,7 @@ public sealed class ChartLineSegment
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the fill color under the segment, the same for every segment. When BackgroundColorFunction is set, it is sent instead.")]
     [JsonIgnore]
@@ -38,7 +38,7 @@ public sealed class ChartLineSegment
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the fill color under the segment for each segment, as (context) => color. When set, it is sent instead of BackgroundColor.")]
     [JsonIgnore]
@@ -61,7 +61,7 @@ public sealed class ChartLineSegment
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the cap style of the segment: \"butt\", \"round\" or \"square\", the same for every segment. When BorderCapStyleFunction is set, it is sent instead.")]
     [JsonIgnore]
@@ -77,7 +77,7 @@ public sealed class ChartLineSegment
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the cap style of the segment: \"butt\", \"round\" or \"square\" for each segment, as (context) => string. When set, it is sent instead of BorderCapStyle.")]
     [JsonIgnore]
@@ -100,7 +100,7 @@ public sealed class ChartLineSegment
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the color of the segment, the same for every segment. When BorderColorFunction is set, it is sent instead.")]
     [JsonIgnore]
@@ -116,7 +116,7 @@ public sealed class ChartLineSegment
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the color of the segment for each segment, as (context) => color. When set, it is sent instead of BorderColor.")]
     [JsonIgnore]
@@ -139,7 +139,7 @@ public sealed class ChartLineSegment
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the dash pattern of the segment, as lengths of alternating lines and gaps in pixels, the same for every segment. When BorderDashFunction is set, it is sent instead.")]
     [JsonIgnore]
@@ -155,7 +155,7 @@ public sealed class ChartLineSegment
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the dash pattern of the segment, as lengths of alternating lines and gaps in pixels for each segment, as (context) => number[]. When set, it is sent instead of BorderDash.")]
     [JsonIgnore]
@@ -178,7 +178,7 @@ public sealed class ChartLineSegment
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the offset of the dash pattern of the segment, in pixels, the same for every segment. When BorderDashOffsetFunction is set, it is sent instead.")]
     [JsonIgnore]
@@ -194,7 +194,7 @@ public sealed class ChartLineSegment
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the offset of the dash pattern of the segment, in pixels for each segment, as (context) => number. When set, it is sent instead of BorderDashOffset.")]
     [JsonIgnore]
@@ -217,7 +217,7 @@ public sealed class ChartLineSegment
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the join style of the segment: \"bevel\", \"round\" or \"miter\", the same for every segment. When BorderJoinStyleFunction is set, it is sent instead.")]
     [JsonIgnore]
@@ -233,7 +233,7 @@ public sealed class ChartLineSegment
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the join style of the segment: \"bevel\", \"round\" or \"miter\" for each segment, as (context) => string. When set, it is sent instead of BorderJoinStyle.")]
     [JsonIgnore]
@@ -256,7 +256,7 @@ public sealed class ChartLineSegment
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the width of the segment, in pixels, the same for every segment. When BorderWidthFunction is set, it is sent instead.")]
     [JsonIgnore]
@@ -272,7 +272,7 @@ public sealed class ChartLineSegment
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/line.html#segment" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the width of the segment, in pixels for each segment, as (context) => number. When set, it is sent instead of BorderWidth.")]
     [JsonIgnore]

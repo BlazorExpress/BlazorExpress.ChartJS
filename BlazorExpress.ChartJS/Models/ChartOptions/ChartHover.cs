@@ -17,7 +17,7 @@ public class ChartHover
     /// Default value is <see langword="null" /> (the interaction value).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the directions used to calculate distances: \"x\", \"y\", \"xy\" or \"r\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -30,7 +30,7 @@ public class ChartHover
     /// Default value is <see langword="null" /> (the interaction value).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether points outside the chart area are also considered.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -43,7 +43,7 @@ public class ChartHover
     /// Default value is <see langword="null" /> (the interaction value).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether hover applies only when the pointer intersects an item.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -56,7 +56,7 @@ public class ChartHover
     /// Default value is <see langword="null" /> (the interaction value).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets which elements are hovered.")]
     [JsonConverter(typeof(CamelCaseEnumConverter<InteractionMode>))]

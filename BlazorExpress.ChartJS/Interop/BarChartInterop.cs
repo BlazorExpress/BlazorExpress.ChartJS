@@ -11,7 +11,7 @@ public class BarChartInterop
     /// <summary>
     /// JavaScript function that appends a time point to the dataset with a given label.
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("JavaScript function that appends a time point to the dataset with a given label.")]
     public const string AddDatasetPoint = Prefix + "addDatasetPoint";
 

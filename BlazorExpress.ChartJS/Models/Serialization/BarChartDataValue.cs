@@ -29,7 +29,7 @@ public sealed class BarChartDataValue
     /// Creates a plain bar value, drawn from the base.
     /// </summary>
     /// <param name="value">The value.</param>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Creates a plain bar value, drawn from the base.")]
     public static implicit operator BarChartDataValue(double value) => new(value, null, null);
 
@@ -37,7 +37,7 @@ public sealed class BarChartDataValue
     /// Creates a floating bar from <c>Start</c> to <c>End</c>.
     /// </summary>
     /// <param name="range">The start and end of the bar.</param>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Creates a floating bar from Start to End.")]
     public static implicit operator BarChartDataValue((double Start, double End) range) => Range(range.Start, range.End);
 
@@ -47,7 +47,7 @@ public sealed class BarChartDataValue
     /// <param name="start">The value where the bar starts.</param>
     /// <param name="end">The value where the bar ends.</param>
     /// <returns>The floating bar value.</returns>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Creates a floating bar from start to end.")]
     public static BarChartDataValue Range(double start, double end) => new(null, start, end);
 
@@ -63,7 +63,7 @@ public sealed class BarChartDataValue
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets the end of a floating bar, or null for a plain value.")]
     [ParameterTypeName("double?")]
@@ -75,7 +75,7 @@ public sealed class BarChartDataValue
     /// Default value is <see langword="false" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(false)]
     [Description("Gets a value indicating whether this is a floating bar.")]
     public bool IsRange => Start.HasValue;
@@ -86,7 +86,7 @@ public sealed class BarChartDataValue
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets the start of a floating bar, or null for a plain value.")]
     [ParameterTypeName("double?")]
@@ -98,7 +98,7 @@ public sealed class BarChartDataValue
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets the plain value, or null for a floating bar.")]
     [ParameterTypeName("double?")]

@@ -17,7 +17,7 @@ public sealed class ChartClip
     /// Default value is 0.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(0)]
     [Description("Gets or sets the bottom clip in pixels.")]
     public double Bottom { get; set; }
@@ -28,7 +28,7 @@ public sealed class ChartClip
     /// Default value is 0.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(0)]
     [Description("Gets or sets the left clip in pixels.")]
     public double Left { get; set; }
@@ -39,7 +39,7 @@ public sealed class ChartClip
     /// Default value is 0.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(0)]
     [Description("Gets or sets the right clip in pixels.")]
     public double Right { get; set; }
@@ -50,7 +50,7 @@ public sealed class ChartClip
     /// Default value is 0.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(0)]
     [Description("Gets or sets the top clip in pixels.")]
     public double Top { get; set; }

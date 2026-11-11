@@ -33,7 +33,7 @@ public class ChartOptions : IChartOptions
     /// Default value is <see langword="null" /> (Chart.js uses 2, and 1 for doughnut, pie, polar area and radar charts).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the canvas aspect ratio (width / height) used when MaintainAspectRatio is on.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -46,7 +46,7 @@ public class ChartOptions : IChartOptions
     /// Default value is <see langword="null" /> (Chart.js uses the window's devicePixelRatio).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the pixel ratio the canvas is drawn at, for example 2 for sharper exported images.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -59,7 +59,7 @@ public class ChartOptions : IChartOptions
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the default styles of the points, lines, bars and arcs the chart draws.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -77,7 +77,7 @@ public class ChartOptions : IChartOptions
     /// when <c>"mouseout"</c> is left out, <c>OnHover</c> is not called when the pointer leaves the chart.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the browser events the chart listens to, such as \"mousemove\", \"mouseout\", \"click\", \"touchstart\" and \"touchmove\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -90,7 +90,7 @@ public class ChartOptions : IChartOptions
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the hover options. Values left null use the interaction options.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -133,7 +133,7 @@ public class ChartOptions : IChartOptions
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/interactions.html#events" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function Chart.js calls when the chart is clicked, as (event, elements, chart) => void. It runs alongside the component's .NET OnClick event, which is still raised.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -148,7 +148,7 @@ public class ChartOptions : IChartOptions
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/interactions.html#events" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function Chart.js calls when the pointer moves over the chart, as (event, elements, chart) => void. It runs alongside the component's .NET OnHover event, which is still raised.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -163,7 +163,7 @@ public class ChartOptions : IChartOptions
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/responsive.html#configuration-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function Chart.js calls after the chart resizes, as (chart, size) => void, where size is { width, height }.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -176,7 +176,7 @@ public class ChartOptions : IChartOptions
     /// Default value is <see langword="null" /> (Chart.js uses 0).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the delay in milliseconds before the chart redraws after a resize, so rapid resizes cause one redraw.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -237,7 +237,7 @@ public class ChartLayout
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the padding per side, in pixels. When set, it is sent instead of Padding.")]
     [JsonIgnore]
@@ -303,7 +303,7 @@ public class Interaction
     /// Default value is <see langword="null" /> (Chart.js uses "x" for the index mode and "xy" otherwise).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the directions used to calculate distances: \"x\", \"y\", \"xy\" or \"r\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -329,7 +329,7 @@ public class Interaction
     /// Default value is <see langword="null" /> (Chart.js uses false).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether points outside the chart area are also considered.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -394,7 +394,7 @@ public class Scales
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/samples/line/multi-axis.html" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets additional axes by ID, for example a second y-axis \"y1\" on the right.")]
     [ParameterTypeName("Dictionary<string, ChartAxes>?")]
@@ -530,7 +530,7 @@ public class ChartAxes
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets which direction the axis runs: \"x\" or \"y\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -543,7 +543,7 @@ public class ChartAxes
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the background color of the axis area.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -581,7 +581,7 @@ public class ChartAxes
     /// Default value is <see langword="null" /> (Chart.js uses <c>"ticks"</c>).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets how the axis range is fitted: \"data\" or \"ticks\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -594,7 +594,7 @@ public class ChartAxes
     /// Default value is <see langword="null" /> (Chart.js shows the axis).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether the axis is displayed.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -608,7 +608,7 @@ public class ChartAxes
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/axes/cartesian/linear.html#grace" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets extra space added above the maximum and below the minimum: a number in data units, or a percentage of half the data range such as \"5%\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -650,7 +650,7 @@ public class ChartAxes
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/samples/scales/time-max-span.html" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the user-defined maximum date of a time or timeseries axis. When set, it is sent instead of Max.")]
     [JsonIgnore]
@@ -687,7 +687,7 @@ public class ChartAxes
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/samples/scales/time-max-span.html" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the user-defined minimum date of a time or timeseries axis. When set, it is sent instead of Min.")]
     [JsonIgnore]
@@ -709,7 +709,7 @@ public class ChartAxes
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether extra space is added to both edges and the axis is scaled to fit the chart area.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -722,7 +722,7 @@ public class ChartAxes
     /// Default value is <see langword="null" /> (Chart.js puts x at the bottom and y on the left).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets where the axis is drawn: \"top\", \"left\", \"bottom\", \"right\" or \"center\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -735,7 +735,7 @@ public class ChartAxes
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether the axis runs in reverse.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -749,7 +749,7 @@ public class ChartAxes
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/samples/scales/stacked.html" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the stack group of the axis. Axes in the same group on the same position are stacked on top of each other.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -774,7 +774,7 @@ public class ChartAxes
     /// Default value is <see langword="null" /> (Chart.js uses 1).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the relative size of a stacked axis in its stack group.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -802,7 +802,7 @@ public class ChartAxes
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a date the range of a time or timeseries axis is widened to include, unless the data ends later. When set, it is sent instead of SuggestedMax.")]
     [JsonIgnore]
@@ -838,7 +838,7 @@ public class ChartAxes
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a date the range of a time or timeseries axis is widened to include, unless the data starts earlier. When set, it is sent instead of SuggestedMin.")]
     [JsonIgnore]
@@ -875,7 +875,7 @@ public class ChartAxes
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/axes/cartesian/time.html" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the options of a time or timeseries axis: units, rounding, first day of the week, and the .NET date formats of the tick labels and tooltips.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -914,7 +914,7 @@ public class ChartAxes
     /// Default value is <see langword="null" /> (Chart.js uses 0).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the weight used to sort axes on the same position; a larger weight is drawn further from the chart area.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1252,7 +1252,7 @@ public class ChartAxesTicks
     /// Default value is <see langword="null" /> (Chart.js uses <see langword="true" />).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether Chart.js skips ticks automatically so labels don't overlap.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1265,7 +1265,7 @@ public class ChartAxesTicks
     /// Default value is <see langword="null" /> (Chart.js uses 3).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the padding between ticks on the horizontal axis when AutoSkip is on.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1307,7 +1307,7 @@ public class ChartAxesTicks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/axes/labelling.html#creating-custom-tick-formats" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the text of each tick label, as (value, index, ticks) => string | string[].")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1333,7 +1333,7 @@ public class ChartAxesTicks
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the number of ticks to generate on a linear axis. When set, StepSize is ignored.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1346,7 +1346,7 @@ public class ChartAxesTicks
     /// Default value is <see langword="null" /> (Chart.js uses <c>"near"</c>).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets how labels align across the axis: \"near\", \"center\" or \"far\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1370,7 +1370,7 @@ public class ChartAxesTicks
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the font of the tick labels.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1387,7 +1387,7 @@ public class ChartAxesTicks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/axes/labelling.html" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the Intl.NumberFormat options the default tick label formatter of linear, logarithmic and radial linear axes uses, with Locale. The default tooltip value uses the same formatter. Other axis types ignore it; time axes use Time.DisplayFormats.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1400,7 +1400,7 @@ public class ChartAxesTicks
     /// Default value is <see langword="null" /> (Chart.js uses <see langword="true" />).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether the minimum and maximum are shown as ticks even when they are not on a step.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1413,7 +1413,7 @@ public class ChartAxesTicks
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the distance in pixels to offset each label from the center of its tick, along the axis.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1439,7 +1439,7 @@ public class ChartAxesTicks
     /// Default value is <see langword="null" /> (Chart.js uses 50).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the maximum rotation of labels on the horizontal axis, in degrees.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1452,7 +1452,7 @@ public class ChartAxesTicks
     /// Default value is <see langword="null" /> (Chart.js uses 11).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the maximum number of ticks and grid lines to show.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1465,7 +1465,7 @@ public class ChartAxesTicks
     /// Default value is <see langword="null" /> (Chart.js uses 0).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the minimum rotation of labels on the horizontal axis, in degrees.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1478,7 +1478,7 @@ public class ChartAxesTicks
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether tick labels are drawn inside the chart area instead of outside it.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1504,7 +1504,7 @@ public class ChartAxesTicks
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the number of decimal places the tick step is rounded to on a linear axis.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1517,7 +1517,7 @@ public class ChartAxesTicks
     /// Default value is <see langword="null" /> (Chart.js measures every tick).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the number of ticks Chart.js samples to measure label sizes, which speeds up large axes.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1545,7 +1545,7 @@ public class ChartAxesTicks
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/axes/cartesian/time.html#ticks-source" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets where the ticks of a time or timeseries axis come from: \"auto\", \"data\" or \"labels\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1558,7 +1558,7 @@ public class ChartAxesTicks
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a fixed step between ticks on a linear axis.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1617,7 +1617,7 @@ public class ChartAxesTicks
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the z-index of the tick layer. Values <= 0 are drawn under datasets, > 0 on top.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1735,7 +1735,7 @@ public class ChartAxesTitle
     /// Default value is <see langword="null" /> (Chart.js uses 4 on top and bottom).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the padding around the title.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1797,7 +1797,7 @@ public class ChartAxesTime
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the .NET date format of the tick labels for each time unit. A unit left unset uses the library default.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1810,7 +1810,7 @@ public class ChartAxesTime
     /// Default value is <see langword="null" /> (Chart.js starts weeks on Sunday).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the first day of the week when the unit is Week, for example DayOfWeek.Monday.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1823,7 +1823,7 @@ public class ChartAxesTime
     /// Default value is <see langword="null" /> (Chart.js uses <see cref="ChartTimeUnit.Millisecond" />).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the smallest unit Chart.js may pick when it chooses the unit itself.")]
     [JsonConverter(typeof(CamelCaseEnumConverter<ChartTimeUnit>))]
@@ -1837,7 +1837,7 @@ public class ChartAxesTime
     /// Default value is <see langword="null" /> (no rounding).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the unit every date is rounded down to, for example Hour puts 09:42 at 09:00.")]
     [JsonConverter(typeof(CamelCaseEnumConverter<ChartTimeUnit>))]
@@ -1851,7 +1851,7 @@ public class ChartAxesTime
     /// Default value is <see langword="null" /> (the library uses <c>"G"</c>, the browser's short date and long time).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the .NET date format of the tooltip title, for example \"ddd, dd MMM yyyy HH:mm\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1864,7 +1864,7 @@ public class ChartAxesTime
     /// Default value is <see langword="null" /> (Chart.js picks the unit that fits the data).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the unit of the ticks, for example Day for one tick a day.")]
     [JsonConverter(typeof(CamelCaseEnumConverter<ChartTimeUnit>))]
@@ -1892,7 +1892,7 @@ public class ChartAxesTimeDisplayFormats
     /// Default value is <see langword="null" /> (the library uses <c>"d MMM"</c>).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the format of day ticks.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1905,7 +1905,7 @@ public class ChartAxesTimeDisplayFormats
     /// Default value is <see langword="null" /> (the library uses <c>"t"</c>, the browser's short time).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the format of hour ticks.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1918,7 +1918,7 @@ public class ChartAxesTimeDisplayFormats
     /// Default value is <see langword="null" /> (the library uses <c>"HH:mm:ss.fff"</c>).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the format of millisecond ticks.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1931,7 +1931,7 @@ public class ChartAxesTimeDisplayFormats
     /// Default value is <see langword="null" /> (the library uses <c>"t"</c>, the browser's short time).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the format of minute ticks.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1944,7 +1944,7 @@ public class ChartAxesTimeDisplayFormats
     /// Default value is <see langword="null" /> (the library uses <c>"MMM yyyy"</c>).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the format of month ticks.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1957,7 +1957,7 @@ public class ChartAxesTimeDisplayFormats
     /// Default value is <see langword="null" /> (the library uses <c>"MMM yyyy"</c>).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the format of quarter ticks.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1970,7 +1970,7 @@ public class ChartAxesTimeDisplayFormats
     /// Default value is <see langword="null" /> (the library uses <c>"T"</c>, the browser's long time).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the format of second ticks.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1983,7 +1983,7 @@ public class ChartAxesTimeDisplayFormats
     /// Default value is <see langword="null" /> (the library uses <c>"d MMM"</c>).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the format of week ticks.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -1996,7 +1996,7 @@ public class ChartAxesTimeDisplayFormats
     /// Default value is <see langword="null" /> (the library uses <c>"yyyy"</c>).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the format of year ticks.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -2095,7 +2095,7 @@ public class ChartAnimation
     /// Default value is <see langword="null" /> (Chart.js uses true).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether arcs animate their rotation on doughnut, pie and polar area charts.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -2108,7 +2108,7 @@ public class ChartAnimation
     /// Default value is <see langword="null" /> (Chart.js uses false for doughnut and pie, true for polar area).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether doughnut, pie and polar area charts grow from the center.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -2173,7 +2173,7 @@ public class ChartAnimation
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/animations.html#animation-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function Chart.js calls when an animation completes, as (animation) => void.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -2188,7 +2188,7 @@ public class ChartAnimation
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/animations.html#animation-callbacks" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function Chart.js calls on each step of an animation, as (animation) => void.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

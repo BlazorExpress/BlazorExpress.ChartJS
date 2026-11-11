@@ -3,7 +3,7 @@ using BlazorExpress.ChartJS.Tests.Infrastructure;
 namespace BlazorExpress.ChartJS.Tests.Serialization;
 
 /// <summary>
-/// Locks the JSON of the options added in 1.3.0: each new property is sent under its Chart.js name when set, and left out when unset.
+/// Locks the JSON of the options added in 2.0.0: each new property is sent under its Chart.js name when set, and left out when unset.
 /// </summary>
 public class OptionsCoverageJsonTests
 {

@@ -16,7 +16,7 @@ public class ChartPluginsFiller
     /// Default value is <see langword="null" /> (Chart.js uses "beforeDatasetDraw").
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets when the fill is drawn: \"beforeDraw\", \"beforeDatasetDraw\" or \"beforeDatasetsDraw\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -29,7 +29,7 @@ public class ChartPluginsFiller
     /// Default value is <see langword="null" /> (Chart.js uses true).
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets a value indicating whether a fill whose target dataset is hidden propagates to the next visible target.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

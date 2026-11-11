@@ -15,7 +15,7 @@
 Get started any way you want
 
 - Clone the repo: `git clone https://github.com/BlazorExpress/BlazorExpress.ChartJS`
-- Install with [NuGet](https://www.nuget.org/): `Install-Package BlazorExpress.ChartJS -Version 1.2.4`
+- Install with [NuGet](https://www.nuget.org/): `Install-Package BlazorExpress.ChartJS -Version 2.0.0`
 
 ## Online Demos
 
@@ -25,7 +25,7 @@ Get started any way you want
 
 | BlazorExpress.ChartJS | .NET | Chart.js | chartjs-plugin-datalabels |
 |:--|:--|:--|:--|
-| 1.3.0+ | 8, 9, 10 | 4.6.1 | 2.2.0 |
+| 2.0.0+ | 8, 9, 10 | 4.6.1 | 2.2.0 |
 | 1.2.2+ | 8, 9, 10 | 4.4.1 | 2.2.0 |
 | 1.1.0+ | 8 | 4.4.1 | 2.2.0 |
 | 1.0.0 | 8 | 4.0.1 | 2.2.0 |

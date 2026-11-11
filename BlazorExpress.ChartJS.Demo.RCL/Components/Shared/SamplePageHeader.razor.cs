@@ -30,7 +30,7 @@ public partial class SamplePageHeader : ComponentBase
 
     #region Private Methods
 
-    // Before 1.3.0 every sample was a section of the chart page, reached by an anchor (/demos/line-chart#gradient-fill).
+    // Before 2.0.0 every sample was a section of the chart page, reached by an anchor (/demos/line-chart#gradient-fill).
     // An anchor that names a sample opens that sample's page and replaces the history entry; any other anchor is left alone.
     private void RedirectOldAnchor()
     {

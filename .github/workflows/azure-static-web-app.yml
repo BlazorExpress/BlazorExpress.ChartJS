@@ -1,9 +1,6 @@
 name: Azure Static WebApp (Blazor WebAssembly)
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
@@ -18,7 +15,9 @@ on:
 
 jobs:
   build_and_deploy_job:
-    if: ${{ inputs.prod_release }} || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    # Production only from a manual run with prod_release ticked; open pull requests deploy previews.
+    # Keep the whole condition inside one ${{ }}: text outside it turns the condition into an always-true string.
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.prod_release) || (github.event_name == 'pull_request' && github.event.action != 'closed') }}
     runs-on: ubuntu-latest
     env:
       DOTNET_VERSION: "net9.0"

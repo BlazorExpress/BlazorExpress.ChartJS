@@ -18,7 +18,7 @@ public partial class SamplesGallery : ComponentBase
     private const string TagParameter = "tag";
 
     private static readonly IReadOnlyList<SampleCategory> categories = Enum.GetValues<SampleCategory>();
-    private static readonly IReadOnlyList<string> tags = SampleCatalog.All.SelectMany(s => s.Tags).Append(SampleInfo.NewIn130Tag).Distinct().Order().ToList();
+    private static readonly IReadOnlyList<string> tags = SampleCatalog.All.SelectMany(s => s.Tags).Append(SampleInfo.NewIn200Tag).Distinct().Order().ToList();
 
     private List<SampleInfo> shownSamples = new();
     private List<UnavailableSample> shownUnavailable = new();
@@ -65,7 +65,7 @@ public partial class SamplesGallery : ComponentBase
         || Contains(sample.Category.GetDisplayName(), term)
         || Contains(SampleCatalog.GetChart(sample.ChartKey)?.Name ?? string.Empty, term)
         || sample.Tags.Any(tag => Contains(tag, term))
-        || (sample.IsNewIn130 && Contains(SampleInfo.NewIn130Tag, term));
+        || (sample.IsNewIn200 && Contains(SampleInfo.NewIn200Tag, term));
 
     private void OnSearchInput(ChangeEventArgs e) => SetFilter(QueryParameter, e.Value);
 

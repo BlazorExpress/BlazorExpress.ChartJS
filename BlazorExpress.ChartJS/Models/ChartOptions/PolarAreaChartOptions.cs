@@ -16,7 +16,7 @@ public class PolarAreaChartOptions : ChartOptions
     /// Default value is a new <see cref="Interaction" /> instance.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue("new()")]
     [Description("Gets or sets the interaction options of the polar area chart, which also apply to hover and tooltips unless they set their own.")]
     public Interaction Interaction { get; set; } = new();
@@ -27,7 +27,7 @@ public class PolarAreaChartOptions : ChartOptions
     /// Default value is a new <see cref="ChartLayout" /> instance.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue("new()")]
     [Description("Gets or sets the layout options of the polar area chart.")]
     [ParameterTypeName("ChartLayout")]
@@ -54,7 +54,7 @@ public class PolarAreaChartOptions : ChartOptions
     /// Default value is a new <see cref="RadialScales" /> instance.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue("new()")]
     [Description("Gets or sets the radial scale of the polar area chart, sent as scales.r.")]
     [ParameterTypeName("RadialScales")]

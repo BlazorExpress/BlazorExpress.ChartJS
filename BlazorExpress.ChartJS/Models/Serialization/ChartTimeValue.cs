@@ -43,7 +43,7 @@ public sealed class ChartTimeValue : IEquatable<ChartTimeValue>
     /// </summary>
     /// <param name="left">The first value.</param>
     /// <param name="right">The second value.</param>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Determines whether two values are the same date or time.")]
     public static bool operator ==(ChartTimeValue? left, ChartTimeValue? right) => Equals(left, right);
 
@@ -51,7 +51,7 @@ public sealed class ChartTimeValue : IEquatable<ChartTimeValue>
     /// Creates a wall-clock date, shown as the same calendar date in every browser time zone.
     /// </summary>
     /// <param name="date">The date.</param>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Creates a wall-clock date, shown as the same calendar date in every browser time zone.")]
     public static implicit operator ChartTimeValue(DateOnly date) => new(date.ToString(DateFormat, CultureInfo.InvariantCulture));
 
@@ -60,7 +60,7 @@ public sealed class ChartTimeValue : IEquatable<ChartTimeValue>
     /// <see cref="DateTimeKind.Utc" /> or <see cref="DateTimeKind.Local" /> value.
     /// </summary>
     /// <param name="dateTime">The date and time.</param>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Creates a wall-clock time from an Unspecified value, or an exact instant from a Utc or Local value.")]
     public static implicit operator ChartTimeValue(DateTime dateTime) =>
         dateTime.Kind == DateTimeKind.Unspecified
@@ -71,7 +71,7 @@ public sealed class ChartTimeValue : IEquatable<ChartTimeValue>
     /// Creates an exact instant, shown in the browser's local time.
     /// </summary>
     /// <param name="dateTimeOffset">The date, time and offset.</param>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Creates an exact instant, shown in the browser's local time.")]
     public static implicit operator ChartTimeValue(DateTimeOffset dateTimeOffset) =>
         new(dateTimeOffset.UtcDateTime.ToString(InstantFormat, CultureInfo.InvariantCulture));
@@ -81,7 +81,7 @@ public sealed class ChartTimeValue : IEquatable<ChartTimeValue>
     /// </summary>
     /// <param name="left">The first value.</param>
     /// <param name="right">The second value.</param>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Determines whether two values are different dates or times.")]
     public static bool operator !=(ChartTimeValue? left, ChartTimeValue? right) => !Equals(left, right);
 

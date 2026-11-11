@@ -192,7 +192,7 @@ public partial class BubbleChart : ChartComponentBase
     /// <param name="mode">The Chart.js update mode.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentException">An additional axis in <see cref="Scales.AdditionalAxes" /> has an empty ID, or uses the ID <c>x</c> or <c>y</c> while <see cref="Scales.X" /> or <see cref="Scales.Y" /> is set. Thrown before anything is sent to the browser.</exception>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously updates the chart with the specified data and options, using a Chart.js update mode.")]
     [MethodReturnTypeName(nameof(Task))]
     public override async Task UpdateAsync(ChartData chartData, IChartOptions chartOptions, ChartUpdateMode mode)

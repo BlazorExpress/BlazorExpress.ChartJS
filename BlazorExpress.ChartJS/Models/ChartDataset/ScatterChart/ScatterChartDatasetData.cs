@@ -13,7 +13,7 @@ public record ScatterChartDatasetData : ChartDatasetData
     /// <param name="datasetLabel">The label of the dataset the point is added to.</param>
     /// <param name="x">The date: a <see cref="DateOnly" />, <see cref="DateTime" /> or <see cref="DateTimeOffset" />.</param>
     /// <param name="y">The value, or <see langword="null" /> for a gap.</param>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Creates a point at a date, for AddDataAsync on a dataset that uses TimeData.")]
     public ScatterChartDatasetData(string? datasetLabel, ChartTimeValue x, double? y) : base(datasetLabel, new ChartTimePoint(x, y)) { }
 

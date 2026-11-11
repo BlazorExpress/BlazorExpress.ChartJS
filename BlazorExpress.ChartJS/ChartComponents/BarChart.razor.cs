@@ -138,37 +138,6 @@ public partial class BarChart : ChartComponentBase
     }
 
     /// <summary>
-    /// Asynchronously adds a date to <see cref="ChartData.TimeLabels" /> with one value for the matching dataset,
-    /// for example <c>AddDataAsync(chartData, new DateOnly(2026, 3, 1), new BarChartDatasetData("Orders", 30))</c>.
-    /// </summary>
-    /// <param name="chartData">The chart data to which the date and value are added.</param>
-    /// <param name="dataLabel">The date: a <see cref="DateOnly" />, <see cref="DateTime" /> or <see cref="DateTimeOffset" />.</param>
-    /// <param name="data">The value for the dataset named in it.</param>
-    /// <returns>A task representing the asynchronous operation, with a result of the updated <see cref="ChartData"/>.</returns>
-    /// <exception cref="ArgumentException"><see cref="ChartData.TimeLabels" /> is <see langword="null" />.</exception>
-    [AddedVersion("1.3.0")]
-    [Description("Asynchronously adds a date to ChartData.TimeLabels with one value for the matching dataset.")]
-    [MethodReturnTypeName($"Task<{nameof(ChartData)}>")]
-    public override async Task<ChartData> AddDataAsync(ChartData chartData, ChartTimeValue dataLabel, IChartDatasetData data) =>
-        await AddTimeLabelDataAsync(chartData, dataLabel, data, BarChartInterop.AddDatasetData);
-
-    /// <summary>
-    /// Asynchronously adds a date to <see cref="ChartData.TimeLabels" /> with one value for each dataset,
-    /// for example <c>AddDataAsync(chartData, new DateOnly(2026, 3, 1), [new BarChartDatasetData("Orders", 30), new BarChartDatasetData("Returns", 2)])</c>.
-    /// </summary>
-    /// <param name="chartData">The chart data to which the date and values are added.</param>
-    /// <param name="dataLabel">The date: a <see cref="DateOnly" />, <see cref="DateTime" /> or <see cref="DateTimeOffset" />.</param>
-    /// <param name="data">One value per dataset.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains the updated chart data.</returns>
-    /// <exception cref="ArgumentException"><see cref="ChartData.TimeLabels" /> is <see langword="null" />, <paramref name="data" /> is empty, or the date already exists.</exception>
-    /// <exception cref="InvalidDataException">The dataset count and the value count differ.</exception>
-    [AddedVersion("1.3.0")]
-    [Description("Asynchronously adds a date to ChartData.TimeLabels with one value for each dataset.")]
-    [MethodReturnTypeName($"Task<{nameof(ChartData)}>")]
-    public override async Task<ChartData> AddDataAsync(ChartData chartData, ChartTimeValue dataLabel, IReadOnlyCollection<IChartDatasetData> data) =>
-        await AddTimeLabelDataAsync(chartData, dataLabel, data, BarChartInterop.AddDatasetsData);
-
-    /// <summary>
     /// Asynchronously adds a dataset to the specified chart data.
     /// </summary>
     /// <param name="chartData">The chart data to which the dataset will be added.</param>
@@ -198,6 +167,37 @@ public partial class BarChart : ChartComponentBase
 
         return chartData;
     }
+
+    /// <summary>
+    /// Asynchronously adds a date to <see cref="ChartData.TimeLabels" /> with one value for the matching dataset,
+    /// for example <c>AddTimeDataAsync(chartData, new DateOnly(2026, 3, 1), new BarChartDatasetData("Orders", 30))</c>.
+    /// </summary>
+    /// <param name="chartData">The chart data to which the date and value are added.</param>
+    /// <param name="dataLabel">The date: a <see cref="DateOnly" />, <see cref="DateTime" /> or <see cref="DateTimeOffset" />.</param>
+    /// <param name="data">The value for the dataset named in it.</param>
+    /// <returns>A task representing the asynchronous operation, with a result of the updated <see cref="ChartData"/>.</returns>
+    /// <exception cref="ArgumentException"><see cref="ChartData.TimeLabels" /> is <see langword="null" />.</exception>
+    [AddedVersion("2.0.0")]
+    [Description("Asynchronously adds a date to ChartData.TimeLabels with one value for the matching dataset.")]
+    [MethodReturnTypeName($"Task<{nameof(ChartData)}>")]
+    public override async Task<ChartData> AddTimeDataAsync(ChartData chartData, ChartTimeValue dataLabel, IChartDatasetData data) =>
+        await AddTimeLabelDataAsync(chartData, dataLabel, data, BarChartInterop.AddDatasetData);
+
+    /// <summary>
+    /// Asynchronously adds a date to <see cref="ChartData.TimeLabels" /> with one value for each dataset,
+    /// for example <c>AddTimeDataAsync(chartData, new DateOnly(2026, 3, 1), [new BarChartDatasetData("Orders", 30), new BarChartDatasetData("Returns", 2)])</c>.
+    /// </summary>
+    /// <param name="chartData">The chart data to which the date and values are added.</param>
+    /// <param name="dataLabel">The date: a <see cref="DateOnly" />, <see cref="DateTime" /> or <see cref="DateTimeOffset" />.</param>
+    /// <param name="data">One value per dataset.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the updated chart data.</returns>
+    /// <exception cref="ArgumentException"><see cref="ChartData.TimeLabels" /> is <see langword="null" />, <paramref name="data" /> is empty, or the date already exists.</exception>
+    /// <exception cref="InvalidDataException">The dataset count and the value count differ.</exception>
+    [AddedVersion("2.0.0")]
+    [Description("Asynchronously adds a date to ChartData.TimeLabels with one value for each dataset.")]
+    [MethodReturnTypeName($"Task<{nameof(ChartData)}>")]
+    public override async Task<ChartData> AddTimeDataAsync(ChartData chartData, ChartTimeValue dataLabel, IReadOnlyCollection<IChartDatasetData> data) =>
+        await AddTimeLabelDataAsync(chartData, dataLabel, data, BarChartInterop.AddDatasetsData);
 
     /// <summary>
     /// Asynchronously initializes the chart with the specified data and options.
@@ -249,7 +249,7 @@ public partial class BarChart : ChartComponentBase
     /// <param name="mode">The Chart.js update mode.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentException">An additional axis in <see cref="Scales.AdditionalAxes" /> has an empty ID, or uses the ID <c>x</c> or <c>y</c> while <see cref="Scales.X" /> or <see cref="Scales.Y" /> is set. Thrown before anything is sent to the browser.</exception>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously updates the chart with the specified data and options, using a Chart.js update mode.")]
     [MethodReturnTypeName(nameof(Task))]
     public override async Task UpdateAsync(ChartData chartData, IChartOptions chartOptions, ChartUpdateMode mode)

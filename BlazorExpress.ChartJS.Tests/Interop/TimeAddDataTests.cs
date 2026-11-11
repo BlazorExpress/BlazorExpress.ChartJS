@@ -21,7 +21,7 @@ public class TimeAddDataTests : BunitContext
         var coffee = new LineChartDataset { Label = "Coffee", Data = [12] };
         var chartData = new ChartData { TimeLabels = [new DateOnly(2026, 1, 1)], Datasets = [coffee] };
 
-        await chart.AddDataAsync(chartData, new DateOnly(2026, 1, 2), new LineChartDatasetData("Coffee", 15));
+        await chart.AddTimeDataAsync(chartData, new DateOnly(2026, 1, 2), new LineChartDatasetData("Coffee", 15));
 
         Assert.Equal([new DateOnly(2026, 1, 1), new DateOnly(2026, 1, 2)], chartData.TimeLabels.Select(Unwrap));
         Assert.Equal([12d, 15d], coffee.Data!.Select(v => v!.Value));
@@ -39,7 +39,7 @@ public class TimeAddDataTests : BunitContext
         var returns = new BarChartDataset { Label = "Returns", Data = [1] };
         var chartData = new ChartData { TimeLabels = [new DateOnly(2026, 1, 1)], Datasets = [orders, returns] };
 
-        await chart.AddDataAsync(chartData, new DateTime(2026, 1, 2, 0, 0, 0, DateTimeKind.Utc),
+        await chart.AddTimeDataAsync(chartData, new DateTime(2026, 1, 2, 0, 0, 0, DateTimeKind.Utc),
             new List<IChartDatasetData> { new BarChartDatasetData("Orders", 4), new BarChartDatasetData("Returns", 2) });
 
         Assert.Equal(2, chartData.TimeLabels.Count);
@@ -57,7 +57,7 @@ public class TimeAddDataTests : BunitContext
         var coffee = new LineChartDataset { Label = "Coffee", Data = [12] };
         var chartData = new ChartData { Labels = ["Jan"], Datasets = [coffee] };
 
-        await Assert.ThrowsAsync<ArgumentException>(() => chart.AddDataAsync(chartData, new DateOnly(2026, 1, 2), new LineChartDatasetData("Coffee", 15)));
+        await Assert.ThrowsAsync<ArgumentException>(() => chart.AddTimeDataAsync(chartData, new DateOnly(2026, 1, 2), new LineChartDatasetData("Coffee", 15)));
 
         Assert.Equal([12d], coffee.Data!.Select(v => v!.Value));
         Assert.Empty(JSInterop.Invocations);
@@ -71,8 +71,8 @@ public class TimeAddDataTests : BunitContext
         var coffee = new LineChartDataset { Label = "Coffee", Data = [12] };
         var chartData = new ChartData { TimeLabels = [new DateOnly(2026, 1, 1)], Datasets = [coffee] };
 
-        await Assert.ThrowsAsync<ArgumentException>(() => chart.AddDataAsync(chartData, new DateOnly(2026, 1, 1), new List<IChartDatasetData> { new LineChartDatasetData("Coffee", 15) }));
-        await Assert.ThrowsAsync<ArgumentException>(() => chart.AddDataAsync(chartData, new DateOnly(2026, 1, 3), new List<IChartDatasetData>()));
+        await Assert.ThrowsAsync<ArgumentException>(() => chart.AddTimeDataAsync(chartData, new DateOnly(2026, 1, 1), new List<IChartDatasetData> { new LineChartDatasetData("Coffee", 15) }));
+        await Assert.ThrowsAsync<ArgumentException>(() => chart.AddTimeDataAsync(chartData, new DateOnly(2026, 1, 3), new List<IChartDatasetData>()));
 
         Assert.Single(chartData.TimeLabels);
         Assert.Empty(JSInterop.Invocations);
@@ -89,7 +89,7 @@ public class TimeAddDataTests : BunitContext
             Datasets = [new BarChartDataset { Label = "Orders", Data = [3] }, new BarChartDataset { Label = "Returns", Data = [1] }]
         };
 
-        await Assert.ThrowsAsync<InvalidDataException>(() => chart.AddDataAsync(chartData, new DateOnly(2026, 1, 2), new List<IChartDatasetData> { new BarChartDatasetData("Orders", 4) }));
+        await Assert.ThrowsAsync<InvalidDataException>(() => chart.AddTimeDataAsync(chartData, new DateOnly(2026, 1, 2), new List<IChartDatasetData> { new BarChartDatasetData("Orders", 4) }));
         Assert.Empty(JSInterop.Invocations);
     }
 
@@ -100,7 +100,7 @@ public class TimeAddDataTests : BunitContext
         var chart = Render<PieChart>().Instance;
         var chartData = new ChartData { TimeLabels = [], Datasets = [] };
 
-        var result = await chart.AddDataAsync(chartData, new DateOnly(2026, 1, 2), new PieChartDatasetData("A", 1, "red"));
+        var result = await chart.AddTimeDataAsync(chartData, new DateOnly(2026, 1, 2), new PieChartDatasetData("A", 1, "red"));
 
         Assert.Same(chartData, result);
         Assert.Empty(chartData.TimeLabels);

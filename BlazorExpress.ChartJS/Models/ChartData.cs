@@ -53,7 +53,7 @@ public class ChartData
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/axes/cartesian/time.html" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the dates of a time or timeseries x-axis, shared by every dataset. When set, it is sent instead of Labels.")]
     [JsonIgnore]

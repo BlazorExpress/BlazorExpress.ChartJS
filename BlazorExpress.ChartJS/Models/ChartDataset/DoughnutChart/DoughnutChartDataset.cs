@@ -33,7 +33,7 @@ public class DoughnutChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the background color, as the scriptable option (context) => color. When set, it is sent instead of BackgroundColor.")]
     [JsonIgnore]
@@ -88,7 +88,7 @@ public class DoughnutChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the border color, as the scriptable option (context) => color. When set, it is sent instead of BorderColor.")]
     [JsonIgnore]
@@ -224,7 +224,7 @@ public class DoughnutChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the background color when hovered, as the scriptable option (context) => color. When set, it is sent instead of HoverBackgroundColor.")]
     [JsonIgnore]
@@ -263,7 +263,7 @@ public class DoughnutChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the border color when hovered, as the scriptable option (context) => color. When set, it is sent instead of HoverBorderColor.")]
     [JsonIgnore]
@@ -389,7 +389,7 @@ public class DoughnutChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/doughnut.html" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("How the spacing between arcs is measured: \"angular\", \"proportional\" or \"parallel\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

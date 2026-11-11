@@ -48,7 +48,7 @@ public class BarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the background color, as the scriptable option (context) => color. When set, it is sent instead of BackgroundColor.")]
     [JsonIgnore]
@@ -98,7 +98,7 @@ public class BarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#general" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("The value the bars start from, in data units, instead of the axis zero line.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -130,7 +130,7 @@ public class BarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the border color, as the scriptable option (context) => color. When set, it is sent instead of BorderColor.")]
     [JsonIgnore]
@@ -166,7 +166,7 @@ public class BarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#borderradius" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("The bar border radius per corner, in pixels, applied to every bar. When set, it is sent instead of BorderRadius.")]
     [JsonIgnore]
@@ -251,7 +251,7 @@ public class BarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/samples/bar/floating.html" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("The bar values when some or all bars are floating: each item is a number, a (start, end) range drawn as a floating bar, or null. When set, it is sent instead of Data.")]
     [JsonIgnore]
@@ -296,7 +296,7 @@ public class BarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the background color when hovered, as the scriptable option (context) => color. When set, it is sent instead of HoverBackgroundColor.")]
     [JsonIgnore]
@@ -336,7 +336,7 @@ public class BarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/general/options.html#scriptable-options" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the registered JavaScript function that returns the border color when hovered, as the scriptable option (context) => color. When set, it is sent instead of HoverBorderColor.")]
     [JsonIgnore]
@@ -371,7 +371,7 @@ public class BarChartDataset : ChartDataset<double?>
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("The bar border radius per corner when hovered, in pixels. When set, it is sent instead of HoverBorderRadius.")]
     [JsonIgnore]
@@ -420,7 +420,7 @@ public class BarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/charts/bar.html#inflateamount" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("How many pixels each bar is inflated by when drawn, to avoid visible gaps between bars: a number, or \"auto\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -462,7 +462,7 @@ public class BarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/elements.html#point-styles" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("The point style drawn for this dataset in the legend when the legend uses point styles, for example \"rectRounded\".")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -490,7 +490,7 @@ public class BarChartDataset : ChartDataset<double?>
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/axes/cartesian/time.html" />
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("The bar values of a time or timeseries x-axis, each at its own date. A null Y leaves a gap. When set, it is sent instead of FloatingData and Data.")]
     [JsonIgnore]

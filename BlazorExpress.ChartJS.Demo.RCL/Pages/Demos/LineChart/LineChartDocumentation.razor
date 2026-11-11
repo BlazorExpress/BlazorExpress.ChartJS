@@ -598,7 +598,7 @@
         <div class="content">
             <ol>
                 <li>For a reading, call <code>AddDataAsync(chartData, "Sensor", new LineChartDatasetData("Sensor", time, value))</code>. The label argument is the dataset's label, and the point is appended to its <code>TimeData</code>.</li>
-                <li>For a new day, call <code>AddDataAsync(chartData, new DateOnly(2026, 1, 6), new LineChartDatasetData("Daily sales", 24))</code>. The date is added to <code>ChartData.TimeLabels</code>.</li>
+                <li>For a new day, call <code>AddTimeDataAsync(chartData, new DateOnly(2026, 1, 6), new LineChartDatasetData("Daily sales", 24))</code>. The date is added to <code>ChartData.TimeLabels</code>.</li>
                 <li>Click the buttons to add data to each chart.</li>
             </ol>
         </div>

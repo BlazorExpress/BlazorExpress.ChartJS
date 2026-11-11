@@ -58,7 +58,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// </summary>
     /// <param name="disposing"><see langword="true" /> when called from <see cref="IAsyncDisposable.DisposeAsync" />.</param>
     /// <returns>A task that represents the asynchronous dispose operation.</returns>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Destroys the Chart.js instance once, then releases the .NET object reference and the base resources, even when the destroy call fails.")]
     protected override async ValueTask DisposeAsyncCore(bool disposing)
     {
@@ -86,7 +86,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// Sends changed event options (<see cref="LegendClickToggles" /> and which event callbacks are bound) to the rendered chart.
     /// </summary>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Sends changed event options to the rendered chart.")]
     protected override async Task OnParametersSetAsync()
     {
@@ -131,31 +131,6 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     public virtual async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data) => await Task.FromResult(chartData);
 
     /// <summary>
-    /// Asynchronously adds a date to <see cref="ChartData.TimeLabels" /> with one value for the matching dataset,
-    /// for example <c>AddDataAsync(chartData, new DateOnly(2026, 3, 1), new LineChartDatasetData("Coffee", 30))</c>.
-    /// Line and bar charts support it; other charts return <paramref name="chartData" /> unchanged.
-    /// </summary>
-    /// <param name="chartData">The chart data to which the date and value are added.</param>
-    /// <param name="dataLabel">The date: a <see cref="DateOnly" />, <see cref="DateTime" /> or <see cref="DateTimeOffset" />.</param>
-    /// <param name="data">The value for the dataset named in it.</param>
-    /// <returns>A task representing the asynchronous operation, with a result of the updated <see cref="ChartData"/>.</returns>
-    [AddedVersion("1.3.0")]
-    [Description("Asynchronously adds a date to ChartData.TimeLabels with one value for the matching dataset. Line and bar charts support it.")]
-    public virtual async Task<ChartData> AddDataAsync(ChartData chartData, ChartTimeValue dataLabel, IChartDatasetData data) => await Task.FromResult(chartData);
-
-    /// <summary>
-    /// Asynchronously adds a date to <see cref="ChartData.TimeLabels" /> with one value for each dataset.
-    /// Line and bar charts support it; other charts return <paramref name="chartData" /> unchanged.
-    /// </summary>
-    /// <param name="chartData">The chart data to which the date and values are added.</param>
-    /// <param name="dataLabel">The date: a <see cref="DateOnly" />, <see cref="DateTime" /> or <see cref="DateTimeOffset" />.</param>
-    /// <param name="data">One value per dataset.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains the updated chart data.</returns>
-    [AddedVersion("1.3.0")]
-    [Description("Asynchronously adds a date to ChartData.TimeLabels with one value for each dataset. Line and bar charts support it.")]
-    public virtual async Task<ChartData> AddDataAsync(ChartData chartData, ChartTimeValue dataLabel, IReadOnlyCollection<IChartDatasetData> data) => await Task.FromResult(chartData);
-
-    /// <summary>
     /// Asynchronously adds a dataset to the specified chart data.
     /// </summary>
     /// <param name="chartData">The chart data to which the dataset will be added.</param>
@@ -168,11 +143,36 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     public virtual async Task<ChartData> AddDatasetAsync(ChartData chartData, IChartDataset chartDataset, IChartOptions chartOptions) => await Task.FromResult(chartData);
 
     /// <summary>
+    /// Asynchronously adds a date to <see cref="ChartData.TimeLabels" /> with one value for the matching dataset,
+    /// for example <c>AddTimeDataAsync(chartData, new DateOnly(2026, 3, 1), new LineChartDatasetData("Coffee", 30))</c>.
+    /// Line and bar charts support it; other charts return <paramref name="chartData" /> unchanged.
+    /// </summary>
+    /// <param name="chartData">The chart data to which the date and value are added.</param>
+    /// <param name="dataLabel">The date: a <see cref="DateOnly" />, <see cref="DateTime" /> or <see cref="DateTimeOffset" />.</param>
+    /// <param name="data">The value for the dataset named in it.</param>
+    /// <returns>A task representing the asynchronous operation, with a result of the updated <see cref="ChartData"/>.</returns>
+    [AddedVersion("2.0.0")]
+    [Description("Asynchronously adds a date to ChartData.TimeLabels with one value for the matching dataset. Line and bar charts support it.")]
+    public virtual async Task<ChartData> AddTimeDataAsync(ChartData chartData, ChartTimeValue dataLabel, IChartDatasetData data) => await Task.FromResult(chartData);
+
+    /// <summary>
+    /// Asynchronously adds a date to <see cref="ChartData.TimeLabels" /> with one value for each dataset.
+    /// Line and bar charts support it; other charts return <paramref name="chartData" /> unchanged.
+    /// </summary>
+    /// <param name="chartData">The chart data to which the date and values are added.</param>
+    /// <param name="dataLabel">The date: a <see cref="DateOnly" />, <see cref="DateTime" /> or <see cref="DateTimeOffset" />.</param>
+    /// <param name="data">One value per dataset.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the updated chart data.</returns>
+    [AddedVersion("2.0.0")]
+    [Description("Asynchronously adds a date to ChartData.TimeLabels with one value for each dataset. Line and bar charts support it.")]
+    public virtual async Task<ChartData> AddTimeDataAsync(ChartData chartData, ChartTimeValue dataLabel, IReadOnlyCollection<IChartDatasetData> data) => await Task.FromResult(chartData);
+
+    /// <summary>
     /// Asynchronously clears the chart canvas (Chart.js <c>clear()</c>).
     /// </summary>
     /// <remarks>Does nothing when the chart is not rendered, is disposed, or the circuit is disconnected.</remarks>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously clears the chart canvas.")]
     [MethodReturnTypeName(nameof(Task))]
     public async Task ClearAsync()
@@ -191,7 +191,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// <param name="quality">The image quality from 0 to 1 for <see cref="ChartImageType.Jpeg" /> and <see cref="ChartImageType.Webp" />. Default is the browser's default.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="quality" /> is outside 0 to 1.</exception>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously downloads the chart as an image file in the browser.")]
     [MethodReturnTypeName(nameof(Task))]
     public async Task DownloadImageAsync(string? fileName = null, ChartImageType imageType = ChartImageType.Png, double? quality = null)
@@ -215,7 +215,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// or there is no chart (not rendered, disposed, or the circuit is disconnected).
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="index" /> is negative.</exception>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously gets whether the data item at the index is visible.")]
     [MethodReturnTypeName("Task<bool>")]
     public async Task<bool> GetDataVisibilityAsync(int index)
@@ -229,7 +229,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// Asynchronously gets the number of visible datasets (Chart.js <c>getVisibleDatasetCount</c>).
     /// </summary>
     /// <returns>The number of visible datasets, or 0 when there is no chart (not rendered, disposed, or the circuit is disconnected).</returns>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously gets the number of visible datasets.")]
     [MethodReturnTypeName("Task<int>")]
     public async Task<int> GetVisibleDatasetCountAsync() => await SafeInvokeAsync(ChartInterop.GetVisibleDatasetCount, 0, Id);
@@ -254,7 +254,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// <param name="eventArgs">The hovered data-item metadata, sent by the browser.</param>
     /// <returns>A task that represents the asynchronous callback dispatch operation.</returns>
     [JSInvokable]
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Dispatches a change of the hovered chart item to the configured callback.")]
     public async Task HandleHoverAsync(ChartHoverEventArgs eventArgs)
     {
@@ -268,7 +268,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// <param name="eventArgs">The clicked legend-item metadata, sent by the browser.</param>
     /// <returns>A task that represents the asynchronous callback dispatch operation.</returns>
     [JSInvokable]
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Dispatches a legend-item click to the configured callback.")]
     public async Task HandleLegendClickAsync(ChartLegendClickEventArgs eventArgs)
     {
@@ -283,7 +283,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// <param name="datasetIndex">The dataset index.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="datasetIndex" /> is negative.</exception>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously hides a dataset.")]
     [MethodReturnTypeName(nameof(Task))]
     public async Task HideAsync(int datasetIndex) => await SetVisibilityAsync(ChartInterop.Hide, datasetIndex, null);
@@ -298,7 +298,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// <param name="dataIndex">The data index within the dataset.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="datasetIndex" /> or <paramref name="dataIndex" /> is negative.</exception>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously hides one data item (a slice, bar or point).")]
     [MethodReturnTypeName(nameof(Task))]
     public async Task HideAsync(int datasetIndex, int dataIndex) => await SetVisibilityAsync(ChartInterop.Hide, datasetIndex, dataIndex);
@@ -337,7 +337,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// or there is no chart (not rendered, disposed, or the circuit is disconnected).
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="datasetIndex" /> is negative.</exception>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously gets whether a dataset is visible.")]
     [MethodReturnTypeName("Task<bool>")]
     public async Task<bool> IsDatasetVisibleAsync(int datasetIndex)
@@ -352,7 +352,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// </summary>
     /// <remarks>Does nothing when the chart is not rendered, is disposed, or the circuit is disconnected.</remarks>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously redraws all chart elements.")]
     [MethodReturnTypeName(nameof(Task))]
     public async Task RenderAsync()
@@ -369,7 +369,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// <remarks>Without a reset, an animated update animates matched datasets from their current values.
     /// Does nothing when the chart is not rendered, is disposed, or the circuit is disconnected.</remarks>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously resets the chart to its state before the initial animation.")]
     [MethodReturnTypeName(nameof(Task))]
     public async Task ResetAsync()
@@ -407,7 +407,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="elements" /> or one of its items is <see langword="null" />.</exception>
     /// <exception cref="ArgumentOutOfRangeException">An item has a negative index.</exception>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously highlights the given data items and shows their tooltip. An empty collection clears both.")]
     [MethodReturnTypeName(nameof(Task))]
     public async Task SetActiveElementsAsync(IEnumerable<ChartActiveElement> elements)
@@ -435,7 +435,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// <param name="visible"><see langword="true" /> to show the dataset; <see langword="false" /> to hide it.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="datasetIndex" /> is negative.</exception>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously shows or hides a dataset.")]
     [MethodReturnTypeName(nameof(Task))]
     public async Task SetDatasetVisibilityAsync(int datasetIndex, bool visible)
@@ -453,7 +453,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// <param name="datasetIndex">The dataset index.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="datasetIndex" /> is negative.</exception>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously shows a dataset.")]
     [MethodReturnTypeName(nameof(Task))]
     public async Task ShowAsync(int datasetIndex) => await SetVisibilityAsync(ChartInterop.Show, datasetIndex, null);
@@ -468,7 +468,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// <param name="dataIndex">The data index within the dataset.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="datasetIndex" /> or <paramref name="dataIndex" /> is negative.</exception>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously shows one data item (a slice, bar or point).")]
     [MethodReturnTypeName(nameof(Task))]
     public async Task ShowAsync(int datasetIndex, int dataIndex) => await SetVisibilityAsync(ChartInterop.Show, datasetIndex, dataIndex);
@@ -478,7 +478,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// </summary>
     /// <remarks>Does nothing when the chart is not rendered, is disposed, or the circuit is disconnected.</remarks>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously stops the current animation.")]
     [MethodReturnTypeName(nameof(Task))]
     public async Task StopAsync()
@@ -496,7 +496,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// <param name="quality">The image quality from 0 to 1 for <see cref="ChartImageType.Jpeg" /> and <see cref="ChartImageType.Webp" />. Default is the browser's default.</param>
     /// <returns>The data URL, or <see langword="null" /> when there is no chart (not rendered, disposed, or the circuit is disconnected).</returns>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="quality" /> is outside 0 to 1, or the image is larger than 64 MiB.</exception>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously exports the chart as a base64 data URL.")]
     [MethodReturnTypeName("Task<string?>")]
     public async Task<string?> ToBase64ImageAsync(ChartImageType imageType = ChartImageType.Png, double? quality = null)
@@ -541,7 +541,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// <param name="index">The data index.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="index" /> is negative.</exception>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously toggles the visibility of a data item (drawn on doughnut, pie and polar area charts).")]
     [MethodReturnTypeName(nameof(Task))]
     public async Task ToggleDataVisibilityAsync(int index)
@@ -582,7 +582,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// <param name="mode">The Chart.js update mode.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentException">An additional axis in <see cref="Scales.AdditionalAxes" /> has an empty ID, or uses the ID <c>x</c> or <c>y</c> while <see cref="Scales.X" /> or <see cref="Scales.Y" /> is set. Thrown before anything is sent to the browser.</exception>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Asynchronously updates the chart with the specified data and options, using a Chart.js update mode.")]
     [MethodReturnTypeName(nameof(Task))]
     public virtual async Task UpdateAsync(ChartData chartData, IChartOptions chartOptions, ChartUpdateMode mode)
@@ -718,7 +718,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// <param name="defaultValue">The value returned when the chart cannot answer.</param>
     /// <param name="args">The JSON-serializable arguments.</param>
     /// <returns>A task that represents the asynchronous invocation, with the function's result or <paramref name="defaultValue" />.</returns>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Invokes a JavaScript function that returns a value for this chart, returning a default value when there is no chart to ask.")]
     protected async Task<TValue> SafeInvokeAsync<TValue>(string identifier, TValue defaultValue, params object?[] args)
     {
@@ -748,7 +748,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// <param name="identifier">The JavaScript function to invoke.</param>
     /// <param name="args">The JSON-serializable arguments.</param>
     /// <returns>A task that represents the asynchronous invocation.</returns>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [Description("Invokes a JavaScript function for this chart, treating a disconnected circuit or a cancelled call during teardown as benign.")]
     protected async Task SafeInvokeVoidAsync(string identifier, params object?[] args)
     {
@@ -936,7 +936,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// Default value is <see langword="true" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(true)]
     [Description("Gets or sets a value indicating whether clicking a legend item toggles the visibility of its dataset or slice.")]
     [Parameter]
@@ -961,7 +961,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the callback that is invoked when the hovered chart data item changes, and once with no item when the pointer leaves all items.")]
     [Parameter]
@@ -974,7 +974,7 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
-    [AddedVersion("1.3.0")]
+    [AddedVersion("2.0.0")]
     [DefaultValue(null)]
     [Description("Gets or sets the callback that is invoked when a legend item is clicked, after any visibility toggle.")]
     [Parameter]
