@@ -1,0 +1,64 @@
+<LineChart @ref="lineChart" Width="600" />
+
+<div class="mt-3">
+    @foreach (var style in pointStyles)
+    {
+        <button type="button" class="button is-small mr-1 mb-1 @(style == current ? "is-primary" : null)" @onclick="() => SetPointStyleAsync(style)">@style</button>
+    }
+</div>
+
+<p class="mt-3 mb-0"><code>PointStyle = ["@current"]</code></p>
+
+@code {
+    private LineChart lineChart = default!;
+    private LineChartDataset dataset = default!;
+    private ChartData chartData = default!;
+    private readonly LineChartOptions options = new() { Responsive = true };
+    private string current = "circle";
+
+    // The point styles Chart.js draws without an image.
+    private readonly string[] pointStyles =
+    [
+        "circle", "cross", "crossRot", "dash", "line", "rect", "rectRounded", "rectRot", "star", "triangle",
+    ];
+
+    protected override void OnInitialized()
+    {
+        dataset = new LineChartDataset
+        {
+            Label = "Visitors",
+            Data = [12, 19, 14, 22, 17, 25],
+            BorderColor = "rgb(213, 94, 0)", // Okabe–Ito vermillion (colour-blind safe)
+            BackgroundColor = "rgba(213, 94, 0, 0.5)",
+            // One value styles every point; one value per point styles them individually.
+            PointStyle = [current],
+            PointRadius = [10],
+            PointHoverRadius = [15],
+            PointBorderWidth = [2],
+        };
+
+        chartData = new ChartData
+        {
+            Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            Datasets = [dataset],
+        };
+
+        // The legend can draw the same shape instead of a box.
+        options.Plugins.Legend.Labels = new ChartPluginsLegendLabels { UsePointStyle = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await lineChart.InitializeAsync(chartData, options);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task SetPointStyleAsync(string style)
+    {
+        current = style;
+        dataset.PointStyle = [style];
+        await lineChart.UpdateAsync(chartData, options);
+    }
+}

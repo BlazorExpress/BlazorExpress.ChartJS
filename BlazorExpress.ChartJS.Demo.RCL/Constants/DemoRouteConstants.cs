@@ -26,6 +26,12 @@ public static class DemoRouteConstants
     public const string Demos_RadarChart = Demos_Prefix + "/radar-chart";
     public const string Demos_ScatterChart = Demos_Prefix + "/scatter-chart";
 
+    // Samples gallery. Query: q (search), chart, category, tag.
+    public const string Demos_Samples = Demos_Prefix + "/samples";
+
+    // Unlisted: checks the sample catalog and opens every sample page in turn.
+    public const string Demos_SamplesSelfCheck = Demos_Prefix + "/samples-self-check";
+
     // Unlisted: checks JavaScript function references (ChartFunction) on live charts.
     public const string Demos_JsFunctionsSelfCheck = Demos_Prefix + "/js-functions-self-check";
 
@@ -61,6 +67,23 @@ public static class DemoRouteConstants
     // Utils
     public const string Docs_Utils_Prefix = Docs_Prefix + "/utils";
     public const string Docs_ColorUtils = Docs_Utils_Prefix + "/color-utility";
+
+    #endregion
+
+    #region Methods
+
+    #region Public Methods
+
+    /// <summary>The gallery URL, filtered to one category.</summary>
+    public static string GetSamplesCategoryUrl(SampleCategory category) => $"{Demos_Samples}?category={category.ToSlug()}";
+
+    /// <summary>The gallery URL, filtered to one tag.</summary>
+    public static string GetSamplesTagUrl(string tag) => $"{Demos_Samples}?tag={Uri.EscapeDataString(tag)}";
+
+    /// <summary>The sample page URL, for example <c>/demos/line-chart/gradient-fill</c>.</summary>
+    public static string GetSampleUrl(string chartKey, string slug) => $"{Demos_Prefix}/{chartKey}/{slug}";
+
+    #endregion
 
     #endregion
 }

@@ -1,0 +1,20 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+<div class="be-sample-thumb @(hasImage ? "has-image" : null)" @ref="container">
+    @* The script sets this image's source once the chart has been captured. *@
+    <img class="be-sample-thumb-image" alt="" />
+    <div class="be-sample-thumb-placeholder">@ChildContent</div>
+
+    @if (isCapturing)
+    {
+        @* Invisible but laid out, so the chart gets a real size. Never display: none. Removed after the capture, which disposes the chart. *@
+        <div class="be-sample-thumb-host" @ref="host" inert aria-hidden="true">
+            <ErrorBoundary>
+                <ChildContent>
+                    <DynamicComponent Type="Sample.DemoType" />
+                </ChildContent>
+                <ErrorContent></ErrorContent>
+            </ErrorBoundary>
+        </div>
+    }
+</div>

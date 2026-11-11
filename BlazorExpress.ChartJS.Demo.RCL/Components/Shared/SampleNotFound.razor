@@ -1,0 +1,21 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+<HeadContent>
+    <meta name="robots" content="noindex" />
+</HeadContent>
+
+<div class="notification is-warning is-light" role="status">
+    <p class="has-text-weight-semibold">Sample not found</p>
+    @* The slug comes from the URL; Razor writes it as text. *@
+    <p>The @(chart?.Name ?? "chart") page has no sample named “<span class="be-sample-not-found-slug">@Slug</span>”. Pick one of its samples below, or <a href="@DemoRouteConstants.Demos_Samples">search the gallery</a>.</p>
+</div>
+
+@if (chart is not null)
+{
+    <div class="be-sample-grid">
+        @foreach (var item in SampleCatalog.GetByChart(chart.Key))
+        {
+            <SampleCard Sample="item" />
+        }
+    </div>
+}

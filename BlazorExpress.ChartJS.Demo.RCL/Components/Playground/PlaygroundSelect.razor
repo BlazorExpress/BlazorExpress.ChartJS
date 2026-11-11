@@ -1,0 +1,13 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+<div class="be-playground-field">
+    <label for="@id">@Label</label>
+    <div class="select is-small is-fullwidth">
+        <select id="@id" value="@Value" @onchange="OnChangeAsync">
+            @foreach (var option in Options)
+            {
+                <option value="@option.Value">@option.Text</option>
+            }
+        </select>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="columns is-multiline">
+    <div class="column is-half">
+        <p class="has-text-weight-semibold mb-2">Fixed range: <code>Min = 10</code>, <code>Max = 50</code></p>
+        <LineChart @ref="fixedChart" />
+    </div>
+    <div class="column is-half">
+        <p class="has-text-weight-semibold mb-2">Suggested range: <code>SuggestedMin = -30</code>, <code>SuggestedMax = 40</code></p>
+        <LineChart @ref="suggestedChart" />
+    </div>
+</div>
+
+@code {
+    private LineChart fixedChart = default!;
+    private LineChart suggestedChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Min and Max always win: values outside 10 to 50 are cut off at the edge of the chart area.
+            var fixedOptions = new LineChartOptions { Responsive = true };
+            fixedOptions.Scales.Y!.Min = 10;
+            fixedOptions.Scales.Y!.Max = 50;
+
+            // SuggestedMin and SuggestedMax only widen the range. The axis starts at -30, below the lowest value (-10),
+            // and it still grows past the suggested 40 to show the highest value (50).
+            var suggestedOptions = new LineChartOptions { Responsive = true };
+            suggestedOptions.Scales.Y!.SuggestedMin = -30;
+            suggestedOptions.Scales.Y!.SuggestedMax = 40;
+
+            await fixedChart.InitializeAsync(GetChartData(), fixedOptions);
+            await suggestedChart.InitializeAsync(GetChartData(), suggestedOptions);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData GetChartData() =>
+        new()
+        {
+            Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+            Datasets =
+            [
+                new LineChartDataset
+                {
+                    Label = "Inside the range",
+                    Data = [18, 33, 22, 19, 11, 39, 30],
+                    BorderColor = "rgb(0, 114, 178)", // Okabe–Ito blue
+                    BackgroundColor = "rgb(0, 114, 178)",
+                },
+                new LineChartDataset
+                {
+                    Label = "Beyond the range",
+                    Data = [10, 30, 50, 20, 25, 44, -10],
+                    BorderColor = "rgb(213, 94, 0)", // Okabe–Ito vermillion
+                    BackgroundColor = "rgb(213, 94, 0)",
+                },
+            ]
+        };
+}

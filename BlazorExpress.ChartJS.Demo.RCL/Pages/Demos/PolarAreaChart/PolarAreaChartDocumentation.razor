@@ -1,19 +1,24 @@
 ﻿@attribute [Route(pageUrl)]
+@attribute [Route(pageUrl + "/{Sample}")]
 @layout DemosMainLayout
 
-<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+<SamplePageHeader ChartKey="@SampleChartKeys.PolarAreaChart" Sample="@Sample">
+    <PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
-<PageHero Title="@pageTitle">
-    <SubTitleTemplate>
-        @((MarkupString)pageDescription)
-    </SubTitleTemplate>
-</PageHero>
+    <PageHero Title="@pageTitle">
+        <SubTitleTemplate>
+            @((MarkupString)pageDescription)
+        </SubTitleTemplate>
+    </PageHero>
 
-<DocsLink Href="@DemoRouteConstants.Docs_PolarAreaChart" />
+    <DocsLink Href="@DemoRouteConstants.Docs_PolarAreaChart" />
 
-<Prerequisites PageUrl="@pageUrl" />
+    <Prerequisites PageUrl="@pageUrl" />
+</SamplePageHeader>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="How it works" PageUrl="@pageUrl" Link="how-it-works">
+@* Each SampleSection renders only on its own sample page, /demos/<chart>/<slug>. *@
+<CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.PolarAreaChart, Sample)">
+<SampleSection Slug="how-it-works">
     <Block>
         The <strong>Polar Area Chart</strong> component visualizes each data value as a segment with equal angles but varying radius, making it ideal for comparing values across categories in a circular layout.
         <br /><br />
@@ -31,16 +36,32 @@
         This demo demonstrates how to set up a Polar Area Chart, bind your data, and interactively update the chart to fit your application's needs.
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_01_Examples)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Click event" PageUrl="@pageUrl" Link="click-event">
+<SampleSection Slug="playground">
+    <Block>
+        Change the main options of a polar area chart and watch the chart and its C# update together. The controls cover start angle, border width, grid shape and tick labels, plus the legend, the locale and right-to-left layout.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Change a control. The chart is updated with <code>UpdateAsync</code>, so it animates from its current state.</li>
+                <li>Pick a <strong>Locale</strong> to see how numbers are formatted for that region, and switch on <strong>Right to left</strong> to mirror the legend and tooltip.</li>
+                <li>Copy the C# below the chart. It lists only the settings that differ from their defaults, with the property names the library uses.</li>
+            </ol>
+        </div>
+    </Block>
+    <PolarAreaChart_Playground />
+</SampleSection>
+
+<SampleSection Slug="click-event">
     <Block>
         Set the <code>OnClick</code> callback to react when a polar-area segment is selected. The callback receives <code>ChartClickEventArgs</code> with the dataset, item index, label, and raw value; the demo displays the selected item below the chart.
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_02_Click_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Export image" PageUrl="@pageUrl" Link="export-image">
+<SampleSection Slug="export-image">
     <Block>
         Export the chart as an image with <code>ToBase64ImageAsync</code>, which returns a base64 data URL you can show, store or send, or save it straight to a file in the browser with <code>DownloadImageAsync</code>.
         If the chart is still animating, both wait for the animation to finish, and the image is streamed from the browser, so Blazor Server needs no larger message size.
@@ -55,9 +76,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_03_Export_Image)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Show and hide slices" PageUrl="@pageUrl" Link="show-and-hide-slices">
+<SampleSection Slug="show-and-hide-slices">
     <Block>
         Show and hide single slices from C# and read whether a slice is visible.
         A hidden slice stays hidden when <code>UpdateAsync</code> refreshes the data, even if the slices are re-sorted, because slices are matched by label.
@@ -72,9 +93,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_04_Show_Hide_Slices)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Legend click event" PageUrl="@pageUrl" Link="legend-click-event">
+<SampleSection Slug="legend-click-event">
     <Block>
         Set <code>OnLegendClick</code> to react when a legend item is clicked. On this chart each legend item is a slice, so the callback receives <code>ChartLegendClickEventArgs</code> with the slice <code>Index</code>, the legend text and whether the slice is hidden after the click.
         Set <code>LegendClickToggles="false"</code> to stop the legend from hiding slices, for example to open details instead.
@@ -89,9 +110,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_05_Legend_Click_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Hover event" PageUrl="@pageUrl" Link="hover-event">
+<SampleSection Slug="hover-event">
     <Block>
         Set <code>OnHover</code> to react when the pointer moves onto a different slice. The callback receives <code>ChartHoverEventArgs</code> with the same item details as <code>OnClick</code>.
         It is called only when the hovered slice changes, and once with a <code>null</code> <code>DatasetIndex</code> when the pointer leaves all slices, so it does not flood Blazor Server with calls.
@@ -105,9 +126,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_06_Hover_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Programmatic highlight" PageUrl="@pageUrl" Link="programmatic-highlight">
+<SampleSection Slug="programmatic-highlight">
     <Block>
         Highlight slices and show their tooltip from C# with <code>SetActiveElementsAsync</code>, for example to point at a value from a table next to the chart.
         <br /><br />
@@ -120,9 +141,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_07_Programmatic_Highlight)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Update modes and animation control" PageUrl="@pageUrl" Link="update-modes-and-animation-control">
+<SampleSection Slug="update-modes-and-animation-control">
     <Block>
         Choose how <code>UpdateAsync</code> animates with <code>ChartUpdateMode</code>, and control the running animation with <code>StopAsync</code>, <code>RenderAsync</code>, <code>ResetAsync</code> and <code>ClearAsync</code>.
         These map one-to-one to the Chart.js <code>update(mode)</code>, <code>stop()</code>, <code>render()</code>, <code>reset()</code> and <code>clear()</code> methods.
@@ -138,9 +159,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_08_Update_Modes)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Radial scale" PageUrl="@pageUrl" Link="radial-scale">
+<SampleSection Slug="radial-scale">
     <Block>
         The polar area chart sizes each slice on one radial axis, <code>Scales.R</code>, sent to Chart.js as <code>scales.r</code>. The axis starts at zero by default (<code>BeginAtZero = true</code>), as in Chart.js, and its rings are round.
         <br /><br />
@@ -155,9 +176,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_09_Radial_Scale)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Angle lines and point labels" PageUrl="@pageUrl" Link="angle-lines-and-point-labels">
+<SampleSection Slug="angle-lines-and-point-labels">
     <Block>
         Angle lines run from the center outwards between the slices, and point labels name each slice at the edge of the chart. Chart.js hides both on polar area charts by default, so turn them on with <code>Display = true</code>.
         <br /><br />
@@ -171,9 +192,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_10_Angle_Lines_And_Point_Labels)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Start angle" PageUrl="@pageUrl" Link="start-angle">
+<SampleSection Slug="start-angle">
     <Block>
         <code>Scales.R.StartAngle</code> rotates the slices, in degrees clockwise from the top. Chart.js uses 0, which starts the first slice at the top.
         <br /><br />
@@ -187,9 +208,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_11_Start_Angle)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Spacing mode" PageUrl="@pageUrl" Link="spacing-mode">
+<SampleSection Slug="spacing-mode">
     <Block>
         <code>SpacingMode</code> sets how Chart.js measures the gap between slices: <code>"angular"</code> keeps an equal angle, <code>"proportional"</code> (the Chart.js default for polar area) scales the gap with each slice, and <code>"parallel"</code> keeps the edges of neighbouring slices parallel.
         The gap itself is set by <code>Spacing</code>, in pixels; without it there is nothing to measure.
@@ -205,9 +226,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_12_Spacing_Mode)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Title and subtitle" PageUrl="@pageUrl" Link="title-and-subtitle">
+<SampleSection Slug="title-and-subtitle">
     <Block>
         The title and subtitle plugins draw text around the chart area. Chart.js hides both by default; in this library the title and subtitle color defaults to <code>"black"</code>.
         <br /><br />
@@ -222,9 +243,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_13_Title_And_Subtitle)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Tooltip options" PageUrl="@pageUrl" Link="tooltip-options">
+<SampleSection Slug="tooltip-options">
     <Block>
         Tooltip options decide which slices a tooltip lists, where it opens and how it looks. Values left <code>null</code> use the chart's <code>Interaction</code> options and the Chart.js defaults.
         <br /><br />
@@ -239,9 +260,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_14_Tooltip_Options)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Layout padding" PageUrl="@pageUrl" Link="layout-padding">
+<SampleSection Slug="layout-padding">
     <Block>
         Layout padding adds space between the canvas edge and the chart, legend and title. Chart.js uses no padding by default; the dashed border in the demo shows the canvas edge.
         <br /><br />
@@ -255,9 +276,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_15_Layout_Padding)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Aspect ratio and resize delay" PageUrl="@pageUrl" Link="aspect-ratio-and-resize-delay">
+<SampleSection Slug="aspect-ratio-and-resize-delay">
     <Block>
         A responsive chart keeps its width-to-height ratio while <code>MaintainAspectRatio</code> is <code>true</code>; Chart.js uses a ratio of 1 for polar area charts. <code>ResizeDelay</code> waits the given milliseconds after the last resize before redrawing, so dragging the window edge causes one redraw instead of many; resize the window to see it.
         <br /><br />
@@ -271,9 +292,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_16_Aspect_Ratio_And_Resize_Delay)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Hover and elements" PageUrl="@pageUrl" Link="hover-and-elements">
+<SampleSection Slug="hover-and-elements">
     <Block>
         <code>Elements</code> sets default styles for every arc the chart draws, and <code>Hover</code> decides which slices are highlighted under the pointer, separately from <code>Interaction</code>, which the tooltip keeps using.
         Values set on the dataset win over <code>Elements</code>; polar area datasets always send <code>Circular = true</code>, so set <code>Circular</code> on the dataset.
@@ -289,9 +310,9 @@
         </div>
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_17_Hover_And_Elements)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Colors plugin" PageUrl="@pageUrl" Link="colors-plugin">
+<SampleSection Slug="colors-plugin">
     <Block>
         The Chart.js colors plugin gives datasets that set no colors a color from its built-in palette; on polar area charts it colors each slice. Polar area datasets send no color unless you set one, so the palette applies without <code>ForceOverride</code>. Line, radar and scatter datasets do send a default color, so there the palette needs <code>ForceOverride = true</code>.
         <br /><br />
@@ -305,9 +326,15 @@
         </div>
     </Block>
     <Demo Type="typeof(PolarAreaChart_Demo_18_Colors_Plugin)" Tabs="true" />
-</Section>
+</SampleSection>
+</CascadingValue>
+
+<SamplePageFooter ChartKey="@SampleChartKeys.PolarAreaChart" Sample="@Sample" />
 
 @code {
+    /// <summary>The sample slug from the URL, or <see langword="null" /> on the chart overview.</summary>
+    [Parameter] public string? Sample { get; set; }
+
     private const string pageUrl = DemoRouteConstants.Demos_PolarAreaChart;
     private const string pageTitle = "PolarArea Chart";
     private const string pageDescription = "Explore interactive <code>Blazor Polar Area Chart</code> examples with source code. Learn how to visualize categorical data, customize chart appearance, and enhance your Blazor applications. Try live demos and discover practical usage scenarios for the Polar Area Chart component.";

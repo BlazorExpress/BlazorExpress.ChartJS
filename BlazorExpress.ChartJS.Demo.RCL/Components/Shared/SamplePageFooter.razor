@@ -1,0 +1,48 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+@if (sample is not null && chart is not null)
+{
+    <div class="be-sample-footer mt-5 pt-4">
+        <div class="columns">
+            @if (sample.ApiLinks.Any())
+            {
+                <div class="column">
+                    <p class="has-text-weight-semibold mb-2">API reference</p>
+                    <ul class="be-sample-footer-links">
+                        @foreach (var link in sample.ApiLinks)
+                        {
+                            <li><a href="@link.Href">@link.Text</a></li>
+                        }
+                    </ul>
+                </div>
+            }
+            <div class="column">
+                <p class="has-text-weight-semibold mb-2">More</p>
+                <ul class="be-sample-footer-links">
+                    @if (!string.IsNullOrWhiteSpace(sample.ChartJsSampleUrl))
+                    {
+                        <li><a href="@sample.ChartJsSampleUrl" target="_blank" rel="noopener noreferrer">The matching Chart.js sample</a></li>
+                    }
+                    <li><a href="@chart.DocsRoute">@chart.Name documentation</a></li>
+                    <li><a href="@chart.Route">All @chart.Name samples</a></li>
+                    <li><a href="@DemoRouteConstants.Demos_Samples">Samples gallery</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <nav class="be-sample-pager" aria-label="Previous and next sample">
+            @if (previous is not null)
+            {
+                <a class="button is-small" href="@previous.Url" rel="prev"><span aria-hidden="true">←&nbsp;</span>@previous.Title</a>
+            }
+            else
+            {
+                <span></span>
+            }
+            @if (next is not null)
+            {
+                <a class="button is-small" href="@next.Url" rel="next">@next.Title<span aria-hidden="true">&nbsp;→</span></a>
+            }
+        </nav>
+    </div>
+}

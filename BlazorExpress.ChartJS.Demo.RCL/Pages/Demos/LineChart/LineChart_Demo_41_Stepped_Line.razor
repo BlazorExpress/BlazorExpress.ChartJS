@@ -1,0 +1,58 @@
+<LineChart @ref="lineChart" Width="600" />
+
+<div class="mt-3">
+    @foreach (var option in steppedOptions)
+    {
+        <button type="button" class="button is-small mr-1 @(option.Text == current ? "is-primary" : null)" @onclick="() => SetSteppedAsync(option.Text, option.Value)">@option.Text</button>
+    }
+</div>
+
+<p class="mt-3 mb-0"><code>Stepped = @current</code></p>
+
+@code {
+    private LineChart lineChart = default!;
+    private LineChartDataset dataset = default!;
+    private ChartData chartData = default!;
+    private readonly LineChartOptions options = new() { Responsive = true };
+    private string current = "true";
+
+    // false draws straight lines; true and "before" hold each value until the next point and step there,
+    // "after" steps straight after each point, "middle" steps halfway between two points.
+    private readonly (string Text, object Value)[] steppedOptions =
+    [
+        ("false", false), ("true", true), ("\"before\"", "before"), ("\"after\"", "after"), ("\"middle\"", "middle"),
+    ];
+
+    protected override void OnInitialized()
+    {
+        dataset = new LineChartDataset
+        {
+            Label = "Stock level",
+            Data = [65, 59, 80, 81, 56, 55, 40],
+            BorderColor = "rgb(0, 114, 178)", // Okabe–Ito blue (colour-blind safe)
+            BackgroundColor = "rgba(0, 114, 178, 0.5)",
+            Stepped = true,
+        };
+
+        chartData = new ChartData
+        {
+            Labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            Datasets = [dataset],
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await lineChart.InitializeAsync(chartData, options);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task SetSteppedAsync(string text, object value)
+    {
+        current = text;
+        dataset.Stepped = value;
+        await lineChart.UpdateAsync(chartData, options);
+    }
+}

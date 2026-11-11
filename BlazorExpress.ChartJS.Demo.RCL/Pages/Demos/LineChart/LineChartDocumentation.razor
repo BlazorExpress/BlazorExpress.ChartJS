@@ -1,19 +1,24 @@
 ﻿@attribute [Route(pageUrl)]
+@attribute [Route(pageUrl + "/{Sample}")]
 @layout DemosMainLayout
 
-<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+<SamplePageHeader ChartKey="@SampleChartKeys.LineChart" Sample="@Sample">
+    <PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
-<PageHero Title="@pageTitle">
-    <SubTitleTemplate>
-        @((MarkupString)pageDescription)
-    </SubTitleTemplate>
-</PageHero>
+    <PageHero Title="@pageTitle">
+        <SubTitleTemplate>
+            @((MarkupString)pageDescription)
+        </SubTitleTemplate>
+    </PageHero>
 
-<DocsLink Href="@DemoRouteConstants.Docs_LineChart" />
+    <DocsLink Href="@DemoRouteConstants.Docs_LineChart" />
 
-<Prerequisites PageUrl="@pageUrl" />
+    <Prerequisites PageUrl="@pageUrl" />
+</SamplePageHeader>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="How it works" PageUrl="@pageUrl" Link="how-it-works">
+@* Each SampleSection renders only on its own sample page, /demos/<chart>/<slug>. *@
+<CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.LineChart, Sample)">
+<SampleSection Slug="how-it-works">
     <Block>
         The <strong>Line Chart</strong> component visualizes data trends using connected data points, making it ideal for tracking changes over time or comparing multiple series.
         <br /><br />
@@ -35,9 +40,25 @@
         </p>
     </Block>
     <Demo Type="typeof(LineChart_Demo_01_B_Examples)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Combo bar/line" PageUrl="@pageUrl" Link="combo-bar-line">
+<SampleSection Slug="playground">
+    <Block>
+        Change the main options of a line chart and watch the chart and its C# update together. The controls cover tension, line width, point radius, stepped lines and fill, plus the legend, the locale and right-to-left layout.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Change a control. The chart is updated with <code>UpdateAsync</code>, so it animates from its current state.</li>
+                <li>Pick a <strong>Locale</strong> to see how numbers are formatted for that region, and switch on <strong>Right to left</strong> to mirror the legend and tooltip.</li>
+                <li>Copy the C# below the chart. It lists only the settings that differ from their defaults, with the property names the library uses.</li>
+            </ol>
+        </div>
+    </Block>
+    <LineChart_Playground />
+</SampleSection>
+
+<SampleSection Slug="combo-bar-line">
     <Block>
         The <strong>Combo bar/line</strong> demo mixes <code>LineChartDataset</code> and <code>BarChartDataset</code> in the same <code>LineChart</code>.
         <br /><br />
@@ -52,9 +73,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_06_Combo_Bar_Line)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Stacked line chart" PageUrl="@pageUrl" Link="stacked-line-chart">
+<SampleSection Slug="stacked-line-chart">
     <Block>
         The <strong>Stacked line chart</strong> demo shows how to combine <code>LineChartDataset.Stack</code> with a stacked Y-axis to build a layered line or area chart.
         <br /><br />
@@ -69,9 +90,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_07_Stack)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Data labels" PageUrl="@pageUrl" Link="data-labels">
+<SampleSection Slug="data-labels">
     <Block>
         The <strong>Line Chart</strong> component supports data labels, allowing you to display values directly on each data point in the chart.
         <br /><br />
@@ -87,9 +108,9 @@
         Data labels make it easier for users to interpret the chart by showing the exact value of each point directly on the line.
     </Block>
     <Demo Type="typeof(LineChart_Demo_02_Datalabels)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Tick configuration" PageUrl="@pageUrl" Link="tick-configuration">
+<SampleSection Slug="tick-configuration">
     <Block>
         The <strong>Tick configuration</strong> demo shows how to customize the appearance and behavior of axis ticks in the Line Chart component.
         <br /><br />
@@ -105,9 +126,9 @@
         Customizing tick configuration helps ensure your chart is clear and tailored to your application's requirements.
     </Block>
     <Demo Type="typeof(LineChart_Demo_03_Tick_Configuration)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Locale" PageUrl="@pageUrl" Link="locale">
+<SampleSection Slug="locale">
     <Block>
         The <strong>Locale</strong> demo illustrates how to localize number and date formatting in the Line Chart component to match your users' regional preferences.
         <br /><br />
@@ -123,9 +144,9 @@
         Adapting the chart's locale improves usability and ensures your data is presented in a way that aligns with your audience's expectations.
     </Block>
     <Demo Type="typeof(LineChart_Demo_04_Locale)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Interpolation modes" PageUrl="@pageUrl" Link="interpolation-modes">
+<SampleSection Slug="interpolation-modes">
     <Block>
         The <strong>Interpolation Modes</strong> demo showcases how different interpolation settings affect the appearance and smoothness of lines in the <code>LineChart</code> component. Interpolation determines how data points are connected, allowing you to choose between straight lines, smooth curves, or monotone cubic curves for more natural transitions.
         <br /><br />
@@ -142,16 +163,16 @@
         Using interpolation modes helps you present trends more clearly, making your charts easier to interpret and visually appealing. Refer to the demo code for practical implementation details.
     </Block>
     <Demo Type="typeof(LineChart_Demo_05_Interpolation_Modes)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Click event" PageUrl="@pageUrl" Link="click-event">
+<SampleSection Slug="click-event">
     <Block>
         Set the <code>OnClick</code> callback to react when a line data point is selected. The callback receives <code>ChartClickEventArgs</code> with the dataset, point index, label, and raw value; the demo displays the selected item below the chart.
     </Block>
     <Demo Type="typeof(LineChart_Demo_08_Click_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Export image" PageUrl="@pageUrl" Link="export-image">
+<SampleSection Slug="export-image">
     <Block>
         Export the chart as an image with <code>ToBase64ImageAsync</code>, which returns a base64 data URL you can show, store or send, or save it straight to a file in the browser with <code>DownloadImageAsync</code>.
         If the chart is still animating, both wait for the animation to finish, and the image is streamed from the browser, so Blazor Server needs no larger message size.
@@ -166,9 +187,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_09_Export_Image)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Show and hide datasets" PageUrl="@pageUrl" Link="show-and-hide-datasets">
+<SampleSection Slug="show-and-hide-datasets">
     <Block>
         Show and hide whole datasets or single points from C#, check whether a dataset is visible and count the visible datasets.
         Visibility changed at runtime, from C# or a legend click, stays in place when <code>UpdateAsync</code> refreshes the data, because datasets are matched by <code>Key</code>, or else by label, and points by label.
@@ -184,9 +205,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_10_Show_Hide_Datasets)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Legend click event" PageUrl="@pageUrl" Link="legend-click-event">
+<SampleSection Slug="legend-click-event">
     <Block>
         Set <code>OnLegendClick</code> to react when a legend item is clicked. The callback receives <code>ChartLegendClickEventArgs</code> with the dataset index, the legend text and whether the dataset is hidden after the click.
         Set <code>LegendClickToggles="false"</code> to stop the legend from hiding datasets, for example to open details instead.
@@ -201,9 +222,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_11_Legend_Click_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Hover event" PageUrl="@pageUrl" Link="hover-event">
+<SampleSection Slug="hover-event">
     <Block>
         Set <code>OnHover</code> to react when the pointer moves onto a different point. The callback receives <code>ChartHoverEventArgs</code> with the same item details as <code>OnClick</code>.
         It is called only when the hovered point changes, and once with a <code>null</code> <code>DatasetIndex</code> when the pointer leaves all points, so it does not flood Blazor Server with calls.
@@ -217,9 +238,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_12_Hover_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Programmatic highlight" PageUrl="@pageUrl" Link="programmatic-highlight">
+<SampleSection Slug="programmatic-highlight">
     <Block>
         Highlight points and show their tooltip from C# with <code>SetActiveElementsAsync</code>, for example to point at a value from a table next to the chart.
         <br /><br />
@@ -232,9 +253,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_13_Programmatic_Highlight)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Update modes and animation control" PageUrl="@pageUrl" Link="update-modes-and-animation-control">
+<SampleSection Slug="update-modes-and-animation-control">
     <Block>
         Choose how <code>UpdateAsync</code> animates with <code>ChartUpdateMode</code>, and control the running animation with <code>StopAsync</code>, <code>RenderAsync</code>, <code>ResetAsync</code> and <code>ClearAsync</code>.
         These map one-to-one to the Chart.js <code>update(mode)</code>, <code>stop()</code>, <code>render()</code>, <code>reset()</code> and <code>clear()</code> methods.
@@ -250,9 +271,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_14_Update_Modes)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Multiple axes" PageUrl="@pageUrl" Link="multiple-axes">
+<SampleSection Slug="multiple-axes">
     <Block>
         Add more axes with <code>Scales.AdditionalAxes</code>, keyed by axis ID, and point a dataset at one with <code>YAxisID</code>. Chart.js works out the direction from the first letter of the ID, so <code>"y1"</code> is a y-axis, and orders axes on the same edge by <code>Weight</code>.
         <br /><br />
@@ -267,9 +288,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_15_Multiple_Axes)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Axis position and reverse" PageUrl="@pageUrl" Link="axis-position-and-reverse">
+<SampleSection Slug="axis-position-and-reverse">
     <Block>
         Move an axis to another edge with <code>Position</code>, flip its direction with <code>Reverse</code>, or hide it with <code>Display = false</code>. A hidden axis still scales the data; only its labels, ticks and grid lines go.
         <br /><br />
@@ -284,9 +305,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_16_Axis_Position_And_Reverse)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Tick options" PageUrl="@pageUrl" Link="tick-options">
+<SampleSection Slug="tick-options">
     <Block>
         <code>ChartAxesTicks</code> controls how many ticks an axis gets and how their labels look. Chart.js picks the tick spacing itself unless you set <code>StepSize</code> or <code>Count</code>, and skips crowded labels unless you set <code>AutoSkip = false</code>.
         <br /><br />
@@ -301,9 +322,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_17_Tick_Options)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Axis title" PageUrl="@pageUrl" Link="axis-title">
+<SampleSection Slug="axis-title">
     <Block>
         Label an axis with <code>ChartAxesTitle</code>. The title is hidden until <code>Display = true</code>, and in this library it defaults to <code>"black"</code> text in a bold 12 px font, where Chart.js uses grey.
         <br /><br />
@@ -318,9 +339,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_18_Axis_Title)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Grace and bounds" PageUrl="@pageUrl" Link="grace-and-bounds">
+<SampleSection Slug="grace-and-bounds">
     <Block>
         <code>Grace</code> adds space beyond the data, <code>Bounds</code> decides whether the axis ends at the data (<code>"data"</code>) or at a whole tick (<code>"ticks"</code>, the Chart.js default), and <code>SuggestedMin</code> / <code>SuggestedMax</code> extend the range only when the data does not already reach them. Value axes in this library start at zero (<code>BeginAtZero = true</code>), so the demos set <code>BeginAtZero = false</code> to show both ends.
         <br /><br />
@@ -335,9 +356,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_19_Grace_And_Bounds)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Span gaps" PageUrl="@pageUrl" Link="span-gaps">
+<SampleSection Slug="span-gaps">
     <Block>
         A <code>null</code> value leaves a gap, and by default Chart.js breaks the line there. <code>SpanGaps = true</code> joins the points on either side, and <code>MaxSpanGap</code> breaks the line only where two neighbouring points are further apart on the index axis than that number.
         <br /><br />
@@ -352,9 +373,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_20_Span_Gaps)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Clip" PageUrl="@pageUrl" Link="clip">
+<SampleSection Slug="clip">
     <Block>
         When an axis has a fixed <code>Min</code> or <code>Max</code>, Chart.js cuts the line at the edge of the chart area. <code>ClipSides</code> moves that edge per side, in pixels: a positive value lets the line overflow, a negative value cuts it inside the chart area.
         <br /><br />
@@ -369,9 +390,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_21_Clip)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Filler options" PageUrl="@pageUrl" Link="filler-options">
+<SampleSection Slug="filler-options">
     <Block>
         <code>Plugins.Filler</code> sets how the area under filled lines is drawn. With <code>Propagate = true</code> (the Chart.js default), a dataset whose fill target is hidden fills to that target's own target instead; <code>DrawTime</code> sets when the fills are drawn.
         <br /><br />
@@ -386,9 +407,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_22_Filler_Options)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Hover line" PageUrl="@pageUrl" Link="hover-line">
+<SampleSection Slug="hover-line">
     <Block>
         Line charts draw a vertical line through the point the tooltip shows. It is a plugin of this library, not of Chart.js, and draws a grey 2 px dashed line unless you set <code>Plugins.TooltipLine</code>.
         <br /><br />
@@ -403,9 +424,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_23_Hover_Line)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Title and subtitle" PageUrl="@pageUrl" Link="title-and-subtitle">
+<SampleSection Slug="title-and-subtitle">
     <Block>
         <code>Plugins.Title</code> and <code>Plugins.Subtitle</code> draw text outside the chart area; Chart.js places the subtitle between the title and the chart. Both are hidden until <code>Display = true</code>, and in this library their text defaults to <code>"black"</code>.
         <br /><br />
@@ -420,9 +441,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_24_Title_And_Subtitle)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Tooltip options" PageUrl="@pageUrl" Link="tooltip-options">
+<SampleSection Slug="tooltip-options">
     <Block>
         <code>Plugins.Tooltip</code> chooses which items the tooltip lists and how it looks. Its <code>Mode</code> and <code>Intersect</code> override <code>Interaction</code> for the tooltip only; Chart.js uses <code>Nearest</code> with <code>Intersect = true</code> by default.
         <br /><br />
@@ -437,9 +458,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_25_Tooltip_Options)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Layout padding" PageUrl="@pageUrl" Link="layout-padding">
+<SampleSection Slug="layout-padding">
     <Block>
         <code>Layout</code> adds empty space inside the canvas, around the legend, axes and chart. The dashed borders show the canvas edges.
         <br /><br />
@@ -453,9 +474,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_26_Layout_Padding)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Aspect ratio and resize delay" PageUrl="@pageUrl" Link="aspect-ratio-and-resize-delay">
+<SampleSection Slug="aspect-ratio-and-resize-delay">
     <Block>
         With <code>MaintainAspectRatio = true</code>, the canvas height follows its width by <code>AspectRatio</code> (width / height); Chart.js uses 2 for line charts. <code>ResizeDelay</code> waits the given milliseconds after the container stops resizing before the chart redraws, which saves work while the window is dragged; resize the window to see the wide chart catch up.
         <br /><br />
@@ -469,9 +490,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_27_Aspect_Ratio_And_Resize_Delay)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Hover and elements" PageUrl="@pageUrl" Link="hover-and-elements">
+<SampleSection Slug="hover-and-elements">
     <Block>
         <code>Elements</code> sets defaults for every element of a kind, such as every point or line, and a dataset value wins over them. <code>Hover</code> sets which elements react to the pointer, separately from <code>Interaction</code>, and <code>Events</code> lists the browser events Chart.js listens to.
         <br /><br />
@@ -486,9 +507,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_28_Hover_And_Elements)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Colors plugin" PageUrl="@pageUrl" Link="colors-plugin">
+<SampleSection Slug="colors-plugin">
     <Block>
         The Chart.js colors plugin gives each dataset a color from its built-in palette, but only when no dataset sets a color. Line, radar and scatter datasets always send a default color (<code>"rgba(0, 0, 0, 0.1)"</code>), so on a line chart the palette needs <code>ForceOverride = true</code>.
         <br /><br />
@@ -502,9 +523,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_29_Colors_Plugin)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Time axis" PageUrl="@pageUrl" Link="time-axis">
+<SampleSection Slug="time-axis">
     <Block>
         A <strong>time axis</strong> spaces points by the real time between them: two days apart takes twice the room of one. It needs no extra script; the library draws it with its own date adapter.
         <br /><br />
@@ -519,9 +540,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_30_Time_Axis)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Time series" PageUrl="@pageUrl" Link="time-series">
+<SampleSection Slug="time-series">
     <Block>
         A <strong>time series axis</strong> keeps date labels but gives every data point the same width, which suits trading days or data with long gaps.
         <br /><br />
@@ -535,9 +556,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_31_Time_Series)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Combo bar/line over dates" PageUrl="@pageUrl" Link="time-combo-bar-line">
+<SampleSection Slug="time-combo-bar-line">
     <Block>
         Bars and a line can share a time axis: both datasets take one value per date in <code>TimeLabels</code>.
         <br /><br />
@@ -551,9 +572,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_32_Time_Combo_Bar_Line)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Sensor readings" PageUrl="@pageUrl" Link="time-sensor-readings">
+<SampleSection Slug="time-sensor-readings">
     <Block>
         When each series has its own times, such as sensors reporting at different moments, give every value its own date with <code>TimeData</code> instead of shared labels.
         <br /><br />
@@ -567,9 +588,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_33_Time_Sensor_Readings)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Live streaming" PageUrl="@pageUrl" Link="time-live-streaming">
+<SampleSection Slug="time-live-streaming">
     <Block>
         Time charts can grow while they are shown: add a reading at its own time, or a new day with a value for each dataset.
         <br /><br />
@@ -583,9 +604,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_34_Time_Live_Streaming)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Time max span" PageUrl="@pageUrl" Link="time-max-span">
+<SampleSection Slug="time-max-span">
     <Block>
         Fix the visible part of a time axis to a range of dates, for example the last 14 days of a quarter's data.
         <br /><br />
@@ -599,9 +620,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_35_Time_Max_Span)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Localized date formats" PageUrl="@pageUrl" Link="time-localized-formats">
+<SampleSection Slug="time-localized-formats">
     <Block>
         Month and weekday names in date formats follow <code>ChartOptions.Locale</code>, or the browser's language when it is not set.
         <br /><br />
@@ -615,9 +636,9 @@
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_36_Time_Localized_Formats)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Tick and tooltip functions" PageUrl="@pageUrl" Link="tick-and-tooltip-functions">
+<SampleSection Slug="tick-and-tooltip-functions">
     <Block>
         Some Chart.js options take a JavaScript function, for example a tick label or a tooltip line. Register the function in your own JavaScript file, then reference it from C# by name with <code>ChartFunction</code>. See <a href="@DemoRouteConstants.Docs_Getting_Started_Introduction#javascript-functions">JavaScript functions</a> for setup.
         <br /><br />
@@ -637,9 +658,9 @@ blazorexpress.chartjs.registerFunction('demo.unitsTooltipLabel',
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_37_Tick_And_Tooltip_Functions)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Legend filter function" PageUrl="@pageUrl" Link="legend-filter-function">
+<SampleSection Slug="legend-filter-function">
     <Block>
         A legend <code>Filter</code> function decides which legend items are shown. The datasets it hides are still drawn.
         <br /><br />
@@ -656,9 +677,9 @@ blazorexpress.chartjs.registerFunction('demo.unitsTooltipLabel',
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_38_Legend_Filter_Function)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Segment styling" PageUrl="@pageUrl" Link="segment-styling">
+<SampleSection Slug="segment-styling">
     <Block>
         <code>SegmentStyle</code> styles each part of the line between two points. Here, segments that span a missing reading are drawn dashed and grey, as in the Chart.js "Line Segment Styling" sample.
         <br /><br />
@@ -677,9 +698,9 @@ blazorexpress.chartjs.registerFunction('demo.greyOverGaps', ctx => touchesGap(ct
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_39_Segment_Styling)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Gradient fill" PageUrl="@pageUrl" Link="gradient-fill">
+<SampleSection Slug="gradient-fill">
     <Block>
         A colour function can return a canvas gradient. Chart.js calls it while drawing, so the gradient follows the chart area when the chart resizes.
         <br /><br />
@@ -702,9 +723,294 @@ blazorexpress.chartjs.registerFunction('demo.greyOverGaps', ctx => touchesGap(ct
         </div>
     </Block>
     <Demo Type="typeof(LineChart_Demo_40_Gradient_Fill)" Tabs="true" />
-</Section>
+</SampleSection>
+
+<SampleSection Slug="stepped-line">
+    <Block>
+        <code>Stepped</code> draws a line as horizontal and vertical steps instead of a slope between points. It suits values that change at a moment and then hold, such as a stock level, a price or an on/off state.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Stepped = true</code> on a <code>LineChartDataset</code>: the line holds each value until the next point, then steps to the new value.</li>
+                <li>Or choose where the step is drawn: <code>"before"</code> is the same as <code>true</code>, <code>"after"</code> steps straight after each point and then holds the new value, and <code>"middle"</code> steps halfway between two points. <code>false</code>, the default, draws straight lines.</li>
+                <li>Call <code>UpdateAsync</code> after changing the value on a chart that is already drawn.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_41_Stepped_Line)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="point-styling">
+    <Block>
+        <code>PointStyle</code> sets the shape drawn at each data point, and <code>PointRadius</code> its size. A different shape per dataset tells lines apart without relying on colour.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>PointStyle</code> on a <code>LineChartDataset</code> to one of <code>circle</code>, <code>cross</code>, <code>crossRot</code>, <code>dash</code>, <code>line</code>, <code>rect</code>, <code>rectRounded</code>, <code>rectRot</code>, <code>star</code> or <code>triangle</code>.</li>
+                <li>Give one value to style every point, or one value per point to style them individually. <code>PointRadius</code>, <code>PointHoverRadius</code> and <code>PointBorderWidth</code> work the same way.</li>
+                <li>Set <code>Plugins.Legend.Labels.UsePointStyle = true</code> to draw the same shape in the legend.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_42_Point_Styling)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="line-styling">
+    <Block>
+        <code>BorderWidth</code>, <code>BorderDash</code>, <code>BorderCapStyle</code> and <code>Fill</code> change how a line is drawn. The demo shows a plain line, a dashed line with round caps and a filled, thicker line in one chart.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>BorderColor</code> and <code>BorderWidth</code> for the line itself.</li>
+                <li>Set <code>BorderDash</code> to a list of lengths, in pixels: drawn, skipped, drawn, and so on. <code>[5, 5]</code> gives even dashes.</li>
+                <li>Set <code>BorderCapStyle = "round"</code> to round both ends of every dash. A round cap adds half the line width to each end, so leave a wider gap between the dashes.</li>
+                <li>Set <code>Fill = true</code> to fill the area under the line with <code>BackgroundColor</code>.</li>
+                <li>Set <code>BorderJoinStyle = "round"</code> for rounded corners where two segments of the line meet.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_43_Line_Styling)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="area-fill-boundaries">
+    <Block>
+        <code>Fill</code> sets where the filled area of a line ends: the zero line, the bottom of the chart area or its top. The data in the demo crosses zero, so each boundary looks different.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Fill = "origin"</code> to fill between the line and zero.</li>
+                <li>Set <code>Fill = "start"</code> to fill down to the bottom of the chart area, or <code>"end"</code> to fill up to its top.</li>
+                <li>Set <code>Fill = false</code>, the default, for no fill. The helpers <code>FillToOrigin()</code>, <code>FillToStart()</code> and <code>FillToEnd()</code> set the same values.</li>
+                <li>Use a translucent <code>BackgroundColor</code> so the grid stays visible through the fill.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_44_Area_Fill_Boundaries)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="fill-between-datasets">
+    <Block>
+        A line can fill to another dataset instead of to the axis, which draws a band between two lines. The demo fills a range of low, average and high values.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Call <code>FillToDataset(index)</code> on a <code>LineChartDataset</code> to fill to the dataset at that index in the chart.</li>
+                <li>Or pass <code>relativeIndex: true</code> to count from the dataset itself: <code>FillToDataset(-1, relativeIndex: true)</code> fills to the dataset before it.</li>
+                <li>Leave <code>Plugins.Filler.Propagate</code> at its default, <code>true</code>, so a band is still drawn when its target dataset is hidden from the legend.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_45_Fill_Between_Datasets)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="linear-scale-min-max">
+    <Block>
+        <code>Min</code> and <code>Max</code> fix the range of a linear axis, and cut off values beyond it. <code>SuggestedMin</code> and <code>SuggestedMax</code> only widen the range, so the axis still grows to show every value.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Options.Scales.Y.Min</code> and <code>Max</code> for a range that never changes, for example a percentage from 0 to 100.</li>
+                <li>Set <code>SuggestedMin</code> and <code>SuggestedMax</code> for a range that the data may exceed.</li>
+                <li>Leave all four unset to let Chart.js fit the axis to the data. The library sets <code>BeginAtZero = true</code> by default, so the fitted axis includes zero; set <code>BeginAtZero = false</code> to fit the data only.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_46_Linear_Scale_Min_Max)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="logarithmic-scale">
+    <Block>
+        A logarithmic axis gives each power of ten the same height, so small and very large values fit in one chart. Switch the demo to a linear axis to see the small values flatten out.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Options.Scales.Y.Type = "logarithmic"</code>.</li>
+                <li>Set <code>BeginAtZero = false</code>: a logarithmic axis cannot show zero or negative values.</li>
+                <li>Set <code>Type = "linear"</code>, or leave it unset, to go back to a linear axis.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_47_Logarithmic_Scale)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="stacked-scales">
+    <Block>
+        Axes with the same <code>Stack</code> value share one side of the chart, one above the other, each with its own range. It shows two unrelated measures over the same period without overlapping lines.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Add the second axis with <code>Options.Scales.AdditionalAxes</code>, and point a dataset at it with <code>YAxisID</code>.</li>
+                <li>Set the same <code>Stack</code> value and the same <code>Position</code> on both axes.</li>
+                <li>Set <code>StackWeight</code> to share the height: an axis with weight 2 gets twice the height of one with weight 1.</li>
+                <li>Set <code>Offset = true</code> on an axis to keep a gap between it and its neighbour.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_48_Stacked_Scales)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="center-axis-position">
+    <Block>
+        <code>Position = "center"</code> draws an axis through the middle of the chart area instead of along its edge, as in a mathematical plot.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Options.Scales.X.Position = "center"</code> and <code>Options.Scales.Y.Position = "center"</code>.</li>
+                <li>Give the y-axis the same range on both sides of zero with <code>Min</code> and <code>Max</code>, so the centred x-axis sits at zero.</li>
+                <li>Use an odd number of labels so the centred y-axis sits on the middle label.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_49_Center_Axis_Position)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="grid-configuration">
+    <Block>
+        <code>Grid</code> styles the grid lines and tick marks of an axis, and <code>Border</code> styles the axis line. Each axis has its own settings.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Options.Scales.X.Grid</code> or <code>Options.Scales.Y.Grid</code> to a <code>ChartAxesGrid</code>.</li>
+                <li>Use <code>Color</code> and <code>LineWidth</code> for the grid lines, and <code>TickColor</code> and <code>TickLength</code> for the marks between the axis and its labels.</li>
+                <li>Set <code>DrawOnChartArea = false</code> to keep the tick marks and drop the lines across the chart, or <code>Display = false</code> to drop both.</li>
+                <li>Set <code>Border</code> to a <code>ChartAxesBorder</code> for the axis line; its <code>Dash</code> makes the grid lines of that axis dashed.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_50_Grid_Configuration)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="legend-point-style">
+    <Block>
+        <code>UsePointStyle</code> draws each dataset's point shape in the legend instead of a coloured box. With a different shape per dataset, the legend can be read without relying on colour.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Give each <code>LineChartDataset</code> its own <code>PointStyle</code>.</li>
+                <li>Set <code>Options.Plugins.Legend.Labels = new ChartPluginsLegendLabels { UsePointStyle = true }</code>.</li>
+                <li>Optionally set <code>PointStyleWidth</code> on the labels to change the width of the shape in the legend.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_51_Legend_Point_Style)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="legend-title">
+    <Block>
+        <code>Legend.Title</code> adds a heading above the legend items. It says what the datasets have in common, such as "Sales region".
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Options.Plugins.Legend.Title</code> to a <code>ChartPluginsLegendTitle</code> with <code>Display = true</code> and a <code>Text</code>.</li>
+                <li>Set <code>Color</code> and <code>Padding</code> to style it.</li>
+                <li>The title follows the legend: move both with <code>Options.Plugins.Legend.Position</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_52_Legend_Title)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="legend-position">
+    <Block>
+        <code>Legend.Position</code> places the legend on any side of the chart, and <code>Legend.Align</code> moves it along that side.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Options.Plugins.Legend.Position</code> to <code>"top"</code>, <code>"left"</code>, <code>"bottom"</code> or <code>"right"</code>. The default is <code>"top"</code>.</li>
+                <li>Set <code>Options.Plugins.Legend.Align</code> to <code>"start"</code>, <code>"center"</code> or <code>"end"</code>. The default is <code>"center"</code>.</li>
+                <li>Call <code>UpdateAsync</code> to move the legend on a chart that is already drawn.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_53_Legend_Position)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="interaction-modes">
+    <Block>
+        <code>Interaction.Mode</code> decides which points the pointer selects, for both the hover highlight and the tooltip. <code>Intersect</code> decides whether the pointer has to be on a point.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Options.Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false }</code> to select every dataset's point at the pointer's x position.</li>
+                <li>Use <code>Nearest</code> for the single closest point, <code>Point</code> for the points under the pointer, <code>Dataset</code> for the whole line, and <code>X</code> or <code>Y</code> for points that share a coordinate with the pointer.</li>
+                <li>Set <code>Intersect = true</code> to react only when the pointer is on a point.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_54_Interaction_Modes)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="html-tooltip">
+    <Block>
+        <code>Tooltip.External</code> replaces the canvas tooltip with an HTML element that a registered JavaScript function builds. Use it when a tooltip needs your own fonts, layout or styles.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Register the function shown below in your own script file. It builds the tooltip with <code>createElement</code> and <code>textContent</code>, so labels are always shown as text.</li>
+                <li>Set <code>Options.Plugins.Tooltip = new ChartPluginsTooltip { Enabled = false, External = new ChartFunction("demo.htmlTooltip") }</code>. <code>Enabled = false</code> turns the canvas tooltip off.</li>
+                <li>Set <code>Options.Interaction</code> as usual: it still decides which points the tooltip shows.</li>
+            </ol>
+        </div>
+    </Block>
+    <CodeChunk Class="mb-3" LanguageCode="LanguageCode.JavaScript" FilePath="~\Pages\Demos\LineChart\LineChart_Demo_55_Html_Tooltip_Snippet.js" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
+    <Demo Type="typeof(LineChart_Demo_55_Html_Tooltip)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="animation-loop">
+    <Block>
+        <code>Animation.Loop</code> repeats the chart animation forwards and backwards without end. Use it sparingly: constant motion draws the eye, and some people find it uncomfortable.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>Options.Animation = new ChartAnimation { Loop = true }</code>.</li>
+                <li>Set <code>Duration</code>, in milliseconds, and <code>Easing</code> to control the speed and feel of each pass.</li>
+                <li>Set <code>Loop = false</code> and call <code>UpdateAsync</code> to stop it. The demo calls <code>StopAsync</code> and <code>ResetAsync</code> first, so the chart replays from its starting state with the new setting.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_56_Animation_Loop)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="progress-bar">
+    <Block>
+        <code>Animation.OnProgress</code> and <code>OnComplete</code> call registered JavaScript functions while a chart animates. The demo uses them to move a <code>&lt;progress&gt;</code> element.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Add a <code>&lt;progress&gt;</code> element with an <code>id</code> to your page.</li>
+                <li>Register the two functions shown below in your own script file. Chart.js passes each one the animation, with <code>currentStep</code> and <code>numSteps</code>.</li>
+                <li>Set <code>Options.Animation</code> to a <code>ChartAnimation</code> with <code>OnProgress = new ChartFunction("demo.showAnimationProgress")</code> and <code>OnComplete = new ChartFunction("demo.completeAnimationProgress")</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <CodeChunk Class="mb-3" LanguageCode="LanguageCode.JavaScript" FilePath="~\Pages\Demos\LineChart\LineChart_Demo_57_Progress_Bar_Snippet.js" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
+    <Demo Type="typeof(LineChart_Demo_57_Progress_Bar)" Tabs="true" />
+</SampleSection>
+</CascadingValue>
+
+<SamplePageFooter ChartKey="@SampleChartKeys.LineChart" Sample="@Sample" />
 
 @code {
+    /// <summary>The sample slug from the URL, or <see langword="null" /> on the chart overview.</summary>
+    [Parameter] public string? Sample { get; set; }
+
     private const string pageUrl = DemoRouteConstants.Demos_LineChart;
     private const string pageTitle = "Line Chart";
     private const string pageDescription = "Explore interactive <code>Blazor Line Chart</code> examples with source code. Learn how to visualize time-series data, customize chart appearance, and enhance your Blazor applications. Try live demos and discover practical usage scenarios for the Line Chart component.";

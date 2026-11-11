@@ -1,0 +1,36 @@
+<DoughnutChart @ref="doughnutChart" Width="420" />
+
+@code {
+    private DoughnutChart doughnutChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var chartData = new ChartData
+            {
+                Labels = ["Desktop", "Mobile", "Tablet", "TV", "Other"],
+                Datasets =
+                [
+                    new DoughnutChartDataset
+                    {
+                        Label = "Sessions",
+                        Data = [420, 380, 140, 90, 60],
+                        // 'demo.radialGradient' returns a canvas gradient for each slice.
+                        // When set, the function is sent instead of BackgroundColor.
+                        BackgroundColorFunction = new ChartFunction("demo.radialGradient"),
+                        BorderWidth = [2],
+                        HoverOffset = [8],
+                    }
+                ]
+            };
+
+            var options = new DoughnutChartOptions { Responsive = true };
+            options.Layout = new ChartLayout { Padding = 8 }; // room for the hover offset
+
+            await doughnutChart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

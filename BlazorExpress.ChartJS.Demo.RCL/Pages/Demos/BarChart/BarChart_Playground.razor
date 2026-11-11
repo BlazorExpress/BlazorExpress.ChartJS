@@ -1,0 +1,105 @@
+<PlaygroundPanel Code="@csharp">
+    <Controls>
+        <PlaygroundCheckbox Label="Horizontal bars" Value="horizontal" ValueChanged="value => SetAsync(() => horizontal = value)" />
+        <PlaygroundCheckbox Label="Stacked" Value="stacked" ValueChanged="value => SetAsync(() => stacked = value)" />
+        <PlaygroundRange Label="Border radius" Max="20" Unit=" px" Value="borderRadius" ValueChanged="value => SetAsync(() => borderRadius = value)" />
+        <PlaygroundRange Label="Bar percentage" Min="0.2" Max="1" Step="0.1" Value="barPercentage" ValueChanged="value => SetAsync(() => barPercentage = value)" />
+        <PlaygroundRange Label="Category percentage" Min="0.2" Max="1" Step="0.1" Value="categoryPercentage" ValueChanged="value => SetAsync(() => categoryPercentage = value)" />
+        <PlaygroundCommonControls Settings="settings" OnChanged="ApplyAsync" />
+    </Controls>
+    <Chart>
+        <BarChart @ref="chart" />
+    </Chart>
+</PlaygroundPanel>
+
+@code {
+    // The defaults of the library; a value is listed in the C# only when it differs.
+    private const double DefaultBarPercentage = 0.9;
+    private const double DefaultCategoryPercentage = 0.8;
+
+    private BarChart chart = default!;
+    private readonly PlaygroundSettings settings = new();
+    private string csharp = string.Empty;
+    private double barPercentage = DefaultBarPercentage;
+    private double borderRadius;
+    private double categoryPercentage = DefaultCategoryPercentage;
+    private bool horizontal;
+    private bool stacked;
+
+    protected override void OnInitialized() => Build();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var (chartData, options) = Build();
+            await chart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task ApplyAsync()
+    {
+        var (chartData, options) = Build();
+        await chart.UpdateAsync(chartData, options);
+    }
+
+    private async Task SetAsync(Action change)
+    {
+        change();
+        await ApplyAsync();
+    }
+
+    // Builds the chart data and options from the controls, and the C# that gives the same chart.
+    private (ChartData ChartData, BarChartOptions Options) Build()
+    {
+        var text = new PlaygroundCode(nameof(BarChartOptions), nameof(BarChartDataset));
+        var options = new BarChartOptions { Responsive = true };
+        settings.Apply(options, options.Plugins, text);
+        settings.ApplyToAxes(options.Scales, text);
+
+        if (horizontal)
+        {
+            options.IndexAxis = "y";
+            text.Option("IndexAxis", PlaygroundCode.Literal("y"));
+        }
+
+        if (stacked)
+        {
+            options.Scales.X!.Stacked = true;
+            options.Scales.Y!.Stacked = true;
+            text.Option("Scales.X!.Stacked", "true").Option("Scales.Y!.Stacked", "true");
+        }
+
+        if (borderRadius > 0) text.Dataset("BorderRadius", PlaygroundCode.List(borderRadius));
+        if (barPercentage != DefaultBarPercentage) text.Dataset("BarPercentage", PlaygroundCode.Literal(barPercentage));
+        if (categoryPercentage != DefaultCategoryPercentage) text.Dataset("CategoryPercentage", PlaygroundCode.Literal(categoryPercentage));
+
+        var chartData = new ChartData
+        {
+            Labels = ["Q1", "Q2", "Q3", "Q4"],
+            Datasets =
+            [
+                CreateDataset("Hardware", [48200, 55100, 51700, 63400], 0),
+                CreateDataset("Software", [36900, 42300, 49800, 58100], 1),
+                CreateDataset("Services", [22400, 27600, 31200, 30500], 2),
+            ]
+        };
+
+        csharp = text.ToString();
+
+        return (chartData, options);
+    }
+
+    private BarChartDataset CreateDataset(string label, List<double?> data, int colorIndex) =>
+        new()
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = [DemoPalette.Get(colorIndex)],
+            BarPercentage = barPercentage,
+            BorderRadius = [borderRadius],
+            CategoryPercentage = categoryPercentage,
+        };
+}

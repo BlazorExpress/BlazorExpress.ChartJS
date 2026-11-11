@@ -1,9 +1,9 @@
 ﻿<LineChart @ref="lineChart" Width="600" />
 
 <div class="mt-5">
-    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="ChangeTicksAlignmentToStart"> Alignment: start </Button>
-    <Button Color="ButtonColor.Link" Size="ButtonSize.Small" @onclick="ChangeTicksAlignmentToCenter"> Alignment: center (default) </Button>
-    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="ChangeTicksAlignmentToEnd"> Alignment: end </Button>
+    <button type="button" class="button is-primary is-small" @onclick="ChangeTicksAlignmentToStart"> Alignment: start </button>
+    <button type="button" class="button is-link is-small" @onclick="ChangeTicksAlignmentToCenter"> Alignment: center (default) </button>
+    <button type="button" class="button is-info is-small" @onclick="ChangeTicksAlignmentToEnd"> Alignment: end </button>
 </div>
 
 @code {

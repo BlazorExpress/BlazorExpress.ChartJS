@@ -1,7 +1,7 @@
 <div class="mb-3">
-    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="@(() => SetLocaleAsync("fr-FR"))">fr-FR</Button>
-    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="@(() => SetLocaleAsync("de-DE"))">de-DE</Button>
-    <Button Color="ButtonColor.Link" Size="ButtonSize.Small" @onclick="@(() => SetLocaleAsync("en-US"))">en-US</Button>
+    <button type="button" class="button is-primary is-small" @onclick="@(() => SetLocaleAsync("fr-FR"))">fr-FR</button>
+    <button type="button" class="button is-info is-small" @onclick="@(() => SetLocaleAsync("de-DE"))">de-DE</button>
+    <button type="button" class="button is-link is-small" @onclick="@(() => SetLocaleAsync("en-US"))">en-US</button>
 </div>
 
 <LineChart @ref="lineChart" Width="600" />

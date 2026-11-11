@@ -1,0 +1,98 @@
+@attribute [Route(pageUrl)]
+@layout DemosMainLayout
+
+<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@DemoImageSrcConstants.LineChart" />
+
+<PageHero Title="Samples" SubTitle="@pageDescription" />
+
+<div class="be-gallery">
+    <div class="be-gallery-filters" role="search">
+        <div class="field be-gallery-field is-search">
+            <label class="label is-small" for="be-gallery-search">Search</label>
+            <div class="control">
+                <input id="be-gallery-search" class="input be-gallery-search" type="search" autocomplete="off"
+                       placeholder="Title, description or tag" value="@Query" @oninput="OnSearchInput" />
+            </div>
+        </div>
+        <div class="field be-gallery-field">
+            <label class="label is-small" for="be-gallery-chart">Chart</label>
+            <div class="control">
+                <div class="select is-fullwidth">
+                    <select id="be-gallery-chart" class="be-gallery-filter" value="@Chart" @onchange="e => SetFilter(ChartParameter, e.Value)">
+                        <option value="">All charts</option>
+                        @foreach (var chart in SampleCatalog.Charts)
+                        {
+                            <option value="@chart.Key">@chart.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="field be-gallery-field">
+            <label class="label is-small" for="be-gallery-category">Category</label>
+            <div class="control">
+                <div class="select is-fullwidth">
+                    <select id="be-gallery-category" class="be-gallery-filter" value="@Category" @onchange="e => SetFilter(CategoryParameter, e.Value)">
+                        <option value="">All categories</option>
+                        @foreach (var category in categories)
+                        {
+                            <option value="@category.ToSlug()">@category.GetDisplayName()</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="field be-gallery-field">
+            <label class="label is-small" for="be-gallery-tag">Tag</label>
+            <div class="control">
+                <div class="select is-fullwidth">
+                    <select id="be-gallery-tag" class="be-gallery-filter" value="@SelectedTag" @onchange="e => SetFilter(TagParameter, e.Value)">
+                        <option value="">All tags</option>
+                        @foreach (var tag in tags)
+                        {
+                            <option value="@tag">@tag</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="field be-gallery-field is-clear">
+            <button type="button" class="button" disabled="@(!HasFilter)" @onclick="ClearFilters">Clear</button>
+        </div>
+    </div>
+
+    <p class="be-gallery-count mb-4" role="status" aria-live="polite">
+        Showing @shownSamples.Count of @SampleCatalog.All.Count samples@(shownUnavailable.Count > 0 ? $", and {shownUnavailable.Count} not yet available" : string.Empty).
+    </p>
+
+    @if (shownSamples.Count == 0 && shownUnavailable.Count == 0)
+    {
+        @* The search text comes from the URL; Razor writes it as text. *@
+        <div class="notification is-light be-gallery-empty">
+            No sample matches@(string.IsNullOrWhiteSpace(Query) ? " these filters" : $" “{Query}”"). Try a shorter search, or clear the filters.
+        </div>
+    }
+
+    @foreach (var category in categories)
+    {
+        var samples = shownSamples.Where(s => s.Category == category).ToList();
+        var unavailable = shownUnavailable.Where(s => s.Category == category).ToList();
+        if (samples.Count == 0 && unavailable.Count == 0)
+            continue;
+
+        <h2 class="title is-5 mb-3" id="@category.ToSlug()">
+            @category.GetDisplayName()
+            <span class="tag is-light ml-1">@samples.Count</span>
+        </h2>
+        <div class="be-sample-grid">
+            @foreach (var sample in samples)
+            {
+                <SampleCard @key="sample" Sample="sample" />
+            }
+            @foreach (var sample in unavailable)
+            {
+                <SampleCard @key="sample" Unavailable="sample" />
+            }
+        </div>
+    }
+</div>

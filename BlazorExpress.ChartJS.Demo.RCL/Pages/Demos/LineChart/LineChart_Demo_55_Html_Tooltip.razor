@@ -1,0 +1,47 @@
+<LineChart @ref="lineChart" Width="600" />
+
+@code {
+    private LineChart lineChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var chartData = new ChartData
+            {
+                Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+                Datasets =
+                [
+                    new LineChartDataset
+                    {
+                        Label = "Revenue",
+                        Data = [42, 51, 47, 60, 55, 68, 72],
+                        BorderColor = "rgb(0, 114, 178)", // Okabe–Ito blue
+                        BackgroundColor = "rgb(0, 114, 178)",
+                    },
+                    new LineChartDataset
+                    {
+                        Label = "Costs",
+                        Data = [30, 28, 39, 35, 48, 44, 57],
+                        BorderColor = "rgb(213, 94, 0)", // Okabe–Ito vermillion
+                        BackgroundColor = "rgb(213, 94, 0)",
+                    },
+                ]
+            };
+
+            var options = new LineChartOptions { Responsive = true };
+            options.Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false };
+
+            // Turn the canvas tooltip off and let the registered function draw an HTML one in its place.
+            options.Plugins.Tooltip = new ChartPluginsTooltip
+            {
+                Enabled = false,
+                External = new ChartFunction("demo.htmlTooltip"),
+            };
+
+            await lineChart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

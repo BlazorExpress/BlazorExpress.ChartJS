@@ -1,9 +1,9 @@
 <PolarAreaChart @ref="polarAreaChart" Width="500" />
 
 <div class="mt-3">
-    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="ExportPngAsync">Export PNG</Button>
-    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="ExportJpegAsync">Export JPEG (quality 0.8)</Button>
-    <Button Color="ButtonColor.Success" Size="ButtonSize.Small" @onclick="DownloadPngAsync">Download PNG</Button>
+    <button type="button" class="button is-primary is-small" @onclick="ExportPngAsync">Export PNG</button>
+    <button type="button" class="button is-info is-small" @onclick="ExportJpegAsync">Export JPEG (quality 0.8)</button>
+    <button type="button" class="button is-success is-small" @onclick="DownloadPngAsync">Download PNG</button>
 </div>
 
 @if (imageDataUrl is not null)

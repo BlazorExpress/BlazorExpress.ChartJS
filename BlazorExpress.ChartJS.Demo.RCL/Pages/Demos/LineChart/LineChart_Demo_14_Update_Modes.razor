@@ -1,12 +1,12 @@
 <LineChart @ref="lineChart" Width="600" />
 
 <div class="mt-3">
-    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="RefreshAsync">Refresh (animated)</Button>
-    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="RefreshWithoutAnimationAsync">Refresh without animation</Button>
-    <Button Color="ButtonColor.Success" Size="ButtonSize.Small" @onclick="ResetAsync">Reset</Button>
-    <Button Color="ButtonColor.Warning" Size="ButtonSize.Small" @onclick="StopAsync">Stop</Button>
-    <Button Color="ButtonColor.Link" Size="ButtonSize.Small" @onclick="RenderAsync">Render</Button>
-    <Button Color="ButtonColor.Danger" Size="ButtonSize.Small" @onclick="ClearAsync">Clear</Button>
+    <button type="button" class="button is-primary is-small" @onclick="RefreshAsync">Refresh (animated)</button>
+    <button type="button" class="button is-info is-small" @onclick="RefreshWithoutAnimationAsync">Refresh without animation</button>
+    <button type="button" class="button is-success is-small" @onclick="ResetAsync">Reset</button>
+    <button type="button" class="button is-warning is-small" @onclick="StopAsync">Stop</button>
+    <button type="button" class="button is-link is-small" @onclick="RenderAsync">Render</button>
+    <button type="button" class="button is-danger is-small" @onclick="ClearAsync">Clear</button>
 </div>
 
 <p class="mt-3 mb-0">@status</p>

@@ -1,19 +1,24 @@
 @attribute [Route(pageUrl)]
+@attribute [Route(pageUrl + "/{Sample}")]
 @layout DemosMainLayout
 
-<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+<SamplePageHeader ChartKey="@SampleChartKeys.DoughnutChart" Sample="@Sample">
+    <PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
-<PageHero Title="@pageTitle">
-    <SubTitleTemplate>
-        @((MarkupString)pageDescription)
-    </SubTitleTemplate>
-</PageHero>
+    <PageHero Title="@pageTitle">
+        <SubTitleTemplate>
+            @((MarkupString)pageDescription)
+        </SubTitleTemplate>
+    </PageHero>
 
-<DocsLink Href="@DemoRouteConstants.Docs_DoughnutChart" />
+    <DocsLink Href="@DemoRouteConstants.Docs_DoughnutChart" />
 
-<Prerequisites PageUrl="@pageUrl" />
+    <Prerequisites PageUrl="@pageUrl" />
+</SamplePageHeader>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="How it works" PageUrl="@pageUrl" Link="how-it-works">
+@* Each SampleSection renders only on its own sample page, /demos/<chart>/<slug>. *@
+<CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.DoughnutChart, Sample)">
+<SampleSection Slug="how-it-works">
     <Block>
         The <strong>Doughnut Chart</strong> component provides a simple way to visualize categorical data as proportional segments of a circle.
         <br /><br />
@@ -30,9 +35,25 @@
         This demo shows how to configure a basic doughnut chart, assign data, and adjust chart options for your scenario.
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_01_Examples)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Data labels" PageUrl="@pageUrl" Link="data-labels">
+<SampleSection Slug="playground">
+    <Block>
+        Change the main options of a doughnut chart and watch the chart and its C# update together. The controls cover cutout, half-doughnut gauge, spacing and corner radius, plus the legend, the locale and right-to-left layout.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Change a control. The chart is updated with <code>UpdateAsync</code>, so it animates from its current state.</li>
+                <li>Pick a <strong>Locale</strong> to see how numbers are formatted for that region, and switch on <strong>Right to left</strong> to mirror the legend and tooltip.</li>
+                <li>Copy the C# below the chart. It lists only the settings that differ from their defaults, with the property names the library uses.</li>
+            </ol>
+        </div>
+    </Block>
+    <DoughnutChart_Playground />
+</SampleSection>
+
+<SampleSection Slug="data-labels">
     <Block>
         The <strong>Doughnut Chart</strong> component supports data labels, allowing you to display values or category names directly on each segment of the chart.
         <br /><br />
@@ -48,16 +69,16 @@
         Data labels make it easier for users to interpret the chart by showing relevant information directly on each doughnut segment.
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_02_Datalabels)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Click event" PageUrl="@pageUrl" Link="click-event">
+<SampleSection Slug="click-event">
     <Block>
         Set the <code>OnClick</code> callback to react when a doughnut segment is selected. The callback receives <code>ChartClickEventArgs</code> with the dataset, item index, label, and raw value; the demo displays the selected item below the chart.
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_03_Click_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Export image" PageUrl="@pageUrl" Link="export-image">
+<SampleSection Slug="export-image">
     <Block>
         Export the chart as an image with <code>ToBase64ImageAsync</code>, which returns a base64 data URL you can show, store or send, or save it straight to a file in the browser with <code>DownloadImageAsync</code>.
         If the chart is still animating, both wait for the animation to finish, and the image is streamed from the browser, so Blazor Server needs no larger message size.
@@ -72,9 +93,9 @@
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_04_Export_Image)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Show and hide slices" PageUrl="@pageUrl" Link="show-and-hide-slices">
+<SampleSection Slug="show-and-hide-slices">
     <Block>
         Show and hide single slices from C# and read whether a slice is visible.
         A hidden slice stays hidden when <code>UpdateAsync</code> refreshes the data, even if the slices are re-sorted, because slices are matched by label.
@@ -89,9 +110,9 @@
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_05_Show_Hide_Slices)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Legend click event" PageUrl="@pageUrl" Link="legend-click-event">
+<SampleSection Slug="legend-click-event">
     <Block>
         Set <code>OnLegendClick</code> to react when a legend item is clicked. On this chart each legend item is a slice, so the callback receives <code>ChartLegendClickEventArgs</code> with the slice <code>Index</code>, the legend text and whether the slice is hidden after the click.
         Set <code>LegendClickToggles="false"</code> to stop the legend from hiding slices, for example to open details instead.
@@ -106,9 +127,9 @@
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_06_Legend_Click_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Hover event" PageUrl="@pageUrl" Link="hover-event">
+<SampleSection Slug="hover-event">
     <Block>
         Set <code>OnHover</code> to react when the pointer moves onto a different slice. The callback receives <code>ChartHoverEventArgs</code> with the same item details as <code>OnClick</code>.
         It is called only when the hovered slice changes, and once with a <code>null</code> <code>DatasetIndex</code> when the pointer leaves all slices, so it does not flood Blazor Server with calls.
@@ -122,9 +143,9 @@
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_07_Hover_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Programmatic highlight" PageUrl="@pageUrl" Link="programmatic-highlight">
+<SampleSection Slug="programmatic-highlight">
     <Block>
         Highlight slices and show their tooltip from C# with <code>SetActiveElementsAsync</code>, for example to point at a value from a table next to the chart.
         <br /><br />
@@ -137,9 +158,9 @@
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_08_Programmatic_Highlight)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Update modes and animation control" PageUrl="@pageUrl" Link="update-modes-and-animation-control">
+<SampleSection Slug="update-modes-and-animation-control">
     <Block>
         Choose how <code>UpdateAsync</code> animates with <code>ChartUpdateMode</code>, and control the running animation with <code>StopAsync</code>, <code>RenderAsync</code>, <code>ResetAsync</code> and <code>ClearAsync</code>.
         These map one-to-one to the Chart.js <code>update(mode)</code>, <code>stop()</code>, <code>render()</code>, <code>reset()</code> and <code>clear()</code> methods.
@@ -155,9 +176,9 @@
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_09_Update_Modes)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Cutout and radius" PageUrl="@pageUrl" Link="cutout-and-radius">
+<SampleSection Slug="cutout-and-radius">
     <Block>
         <code>Cutout</code> sets the size of the hole in the middle and <code>Radius</code> sets the outer radius. Both take pixels or a percentage string; Chart.js uses a <code>"50%"</code> cutout and a <code>"100%"</code> radius for a doughnut chart.
         <br /><br />
@@ -172,9 +193,9 @@
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_10_Cutout_And_Radius)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Half gauge" PageUrl="@pageUrl" Link="half-gauge">
+<SampleSection Slug="half-gauge">
     <Block>
         <code>Rotation</code> sets the start angle of the first arc, in degrees from the top, and <code>Circumference</code> sets how far the arcs sweep. Chart.js uses 0 and 360; a rotation of -90 with a circumference of 180 draws a half doughnut, and Chart.js scales it to fill the space.
         <br /><br />
@@ -189,9 +210,9 @@
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_11_Half_Gauge)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Rotate and scale animation" PageUrl="@pageUrl" Link="rotate-and-scale-animation">
+<SampleSection Slug="rotate-and-scale-animation">
     <Block>
         <code>ChartAnimation.AnimateRotate</code> sweeps the arcs in from the start angle, and <code>AnimateScale</code> grows the chart from the center. Chart.js uses <code>true</code> and <code>false</code> for doughnut charts. Click <strong>Replay</strong> to run the first-render animation again.
         <br /><br />
@@ -205,9 +226,9 @@
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_12_Rotate_And_Scale_Animation)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Spacing mode" PageUrl="@pageUrl" Link="spacing-mode">
+<SampleSection Slug="spacing-mode">
     <Block>
         The dataset <code>Spacing</code> adds a gap between arcs, in pixels, and <code>SpacingMode</code> sets how the gap is measured: <code>"angular"</code> keeps an equal angle (the Chart.js default), <code>"proportional"</code> scales with each arc, and <code>"parallel"</code> keeps the edges of neighbouring arcs parallel.
         <br /><br />
@@ -221,9 +242,9 @@
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_13_Spacing_Mode)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Title and subtitle" PageUrl="@pageUrl" Link="title-and-subtitle">
+<SampleSection Slug="title-and-subtitle">
     <Block>
         <code>Plugins.Title</code> and <code>Plugins.Subtitle</code> draw a title and a smaller line of text, placed by <code>Position</code> and aligned by <code>Align</code>. The subtitle is drawn just after the title on the same side. In this library both default to <code>Color = "black"</code>.
         <br /><br />
@@ -238,9 +259,9 @@
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_14_Title_And_Subtitle)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Tooltip options" PageUrl="@pageUrl" Link="tooltip-options">
+<SampleSection Slug="tooltip-options">
     <Block>
         <code>Plugins.Tooltip</code> sets which items the tooltip lists, where it is placed and how it looks. When <code>Mode</code> and <code>Intersect</code> are not set, the tooltip uses the chart <code>Interaction</code> options; with two rings, <code>InteractionMode.Index</code> lists the same slice of both rings.
         <br /><br />
@@ -255,9 +276,9 @@
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_15_Tooltip_Options)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Layout padding" PageUrl="@pageUrl" Link="layout-padding">
+<SampleSection Slug="layout-padding">
     <Block>
         <code>Layout</code> adds empty space inside the canvas, around the legend, title and chart. The dashed borders show the canvas edges.
         <br /><br />
@@ -271,9 +292,9 @@
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_16_Layout_Padding)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Aspect ratio and resize delay" PageUrl="@pageUrl" Link="aspect-ratio-and-resize-delay">
+<SampleSection Slug="aspect-ratio-and-resize-delay">
     <Block>
         With <code>MaintainAspectRatio = true</code>, the canvas height follows its width by <code>AspectRatio</code> (width / height); Chart.js uses 1 for doughnut charts. <code>ResizeDelay</code> waits the given milliseconds after the container stops resizing before the chart redraws, which saves work while the window is dragged; resize the window to see the wide chart catch up.
         <br /><br />
@@ -287,9 +308,9 @@
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_17_Aspect_Ratio_And_Resize_Delay)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Hover and elements" PageUrl="@pageUrl" Link="hover-and-elements">
+<SampleSection Slug="hover-and-elements">
     <Block>
         <code>Elements.Arc</code> sets defaults for every arc, which dataset settings override. <code>Hover</code> sets which slices are highlighted under the pointer, separately from <code>Interaction</code>, which the tooltip keeps using. <code>Events</code> limits the browser events the chart listens to: with <code>Events = ["click"]</code>, moving the pointer does nothing and <code>OnHover</code> does not fire; clicking a slice still highlights it and opens its tooltip, and <code>OnClick</code> fires.
         <br /><br />
@@ -304,9 +325,9 @@
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_18_Hover_And_Elements)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Colors plugin" PageUrl="@pageUrl" Link="colors-plugin">
+<SampleSection Slug="colors-plugin">
     <Block>
         The built-in Chart.js colors plugin gives datasets that set no colors a default palette, one color per slice on a doughnut chart. It does nothing when any dataset sets its own colors, unless <code>ForceOverride = true</code>. Line, radar and scatter datasets send a default color, so on those charts the palette needs <code>ForceOverride = true</code>.
         <br /><br />
@@ -320,9 +341,31 @@
         </div>
     </Block>
     <Demo Type="typeof(DoughnutChart_Demo_19_Colors_Plugin)" Tabs="true" />
-</Section>
+</SampleSection>
+
+<SampleSection Slug="radial-gradient">
+    <Block>
+        A colour function can return a radial canvas gradient, so each slice fades from the centre to the rim. Chart.js calls the function while drawing, so the gradient follows the chart when it resizes.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Register the function shown below in your own script file. It builds one gradient per slice from the chart area.</li>
+                <li>Set <code>BackgroundColorFunction = new ChartFunction("demo.radialGradient")</code> on the <code>DoughnutChartDataset</code>. When set, it is sent instead of <code>BackgroundColor</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <CodeChunk Class="mb-3" LanguageCode="LanguageCode.JavaScript" FilePath="~\Pages\Demos\DoughnutChart\DoughnutChart_Demo_20_Radial_Gradient_Snippet.js" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
+    <Demo Type="typeof(DoughnutChart_Demo_20_Radial_Gradient)" Tabs="true" />
+</SampleSection>
+</CascadingValue>
+
+<SamplePageFooter ChartKey="@SampleChartKeys.DoughnutChart" Sample="@Sample" />
 
 @code {
+    /// <summary>The sample slug from the URL, or <see langword="null" /> on the chart overview.</summary>
+    [Parameter] public string? Sample { get; set; }
+
     private const string pageUrl = DemoRouteConstants.Demos_DoughnutChart;
     private const string pageTitle = "Doughnut Chart";
     private const string pageDescription = "Explore interactive <code>Blazor Doughnut Chart</code> demos with real-world examples. Learn how to visualize data, customize chart options, and implement data labels using the Blazor Doughnut Chart component.";

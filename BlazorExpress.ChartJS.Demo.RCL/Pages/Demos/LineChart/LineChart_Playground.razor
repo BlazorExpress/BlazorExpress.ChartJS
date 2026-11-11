@@ -1,0 +1,104 @@
+<PlaygroundPanel Code="@csharp">
+    <Controls>
+        <PlaygroundRange Label="Tension" Max="0.6" Step="0.1" Value="tension" ValueChanged="value => SetAsync(() => tension = value)" />
+        <PlaygroundRange Label="Line width" Min="1" Max="8" Unit=" px" Value="borderWidth" ValueChanged="value => SetAsync(() => borderWidth = value)" />
+        <PlaygroundRange Label="Point radius" Max="10" Unit=" px" Value="pointRadius" ValueChanged="value => SetAsync(() => pointRadius = value)" />
+        <PlaygroundCheckbox Label="Stepped" Value="stepped" ValueChanged="value => SetAsync(() => stepped = value)" />
+        <PlaygroundCheckbox Label="Fill" Value="fill" ValueChanged="value => SetAsync(() => fill = value)" />
+        <PlaygroundCheckbox Label="Begin at zero" Value="beginAtZero" ValueChanged="value => SetAsync(() => beginAtZero = value)" />
+        <PlaygroundCommonControls Settings="settings" OnChanged="ApplyAsync" />
+    </Controls>
+    <Chart>
+        <LineChart @ref="chart" />
+    </Chart>
+</PlaygroundPanel>
+
+@code {
+    // The defaults of the library and of Chart.js; a value is listed in the C# only when it differs.
+    private const double DefaultBorderWidth = 3;
+    private const double DefaultPointRadius = 3;
+
+    private LineChart chart = default!;
+    private readonly PlaygroundSettings settings = new();
+    private string csharp = string.Empty;
+    private bool beginAtZero = true;
+    private double borderWidth = DefaultBorderWidth;
+    private bool fill;
+    private double pointRadius = DefaultPointRadius;
+    private bool stepped;
+    private double tension;
+
+    protected override void OnInitialized() => Build();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var (chartData, options) = Build();
+            await chart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task ApplyAsync()
+    {
+        var (chartData, options) = Build();
+        await chart.UpdateAsync(chartData, options);
+    }
+
+    private async Task SetAsync(Action change)
+    {
+        change();
+        await ApplyAsync();
+    }
+
+    // Builds the chart data and options from the controls, and the C# that gives the same chart.
+    private (ChartData ChartData, LineChartOptions Options) Build()
+    {
+        var text = new PlaygroundCode(nameof(LineChartOptions), nameof(LineChartDataset));
+        var options = new LineChartOptions { Responsive = true };
+        settings.Apply(options, options.Plugins, text);
+        settings.ApplyToAxes(options.Scales, text);
+
+        if (!beginAtZero)
+        {
+            options.Scales.Y!.BeginAtZero = false;
+            text.Option("Scales.Y!.BeginAtZero", "false");
+        }
+
+        if (tension > 0) text.Dataset("Tension", PlaygroundCode.Literal(tension));
+        if (borderWidth != DefaultBorderWidth) text.Dataset("BorderWidth", PlaygroundCode.Literal(borderWidth));
+        if (pointRadius != DefaultPointRadius) text.Dataset("PointRadius", PlaygroundCode.List(pointRadius));
+        if (stepped) text.Dataset("Stepped", "true");
+        if (fill) text.Dataset("Fill", "true");
+
+        var chartData = new ChartData
+        {
+            Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+            Datasets =
+            [
+                CreateDataset("Website", [12400, 15800, 14100, 19600, 17300, 22900, 24500], 0),
+                CreateDataset("Mobile app", [8200, 9700, 12300, 11800, 15400, 16900, 19200], 1),
+            ]
+        };
+
+        csharp = text.ToString();
+
+        return (chartData, options);
+    }
+
+    private LineChartDataset CreateDataset(string label, List<double?> data, int colorIndex) =>
+        new()
+        {
+            Label = label,
+            Data = data,
+            BorderColor = DemoPalette.Get(colorIndex),
+            BackgroundColor = DemoPalette.GetTransparent(colorIndex, 0.3),
+            BorderWidth = borderWidth,
+            Fill = fill,
+            PointRadius = [pointRadius],
+            Stepped = stepped,
+            Tension = tension,
+        };
+}

@@ -1,0 +1,56 @@
+<LineChart @ref="lineChart" Width="600" />
+
+@code {
+    private LineChart lineChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var chartData = new ChartData
+            {
+                Labels = ["Q1", "Q2", "Q3", "Q4"],
+                Datasets =
+                [
+                    new LineChartDataset
+                    {
+                        Label = "North",
+                        Data = [120, 135, 128, 150],
+                        BorderColor = "rgb(0, 114, 178)", // Okabe–Ito blue
+                        BackgroundColor = "rgb(0, 114, 178)",
+                    },
+                    new LineChartDataset
+                    {
+                        Label = "South",
+                        Data = [90, 104, 117, 111],
+                        BorderColor = "rgb(230, 159, 0)", // Okabe–Ito orange
+                        BackgroundColor = "rgb(230, 159, 0)",
+                    },
+                    new LineChartDataset
+                    {
+                        Label = "West",
+                        Data = [60, 72, 69, 88],
+                        BorderColor = "rgb(0, 158, 115)", // Okabe–Ito bluish green
+                        BackgroundColor = "rgb(0, 158, 115)",
+                    },
+                ]
+            };
+
+            var options = new LineChartOptions { Responsive = true };
+
+            // The legend title is drawn above the legend items, inside the legend box.
+            options.Plugins.Legend.Position = "right";
+            options.Plugins.Legend.Title = new ChartPluginsLegendTitle
+            {
+                Display = true,
+                Text = "Sales region",
+                Color = "rgb(153, 153, 153)",
+                Padding = 8,
+            };
+
+            await lineChart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

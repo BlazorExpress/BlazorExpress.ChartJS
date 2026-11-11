@@ -1,0 +1,52 @@
+<LineChart @ref="lineChart" Width="600" />
+
+@code {
+    private LineChart lineChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var low = new LineChartDataset
+            {
+                Label = "Low",
+                Data = [8, 9, 12, 15, 18, 21, 22],
+                BorderColor = "rgb(86, 180, 233)", // Okabe–Ito sky blue
+                BackgroundColor = "rgba(86, 180, 233, 0.3)",
+            };
+
+            var average = new LineChartDataset
+            {
+                Label = "Average",
+                Data = [12, 14, 17, 20, 24, 27, 29],
+                BorderColor = "rgb(0, 158, 115)", // Okabe–Ito bluish green
+                BackgroundColor = "rgba(0, 158, 115, 0.3)",
+            };
+
+            var high = new LineChartDataset
+            {
+                Label = "High",
+                Data = [17, 19, 23, 26, 30, 34, 36],
+                BorderColor = "rgb(213, 94, 0)", // Okabe–Ito vermillion
+                BackgroundColor = "rgba(213, 94, 0, 0.3)",
+            };
+
+            // Each fill names its target dataset: by its index in the chart, or relative to the dataset itself.
+            average.FillToDataset(0);                      // "Average" fills down to "Low" (dataset index 0)
+            high.FillToDataset(-1, relativeIndex: true);   // "High" fills down to the dataset before it
+
+            var chartData = new ChartData
+            {
+                Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+                Datasets = [low, average, high],
+            };
+
+            var options = new LineChartOptions { Responsive = true };
+            options.Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false };
+
+            await lineChart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

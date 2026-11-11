@@ -1,0 +1,85 @@
+@attribute [Route(pageUrl)]
+@layout DemosMainLayout
+
+@* Unlisted page: not linked from the navigation. It checks the sample catalog, then opens every sample page in turn. *@
+<HeadContent>
+    <meta name="robots" content="noindex, nofollow" />
+</HeadContent>
+
+<PageHero Title="Samples self-check" />
+
+<Block>
+    Checks the sample catalog against the demo components and their embedded sources, then opens every sample page in the frame below
+    and records whether its charts drew with a non-zero size and whether the console stayed clean. A failing sample is recorded and the walk continues. The walk waits while this page is not drawn (a hidden pane or a background tab), because charts get their size on an animation frame. A chart created while its tab was still hidden can keep a resize that no later drawing applies. The walk completes it to learn whether the chart can draw, and reports the sample as "resized", not as passed.
+    Add <code>?chart=line-chart</code> to walk one chart page only.
+</Block>
+
+<h2 class="title is-5">Cases</h2>
+@if (cases.Count == 0)
+{
+    <Block>Running…</Block>
+}
+else
+{
+    <Block>
+        <strong>Passed:</strong> @cases.Count(c => c.Status == Pass) ·
+        <strong>Failed:</strong> <span class="@(cases.Any(c => c.Status == Fail) ? "has-text-danger" : "has-text-success")">@cases.Count(c => c.Status == Fail)</span>
+    </Block>
+    <div class="table-container">
+        <table class="table is-fullwidth is-narrow is-striped">
+            <thead>
+                <tr><th>Status</th><th>Case</th><th>Expected</th><th>Actual</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var item in cases)
+                {
+                    <tr class="@(item.Status == Fail ? "has-background-danger-light" : null)">
+                        <td>@item.Status</td>
+                        <td>@item.Name</td>
+                        <td><code>@item.Expected</code></td>
+                        <td><code>@item.Actual</code></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<h2 class="title is-5 mt-5">Sample walk</h2>
+<Block>
+    <strong>Opened:</strong> @walkResults.Count of @walkTotal ·
+    <strong>Passed:</strong> @walkResults.Count(r => r.Status == Pass) ·
+    <strong>Resized:</strong> <span class="@(walkResults.Any(r => r.Status == Resized) ? "has-text-warning-dark" : null)">@walkResults.Count(r => r.Status == Resized)</span> (@walkResults.Sum(r => r.Resized) charts) ·
+    <strong>Failed:</strong> <span class="@(walkResults.Any(r => r.Status == Fail) ? "has-text-danger" : "has-text-success")">@walkResults.Count(r => r.Status == Fail)</span>
+    @if (walkDone)
+    {
+        <span> · done</span>
+    }
+</Block>
+
+<iframe @ref="frame" class="be-self-check-frame" title="Sample under test" src="@DemoRouteConstants.Demos_Samples"></iframe>
+
+@if (walkResults.Any())
+{
+    <div class="table-container mt-3">
+        <table class="table is-fullwidth is-narrow is-striped">
+            <thead>
+                <tr><th>Status</th><th>Sample</th><th>Charts</th><th>Zero size</th><th>Resized by the walk</th><th>Notes</th><th>Console errors</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var item in walkResults.OrderBy(r => r.Status == Fail ? 0 : r.Status == Resized ? 1 : 2))
+                {
+                    <tr class="@(item.Status == Fail ? "has-background-danger-light" : item.Status == Resized ? "has-background-warning-light" : null)">
+                        <td>@item.Status</td>
+                        <td><a href="@item.Url">@item.Url</a></td>
+                        <td>@item.Charts</td>
+                        <td>@item.ZeroSize</td>
+                        <td>@item.Resized</td>
+                        <td>@string.Join("; ", item.Notes)</td>
+                        <td><code>@string.Join(" | ", item.Errors)</code></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

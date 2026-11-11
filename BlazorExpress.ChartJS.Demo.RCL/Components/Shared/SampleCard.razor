@@ -1,0 +1,46 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+@if (Sample is not null)
+{
+    <a class="be-sample-card" href="@Sample.Url">
+        <div class="be-sample-card-preview" aria-hidden="true">
+            <SampleThumbnail Sample="Sample">
+                <BootstrapIcon Name="@(chart?.IconName ?? BootstrapIconName.BarChartFill)" Class="be-sample-card-icon" />
+            </SampleThumbnail>
+        </div>
+        <div class="be-sample-card-body">
+            <p class="be-sample-card-chart">@chart?.Name · @Sample.Category.GetDisplayName()</p>
+            <p class="be-sample-card-title">@Sample.Title</p>
+            <p class="be-sample-card-description">@Sample.Description</p>
+            <p class="be-sample-card-flags">
+                @if (Sample.IsNewIn130)
+                {
+                    <span class="tag is-success is-light">New in 1.3.0</span>
+                }
+                @if (Sample.UsesJsFunction)
+                {
+                    <span class="tag is-info is-light">JS function</span>
+                }
+                @if (Sample.HasPlayground)
+                {
+                    <span class="tag is-warning is-light">Playground</span>
+                }
+            </p>
+        </div>
+    </a>
+}
+else if (Unavailable is not null)
+{
+    @* Not yet available: no page and no link (story 26110206 R-03). *@
+    <div class="be-sample-card is-unavailable" aria-disabled="true">
+        <div class="be-sample-card-preview" aria-hidden="true">
+            <BootstrapIcon Name="BootstrapIconName.HourglassSplit" Class="be-sample-card-icon" />
+        </div>
+        <div class="be-sample-card-body">
+            <p class="be-sample-card-chart">Not yet available · @Unavailable.Category.GetDisplayName()</p>
+            <p class="be-sample-card-title">@Unavailable.Title</p>
+            <p class="be-sample-card-description">@Unavailable.Description</p>
+            <p class="be-sample-card-flags"><span class="tag is-light">Waits for: @Unavailable.WaitingFor</span></p>
+        </div>
+    </div>
+}

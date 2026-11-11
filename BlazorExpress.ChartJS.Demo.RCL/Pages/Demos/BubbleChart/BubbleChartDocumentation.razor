@@ -1,19 +1,24 @@
 @attribute [Route(pageUrl)]
+@attribute [Route(pageUrl + "/{Sample}")]
 @layout DemosMainLayout
 
-<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+<SamplePageHeader ChartKey="@SampleChartKeys.BubbleChart" Sample="@Sample">
+    <PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
-<PageHero Title="@pageTitle">
-    <SubTitleTemplate>
-        @((MarkupString)pageDescription)
-    </SubTitleTemplate>
-</PageHero>
+    <PageHero Title="@pageTitle">
+        <SubTitleTemplate>
+            @((MarkupString)pageDescription)
+        </SubTitleTemplate>
+    </PageHero>
 
-<DocsLink Href="@DemoRouteConstants.Docs_BubbleChart" />
+    <DocsLink Href="@DemoRouteConstants.Docs_BubbleChart" />
 
-<Prerequisites PageUrl="@pageUrl" />
+    <Prerequisites PageUrl="@pageUrl" />
+</SamplePageHeader>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="How it works" PageUrl="@pageUrl" Link="how-it-works">
+@* Each SampleSection renders only on its own sample page, /demos/<chart>/<slug>. *@
+<CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.BubbleChart, Sample)">
+<SampleSection Slug="how-it-works">
     <Block>
         The <strong>Bubble Chart</strong> component visualizes three dimensions of data by displaying each data point as a bubble, where the X and Y coordinates determine the position and the bubble size represents a third value. This makes it ideal for comparing and analyzing relationships between multiple variables.
         <br />
@@ -32,16 +37,32 @@
         This demo provides a hands-on example of setting up a Bubble Chart in Blazor, demonstrating how to bind and update your data for interactive visualizations.
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_01_Examples)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Click event" PageUrl="@pageUrl" Link="click-event">
+<SampleSection Slug="playground">
+    <Block>
+        Change the main options of a bubble chart and watch the chart and its C# update together. The controls cover point style, border width and hover radius, plus the legend, the locale and right-to-left layout.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Change a control. The chart is updated with <code>UpdateAsync</code>, so it animates from its current state.</li>
+                <li>Pick a <strong>Locale</strong> to see how numbers are formatted for that region, and switch on <strong>Right to left</strong> to mirror the legend and tooltip.</li>
+                <li>Copy the C# below the chart. It lists only the settings that differ from their defaults, with the property names the library uses.</li>
+            </ol>
+        </div>
+    </Block>
+    <BubbleChart_Playground />
+</SampleSection>
+
+<SampleSection Slug="click-event">
     <Block>
         Set the <code>OnClick</code> callback to react when a bubble is selected. The callback receives <code>ChartClickEventArgs</code> with the dataset, point index, and raw value; the demo displays the selected item below the chart.
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_02_Click_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Export image" PageUrl="@pageUrl" Link="export-image">
+<SampleSection Slug="export-image">
     <Block>
         Export the chart as an image with <code>ToBase64ImageAsync</code>, which returns a base64 data URL you can show, store or send, or save it straight to a file in the browser with <code>DownloadImageAsync</code>.
         If the chart is still animating, both wait for the animation to finish, and the image is streamed from the browser, so Blazor Server needs no larger message size.
@@ -56,9 +77,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_03_Export_Image)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Show and hide datasets" PageUrl="@pageUrl" Link="show-and-hide-datasets">
+<SampleSection Slug="show-and-hide-datasets">
     <Block>
         Show and hide whole datasets or single bubbles from C#, check whether a dataset is visible and count the visible datasets.
         Visibility changed at runtime, from C# or a legend click, stays in place when <code>UpdateAsync</code> refreshes the data, because datasets are matched by <code>Key</code>, or else by label, and bubbles by label.
@@ -74,9 +95,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_04_Show_Hide_Datasets)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Legend click event" PageUrl="@pageUrl" Link="legend-click-event">
+<SampleSection Slug="legend-click-event">
     <Block>
         Set <code>OnLegendClick</code> to react when a legend item is clicked. The callback receives <code>ChartLegendClickEventArgs</code> with the dataset index, the legend text and whether the dataset is hidden after the click.
         Set <code>LegendClickToggles="false"</code> to stop the legend from hiding datasets, for example to open details instead.
@@ -91,9 +112,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_05_Legend_Click_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Hover event" PageUrl="@pageUrl" Link="hover-event">
+<SampleSection Slug="hover-event">
     <Block>
         Set <code>OnHover</code> to react when the pointer moves onto a different bubble. The callback receives <code>ChartHoverEventArgs</code> with the same item details as <code>OnClick</code>.
         It is called only when the hovered bubble changes, and once with a <code>null</code> <code>DatasetIndex</code> when the pointer leaves all bubbles, so it does not flood Blazor Server with calls.
@@ -107,9 +128,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_06_Hover_Event)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Programmatic highlight" PageUrl="@pageUrl" Link="programmatic-highlight">
+<SampleSection Slug="programmatic-highlight">
     <Block>
         Highlight bubbles and show their tooltip from C# with <code>SetActiveElementsAsync</code>, for example to point at a value from a table next to the chart.
         <br /><br />
@@ -122,9 +143,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_07_Programmatic_Highlight)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Update modes and animation control" PageUrl="@pageUrl" Link="update-modes-and-animation-control">
+<SampleSection Slug="update-modes-and-animation-control">
     <Block>
         Choose how <code>UpdateAsync</code> animates with <code>ChartUpdateMode</code>, and control the running animation with <code>StopAsync</code>, <code>RenderAsync</code>, <code>ResetAsync</code> and <code>ClearAsync</code>.
         These map one-to-one to the Chart.js <code>update(mode)</code>, <code>stop()</code>, <code>render()</code>, <code>reset()</code> and <code>clear()</code> methods.
@@ -140,9 +161,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_08_Update_Modes)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Multiple axes" PageUrl="@pageUrl" Link="multiple-axes">
+<SampleSection Slug="multiple-axes">
     <Block>
         Add a second y-axis or x-axis with <code>Scales.AdditionalAxes</code> and point a dataset at it with <code>YAxisID</code> or <code>XAxisID</code>, so two series with different units share one chart.
         Chart.js lays out each axis on its <code>Position</code>; turn off the extra axis's grid with <code>DrawOnChartArea = false</code> so only one set of grid lines is drawn. Like every axis in this library, an additional axis starts at zero by default (<code>BeginAtZero = true</code>).
@@ -158,9 +179,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_09_Multiple_Axes)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Axis position and reverse" PageUrl="@pageUrl" Link="axis-position-and-reverse">
+<SampleSection Slug="axis-position-and-reverse">
     <Block>
         Move an axis to another edge with <code>Position</code>, flip its direction with <code>Reverse</code>, or hide it with <code>Display = false</code>.
         Chart.js draws the x-axis at the bottom and the y-axis on the left by default; a hidden axis still scales the data, it only stops drawing its ticks, title and grid.
@@ -175,9 +196,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_10_Axis_Position_And_Reverse)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Tick options" PageUrl="@pageUrl" Link="tick-options">
+<SampleSection Slug="tick-options">
     <Block>
         Control how many tick labels a linear axis shows, how they are spaced and how they look with <code>ChartAxesTicks</code>.
         Chart.js picks round step sizes on its own; <code>StepSize</code> and <code>Count</code> override that, and <code>MaxTicksLimit</code> and <code>Precision</code> only limit it.
@@ -193,9 +214,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_11_Tick_Options)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Axis title" PageUrl="@pageUrl" Link="axis-title">
+<SampleSection Slug="axis-title">
     <Block>
         Label each axis with <code>ChartAxesTitle</code>. Chart.js hides axis titles by default; in this library the title <code>Color</code> defaults to <code>"black"</code> and its <code>Font</code> to bold 12px.
         The demo sets <code>BeginAtZero = false</code> because axes in this library start at zero by default and the heights and weights are far from zero.
@@ -211,9 +232,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_12_Axis_Title)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Grace and bounds" PageUrl="@pageUrl" Link="grace-and-bounds">
+<SampleSection Slug="grace-and-bounds">
     <Block>
         Add room beyond the data with <code>Grace</code>, so large bubbles at the edge are not cut off, choose whether the axis ends at the data or at a whole tick with <code>Bounds</code>, and stack two axes on one edge with <code>Stack</code>.
         Chart.js uses <code>Bounds = "ticks"</code> for linear axes; <code>SuggestedMin</code> and <code>SuggestedMax</code> widen the range only when the data does not reach them. Axes in this library start at zero by default, so the demo sets <code>BeginAtZero = false</code> to show grace and bounds at both ends.        <br /><br />
@@ -228,9 +249,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_13_Grace_And_Bounds)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Title and subtitle" PageUrl="@pageUrl" Link="title-and-subtitle">
+<SampleSection Slug="title-and-subtitle">
     <Block>
         Show a chart title with <code>Plugins.Title</code> and a second line with <code>Plugins.Subtitle</code>. Both are hidden until <code>Display = true</code>, and in this library their <code>Color</code> defaults to <code>"black"</code>.
         Chart.js draws the subtitle just below the title and places both at the top, centered, unless <code>Position</code> or <code>Align</code> says otherwise.
@@ -246,9 +267,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_14_Title_And_Subtitle)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Tooltip options" PageUrl="@pageUrl" Link="tooltip-options">
+<SampleSection Slug="tooltip-options">
     <Block>
         Choose which bubbles a tooltip lists and how it looks with <code>Plugins.Tooltip</code>. Tooltip <code>Mode</code> and <code>Intersect</code> override the chart <code>Interaction</code> for the tooltip only.
         In a bubble chart, <code>InteractionMode.Index</code> lists the bubble at the same position in every dataset, and <code>InteractionMode.Nearest</code> lists only the closest bubble.
@@ -264,9 +285,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_15_Tooltip_Options)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Layout padding" PageUrl="@pageUrl" Link="layout-padding">
+<SampleSection Slug="layout-padding">
     <Block>
         Add empty space between the canvas edge and the chart with <code>Layout</code>. Chart.js applies it inside the canvas, around the legend, title and axes; the dashed borders in the demo show the canvas edge.
         <br /><br />
@@ -280,9 +301,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_16_Layout_Padding)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Aspect ratio and resize delay" PageUrl="@pageUrl" Link="aspect-ratio-and-resize-delay">
+<SampleSection Slug="aspect-ratio-and-resize-delay">
     <Block>
         Set the width-to-height ratio of a responsive chart with <code>AspectRatio</code>; Chart.js keeps it while <code>MaintainAspectRatio = true</code> (the default) and uses 2 for bubble charts.
         <code>ResizeDelay</code> waits the given milliseconds after the container stops resizing before the chart redraws, which saves work while the window is dragged; resize the window to see the middle chart catch up later.
@@ -298,9 +319,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_17_Aspect_Ratio_And_Resize_Delay)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Hover and elements" PageUrl="@pageUrl" Link="hover-and-elements">
+<SampleSection Slug="hover-and-elements">
     <Block>
         Set default bubble styling for every dataset with <code>Elements.Point</code>, and change what the pointer highlights with <code>Hover</code>. The bubble size still comes from each point's <code>R</code>; in a bubble chart Chart.js adds <code>HoverRadius</code> to that radius on hover. Dataset values such as <code>PointStyle</code> win over the element defaults.
         <code>Hover</code> overrides <code>Interaction</code> for highlighting only, so the tooltip can still show one bubble while the whole dataset lights up. With <code>Events = ["click"]</code>, moving the pointer does nothing and <code>OnHover</code> does not fire; clicking a bubble still highlights it and opens its tooltip, and <code>OnClick</code> fires.
@@ -315,9 +336,9 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_18_Hover_And_Elements)" Tabs="true" />
-</Section>
+</SampleSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Colors plugin" PageUrl="@pageUrl" Link="colors-plugin">
+<SampleSection Slug="colors-plugin">
     <Block>
         The Chart.js colors plugin gives datasets without colors a color from its built-in palette. Configure it with <code>Plugins.Colors</code>.
         A <code>BubbleChartDataset</code> sends no color unless you set <code>BackgroundColor</code> or <code>BorderColor</code>, so the palette applies to it directly; line, radar and scatter datasets send a default color, so there the palette needs <code>ForceOverride = true</code>, which also replaces colors you set.
@@ -332,9 +353,15 @@
         </div>
     </Block>
     <Demo Type="typeof(BubbleChart_Demo_19_Colors_Plugin)" Tabs="true" />
-</Section>
+</SampleSection>
+</CascadingValue>
+
+<SamplePageFooter ChartKey="@SampleChartKeys.BubbleChart" Sample="@Sample" />
 
 @code {
+    /// <summary>The sample slug from the URL, or <see langword="null" /> on the chart overview.</summary>
+    [Parameter] public string? Sample { get; set; }
+
     private const string pageUrl = DemoRouteConstants.Demos_BubbleChart;
     private const string pageTitle = "Bubble Chart";
     private const string pageDescription = "The <code>Blazor Bubble Chart</code> component is used to display three dimensions of data at the same time. The location of the bubble is determined by the first two dimensions and the corresponding horizontal and vertical axes. The third dimension is represented by the size of the individual bubbles.";

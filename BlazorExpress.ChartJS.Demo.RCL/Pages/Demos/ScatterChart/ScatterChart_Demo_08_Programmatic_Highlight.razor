@@ -1,9 +1,9 @@
 <ScatterChart @ref="scatterChart" Width="600" />
 
 <div class="mt-3">
-    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="HighlightOneAsync">Highlight Third Sensor A</Button>
-    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="HighlightAllAsync">Highlight all of Third</Button>
-    <Button Color="ButtonColor.Warning" Size="ButtonSize.Small" @onclick="ClearHighlightAsync">Clear</Button>
+    <button type="button" class="button is-primary is-small" @onclick="HighlightOneAsync">Highlight Third Sensor A</button>
+    <button type="button" class="button is-info is-small" @onclick="HighlightAllAsync">Highlight all of Third</button>
+    <button type="button" class="button is-warning is-small" @onclick="ClearHighlightAsync">Clear</button>
 </div>
 
 @code {

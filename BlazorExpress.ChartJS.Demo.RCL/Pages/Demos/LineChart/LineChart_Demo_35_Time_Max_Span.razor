@@ -1,9 +1,9 @@
 <LineChart @ref="lineChart" Width="600" />
 
 <div class="mt-3">
-    <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="() => ShowRangeAsync(14)">Last 14 days</Button>
-    <Button Color="ButtonColor.Info" Size="ButtonSize.Small" @onclick="() => ShowRangeAsync(30)">Last 30 days</Button>
-    <Button Color="ButtonColor.Link" Size="ButtonSize.Small" @onclick="() => ShowRangeAsync(null)">All</Button>
+    <button type="button" class="button is-primary is-small" @onclick="() => ShowRangeAsync(14)">Last 14 days</button>
+    <button type="button" class="button is-info is-small" @onclick="() => ShowRangeAsync(30)">Last 30 days</button>
+    <button type="button" class="button is-link is-small" @onclick="() => ShowRangeAsync(null)">All</button>
 </div>
 
 @code {

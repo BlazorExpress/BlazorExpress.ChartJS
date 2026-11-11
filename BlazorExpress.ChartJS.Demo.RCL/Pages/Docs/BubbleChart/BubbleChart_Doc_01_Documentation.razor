@@ -49,8 +49,19 @@
     <DocxTable TItem="BubbleChartDatasetData" DocType="DocType.Properties" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="BubbleChartDataPoint Properties" PageUrl="@pageUrl" Link="bubblechart-data-point-properties">
+    <Block>
+        <code>X</code> and <code>Y</code> are the position of the bubble on the x and y axes. <code>R</code> is its radius in pixels; it is not scaled by the axes.
+    </Block>
+    <DocxTable TItem="BubbleChartDataPoint" DocType="DocType.Properties" />
+</Section>
+
 <Section Class="p-0" Size="HeadingSize.H4" Name="BubbleChartDatasetDataLabels Properties" PageUrl="@pageUrl" Link="bubblechart-dataset-data-labels-properties">
     <DocxTable TItem="BubbleChartDatasetDataLabels" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartDatasetDataLabels Properties" PageUrl="@pageUrl" Link="chart-dataset-data-labels-properties">
+    <DocxTable TItem="ChartDatasetDataLabels" DocType="DocType.Properties" />
 </Section>
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="BubbleChartOptions Properties" PageUrl="@pageUrl" Link="bubblechart-options-properties">
@@ -61,12 +72,24 @@
     <DocxTable TItem="BubbleChartPlugins" DocType="DocType.Properties" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="BubbleChartDataLabels Properties" PageUrl="@pageUrl" Link="bubblechart-data-labels-properties">
+    <DocxTable TItem="BubbleChartDataLabels" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="BubbleChartDataLabelsFont Properties" PageUrl="@pageUrl" Link="bubblechart-data-labels-font-properties">
+    <DocxTable TItem="BubbleChartDataLabelsFont" DocType="DocType.Properties" />
+</Section>
+
 <Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsLegend Properties" PageUrl="@pageUrl" Link="chart-plugins-legend-properties">
     <DocxTable TItem="ChartPluginsLegend" DocType="DocType.Properties" />
 </Section>
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsLegendLabels Properties" PageUrl="@pageUrl" Link="chart-plugins-legend-labels-properties">
     <DocxTable TItem="ChartPluginsLegendLabels" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsLegendTitle Properties" PageUrl="@pageUrl" Link="chart-plugins-legend-title-properties">
+    <DocxTable TItem="ChartPluginsLegendTitle" DocType="DocType.Properties" />
 </Section>
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsTitle Properties" PageUrl="@pageUrl" Link="chart-plugins-title-properties">
@@ -77,12 +100,20 @@
     <DocxTable TItem="ChartPluginsSubtitle" DocType="DocType.Properties" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartFont Properties" PageUrl="@pageUrl" Link="chart-font-properties">
+    <DocxTable TItem="ChartFont" DocType="DocType.Properties" />
+</Section>
+
 <Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsTooltip Properties" PageUrl="@pageUrl" Link="chart-plugins-tooltip-properties">
     <DocxTable TItem="ChartPluginsTooltip" DocType="DocType.Properties" />
 </Section>
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsTooltipCallbacks Properties" PageUrl="@pageUrl" Link="chart-plugins-tooltip-callbacks-properties">
     <DocxTable TItem="ChartPluginsTooltipCallbacks" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsTooltipFont Properties" PageUrl="@pageUrl" Link="chart-plugins-tooltip-font-properties">
+    <DocxTable TItem="ChartPluginsTooltipFont" DocType="DocType.Properties" />
 </Section>
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsColors Properties" PageUrl="@pageUrl" Link="chart-plugins-colors-properties">
@@ -145,6 +176,10 @@
     <DocxTable TItem="ChartAxesTicks" DocType="DocType.Properties" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartAxesTicksMajor Properties" PageUrl="@pageUrl" Link="chart-axes-ticks-major-properties">
+    <DocxTable TItem="ChartAxesTicksMajor" DocType="DocType.Properties" />
+</Section>
+
 <Section Class="p-0" Size="HeadingSize.H4" Name="ChartNumberFormat Properties" PageUrl="@pageUrl" Link="chart-number-format-properties">
     <DocxTable TItem="ChartNumberFormat" DocType="DocType.Properties" />
 </Section>
@@ -176,8 +211,26 @@
     <DocxTable TItem="BubbleChartTimePoint" DocType="DocType.Properties" />
 </Section>
 
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartTimeValue" PageUrl="@pageUrl" Link="chart-time-value">
+    <Block>
+        A <code>ChartTimeValue</code> is a date or a date and time on a time axis. It has no properties to set: assign a .NET date value and it converts implicitly.
+        <div class="content">
+            <ul>
+                <li><code>DateOnly</code>: a wall-clock date, shown as the same calendar date in every browser time zone.</li>
+                <li><code>DateTime</code>: a value of kind <code>Unspecified</code> is a wall-clock time, shown the same in every browser time zone; a value of kind <code>Utc</code> or <code>Local</code> is an exact instant, and a <code>Local</code> value is converted with the time zone of the .NET process.</li>
+                <li><code>DateTimeOffset</code>: an exact instant, shown in the browser's local time.</li>
+            </ul>
+        </div>
+        It is the item type of <code>ChartData.TimeLabels</code>, the type of <code>BubbleChartTimePoint.X</code>, and the type of the axis limits <code>ChartAxes.MinTime</code>, <code>MaxTime</code>, <code>SuggestedMinTime</code> and <code>SuggestedMaxTime</code>.
+    </Block>
+</Section>
+
 <Section Class="p-0" Size="HeadingSize.H4" Name="ChartDimension Properties" PageUrl="@pageUrl" Link="chart-dimension-properties">
     <DocxTable TItem="ChartDimension" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartFunction Properties" PageUrl="@pageUrl" Link="chart-function-properties">
+    <DocxTable TItem="ChartFunction" DocType="DocType.Properties" />
 </Section>
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="ChartLegendClickEventArgs Properties" PageUrl="@pageUrl" Link="chart-legend-click-event-args-properties">
@@ -190,6 +243,10 @@
 
 <Section Class="p-0" Size="HeadingSize.H4" Name="ChartActiveElement Properties" PageUrl="@pageUrl" Link="chart-active-element-properties">
     <DocxTable TItem="ChartActiveElement" DocType="DocType.Properties" />
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="ChartClickEventArgs Properties" PageUrl="@pageUrl" Link="chart-click-event-args-properties">
+    <DocxTable TItem="ChartClickEventArgs" DocType="DocType.Properties" />
 </Section>
 
 @code {

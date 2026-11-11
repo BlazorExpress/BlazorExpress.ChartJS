@@ -1,0 +1,100 @@
+<PlaygroundPanel Code="@csharp">
+    <Controls>
+        <PlaygroundSelect Label="Point style" Options="pointStyles" Value="@pointStyle" ValueChanged="value => SetAsync(() => pointStyle = value)" />
+        <PlaygroundRange Label="Border width" Max="8" Unit=" px" Value="borderWidth" ValueChanged="value => SetAsync(() => borderWidth = value)" />
+        <PlaygroundRange Label="Hover radius" Max="12" Unit=" px" Value="hoverRadius" ValueChanged="value => SetAsync(() => hoverRadius = value)" />
+        <PlaygroundCheckbox Label="Begin at zero" Value="beginAtZero" ValueChanged="value => SetAsync(() => beginAtZero = value)" />
+        <PlaygroundCommonControls Settings="settings" OnChanged="ApplyAsync" />
+    </Controls>
+    <Chart>
+        <BubbleChart @ref="chart" />
+    </Chart>
+</PlaygroundPanel>
+
+@code {
+    // The defaults of the library and of Chart.js; a value is listed in the C# only when it differs.
+    private const double DefaultBorderWidth = 3;
+    private const double DefaultHoverRadius = 4;
+    private const string DefaultPointStyle = "circle";
+
+    private static readonly IReadOnlyList<(string Value, string Text)> pointStyles =
+        new[] { "circle", "rect", "rectRounded", "rectRot", "star", "triangle" }.Select(style => (style, style)).ToList();
+
+    private BubbleChart chart = default!;
+    private readonly PlaygroundSettings settings = new();
+    private string csharp = string.Empty;
+    private bool beginAtZero = true;
+    private double borderWidth = DefaultBorderWidth;
+    private double hoverRadius = DefaultHoverRadius;
+    private string pointStyle = DefaultPointStyle;
+
+    protected override void OnInitialized() => Build();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var (chartData, options) = Build();
+            await chart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task ApplyAsync()
+    {
+        var (chartData, options) = Build();
+        await chart.UpdateAsync(chartData, options);
+    }
+
+    private async Task SetAsync(Action change)
+    {
+        change();
+        await ApplyAsync();
+    }
+
+    // Builds the chart data and options from the controls, and the C# that gives the same chart.
+    private (ChartData ChartData, BubbleChartOptions Options) Build()
+    {
+        var text = new PlaygroundCode(nameof(BubbleChartOptions), nameof(BubbleChartDataset));
+        var options = new BubbleChartOptions { Responsive = true };
+        settings.Apply(options, options.Plugins, text);
+        settings.ApplyToAxes(options.Scales, text);
+
+        if (!beginAtZero)
+        {
+            options.Scales.X!.BeginAtZero = false;
+            options.Scales.Y!.BeginAtZero = false;
+            text.Option("Scales.X!.BeginAtZero", "false").Option("Scales.Y!.BeginAtZero", "false");
+        }
+
+        if (pointStyle != DefaultPointStyle) text.Dataset("PointStyle", PlaygroundCode.List(pointStyle));
+        if (borderWidth != DefaultBorderWidth) text.Dataset("BorderWidth", PlaygroundCode.Literal(borderWidth));
+        if (hoverRadius != DefaultHoverRadius) text.Dataset("HoverRadius", PlaygroundCode.List(hoverRadius));
+
+        var chartData = new ChartData
+        {
+            Datasets =
+            [
+                CreateDataset("Europe", [(1200, 34, 9), (2400, 39, 14), (3900, 58, 7), (5200, 66, 18)], 0),
+                CreateDataset("Asia", [(1500, 62, 12), (2800, 49, 20), (4100, 37, 10), (5500, 26, 15)], 1),
+            ]
+        };
+
+        csharp = text.ToString();
+
+        return (chartData, options);
+    }
+
+    private BubbleChartDataset CreateDataset(string label, (double X, double Y, double R)[] points, int colorIndex) =>
+        new()
+        {
+            Label = label,
+            Data = points.Select(point => new BubbleChartDataPoint(point.X, point.Y, point.R)).ToList(),
+            BorderColor = [DemoPalette.Get(colorIndex)],
+            BackgroundColor = [DemoPalette.GetTransparent(colorIndex, 0.6)],
+            BorderWidth = borderWidth,
+            HoverRadius = [hoverRadius],
+            PointStyle = [pointStyle],
+        };
+}

@@ -1,0 +1,54 @@
+<BarChart @ref="barChart" Width="600" />
+
+@code {
+    private BarChart barChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var chartData = new ChartData
+            {
+                Labels = ["January", "February", "March", "April", "May", "June"],
+                Datasets =
+                [
+                    // The two bar datasets share a stack, so their values add up in one column.
+                    new BarChartDataset
+                    {
+                        Label = "Online",
+                        Data = [42, 48, 51, 46, 58, 63],
+                        BackgroundColor = ["rgba(0, 114, 178, 0.8)"], // Okabe–Ito blue
+                        Stack = "sales",
+                    },
+                    new BarChartDataset
+                    {
+                        Label = "In store",
+                        Data = [30, 27, 33, 38, 35, 41],
+                        BackgroundColor = ["rgba(230, 159, 0, 0.8)"], // Okabe–Ito orange
+                        Stack = "sales",
+                    },
+                    // The line is in the same stack and comes after the bars, so its values are added on top of them:
+                    // each point sits at sold online + sold in store + still on order.
+                    new LineChartDataset
+                    {
+                        Label = "On order",
+                        Data = [12, 15, 9, 14, 11, 16],
+                        BorderColor = "rgb(213, 94, 0)", // Okabe–Ito vermillion
+                        BackgroundColor = "rgb(213, 94, 0)",
+                        PointRadius = [4],
+                        Stack = "sales",
+                    },
+                ]
+            };
+
+            var options = new BarChartOptions { Responsive = true };
+            options.Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false };
+            options.Scales.X!.Stacked = true;
+            options.Scales.Y!.Stacked = true;
+
+            await barChart.InitializeAsync(chartData, options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

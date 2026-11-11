@@ -1,0 +1,70 @@
+<LineChart @ref="lineChart" Width="600" />
+
+<div class="mt-3">
+    <span class="mr-2">Position:</span>
+    @foreach (var value in positions)
+    {
+        <button type="button" class="button is-small mr-1 @(value == position ? "is-primary" : null)" @onclick="() => SetLegendAsync(value, align)">@value</button>
+    }
+</div>
+<div class="mt-2">
+    <span class="mr-2">Align:</span>
+    @foreach (var value in alignments)
+    {
+        <button type="button" class="button is-small mr-1 @(value == align ? "is-info" : null)" @onclick="() => SetLegendAsync(position, value)">@value</button>
+    }
+</div>
+
+<p class="mt-3 mb-0"><code>Plugins.Legend.Position = "@position"</code>, <code>Plugins.Legend.Align = "@align"</code></p>
+
+@code {
+    private LineChart lineChart = default!;
+    private ChartData chartData = default!;
+    private readonly LineChartOptions options = new() { Responsive = true };
+    private readonly string[] positions = ["top", "left", "bottom", "right"];
+    private readonly string[] alignments = ["start", "center", "end"];
+    private string position = "top";
+    private string align = "center";
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            Datasets =
+            [
+                new LineChartDataset
+                {
+                    Label = "Website",
+                    Data = [31, 40, 36, 52, 47, 60],
+                    BorderColor = "rgb(0, 114, 178)", // Okabe–Ito blue
+                    BackgroundColor = "rgb(0, 114, 178)",
+                },
+                new LineChartDataset
+                {
+                    Label = "Mobile app",
+                    Data = [18, 24, 29, 27, 38, 44],
+                    BorderColor = "rgb(213, 94, 0)", // Okabe–Ito vermillion
+                    BackgroundColor = "rgb(213, 94, 0)",
+                },
+            ]
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await lineChart.InitializeAsync(chartData, options);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task SetLegendAsync(string newPosition, string newAlign)
+    {
+        position = newPosition;
+        align = newAlign;
+        options.Plugins.Legend.Position = position;
+        options.Plugins.Legend.Align = align;
+        await lineChart.UpdateAsync(chartData, options);
+    }
+}

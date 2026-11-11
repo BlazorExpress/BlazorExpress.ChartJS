@@ -1,0 +1,58 @@
+<LineChart @ref="lineChart" Width="600" />
+
+<div class="mt-3">
+    <button type="button" class="button is-small mr-1 @(usePointStyle ? "is-primary" : null)" @onclick="() => SetUsePointStyleAsync(true)">UsePointStyle = true</button>
+    <button type="button" class="button is-small @(usePointStyle ? null : "is-primary")" @onclick="() => SetUsePointStyleAsync(false)">UsePointStyle = false</button>
+</div>
+
+@code {
+    private LineChart lineChart = default!;
+    private ChartData chartData = default!;
+    private readonly LineChartOptions options = new() { Responsive = true };
+    private bool usePointStyle = true;
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            Datasets =
+            [
+                CreateDataset("Circle", "circle", [12, 19, 14, 22, 17, 25], "0, 114, 178"),      // Okabe–Ito blue
+                CreateDataset("Triangle", "triangle", [8, 11, 16, 13, 21, 18], "213, 94, 0"),    // Okabe–Ito vermillion
+                CreateDataset("Rotated square", "rectRot", [5, 9, 7, 12, 10, 15], "0, 158, 115"), // Okabe–Ito bluish green
+            ]
+        };
+
+        // With UsePointStyle the legend draws each dataset's point shape instead of a box.
+        // A different shape per dataset tells the lines apart without relying on colour.
+        options.Plugins.Legend.Labels = new ChartPluginsLegendLabels { UsePointStyle = usePointStyle };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await lineChart.InitializeAsync(chartData, options);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static LineChartDataset CreateDataset(string label, string pointStyle, List<double?> data, string rgb) =>
+        new()
+        {
+            Label = label,
+            Data = data,
+            BorderColor = $"rgb({rgb})",
+            BackgroundColor = $"rgba({rgb}, 0.5)",
+            PointStyle = [pointStyle],
+            PointRadius = [6],
+            PointHoverRadius = [9],
+        };
+
+    private async Task SetUsePointStyleAsync(bool value)
+    {
+        usePointStyle = value;
+        options.Plugins.Legend.Labels = new ChartPluginsLegendLabels { UsePointStyle = value };
+        await lineChart.UpdateAsync(chartData, options);
+    }
+}
