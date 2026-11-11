@@ -451,6 +451,17 @@ if (!window.blazorexpress.chartjs) {
         return (separator > -1 ? text.slice(separator + 1) : text).replace(/;\s*$/, '').trim();
     };
 
+    // Rule "chart size follows its container": a resize that arrives while an animation runs is stored by Chart.js and
+    // applied only by the next drawing, and the animation can end without one (for example a hidden tab shown at its
+    // last frame), leaving the chart blank. Runs when each animation completes; with an unchanged size it does nothing.
+    // `responsive` is read here, not at creation, because UpdateAsync can change it and Chart.js follows the new value.
+    const completePendingResize = (chart) => {
+        if (!chart.canvas || !chart.attached || !chart.options.responsive || chartStates.get(chart)?.isDestroying)
+            return;
+
+        chart.resize();
+    };
+
     const waitForAnimation = async (chart) => {
         const animator = Chart.animator;
         if (!animator?.running)
@@ -1048,10 +1059,15 @@ if (!window.blazorexpress.chartjs) {
                 chartEl,
                 config
             );
+
+            if (typeof Chart.animator?.listen === 'function')
+                Chart.animator.listen(chart, 'complete', () => completePendingResize(chart));
         },
         destroy: (elementId) => {
             let chart = core.get(elementId);
             if (chart) {
+                // destroy() stops the animation, which notifies 'complete'; a chart being destroyed is not resized.
+                getState(chart).isDestroying = true;
                 chart.destroy();
             }
         },

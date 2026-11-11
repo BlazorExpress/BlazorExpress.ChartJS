@@ -1086,3 +1086,326 @@ window.samplesSelfCheck = (() => {
 
     return { runFrameCases, walk };
 })();
+
+// Unlisted resize self-check page: a responsive chart must always end at its container's size
+// (rule "chart size follows its container"). Charts go through the library's own create, so its
+// resize handling is what is checked. The "forced" cases recreate the moment Chart.js can drop a
+// resize: after an animation's last drawn frame, before the frame that ends the animation. They
+// remove Chart.js's own container observer from that chart first, so the injected resize is the
+// only one, as when a hidden container is shown in the frame before the last one.
+window.resizeSelfCheck = (() => {
+    const result = selfCheckResult;
+    const library = () => window.blazorexpress.chartjs;
+    // A frame that does not come within a second (tab in the background, pane hidden) is counted as a stall,
+    // which voids the run instead of hanging it.
+    let stalls = 0;
+    const frame = () => new Promise(resolve => {
+        const timer = setTimeout(() => { stalls++; resolve(); }, 1000);
+        requestAnimationFrame(() => { clearTimeout(timer); resolve(); });
+    });
+    const frames = async count => { for (let i = 0; i < count; i++) await frame(); };
+    const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+    const errors = [];
+    let host = null;
+    let sequence = 0;
+
+    const lineData = (values = [3, 6, 2, 8, 5]) => ({
+        labels: values.map((_, index) => `P${index + 1}`),
+        datasets: [{ label: 'Values', data: [...values], borderColor: '#4e79a7', backgroundColor: 'rgba(78, 121, 167, 0.2)' }]
+    });
+
+    // A container of a fixed size, optionally hidden, holding one canvas.
+    const addContainer = ({ hidden = false, width = 320, height = 160 } = {}) => {
+        const container = document.createElement('div');
+        container.style.position = 'relative';
+        container.style.width = `${width}px`;
+        container.style.height = `${height}px`;
+        container.style.display = hidden ? 'none' : 'block';
+        container.style.marginBottom = '8px';
+
+        const canvas = document.createElement('canvas');
+        canvas.id = `resize-self-check-${++sequence}`;
+        container.appendChild(canvas);
+        host.appendChild(container);
+
+        return { container, canvas, id: canvas.id };
+    };
+
+    const create = (id, { duration = 300, responsive = true, maintainAspectRatio = false, extra = {} } = {}) => {
+        const options = { responsive, maintainAspectRatio, animation: duration === false ? false : { duration }, ...extra };
+        library().line.create(id, 'line', lineData(), options, []);
+        return Chart.getChart(id);
+    };
+
+    // Calls `action` once, from the animator's progress notification of the last drawn frame: every animation
+    // item has finished ticking, but the items are still listed, so Chart.js still counts the chart as running.
+    // (`currentStep` can stay just below `numSteps` on that frame, so the items are read instead; test-only use
+    // of the animator's internal list.) Resolves with undefined when no such frame comes within 5 s.
+    const atLastStep = (chart, action) => new Promise(resolve => {
+        let done = false;
+        const timer = setTimeout(() => { done = true; resolve(undefined); }, 5000);
+        Chart.animator.listen(chart, 'progress', () => {
+            const items = Chart.animator._charts.get(chart)?.items ?? [];
+            if (done || items.length === 0 || items.some(item => item._active)) return;
+            done = true;
+            clearTimeout(timer);
+            resolve(action());
+        });
+    });
+
+    // Waits until the chart has no animation running, then two more frames.
+    const settle = async (chart, timeoutMs = 3000) => {
+        const deadline = performance.now() + timeoutMs;
+        await frames(2);
+        while (chart?.canvas && Chart.animator.running(chart) && performance.now() < deadline)
+            await frame();
+        await frames(2);
+    };
+
+    const removeContainerObserver = chart => chart.platform.removeEventListener(chart, 'resize');
+    const sizeOf = chart => `${Math.round(chart?.width ?? -1)}`;
+    const widthOf = container => `${container.clientWidth}`;
+
+    const measureFrames = async () => {
+        let count = 0;
+        const stallsBefore = stalls;
+        const end = performance.now() + 500;
+        while (performance.now() < end) { await frame(); count++; }
+        return count - (stalls - stallsBefore);
+    };
+
+    // V-02 / V-03: a hidden chart shown at the last step of its initial animation.
+    const forcedShowAtLastStep = async (name, useLibraryResize) => {
+        const { container, id } = addContainer({ hidden: true });
+        const chart = create(id);
+        removeContainerObserver(chart);
+        const stored = await atLastStep(chart, () => {
+            container.style.display = 'block';
+            if (useLibraryResize)
+                library().resize(id, 'width:320px', 'height:160px');
+            else
+                chart.resize();
+            return !!chart._resizeBeforeDraw;
+        });
+        await settle(chart);
+        return [
+            result(`${name}: the resize landed in the gap (stored, not applied)`, true, stored),
+            result(`${name}: chart width equals the container width`, widthOf(container), sizeOf(chart)),
+        ];
+    };
+
+    // V-02 / V-03: a drawn chart whose container widens at the last step of an update animation.
+    const forcedWidenAtLastStepOfUpdate = async () => {
+        const { container, id } = addContainer();
+        const chart = create(id);
+        await settle(chart);
+        removeContainerObserver(chart);
+        library().update(id, 'line', lineData([5, 1, 7, 3, 9]), { responsive: true, maintainAspectRatio: false, animation: { duration: 300 } });
+        const updated = Chart.getChart(id);
+        const stored = await atLastStep(updated, () => {
+            container.style.width = '420px';
+            updated.resize();
+            return !!updated._resizeBeforeDraw;
+        });
+        await settle(updated);
+        return [
+            result('Forced, update animation: the resize landed in the gap (stored, not applied)', true, stored),
+            result('Forced, update animation: chart width equals the new container width', widthOf(container), sizeOf(updated)),
+        ];
+    };
+
+    // V-03 controls: Chart.js's own observer stays in place.
+    const shownDuringAnimation = async () => {
+        const { container, id } = addContainer({ hidden: true });
+        const chart = create(id, { duration: 600 });
+        await delay(150);
+        container.style.display = 'block';
+        await settle(chart);
+        return result('Control: shown during the initial animation', widthOf(container), sizeOf(chart));
+    };
+
+    const shownAfterAnimation = async () => {
+        const { container, id } = addContainer({ hidden: true });
+        const chart = create(id);
+        await settle(chart);
+        container.style.display = 'block';
+        await settle(chart);
+        return result('Control: shown after the initial animation ended', widthOf(container), sizeOf(chart));
+    };
+
+    const animationOff = async () => {
+        const { container, id } = addContainer({ hidden: true });
+        const chart = create(id, { duration: false });
+        await frames(2);
+        container.style.display = 'block';
+        await settle(chart);
+        return result('Animation off (AC-04 d): shown later', widthOf(container), sizeOf(chart));
+    };
+
+    // V-04 edge cases.
+    const shownHiddenShown = async () => {
+        const { container, id } = addContainer({ hidden: true });
+        const chart = create(id, { duration: 600 });
+        await delay(100);
+        container.style.display = 'block';
+        await frames(1);
+        container.style.display = 'none';
+        await delay(100);
+        container.style.display = 'block';
+        await settle(chart);
+        return result('Shown, hidden, shown again (AC-04 a)', widthOf(container), sizeOf(chart));
+    };
+
+    const destroyedWhileStored = async () => {
+        const { container, id, canvas } = addContainer({ hidden: true });
+        const chart = create(id);
+        removeContainerObserver(chart);
+        await atLastStep(chart, () => {
+            container.style.display = 'block';
+            chart.resize();
+            container.style.display = 'none';
+            library().destroy(id);
+        });
+        await frames(3);
+        return result('Destroyed with a resize pending (AC-04 b): no chart left on the canvas', 'none', Chart.getChart(canvas) ? 'chart' : 'none');
+    };
+
+    const changedWhileHidden = async () => {
+        const { container, id } = addContainer({ hidden: true });
+        const chart = create(id);
+        await settle(chart);
+        const next = lineData([9, 9, 9, 9, 9]);
+        next.datasets.push({ label: 'Second', data: [1, 2, 3, 4, 5] });
+        library().update(id, 'line', next, { responsive: true, maintainAspectRatio: false, animation: { duration: 300 } });
+        library().hide(id, 1, null);
+        await settle(Chart.getChart(id));
+        container.style.display = 'block';
+        const shown = Chart.getChart(id);
+        await settle(shown);
+        return [
+            result('Changed while hidden (AC-04 c): chart width equals the container width', widthOf(container), sizeOf(shown)),
+            result('Changed while hidden (AC-04 c): the new data is drawn', '9,9,9,9,9', shown.data.datasets[0].data.join(',')),
+            result('Changed while hidden (AC-04 c): the hidden dataset stays hidden', false, shown.isDatasetVisible(1)),
+        ];
+    };
+
+    const manyHidden = async () => {
+        const items = Array.from({ length: 10 }, () => addContainer({ hidden: true }));
+        const charts = items.map(item => create(item.id));
+        await delay(120);
+        items.forEach(item => { item.container.style.display = 'block'; });
+        for (const chart of charts) await settle(chart);
+        const sized = items.filter((item, index) => sizeOf(charts[index]) === widthOf(item.container)).length;
+        return result('Ten hidden charts shown at once (AC-04 e): charts at their container width', 10, sized);
+    };
+
+    // V-05: no extra resize work for a chart that draws correctly, and responsive: false is untouched.
+    const noExtraResize = async () => {
+        const { id } = addContainer();
+        let resizeCalls = 0;
+        const chart = create(id, { extra: { onResize: () => { resizeCalls++; } } });
+        await settle(chart);
+        const before = resizeCalls;
+        library().update(id, 'line', lineData([4, 4, 4, 4, 4]), { responsive: true, maintainAspectRatio: false, animation: { duration: 300 }, onResize: () => { resizeCalls++; } });
+        await settle(Chart.getChart(id));
+        return result('Unchanged size (AC-03): onResize calls after an update animation completes', 0, resizeCalls - before);
+    };
+
+    const notResponsive = async () => {
+        const { container, id, canvas } = addContainer();
+        canvas.width = 200;
+        canvas.height = 100;
+        const chart = create(id, { responsive: false });
+        await settle(chart);
+        container.style.width = '420px';
+        await delay(100);
+        await settle(chart);
+        return result('Responsive = false (AC-05): chart keeps its own width', 200, sizeOf(chart));
+    };
+
+    // Review F-01: Chart.js follows a `responsive` value changed by an update, so the library must too.
+    const updatedToNotResponsive = async () => {
+        const { container, id } = addContainer();
+        const chart = create(id);
+        await settle(chart);
+        library().update(id, 'line', lineData([2, 4, 6, 8, 10]), { responsive: false, maintainAspectRatio: false, animation: { duration: 300 } });
+        await settle(Chart.getChart(id));
+        const before = sizeOf(Chart.getChart(id));
+        container.style.width = '420px';
+        await delay(100);
+        library().update(id, 'line', lineData([10, 8, 6, 4, 2]), { responsive: false, maintainAspectRatio: false, animation: { duration: 300 } });
+        await settle(Chart.getChart(id));
+        return result('Updated to responsive: false (AC-05): keeps its width after the container widens and an animation ends', before, sizeOf(Chart.getChart(id)));
+    };
+
+    const updatedToResponsive = async () => {
+        const { container, id, canvas } = addContainer();
+        canvas.width = 320;
+        canvas.height = 160;
+        const chart = create(id, { responsive: false });
+        await settle(chart);
+        library().update(id, 'line', lineData([1, 3, 5, 7, 9]), { responsive: true, maintainAspectRatio: false, animation: { duration: 300 } });
+        await settle(Chart.getChart(id));
+        const responsiveChart = Chart.getChart(id);
+        removeContainerObserver(responsiveChart);
+        library().update(id, 'line', lineData([9, 7, 5, 3, 1]), { responsive: true, maintainAspectRatio: false, animation: { duration: 300 } });
+        const stored = await atLastStep(responsiveChart, () => {
+            container.style.width = '420px';
+            responsiveChart.resize();
+            return !!responsiveChart._resizeBeforeDraw;
+        });
+        await settle(responsiveChart);
+        return [
+            result('Updated to responsive: true, forced: the resize landed in the gap (stored, not applied)', true, stored),
+            result('Updated to responsive: true, forced (AC-01, AC-02): chart width equals the new container width', widthOf(container), sizeOf(responsiveChart)),
+        ];
+    };
+
+    const run = async (hostId) => {
+        host = document.getElementById(hostId);
+        errors.length = 0;
+        stalls = 0;
+        const original = console.error.bind(console);
+        console.error = (...args) => {
+            errors.push(args.map(a => (a instanceof Error ? a.message : String(a))).join(' '));
+            original(...args);
+        };
+        // An error thrown in an animation frame (for example after destroy) is not a console.error call.
+        const onError = event => errors.push(`uncaught: ${event.message}`);
+        window.addEventListener('error', onError);
+
+        const cases = [];
+        try {
+            const drawn = await measureFrames();
+            cases.push(result('Frames are drawn (tab in front, pane visible)', 'yes', drawn >= 10 ? 'yes' : `no (${drawn} in 0.5 s)`));
+            if (drawn < 10)
+                return cases;
+            stalls = 0;
+
+            cases.push(...await forcedShowAtLastStep('Forced, chart.resize()', false));
+            cases.push(...await forcedShowAtLastStep('Forced, ResizeAsync path (core.resize)', true));
+            cases.push(...await forcedWidenAtLastStepOfUpdate());
+            cases.push(await shownDuringAnimation());
+            cases.push(await shownAfterAnimation());
+            cases.push(await animationOff());
+            cases.push(await shownHiddenShown());
+            cases.push(await destroyedWhileStored());
+            cases.push(...await changedWhileHidden());
+            cases.push(await manyHidden());
+            cases.push(await noExtraResize());
+            cases.push(await notResponsive());
+            cases.push(await updatedToNotResponsive());
+            cases.push(...await updatedToResponsive());
+            cases.push(result('Console and uncaught errors during the run', 0, errors.length));
+            cases.push(result('No frame stalled during the run (otherwise the run is void)', 0, stalls));
+        }
+        finally {
+            console.error = original;
+            window.removeEventListener('error', onError);
+        }
+
+        return cases;
+    };
+
+    return { run };
+})();
