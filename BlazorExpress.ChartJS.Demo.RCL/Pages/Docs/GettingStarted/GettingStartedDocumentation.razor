@@ -11,60 +11,190 @@
 </PageHero>
 
 <section class="be-release-spotlight">
-    <p class="be-release-kicker">Compatibility Matrix</p>
-    <h2 class="be-release-title">Supported Tech Stack by Release</h2>
+    <p class="be-release-kicker">New in 2.0.0</p>
+    <h2 class="be-release-title">Time axes, JavaScript functions, chart methods and events</h2>
     <p class="be-release-copy">
-        Pick the top row for new projects. Older rows are retained for teams upgrading from previous releases.
+        2.0.0 also covers far more Chart.js 4.6 options. It changes some defaults, so if you are upgrading from 1.x, read the breaking changes first.
     </p>
+    <div class="buttons mt-3 mb-0">
+        <a class="button is-primary is-small" href="@DemoRouteConstants.Blog_Release_2_0_0">Read the 2.0.0 release notes</a>
+        <a class="button is-small" href="@(DemoRouteConstants.Blog_Release_2_0_0)#breaking-changes">Breaking changes</a>
+    </div>
 </section>
 
-<div class="table-container">
-    <table class="table is-bordered is-striped is-fullwidth">
-        <thead>
-            <tr>
-                <th>BlazorExpress.ChartJS</th>
-                <th>.NET</th>
-                <th>Chart.js</th>
-                <th>chartjs-plugin-datalabels</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>2.0.0+</td>
-                <td>8, 9, 10</td>
-                <td>4.6.1</td>
-                <td>2.2.0</td>
-            </tr>
-            <tr>
-                <td>1.2.2+</td>
-                <td>8, 9, 10</td>
-                <td>4.4.1</td>
-                <td>2.2.0</td>
-            </tr>
-            <tr>
-                <td>1.1.0+</td>
-                <td>8</td>
-                <td>4.4.1</td>
-                <td>2.2.0</td>
-            </tr>
-            <tr>
-                <td>1.0.0</td>
-                <td>8</td>
-                <td>4.0.1</td>
-                <td>2.2.0</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="content">
+    <Section Class="p-0" Size="HeadingSize.H4" Name="Introduction" PageUrl="@pageUrl" Link="introduction">
+        <Block>
+            <p>
+                BlazorExpress.ChartJS is an open-source Blazor component library for <a href="https://www.chartjs.org/" target="_blank" rel="noopener">Chart.js</a>.
+                You describe a chart's data and options in C#; the library draws it with Chart.js in the browser, and updates, resizes and disposes it with the component.
+                It runs in Blazor WebAssembly, Blazor Web Apps (Server and Auto render modes) and .NET MAUI Blazor Hybrid apps, on .NET 8, 9 and 10, under the Apache-2.0 license.
+            </p>
+        </Block>
+    </Section>
 </div>
 
-<div class="notification is-info is-light">
-    <strong>Time axes need no extra script.</strong> From 2.0.0, <code>time</code> and <code>timeseries</code> axes work with only Chart.js and
-    <code>blazorexpress.chartjs.js</code>: the library registers its own date adapter. Do not add a third-party date adapter such as
-    <code>chartjs-adapter-date-fns</code>; the library's adapter replaces it. See the <a href="@DemoRouteConstants.Docs_LineChart#time-axis">time axis documentation</a>.
+<div class="be-intro-grid mb-5">
+    <div class="be-intro-card">
+        <p class="be-intro-card-title">Eight chart types</p>
+        <p>Bar, bubble, doughnut, line, pie, polar area, radar and scatter, each a Razor component.</p>
+    </div>
+    <div class="be-intro-card">
+        <p class="be-intro-card-title">Typed options</p>
+        <p>Chart.js data, datasets, options and plugins as C# classes, with IntelliSense and XML docs.</p>
+    </div>
+    <div class="be-intro-card">
+        <p class="be-intro-card-title">Time axes</p>
+        <p>Date labels and points from <code>DateOnly</code>, <code>DateTime</code> or <code>DateTimeOffset</code>, with no date-adapter script.</p>
+    </div>
+    <div class="be-intro-card">
+        <p class="be-intro-card-title">JavaScript functions</p>
+        <p>Register a function once, then use it from C# for tick labels, tooltips, colours and more.</p>
+    </div>
+    <div class="be-intro-card">
+        <p class="be-intro-card-title">Methods and events</p>
+        <p>Update, reset, show or hide data, export an image, and handle clicks, legend clicks and hovers in C#.</p>
+    </div>
+    <div class="be-intro-card">
+        <p class="be-intro-card-title">@SampleCatalog.All.Count samples</p>
+        <p>Copyable samples based on the official Chart.js samples, each with "How to use" steps.</p>
+    </div>
+</div>
+
+<div class="be-intro-links mb-5" aria-label="Chart documentation">
+    <a class="tag is-link is-light is-medium" href="@DemoRouteConstants.Docs_BarChart">Bar chart</a>
+    <a class="tag is-link is-light is-medium" href="@DemoRouteConstants.Docs_BubbleChart">Bubble chart</a>
+    <a class="tag is-link is-light is-medium" href="@DemoRouteConstants.Docs_DoughnutChart">Doughnut chart</a>
+    <a class="tag is-link is-light is-medium" href="@DemoRouteConstants.Docs_LineChart">Line chart</a>
+    <a class="tag is-link is-light is-medium" href="@DemoRouteConstants.Docs_PieChart">Pie chart</a>
+    <a class="tag is-link is-light is-medium" href="@DemoRouteConstants.Docs_PolarAreaChart">Polar area chart</a>
+    <a class="tag is-link is-light is-medium" href="@DemoRouteConstants.Docs_RadarChart">Radar chart</a>
+    <a class="tag is-link is-light is-medium" href="@DemoRouteConstants.Docs_ScatterChart">Scatter chart</a>
+</div>
+
+<div class="content">
+    <Section Class="p-0" Size="HeadingSize.H4" Name="Quick start" PageUrl="@pageUrl" Link="quick-start">
+        <Block>
+            <p>
+                Four steps add a first chart to an existing Blazor project. For a full walkthrough for your project type, see the
+                <a href="@(pageUrl)#setup-guides">setup guides</a>.
+            </p>
+            <ol>
+                <li>
+                    <b>Install the package</b> with the .NET CLI:
+                    <CodeChunk Class="mt-3" LanguageCode="LanguageCode.Text" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_01_Run_Net_CLI_Command_Snippet.razor" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
+                    or add a package reference to your project file:
+                    <CodeChunk Class="mt-3" LanguageCode="LanguageCode.Text" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_02_Add_Package_Reference_Snippet.razor" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
+                </li>
+                <li>
+                    <b>Add the scripts</b> at the end of the <code>body</code>, in this order: Chart.js, the data labels plugin (only if you use data labels), then <code>blazorexpress.chartjs.js</code>.
+                    Put them in <code>wwwroot/index.html</code> after <code>_framework/blazor.webassembly.js</code> for Blazor WebAssembly,
+                    or in <code>Components/App.razor</code> after <code>_framework/blazor.web.js</code> for a Blazor Web App.
+                    <CodeChunk Class="mt-3" LanguageCode="LanguageCode.HTML" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_03_Snippet.html" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
+                </li>
+                <li>
+                    <b>Import the namespace</b> in <code>_Imports.razor</code>:
+                    <CodeChunk Class="mt-3" LanguageCode="LanguageCode.Razor" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_04_Snippet.razor" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
+                </li>
+                <li>
+                    <b>Add a chart</b> to a page. Chart.js needs the canvas, so the chart is drawn in <code>OnAfterRenderAsync</code> with <code>InitializeAsync</code>.
+                    In a Blazor Web App the page must use an interactive render mode.
+                    <CodeChunk Class="mt-3" LanguageCode="LanguageCode.Razor" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_06_Snippet.razor" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
+                </li>
+            </ol>
+            <p>
+                Next, browse the <a href="@DemoRouteConstants.Demos_Samples">samples gallery</a> or open the docs for your chart type above.
+                Each chart's docs page lists its parameters, events and methods.
+            </p>
+        </Block>
+    </Section>
+
+    <Section Class="p-0" Size="HeadingSize.H4" Name="Setup guides" PageUrl="@pageUrl" Link="setup-guides">
+        <Block>
+            <p>Step-by-step guides by hosting model:</p>
+            <div class="table-container">
+                <table class="table is-bordered is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>.NET version</th>
+                            <th>Project type</th>
+                            <th>Guide</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>.NET 8 or later</td>
+                            <td>Blazor WebAssembly</td>
+                            <td><DocsLink Text="Blazor WebAssembly setup" Href="@DemoRouteConstants.Docs_Getting_Started_Blazor_WebAssembly_NET8" /></td>
+                        </tr>
+                        <tr>
+                            <td>.NET 8 or later</td>
+                            <td>Blazor Web App, interactive render mode Server, global location</td>
+                            <td><DocsLink Text="Blazor Web App (Server) setup" Href="@DemoRouteConstants.Docs_Getting_Started_Blazor_WebApp_NET_8_Interactive_Render_Mode_Server_Global_Location" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </Block>
+    </Section>
+
+    <Section Class="p-0" Size="HeadingSize.H4" Name="Supported tech stack" PageUrl="@pageUrl" Link="supported-tech-stack">
+        <Block>
+            <p>Pick the top row for new projects. Older rows are kept for teams upgrading from earlier releases.</p>
+            <div class="table-container">
+                <table class="table is-bordered is-striped is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>BlazorExpress.ChartJS</th>
+                            <th>.NET</th>
+                            <th>Chart.js</th>
+                            <th>chartjs-plugin-datalabels</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2.0.0+</td>
+                            <td>8, 9, 10</td>
+                            <td>4.6.1</td>
+                            <td>2.2.0</td>
+                        </tr>
+                        <tr>
+                            <td>1.2.2+</td>
+                            <td>8, 9, 10</td>
+                            <td>4.4.1</td>
+                            <td>2.2.0</td>
+                        </tr>
+                        <tr>
+                            <td>1.1.0+</td>
+                            <td>8</td>
+                            <td>4.4.1</td>
+                            <td>2.2.0</td>
+                        </tr>
+                        <tr>
+                            <td>1.0.0</td>
+                            <td>8</td>
+                            <td>4.0.1</td>
+                            <td>2.2.0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </Block>
+    </Section>
+
+    <Section Class="p-0" Size="HeadingSize.H4" Name="Time axes" PageUrl="@pageUrl" Link="time-axes">
+        <Block>
+            <p>
+                From 2.0.0, <code>time</code> and <code>timeseries</code> axes work with only Chart.js and
+                <code>blazorexpress.chartjs.js</code>: the library registers its own date adapter. Do not add a third-party date adapter such as
+                <code>chartjs-adapter-date-fns</code>; the library's adapter replaces it. See the <a href="@DemoRouteConstants.Docs_LineChart#time-axis">time axis documentation</a>.
+            </p>
+        </Block>
+    </Section>
 </div>
 
 <section id="javascript-functions" class="content mb-5">
-    <h3 class="be-release-title">JavaScript functions</h3>
+    <h4 class="title is-4">JavaScript functions</h4>
     <p>
         Some Chart.js options take a JavaScript function: tick labels, tooltip text, legend filters and clicks, line segment styles, gradient colours and more.
         Chart.js calls these functions while it draws, so they must be JavaScript. From 2.0.0 you write them in your own JavaScript file, register each one by name,
@@ -100,59 +230,12 @@
     </div>
 </section>
 
-<section class="be-release-spotlight be-release-spotlight--compact">
-    <p class="be-release-kicker">Guides</p>
-    <h3 class="be-release-title">Project Setup Documentation</h3>
-    <p class="be-release-copy">
-        Choose the setup guide that matches your hosting model and runtime.
-    </p>
-</section>
-
-<div class="table-container">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>.NET Version</th>
-                <th>Project Type</th>
-                <th>Documentation Link</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>.NET 8</td>
-                <td>Blazor WebAssembly (.NET 8)</td>
-                <td><DocsLink Text="Project Setup Guide" Href="@DemoRouteConstants.Docs_Getting_Started_Blazor_WebAssembly_NET8" /></td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>.NET 8</td>
-                <td>Blazor WebApp (.NET 8) - Interactive render mode Server - Global location</td>
-                <td><DocsLink Text="Project Setup Guide" Href="@DemoRouteConstants.Docs_Getting_Started_Blazor_WebApp_NET_8_Interactive_Render_Mode_Server_Global_Location" /></td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>.NET 8</td>
-                <td>Blazor WebApp (.NET 8) - Interactive render mode Auto - Global location</td>
-                <td>TODO: Pending</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>.NET 8</td>
-                <td>MAUI Blazor Hybrid App (.NET 8)</td>
-                <td>TODO: Pending</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
 @code {
     private const string pageUrl = DemoRouteConstants.Docs_Getting_Started_Introduction;
     private const string pageUrl2 = DemoRouteConstants.Docs_Prefix;
     private const string pageTitle = "Getting started with BlazorExpress.ChartJS";
-    private const string pageDescription = "Explore practical Blazor ChartJS demos with step-by-step examples. Learn how to create interactive charts in your Blazor projects.";
-    private const string metaTitle = "Blazor ChartJS Demo � Getting Started with Interactive Chart Examples";
-    private const string metaDescription = "Explore practical Blazor ChartJS demos with step-by-step examples. Learn how to create interactive charts in your Blazor projects.";
-    private const string imageUrl = "https://i.imgur.com/IX3bajc.png"; // TODO: update with the actual image URL for the Bar Chart demo
+    private const string pageDescription = "Chart.js charts for Blazor, configured in C#. Install the package, add three scripts and draw your first chart.";
+    private const string metaTitle = "Getting started with BlazorExpress.ChartJS - Chart.js charts for Blazor";
+    private const string metaDescription = "Install BlazorExpress.ChartJS, add the Chart.js scripts and draw your first Blazor chart in C#. Covers setup guides, supported versions, time axes and JavaScript functions.";
+    private const string imageUrl = "https://i.imgur.com/IX3bajc.png";
 }
