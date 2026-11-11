@@ -3,7 +3,7 @@
 @layout DemosMainLayout
 
 <SamplePageHeader ChartKey="@SampleChartKeys.BubbleChart" Sample="@Sample">
-    <PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+    <SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
     <PageHero Title="@pageTitle">
         <SubTitleTemplate>
@@ -365,7 +365,7 @@
     private const string pageUrl = DemoRouteConstants.Demos_BubbleChart;
     private const string pageTitle = "Bubble Chart";
     private const string pageDescription = "The <code>Blazor Bubble Chart</code> component is used to display three dimensions of data at the same time. The location of the bubble is determined by the first two dimensions and the corresponding horizontal and vertical axes. The third dimension is represented by the size of the individual bubbles.";
-    private const string metaTitle = "Blazor Bubble Chart";
+    private const string metaTitle = "Blazor Bubble Chart Examples";
     private const string metaDescription = "The Blazor Bubble Chart component is used to display three dimensions of data at the same time. The location of the bubble is determined by the first two dimensions and the corresponding horizontal and vertical axes. The third dimension is represented by the size of the individual bubbles.";
     private const string imageUrl = DemoImageSrcConstants.BubbleChart;
 }

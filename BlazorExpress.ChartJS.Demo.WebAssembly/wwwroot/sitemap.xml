@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Main pages only; the per-sample pages are reached from the samples gallery and chart pages. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://chartjs.blazorexpress.com/</loc><priority>1.0</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/docs/getting-started/introduction</loc><priority>0.9</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/docs/getting-started/blazor-webassembly-net-8</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/docs/getting-started/blazor-webapp-server-global-net-8</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/demos/samples</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/blog/releases/2-0-0</loc><priority>0.7</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/docs/bar-chart</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/docs/bubble-chart</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/docs/doughnut-chart</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/docs/line-chart</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/docs/pie-chart</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/docs/polar-area-chart</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/docs/radar-chart</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/docs/scatter-chart</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/demos/bar-chart</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/demos/bubble-chart</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/demos/doughnut-chart</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/demos/line-chart</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/demos/pie-chart</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/demos/polar-area-chart</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/demos/radar-chart</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/demos/scatter-chart</loc><priority>0.8</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/demos/utils/color-utility</loc><priority>0.5</priority></url>
+  <url><loc>https://chartjs.blazorexpress.com/blog/home</loc><priority>0.5</priority></url>
+</urlset>

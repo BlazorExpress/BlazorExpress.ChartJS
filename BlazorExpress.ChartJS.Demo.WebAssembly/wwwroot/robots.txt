@@ -1,0 +1,10 @@
+# BlazorExpress.ChartJS demo and documentation site.
+# AI agents: a plain-text guide to this site is at https://chartjs.blazorexpress.com/llms.txt
+User-agent: *
+Allow: /
+Disallow: /demos/samples-self-check
+Disallow: /demos/js-functions-self-check
+Disallow: /demos/time-axis-self-check
+Disallow: /demos/resize-self-check
+
+Sitemap: https://chartjs.blazorexpress.com/sitemap.xml

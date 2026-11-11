@@ -1,0 +1,83 @@
+# BlazorExpress.ChartJS
+
+> BlazorExpress.ChartJS is an open-source (Apache-2.0) Blazor component library for Chart.js 4.6. Each chart type (bar, bubble, doughnut, line, pie, polar area, radar, scatter) is a Razor component whose data, datasets, options and plugins are typed C# classes. It runs in Blazor WebAssembly, Blazor Web Apps (Server and Auto render modes) and .NET MAUI Blazor Hybrid, on .NET 8, 9 and 10. The current version is 2.0.0.
+
+This documentation site (https://chartjs.blazorexpress.com) is a Blazor WebAssembly app: its pages need JavaScript to render. For plain text, use this file and the raw GitHub files linked below.
+
+Key facts:
+
+- Install: `dotnet add package BlazorExpress.ChartJS --version 2.0.0`, then `@using BlazorExpress.ChartJS` in `_Imports.razor`.
+- Scripts, at the end of `<body>` and in this order: Chart.js 4.6.1 (`https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.6.1/chart.umd.js`), chartjs-plugin-datalabels 2.2.0 only if you use data labels, then `_content/BlazorExpress.ChartJS/blazorexpress.chartjs.js`. They go in `wwwroot/index.html` (WebAssembly, MAUI) or `Components/App.razor` (Blazor Web App).
+- A chart is drawn by `InitializeAsync(chartData, options)` in `OnAfterRenderAsync`, because Chart.js needs the rendered canvas. In a Blazor Web App the page needs an interactive render mode. Change data with `UpdateAsync`, `AddDataAsync` and `AddDatasetAsync`.
+- Time axes (`time`, `timeseries`) need no date-adapter script: the library registers its own. Use `ChartData.TimeLabels`, `TimeData` and `ChartTimeValue` (`DateOnly`, `DateTime`, `DateTimeOffset`). Do not add `chartjs-adapter-date-fns` or luxon.
+- Options that Chart.js takes as a JavaScript function: register the function in your own script loaded after `blazorexpress.chartjs.js` with `blazorexpress.chartjs.registerFunction('name', fn)`, then reference it from C# with `new ChartFunction("name")`. Names are looked up only in that registry, never evaluated as code.
+- 2.0.0 changes some defaults compared with 1.x (radar and bubble axes start at zero, data-label styles, hidden datasets stay hidden after `UpdateAsync`, animated updates). Read the breaking changes before upgrading.
+
+## Quick start
+
+```razor
+<BarChart @ref="barChart" Width="600" />
+
+@code {
+    private BarChart barChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var data = new ChartData
+            {
+                Labels = new List<string> { "Chrome", "Firefox", "Safari", "Edge" },
+                Datasets = new List<IChartDataset>
+                {
+                    new BarChartDataset { Label = "Visitors", Data = new List<double?> { 55000, 15000, 18000, 21000 } }
+                }
+            };
+
+            await barChart.InitializeAsync(data, new BarChartOptions { Responsive = true });
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}
+```
+
+## Docs
+
+- [Getting started](https://chartjs.blazorexpress.com/docs/getting-started/introduction): install, scripts, a first chart, supported versions, time axes and JavaScript functions
+- [Blazor WebAssembly setup](https://chartjs.blazorexpress.com/docs/getting-started/blazor-webassembly-net-8): step-by-step guide
+- [Blazor Web App (Server) setup](https://chartjs.blazorexpress.com/docs/getting-started/blazor-webapp-server-global-net-8): step-by-step guide
+- [Bar chart API](https://chartjs.blazorexpress.com/docs/bar-chart): parameters, events, methods, data and options classes
+- [Bubble chart API](https://chartjs.blazorexpress.com/docs/bubble-chart)
+- [Doughnut chart API](https://chartjs.blazorexpress.com/docs/doughnut-chart)
+- [Line chart API](https://chartjs.blazorexpress.com/docs/line-chart)
+- [Pie chart API](https://chartjs.blazorexpress.com/docs/pie-chart)
+- [Polar area chart API](https://chartjs.blazorexpress.com/docs/polar-area-chart)
+- [Radar chart API](https://chartjs.blazorexpress.com/docs/radar-chart)
+- [Scatter chart API](https://chartjs.blazorexpress.com/docs/scatter-chart)
+
+## Examples
+
+- [Samples gallery](https://chartjs.blazorexpress.com/demos/samples): every sample, searchable by chart, category and tag, each with copyable source
+- [Bar chart examples](https://chartjs.blazorexpress.com/demos/bar-chart)
+- [Bubble chart examples](https://chartjs.blazorexpress.com/demos/bubble-chart)
+- [Doughnut chart examples](https://chartjs.blazorexpress.com/demos/doughnut-chart)
+- [Line chart examples](https://chartjs.blazorexpress.com/demos/line-chart)
+- [Pie chart examples](https://chartjs.blazorexpress.com/demos/pie-chart)
+- [Polar area chart examples](https://chartjs.blazorexpress.com/demos/polar-area-chart)
+- [Radar chart examples](https://chartjs.blazorexpress.com/demos/radar-chart)
+- [Scatter chart examples](https://chartjs.blazorexpress.com/demos/scatter-chart)
+- [Demo source on GitHub](https://github.com/BlazorExpress/BlazorExpress.ChartJS/tree/main/BlazorExpress.ChartJS.Demo.RCL/Pages/Demos): the Razor source of every example
+
+## Release notes
+
+- [2.0.0 release notes](https://chartjs.blazorexpress.com/blog/releases/2-0-0): breaking changes, what's new, what's changed and fixes
+- [CHANGELOG.md (plain text)](https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/main/CHANGELOG.md): the canonical release notes, newest first
+
+## Optional
+
+- [README (plain text)](https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/main/README.md): overview, install and supported versions
+- [Library source](https://github.com/BlazorExpress/BlazorExpress.ChartJS/tree/main/BlazorExpress.ChartJS): components, models and `wwwroot/blazorexpress.chartjs.js`, with XML docs on every public member
+- [NuGet package](https://www.nuget.org/packages/BlazorExpress.ChartJS)
+- [Color utility](https://chartjs.blazorexpress.com/demos/utils/color-utility): the categorical colour palettes in `ColorUtility`
+- [Blog](https://chartjs.blazorexpress.com/blog/home)

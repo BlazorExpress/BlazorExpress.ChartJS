@@ -1,7 +1,7 @@
 @attribute [Route(pageUrl)]
 @layout BlogMainLayout
 
-<PageMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
 <PageHero Title="@pageTitle">
     <SubTitleTemplate>
@@ -143,7 +143,7 @@
     private const string pageUrl = DemoRouteConstants.Blog_Release_2_0_0;
     private const string pageTitle = "2.0.0 release notes";
     private const string pageDescription = "Time axes, JavaScript functions, chart methods and events, and wider Chart.js 4.6 options. Read the breaking changes before you upgrade from 1.x.";
-    private const string metaTitle = "BlazorExpress.ChartJS 2.0.0 release notes - breaking changes, what's new and fixes";
+    private const string metaTitle = "2.0.0 Release Notes and Breaking Changes";
     private const string metaDescription = "What's new, what's changed, breaking changes and fixes in BlazorExpress.ChartJS 2.0.0, with how to keep the 1.2.4 behaviour.";
     private const string imageUrl = "https://i.imgur.com/IX3bajc.png";
     private const string changelogUrl = "https://github.com/BlazorExpress/BlazorExpress.ChartJS/blob/main/CHANGELOG.md#200";
