@@ -1,0 +1,61 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+<Navbar Class="px-3" HasShadow="true">
+    <NavbarBrand>
+        <NavbarItem Href="@DemoRouteConstants.Home_Prefix">
+            <img src="@BrandImgSrc" alt="@BrandImgAltText" />
+            <span class="ml-2 is-size-5 has-text-weight-bold">@ApplicationName</span>
+        </NavbarItem>
+        <NavbarBurger TargetId="@navbarMenuId" IsActive="@isNavbarMenuActive" ActiveStateChanged="ToggleNavbarMenu">
+            <i class="bi bi-three-dots-vertical"></i>
+        </NavbarBurger>
+    </NavbarBrand>
+
+    <NavbarMenu Id="@navbarMenuId" IsActive="@isNavbarMenuActive">
+        <NavbarStart>
+            <NavbarItem Class="mr-1" Href="@DemoRouteConstants.Docs_Prefix" IsHoverable="true">
+                <i class="bi bi-file-text-fill has-text-link mr-2"></i>Docs
+            </NavbarItem>
+            <NavbarItem Class="mr-1" Href="@DemoRouteConstants.Demos_Prefix" IsHoverable="true">
+                <i class="bi bi-display-fill has-text-primary mr-2"></i>Demos
+            </NavbarItem>
+            <NavbarItem Class="mr-1" Href="@DemoRouteConstants.Blog_Releases" IsHoverable="true">
+                <i class="bi bi-megaphone-fill has-text-success mr-2"></i>Releases
+            </NavbarItem>
+        </NavbarStart>
+        <NavbarEnd>
+            <NavbarItem Class="mr-1" Href="@githubUrl" IsHoverable="true" target="_blank">
+                <i class="bi bi-github"></i>
+                <small class="is-hidden-desktop ml-2">GitHub</small>
+            </NavbarItem>
+            <NavbarItem Class="mr-1" Href="@twitterUrl" IsHoverable="true" target="_blank">
+                <i class="bi bi-twitter-x"></i>
+                <small class="is-hidden-desktop ml-2">Twitter</small>
+            </NavbarItem>
+            <NavbarItem Href="@linkedInUrl" IsHoverable="true" target="_blank">
+                <i class="bi bi-linkedin"></i>
+                <small class="is-hidden-desktop ml-2">LinkedIn</small>
+            </NavbarItem>
+            <NavbarItem Type="NavbarItemType.Div" IsHoverable="true">
+                <span class="tag is-link">@version</span>
+            </NavbarItem>
+
+            <NavbarItem Type="NavbarItemType.Div" HasDropdown="true" IsHoverable="true">
+                <NavbarLink Class="be-bulma-theme-indicator">
+                    <i class="bi bi-sun"></i>
+                </NavbarLink>
+                <NavbarDropdown Class="px-1" Position="NavbarDropdownPosition.Right">
+                    <NavbarItem Class="be-bulma-theme-item is-clickable" IsHoverable="true" data-scheme="light" @onclick="SetLightTheme">
+                        <i class="bi bi-sun mr-2"></i>Light
+                    </NavbarItem>
+                    <NavbarItem Class="be-bulma-theme-item is-clickable my-1" IsHoverable="true" data-scheme="dark" @onclick="SetDarkTheme">
+                        <i class="bi bi-moon-stars-fill mr-2"></i>Dark
+                    </NavbarItem>
+                    <NavbarItem Class="be-bulma-theme-item is-clickable" IsHoverable="true" data-scheme="system" @onclick="SetAutoTheme">
+                        <i class="bi bi-circle-half mr-2"></i>Auto
+                    </NavbarItem>
+                </NavbarDropdown>
+            </NavbarItem>
+        </NavbarEnd>
+    </NavbarMenu>
+</Navbar>

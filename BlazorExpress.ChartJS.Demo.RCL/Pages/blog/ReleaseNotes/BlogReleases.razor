@@ -1,0 +1,41 @@
+@attribute [Route(pageUrl)]
+@layout BlogMainLayout
+
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<PageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</PageHero>
+
+@* One entry per release, newest first. Add a release here, in the Blog menu (BlogMainLayout.razor.cs), on the Blog home page, in sitemap.xml and in llms.txt. *@
+<Section Class="p-0" Size="HeadingSize.H4" Name="2.0.0" PageUrl="@pageUrl" Link="2-0-0">
+    <Block>
+        <p>
+            Time axes, JavaScript functions, chart methods and events, and wider Chart.js 4.6 options.
+            Code compiled against 1.2.4 keeps working, but some charts look or behave differently without any code change, so read the breaking changes before you upgrade from 1.x.
+        </p>
+        <div class="buttons mt-3">
+            <a class="button is-primary is-small" href="@DemoRouteConstants.Blog_Release_2_0_0">Read the 2.0.0 release notes</a>
+            <a class="button is-small" href="@(DemoRouteConstants.Blog_Release_2_0_0)#breaking-changes">Breaking changes</a>
+        </div>
+    </Block>
+</Section>
+
+<Section Class="p-0" Size="HeadingSize.H4" Name="Earlier releases" PageUrl="@pageUrl" Link="earlier-releases">
+    <Block>
+        Releases before 2.0.0 are listed in <a href="@changelogUrl" target="_blank" rel="noopener noreferrer">CHANGELOG.md</a> and on <a href="@nugetVersionsUrl" target="_blank" rel="noopener noreferrer">NuGet</a>.
+    </Block>
+</Section>
+
+@code {
+    private const string pageUrl = DemoRouteConstants.Blog_Releases;
+    private const string pageTitle = "Releases";
+    private const string pageDescription = "Every BlazorExpress.ChartJS release, newest first, with a link to its release notes.";
+    private const string metaTitle = "Releases and Release Notes";
+    private const string metaDescription = "Every BlazorExpress.ChartJS release, newest first: what's new, what's changed and breaking changes, with a link to each release's notes.";
+    private const string imageUrl = DemoImageSrcConstants.LineChart;
+    private const string changelogUrl = "https://github.com/BlazorExpress/BlazorExpress.ChartJS/blob/main/CHANGELOG.md";
+    private const string nugetVersionsUrl = "https://www.nuget.org/packages/BlazorExpress.ChartJS#versions-body-tab";
+}

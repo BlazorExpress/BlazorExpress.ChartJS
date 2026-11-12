@@ -18,6 +18,7 @@ public static class DemoRouteConstants
     // Release notes, one page per release. The wording follows CHANGELOG.md. Versions use dashes, not dots:
     // a last segment such as "2.0.0" is read as a file name, so a direct load or refresh would not reach the app.
     public const string Blog_Releases_Prefix = Blog_Prefix + "/releases";
+    public const string Blog_Releases = Blog_Releases_Prefix; // the release list page, linked from the top navbar
     public const string Blog_Release_2_0_0 = Blog_Releases_Prefix + "/2-0-0";
 
     #endregion
