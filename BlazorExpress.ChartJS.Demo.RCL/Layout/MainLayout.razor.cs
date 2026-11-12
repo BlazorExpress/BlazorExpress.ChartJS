@@ -14,7 +14,7 @@ public partial class MainLayout : MainLayoutBase
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-            await JS.InvokeVoidAsync("initializeTheme");
+            await JS.TryInvokeVoidAsync("initializeTheme");
 
         await base.OnAfterRenderAsync(firstRender);
     }

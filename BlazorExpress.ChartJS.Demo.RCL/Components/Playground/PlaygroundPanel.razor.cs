@@ -40,7 +40,7 @@ public partial class PlaygroundPanel : ComponentBase, IDisposable
     private async Task CopyAsync()
     {
         dotNetRef ??= DotNetObjectReference.Create(this);
-        await JS.InvokeVoidAsync("copyToClipboard", Code, dotNetRef);
+        await JS.TryInvokeVoidAsync("copyToClipboard", Code, dotNetRef);
     }
 
     private void SetCopyText(string text)

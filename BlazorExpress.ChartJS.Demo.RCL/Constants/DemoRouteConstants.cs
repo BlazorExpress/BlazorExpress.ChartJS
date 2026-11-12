@@ -4,6 +4,9 @@ public static class DemoRouteConstants
 {
     public const string Home_Prefix = "/";
 
+    // The page the router renders for an unknown URL (Router NotFoundPage, .NET 11 template style).
+    public const string Not_Found = "/not-found";
+
     public const string Blog_Prefix = "/blog";
     public const string Demos_Prefix = "/demos";
     public const string Docs_Prefix = "/docs";

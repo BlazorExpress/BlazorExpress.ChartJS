@@ -20,7 +20,7 @@ jobs:
     if: ${{ (github.event_name == 'workflow_dispatch' && inputs.prod_release) || (github.event_name == 'pull_request' && github.event.action != 'closed') }}
     runs-on: ubuntu-latest
     env:
-      DOTNET_VERSION: "net9.0"
+      DOTNET_VERSION: "net11.0"
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       PROJECT: "BlazorExpress.ChartJS.Demo.WebAssembly/BlazorExpress.ChartJS.Demo.WebAssembly.csproj"
       BUILD_CONFIG: "Release"
@@ -46,9 +46,10 @@ jobs:
       - name: .NET Build
         run: dotnet build ${{ env.PROJECT }} -c ${{ env.BUILD_CONFIG }} -f ${{ env.DOTNET_VERSION }} --no-restore
         
-      # .NET Publish
+      # .NET Publish. No --no-build: publish fills the index.html placeholders (fingerprinted script URLs, import map,
+      # preload) only when it builds; with --no-build they stay unfilled and the site does not start.
       - name: .NET Publish
-        run: dotnet publish ${{ env.PROJECT }} -c ${{ env.BUILD_CONFIG }} -o output -f ${{ env.DOTNET_VERSION }} --no-build
+        run: dotnet publish ${{ env.PROJECT }} -c ${{ env.BUILD_CONFIG }} -o output -f ${{ env.DOTNET_VERSION }} --no-restore
       
         
       # Azure Static Web App Deployment Action

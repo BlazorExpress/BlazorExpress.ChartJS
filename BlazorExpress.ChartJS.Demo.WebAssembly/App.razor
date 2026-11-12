@@ -1,13 +1,8 @@
 ﻿<Router AppAssembly="@typeof(App).Assembly"
-        AdditionalAssemblies="new []{ typeof(BlazorExpress.ChartJS.Demo.RCL.App).Assembly }">
+        AdditionalAssemblies="new []{ typeof(BlazorExpress.ChartJS.Demo.RCL.App).Assembly }"
+        NotFoundPage="typeof(BlazorExpress.ChartJS.Demo.RCL.NotFound)">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(BlazorExpress.ChartJS.Demo.RCL.MainLayout)" />
         @* <FocusOnNavigate RouteData="@routeData" Selector="h1" /> *@
     </Found>
-    <NotFound>
-        <BlazorExpress.ChartJS.Demo.RCL.SiteMetaTags Title="Page Not Found" Description="There is no page at this address." Robots="noindex" />
-        <LayoutView Layout="@typeof(BlazorExpress.ChartJS.Demo.RCL.MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
-    </NotFound>
 </Router>

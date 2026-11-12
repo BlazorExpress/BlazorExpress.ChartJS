@@ -90,7 +90,16 @@ else
 
             await bubbleChart.InitializeAsync(chartData, options);
 
-            result = await JS.InvokeAsync<SelfCheckResult>("runTimeAxisSelfCheck");
+            try
+            {
+                result = await JS.InvokeAsync<SelfCheckResult>("runTimeAxisSelfCheck");
+            }
+            catch (JSException ex)
+            {
+                // A JavaScript error stops the run. It is reported as a failed case, so the page still shows a result.
+                result = new SelfCheckResult("unknown", [new("Self-check script ran without a JavaScript error", "no error", ex.Message, "fail")], 0, 1, 0);
+            }
+
             StateHasChanged();
         }
 
