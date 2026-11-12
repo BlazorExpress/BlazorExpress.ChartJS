@@ -26,7 +26,7 @@ Get started any way you want
 
 | BlazorExpress.ChartJS | .NET | Chart.js | chartjs-plugin-datalabels |
 |:--|:--|:--|:--|
-| 2.0.0+ | 8, 9, 10 | 4.6.1 | 2.2.0 |
+| 2.0.0+ | 8, 9, 10, 11 | 4.6.1 | 2.2.0 |
 | 1.2.2+ | 8, 9, 10 | 4.4.1 | 2.2.0 |
 | 1.1.0+ | 8 | 4.4.1 | 2.2.0 |
 | 1.0.0 | 8 | 4.0.1 | 2.2.0 |
