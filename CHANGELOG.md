@@ -67,5 +67,5 @@ Each item says how to keep the 1.2.4 behaviour where there is a way.
 
 ### For contributors
 
-- New test project `BlazorExpress.ChartJS.Tests` (xUnit v3 and bUnit). Run it with `dotnet test --solution BlazorExpress.ChartJS.sln`. The root `global.json` opts in to Microsoft.Testing.Platform, which needs the .NET 10 SDK; older SDKs ignore the setting.
+- New test project `BlazorExpress.ChartJS.Tests` (xUnit v3 and bUnit). Run it with `dotnet test --solution BlazorExpress.ChartJS.slnx`. The root `global.json` opts in to Microsoft.Testing.Platform, which needs the .NET 10 SDK; older SDKs ignore the setting.
 - The demo site deploys to production only when the workflow is run by hand with "Do you want to release to production?" ticked. Pushes to `main` no longer deploy, and pull requests still get preview deploys.

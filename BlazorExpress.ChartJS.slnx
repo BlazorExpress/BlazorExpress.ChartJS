@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/demos/">
+    <Project Path="BlazorExpress.ChartJS.Demo.RCL/BlazorExpress.ChartJS.Demo.RCL.csproj" />
+    <Project Path="BlazorExpress.ChartJS.Demo.WebAssembly/BlazorExpress.ChartJS.Demo.WebAssembly.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="BlazorExpress.ChartJS/BlazorExpress.ChartJS.csproj" />
+  </Folder>
+  <Project Path="BlazorExpress.ChartJS.Tests/BlazorExpress.ChartJS.Tests.csproj" />
+</Solution>
