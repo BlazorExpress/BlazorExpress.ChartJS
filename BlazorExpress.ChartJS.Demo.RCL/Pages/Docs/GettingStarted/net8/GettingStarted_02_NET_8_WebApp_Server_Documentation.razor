@@ -15,27 +15,13 @@
             <ul>
                 <li>.NET 8 SDK (<a href="https://dotnet.microsoft.com/download/dotnet/8.0" target="_blank">Download</a>) or later version</li>
                 <li>Visual Studio 2022 or later / VS Code / Other</li>
-                <li>Basic knowledge of Blazor WebAssembly</li>
+                <li>Basic knowledge of Blazor Web Apps</li>
             </ul>
         </Block>
     </Section>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="1. Using dotnet Templates" PageUrl="@pageUrl" Link="1-using-dotnet-templates">
-        <Block>
-            <ol>
-                <li>
-                    <b>Install the template:</b>
-                    <br />
-                    <p>TODO: Update the instructions.</p>
-                    <Block>
-                        The template sets up BlazorExpress.ChartJS, the required services, and sample components.
-                    </Block>
-                </li>
-            </ol>
-        </Block>
-    </Section>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="2. Manual Installation" PageUrl="@pageUrl" Link="2-manual-installation">
+    <Section Class="p-0" Size="HeadingSize.H4" Name="1. Manual Installation" PageUrl="@pageUrl" Link="1-manual-installation">
         <Block>
             <ol>
                 <li>
@@ -52,15 +38,15 @@
                     <CodeChunk Class="mt-3" LanguageCode="LanguageCode.HTML" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_03_Snippet.html" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
                 </li>
                 <li>
-                    <b>Register services:</b>
-                    <Block>Add <code>BlazorExpress.ChartJS</code> namespace to <code>_Imports.razor</code>:</Block>
+                    <b>Add the namespace:</b>
+                    <Block>Add the <code>BlazorExpress.ChartJS</code> namespace to <code>_Imports.razor</code>. The library needs no service registration.</Block>
                     <CodeChunk Class="mt-3" LanguageCode="LanguageCode.Razor" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_04_Snippet.razor" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
                 </li>
             </ol>
         </Block>
     </Section>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="3. Usage Example" PageUrl="@pageUrl" Link="3-usage-example">
+    <Section Class="p-0" Size="HeadingSize.H4" Name="2. Usage Example" PageUrl="@pageUrl" Link="2-usage-example">
         <Block>
             <ol>
                 <li>
@@ -71,7 +57,7 @@
         </Block>
     </Section>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="4. Troubleshooting" PageUrl="@pageUrl" Link="4-troubleshooting">
+    <Section Class="p-0" Size="HeadingSize.H4" Name="3. Troubleshooting" PageUrl="@pageUrl" Link="3-troubleshooting">
         <Block>
             <ul>
                 <li>Ensure all JS references are correct in <code>App.razor</code>.</li>
@@ -98,8 +84,8 @@
 @code {
     private const string pageUrl = DemoRouteConstants.Docs_Getting_Started_Blazor_WebApp_NET_8_Interactive_Render_Mode_Server_Global_Location;
     private const string pageTitle = "Getting started - Blazor WebApp (.NET 8) - Interactive render mode Server - Global location";
-    private const string pageDescription = "Learn how to quickly set up <code>BlazorExpress.Bulma</code> in your Blazor WebApp (Server) project using dotnet templates or manual installation, and how to register required services.";
+    private const string pageDescription = "Learn how to quickly set up <code>BlazorExpress.ChartJS</code> in your Blazor WebApp (Server) project by installing the package and adding the scripts.";
     private const string metaTitle = "Blazor Web App (Server) Setup Guide";
-    private const string metaDescription = "Step-by-step guide to using BlazorExpress.Bulma: dotnet templates, manual install, and service registration for Blazor WebApp (Server) apps.";
-    private const string imageUrl = "https://i.imgur.com/FGgEMp6.jpg"; // TODO: update
+    private const string metaDescription = "Step-by-step guide to using BlazorExpress.ChartJS: package install, script references and a first chart for Blazor WebApp (Server) apps.";
+    private const string imageUrl = DemoImageSrcConstants.BarChart;
 }

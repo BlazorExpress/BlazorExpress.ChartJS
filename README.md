@@ -4,7 +4,7 @@
   </a>
 </p>
 
-<h3 align="center">BlazorExpress.ChartJs component library</h3>
+<h3 align="center">BlazorExpress.ChartJS component library</h3>
 <p align="center">
     An open-source, production-ready Blazor charts component library built on the <b>Blazor</b> and <b>Chart.js</b> JavaScript library.
     <br>
@@ -21,7 +21,9 @@
 
 - [Quick start](#quick-start)
 - [Online Demos](#online-demos)
+- [Supported Tech Stack](#supported-tech-stack)
 - [Components](#components)
+- [Screenshots](#screenshots)
 - [Creators](#creators)
 - [Copyright and license](#copyright-and-license)
 
@@ -30,7 +32,8 @@
 Get started any way you want
 
 - Clone the repo: `git clone https://github.com/BlazorExpress/BlazorExpress.ChartJS`
-- Install with [NuGet](https://www.nuget.org/): `Install-Package BlazorExpress.ChartJS -Version 2.0.0`
+- Install with the .NET CLI: `dotnet add package BlazorExpress.ChartJS --version 2.0.0`
+- Or with the [NuGet](https://www.nuget.org/) Package Manager Console: `Install-Package BlazorExpress.ChartJS -Version 2.0.0`
 - Upgrading from 1.x? 2.0.0 changes some defaults and behaviour, so read the [2.0.0 release notes](CHANGELOG.md#200) first.
 
 ## Online Demos
@@ -61,41 +64,79 @@ Get started any way you want
 
 ## Screenshots
 
-### Bar chart
+Captured from the [online demos](https://chartjs.blazorexpress.com/demos/samples).
 
-<img width="627" height="372" alt="image" src="https://github.com/user-attachments/assets/eb2ee933-92f4-4505-9ffe-a07ebcc81b10" />
+### Chart types
 
-<img width="614" height="315" alt="image" src="https://github.com/user-attachments/assets/f4936bbc-9ebc-469e-828b-94078c8df9ee" />
+#### Bar chart
 
-### Bubble Chart
+<img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/screenshots/bar-chart.png" alt="Bar chart" width="600">
 
-<img width="627" height="374" alt="image" src="https://github.com/user-attachments/assets/35da28e4-8e28-488b-8110-fb704399e18a" />
+#### Bubble chart
 
-### Doughnut Chart
+<img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/screenshots/bubble-chart.png" alt="Bubble chart" width="600">
 
-<img width="627" height="672" alt="image" src="https://github.com/user-attachments/assets/69226e90-a12d-40de-9993-3a2df1f06978" />
+#### Doughnut chart
 
-### Line Chart
+<img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/screenshots/doughnut-chart.png" alt="Doughnut chart" width="600">
 
-<img width="626" height="318" alt="image" src="https://github.com/user-attachments/assets/40da8b8d-e88a-4b34-a9a4-99a8a1bcec7c" />
+#### Line chart
 
-<img width="610" height="320" alt="image" src="https://github.com/user-attachments/assets/61d56847-2cd1-44d3-8916-777c331a1b62" />
+<img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/screenshots/line-chart.png" alt="Line chart" width="600">
 
-### Pie Chart
+#### Pie chart
 
-<img width="628" height="626" alt="image" src="https://github.com/user-attachments/assets/88889e02-3149-4a16-afe6-288eabf69daa" />
+<img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/screenshots/pie-chart.png" alt="Pie chart" width="600">
 
-### PolarArea Chart
+#### PolarArea chart
 
-<img width="617" height="669" alt="image" src="https://github.com/user-attachments/assets/5c3d6004-1de1-4a83-a05b-63bb5cb64a57" />
+<img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/screenshots/polar-area-chart.png" alt="PolarArea chart" width="600">
 
-### Radar Chart
+#### Radar chart
 
-<img width="626" height="671" alt="image" src="https://github.com/user-attachments/assets/2d2f7989-08d7-4f6f-b33a-dbbca1fde74b" />
+<img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/screenshots/radar-chart.png" alt="Radar chart" width="600">
 
-### Scatter Chart
+#### Scatter chart
 
-<img width="939" height="531" alt="image" src="https://github.com/user-attachments/assets/47de0935-afb0-4c6d-ad8b-a1c5195b3e30" />
+<img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/screenshots/scatter-chart.png" alt="Scatter chart" width="600">
+
+### New in 2.0.0
+
+#### Time series
+
+Line chart on a `timeseries` axis with dates from C#; no date adapter script needed.
+
+<img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/screenshots/time-series.png" alt="Time series" width="600">
+
+#### Tick and tooltip functions
+
+Axis ticks and tooltip text formatted by JavaScript functions registered by name and set from C#.
+
+<img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/screenshots/tick-and-tooltip-functions.png" alt="Tick and tooltip functions" width="600">
+
+#### Floating bars
+
+A project schedule drawn with floating bars, each with a start and an end value (`BarChartDataset.FloatingData`).
+
+<img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/screenshots/floating-bars.png" alt="Floating bars" width="600">
+
+#### Half gauge
+
+A half-doughnut gauge from `Rotation` and `Circumference`.
+
+<img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/screenshots/half-gauge.png" alt="Half gauge" width="600">
+
+#### Gradient fill
+
+A line area filled with a gradient set by a JavaScript function.
+
+<img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/screenshots/gradient-fill.png" alt="Gradient fill" width="600">
+
+#### Multiple axes
+
+A second y axis on the right (`Scales.AdditionalAxes`).
+
+<img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/screenshots/multiple-axes.png" alt="Multiple axes" width="600">
 
 More components coming...
 
