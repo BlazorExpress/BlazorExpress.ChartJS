@@ -62,8 +62,6 @@ public static class DemoRouteConstants
     public const string Docs_Getting_Started_Introduction = Docs_Getting_Started_Prefix + "/introduction";
     public const string Docs_Getting_Started_Blazor_WebAssembly_NET8 = Docs_Getting_Started_Prefix + "/blazor-webassembly-net-8";
     public const string Docs_Getting_Started_Blazor_WebApp_NET_8_Interactive_Render_Mode_Server_Global_Location = Docs_Getting_Started_Prefix + "/blazor-webapp-server-global-net-8";
-    public const string Docs_Getting_Started_Blazor_WebApp_NET_8_Interactive_Render_Mode_Auto_Global_Location = Docs_Getting_Started_Prefix + "/blazor-webapp-auto-global-net-8";
-    public const string Docs_Getting_Started_MAUI_NET_8 = Docs_Getting_Started_Prefix + "/maui-blazor-net-8";
 
     // Charts
     public const string Docs_BarChart = Docs_Prefix + "/bar-chart";
