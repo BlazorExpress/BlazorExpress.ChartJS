@@ -1,0 +1,23 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+@attribute [Route(pageUrl)]
+@layout MainLayout
+
+@* The router renders this page for any unknown URL (App.razor: Router NotFoundPage). *@
+<SiteMetaTags PageUrl="@pageUrl" Title="Page Not Found" Description="There is no page at this address." Robots="noindex" />
+
+<PageHero Title="Page not found" />
+
+<div class="notification is-warning is-light" role="alert">
+    <p>Sorry, there's nothing at this address.</p>
+</div>
+
+<p>Try one of these instead:</p>
+<ul>
+    <li><a href="@DemoRouteConstants.Home_Prefix">Home</a></li>
+    <li><a href="@DemoRouteConstants.Docs_Getting_Started_Introduction">Getting started</a></li>
+    <li><a href="@DemoRouteConstants.Demos_Samples">Samples gallery</a></li>
+</ul>
+
+@code {
+    private const string pageUrl = DemoRouteConstants.Not_Found;
+}

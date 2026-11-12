@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -22,8 +22,7 @@
   <ItemGroup>
     <PackageReference Include="BlazorExpress.Bulma" Version="0.1.1" />
     <PackageReference Include="BlazorExpress.Bulma.Docx" Version="0.2.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.17" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="11.0.0" />
   </ItemGroup>
 
   <ItemGroup>

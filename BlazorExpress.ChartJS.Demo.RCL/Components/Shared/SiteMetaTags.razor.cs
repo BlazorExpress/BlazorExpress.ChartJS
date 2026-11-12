@@ -23,7 +23,7 @@ public partial class SiteMetaTags : ComponentBase
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-            await JS.InvokeVoidAsync("removeSiteDefaultHeadTags");
+            await JS.TryInvokeVoidAsync("removeSiteDefaultHeadTags");
 
         await base.OnAfterRenderAsync(firstRender);
     }

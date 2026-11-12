@@ -670,3 +670,35 @@ a.be-sample-card:hover {
 .tabs a:focus-visible {
     outline-offset: -3px;
 }
+
+/* Blazor's unhandled-error banner (index.html, .NET 11 template). Blazor shows it after an unhandled error. */
+#blazor-error-ui {
+    display: none;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+    width: 100%;
+    padding: 0.6rem 3rem 0.7rem 1.25rem;
+    color: var(--bulma-warning-on-scheme, #946c00);
+    background-color: var(--bulma-warning-soft, #fffaeb);
+    border-top: 1px solid var(--be-bulma-border-color);
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+}
+
+#blazor-error-ui .reload {
+    margin-left: 0.5rem;
+    font-weight: 600;
+}
+
+#blazor-error-ui .dismiss {
+    position: absolute;
+    top: 0.45rem;
+    right: 0.75rem;
+    padding: 0 0.25rem;
+    color: inherit;
+    background: none;
+    border: 0;
+    font-size: 1.1rem;
+    cursor: pointer;
+}

@@ -15,7 +15,7 @@ public partial class DemosMainLayout : MainLayoutBase
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-            await JS.InvokeVoidAsync("initializeTheme");
+            await JS.TryInvokeVoidAsync("initializeTheme");
 
         await base.OnAfterRenderAsync(firstRender);
     }
@@ -79,7 +79,7 @@ public partial class DemosMainLayout : MainLayoutBase
 
     private Task SetLightTheme() => SetTheme("light");
 
-    private async Task SetTheme(string themeName) => await JS.InvokeVoidAsync("setTheme", themeName);
+    private async Task SetTheme(string themeName) => await JS.TryInvokeVoidAsync("setTheme", themeName);
 
     private void ToggleSidebarSection()
     {
