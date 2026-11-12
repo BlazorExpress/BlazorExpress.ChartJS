@@ -71,6 +71,7 @@ Key facts:
 
 ## Release notes
 
+- [All releases](https://chartjs.blazorexpress.com/blog/releases): every release, newest first, each linking to its release notes
 - [2.0.0 release notes](https://chartjs.blazorexpress.com/blog/releases/2-0-0): breaking changes, what's new, what's changed and fixes
 - [CHANGELOG.md (plain text)](https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/main/CHANGELOG.md): the canonical release notes, newest first
 

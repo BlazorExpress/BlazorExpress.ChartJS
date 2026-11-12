@@ -32,49 +32,14 @@ public partial class BlogMainLayout : MainLayoutBase
     {
         var groups = new HashSet<LinkGroup>();
 
-        // GETTING STARTED
-        groups.Add(new LinkGroup
-        {
-            Name = "Getting Started",
-            CssClass = "is-size-7 has-text-weight-bold has-text-danger",
-            Links = [
-                new Link { Href = DemoRouteConstants.Docs_Getting_Started_Introduction, Text = "Getting started" }
-            ]
-        });
-
-        // RELEASES
+        // RELEASES: the only group; getting started, charts and utils are in the Docs and Demos menus.
         groups.Add(new LinkGroup
         {
             Name = "Releases",
             CssClass = "is-size-7 has-text-weight-bold has-text-success",
             Links = [
+                new Link { Href = DemoRouteConstants.Blog_Releases, Text = "All releases", Match = MenuItemMatch.All },
                 new Link { Href = DemoRouteConstants.Blog_Release_2_0_0, Text = "2.0.0 release notes" }
-            ]
-        });
-
-        // CHARTS
-        groups.Add(new LinkGroup
-        {
-            Name = "Charts",
-            CssClass = "is-size-7 has-text-weight-bold has-text-warning",
-            Links = [
-                new Link { Href = DemoRouteConstants.Docs_BarChart, Text = "Bar chart" },
-                new Link { Href = DemoRouteConstants.Docs_DoughnutChart, Text = "Doughnut chart" },
-                new Link { Href = DemoRouteConstants.Docs_LineChart, Text = "Line chart" },
-                new Link { Href = DemoRouteConstants.Docs_PieChart, Text = "Pie chart" },
-                new Link { Href = DemoRouteConstants.Docs_PolarAreaChart, Text = "PolarArea chart" },
-                new Link { Href = DemoRouteConstants.Docs_RadarChart, Text = "Radar chart" },
-                new Link { Href = DemoRouteConstants.Docs_ScatterChart, Text = "Scatter chart" }
-            ]
-        });
-
-        // UTILS
-        groups.Add(new LinkGroup
-        {
-            Name = "UTILS",
-            CssClass = "is-size-7 has-text-weight-bold has-text-info",
-            Links = [
-                new Link { Href = DemoRouteConstants.Demos_ColorUtils, Text = "Color Utils" },
             ]
         });
 
