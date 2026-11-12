@@ -32,11 +32,11 @@ jobs:
           submodules: true
           lfs: false
 
-      # Setup .NET 10.0
-      - name: Setup .NET 9.0
+      # The .NET 11 SDK: the library multi-targets up to net11.0, and SDK 11 also builds the demo's net9.0 target.
+      - name: Setup .NET 11.0
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: '11.0.x'
       
       # .NET Restore
       - name: .NET Restore

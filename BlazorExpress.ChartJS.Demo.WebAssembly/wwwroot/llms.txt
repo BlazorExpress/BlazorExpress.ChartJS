@@ -1,6 +1,6 @@
 # BlazorExpress.ChartJS
 
-> BlazorExpress.ChartJS is an open-source (Apache-2.0) Blazor component library for Chart.js 4.6. Each chart type (bar, bubble, doughnut, line, pie, polar area, radar, scatter) is a Razor component whose data, datasets, options and plugins are typed C# classes. It runs in Blazor WebAssembly, Blazor Web Apps (Server and Auto render modes) and .NET MAUI Blazor Hybrid, on .NET 8, 9 and 10. The current version is 2.0.0.
+> BlazorExpress.ChartJS is an open-source (Apache-2.0) Blazor component library for Chart.js 4.6. Each chart type (bar, bubble, doughnut, line, pie, polar area, radar, scatter) is a Razor component whose data, datasets, options and plugins are typed C# classes. It runs in Blazor WebAssembly, Blazor Web Apps (Server and Auto render modes) and .NET MAUI Blazor Hybrid, on .NET 8, 9, 10 and 11. The current version is 2.0.0.
 
 This documentation site (https://chartjs.blazorexpress.com) is a Blazor WebAssembly app: its pages need JavaScript to render. For plain text, use this file and the raw GitHub files linked below.
 
