@@ -1,0 +1,31 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+<div class="be-home-hero-chart" data-chart-key="@ChartKey" role="img" aria-label="@AriaLabel">
+    @switch (ChartKey)
+    {
+        case SampleChartKeys.BubbleChart:
+            <BubbleChart @ref="chart" Height="ChartHeight" />
+            break;
+        case SampleChartKeys.DoughnutChart:
+            <DoughnutChart @ref="chart" Height="ChartHeight" />
+            break;
+        case SampleChartKeys.LineChart:
+            <LineChart @ref="chart" Height="ChartHeight" />
+            break;
+        case SampleChartKeys.PieChart:
+            <PieChart @ref="chart" Height="ChartHeight" />
+            break;
+        case SampleChartKeys.PolarAreaChart:
+            <PolarAreaChart @ref="chart" Height="ChartHeight" />
+            break;
+        case SampleChartKeys.RadarChart:
+            <RadarChart @ref="chart" Height="ChartHeight" />
+            break;
+        case SampleChartKeys.ScatterChart:
+            <ScatterChart @ref="chart" Height="ChartHeight" />
+            break;
+        default:
+            <BarChart @ref="chart" Height="ChartHeight" />
+            break;
+    }
+</div>

@@ -1,6 +1,7 @@
 @namespace BlazorExpress.ChartJS.Demo.RCL
 
-<Navbar Class="px-3" HasShadow="true">
+@* The gradient navbar of every page (story 26111801 CR-001). The current section is marked from the address. *@
+<Navbar Class="px-3 be-demo-navbar" HasShadow="true">
     <NavbarBrand>
         <NavbarItem Href="@DemoRouteConstants.Home_Prefix">
             <img src="@BrandImgSrc" alt="@BrandImgAltText" />
@@ -13,27 +14,27 @@
 
     <NavbarMenu Id="@navbarMenuId" IsActive="@isNavbarMenuActive">
         <NavbarStart>
-            <NavbarItem Class="mr-1" Href="@DemoRouteConstants.Docs_Prefix" IsHoverable="true">
-                <i class="bi bi-file-text-fill has-text-link mr-2"></i>Docs
+            <NavbarItem Class="@GetSectionClass(DemoRouteConstants.Docs_Prefix)" Href="@DemoRouteConstants.Docs_Prefix" IsHoverable="true" aria-current="@GetAriaCurrent(DemoRouteConstants.Docs_Prefix, DemoRouteConstants.Docs_Prefix)">
+                <i class="bi bi-file-text-fill be-demo-navbar-icon be-demo-navbar-icon-docs mr-2"></i>Docs
             </NavbarItem>
-            <NavbarItem Class="mr-1" Href="@DemoRouteConstants.Demos_Prefix" IsHoverable="true">
-                <i class="bi bi-display-fill has-text-primary mr-2"></i>Demos
+            <NavbarItem Class="@GetSectionClass(DemoRouteConstants.Demos_Prefix)" Href="@DemoRouteConstants.Demos_Prefix" IsHoverable="true" aria-current="@GetAriaCurrent(DemoRouteConstants.Demos_Prefix, DemoRouteConstants.Demos_Prefix)">
+                <i class="bi bi-display-fill be-demo-navbar-icon be-demo-navbar-icon-demos mr-2"></i>Demos
             </NavbarItem>
-            <NavbarItem Class="mr-1" Href="@DemoRouteConstants.Blog_Releases" IsHoverable="true">
-                <i class="bi bi-megaphone-fill has-text-success mr-2"></i>Releases
+            <NavbarItem Class="@GetSectionClass(DemoRouteConstants.Blog_Prefix)" Href="@DemoRouteConstants.Blog_Releases" IsHoverable="true" aria-current="@GetAriaCurrent(DemoRouteConstants.Blog_Prefix, DemoRouteConstants.Blog_Releases)">
+                <i class="bi bi-megaphone-fill be-demo-navbar-icon be-demo-navbar-icon-releases mr-2"></i>Releases
             </NavbarItem>
         </NavbarStart>
         <NavbarEnd>
-            <NavbarItem Class="mr-1" Href="@githubUrl" IsHoverable="true" target="_blank">
-                <i class="bi bi-github"></i>
+            <NavbarItem Class="mr-1" Href="@githubUrl" IsHoverable="true" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <i class="bi bi-github" aria-hidden="true"></i>
                 <small class="is-hidden-desktop ml-2">GitHub</small>
             </NavbarItem>
-            <NavbarItem Class="mr-1" Href="@twitterUrl" IsHoverable="true" target="_blank">
-                <i class="bi bi-twitter-x"></i>
+            <NavbarItem Class="mr-1" Href="@twitterUrl" IsHoverable="true" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+                <i class="bi bi-twitter-x" aria-hidden="true"></i>
                 <small class="is-hidden-desktop ml-2">Twitter</small>
             </NavbarItem>
-            <NavbarItem Href="@linkedInUrl" IsHoverable="true" target="_blank">
-                <i class="bi bi-linkedin"></i>
+            <NavbarItem Href="@linkedInUrl" IsHoverable="true" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <i class="bi bi-linkedin" aria-hidden="true"></i>
                 <small class="is-hidden-desktop ml-2">LinkedIn</small>
             </NavbarItem>
             <NavbarItem Type="NavbarItemType.Div" IsHoverable="true">
@@ -41,7 +42,7 @@
             </NavbarItem>
 
             <NavbarItem Type="NavbarItemType.Div" HasDropdown="true" IsHoverable="true">
-                <NavbarLink Class="be-bulma-theme-indicator">
+                <NavbarLink Class="be-bulma-theme-indicator" aria-label="Theme" aria-haspopup="true">
                     <i class="bi bi-sun"></i>
                 </NavbarLink>
                 <NavbarDropdown Class="px-1" Position="NavbarDropdownPosition.Right">

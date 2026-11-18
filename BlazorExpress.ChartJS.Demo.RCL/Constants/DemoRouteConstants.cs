@@ -50,6 +50,9 @@ public static class DemoRouteConstants
     // Unlisted: checks that charts always end at their container's size, including a resize Chart.js drops at the end of an animation.
     public const string Demos_ResizeSelfCheck = Demos_Prefix + "/resize-self-check";
 
+    // Unlisted: checks the home page hero chart, layout widths, contrast and links.
+    public const string Demos_HomeSelfCheck = Demos_Prefix + "/home-self-check";
+
     // Utils
     public const string Demos_Utils_Prefix = Demos_Prefix + "/utils";
     public const string Demos_ColorUtils = Demos_Utils_Prefix + "/color-utility";

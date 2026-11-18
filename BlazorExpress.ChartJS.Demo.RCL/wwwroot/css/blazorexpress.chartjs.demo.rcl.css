@@ -620,7 +620,7 @@ a.be-sample-card:hover {
 
     .be-home-chart i {
         font-size: 1.75rem;
-        color: var(--bulma-link, #485fc7);
+        color: var(--be-home-link);
     }
 
 .be-home-chart-name {
@@ -643,6 +643,531 @@ a.be-sample-card:hover {
     }
 }
 
+/* Home page Aurora style (story 26111801): the .NET violet and cyan palette (#512BD4, #8B5CF6, #06B6D4) in the glow and charts.
+   Text and the button label use darker or lighter shades of the same hues where the exact palette is below WCAG AA contrast. */
+:root {
+    --be-home-violet-rgb: 81, 43, 212;
+    --be-home-violet-light-rgb: 139, 92, 246;
+    --be-home-cyan-rgb: 6, 182, 212;
+    --be-home-text-gradient: linear-gradient(90deg, #512BD4, #8B5CF6, #0891B2);
+    --be-home-button-gradient: linear-gradient(90deg, #512BD4, #0E7490);
+    --be-home-link: #512BD4;
+    --be-home-card-bg: rgba(255, 255, 255, 0.72);
+    --be-home-card-border: rgba(81, 43, 212, 0.16);
+    --be-home-dot: rgba(15, 23, 42, 0.14);
+}
+
+[data-theme=dark] {
+    --be-home-text-gradient: linear-gradient(90deg, #A78BFA, #8B5CF6, #06B6D4);
+    --be-home-link: #06B6D4;
+    --be-home-card-bg: rgba(43, 48, 53, 0.72);
+    --be-home-card-border: rgba(167, 139, 250, 0.24);
+    --be-home-dot: rgba(255, 255, 255, 0.1);
+}
+
+/* Only the home page swaps the shared masthead glow; the 404 page uses the same layout and keeps the site glow. */
+.be-bulma-masthead:has(.be-home-aurora) {
+    background-image: linear-gradient(180deg, rgba(var(--be-bulma-body-bg-rgb), 0.01), rgba(var(--be-bulma-body-bg-rgb), 1) 85%),
+        radial-gradient(ellipse at top left, rgba(var(--be-home-violet-rgb), 0.45), transparent 50%),
+        radial-gradient(ellipse at top right, rgba(var(--be-home-cyan-rgb), 0.4), transparent 50%),
+        radial-gradient(ellipse at center right, rgba(var(--be-home-violet-light-rgb), 0.35), transparent 50%),
+        radial-gradient(ellipse at center left, rgba(var(--be-home-violet-rgb), 0.25), transparent 50%);
+}
+
+.be-home-hero {
+    position: relative;
+    padding: 1.5rem 0 2.5rem;
+}
+
+    /* A faint dot grid behind the hero, faded out towards the edges */
+    .be-home-hero::before {
+        content: "";
+        position: absolute;
+        inset: -1.25rem;
+        z-index: 0;
+        pointer-events: none;
+        background-image: radial-gradient(var(--be-home-dot) 1px, transparent 1px);
+        background-size: 18px 18px;
+        -webkit-mask-image: radial-gradient(ellipse at center, #000 35%, transparent 75%);
+        mask-image: radial-gradient(ellipse at center, #000 35%, transparent 75%);
+    }
+
+.be-home-hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: center;
+}
+
+/* The release pill: the tag and the arrow line up with the first line of the text, which may wrap */
+.be-home-pill {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: .625rem;
+    margin-bottom: 1rem;
+    padding: .375rem .75rem .375rem .375rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    color: var(--bulma-text);
+    background-color: var(--be-home-card-bg);
+    border: 1px solid var(--be-home-card-border);
+    border-radius: .75rem;
+}
+
+    .be-home-pill:hover {
+        color: var(--bulma-text-strong);
+    }
+
+.be-home-pill-text {
+    min-width: 0;
+}
+
+.be-home-pill-tag {
+    flex-shrink: 0;
+    padding: 0 .625rem;
+    font-weight: 600;
+    line-height: 1.5rem;
+    white-space: nowrap;
+    color: #4a3500;
+    background-color: #ffe08a;
+    border-radius: .5rem;
+}
+
+.be-home-title {
+    margin-bottom: .75rem;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -.015em;
+    color: var(--bulma-text-strong);
+}
+
+.be-home-gradient-text {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background-image: var(--be-home-text-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.be-home-lead {
+    max-width: 34rem;
+    margin-bottom: 1rem;
+    font-size: 1.125rem;
+    color: var(--bulma-text);
+}
+
+.be-home-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    min-height: 20px;
+    margin-bottom: 1rem;
+}
+
+    .be-home-badges img {
+        display: block;
+        height: 20px;
+    }
+
+/* WCAG 2.2 target size: the small links of the home page are at least 24 CSS px tall */
+.be-home-badges a,
+.be-home-hero-samples-link,
+.be-home .be-home-link,
+.be-home-compat a,
+.be-home-star .notification a {
+    display: inline-flex;
+    align-items: center;
+    gap: .375rem;
+    min-height: 24px;
+}
+
+.be-home-install {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    max-width: 30rem;
+    margin-bottom: 1rem;
+    padding: .375rem .375rem .375rem .875rem;
+    color: #e6e6f0;
+    background-color: #1e1e2e;
+    border-radius: var(--be-bulma-border-radius);
+}
+
+.be-home-install-status {
+    flex-shrink: 0;
+    font-size: .8125rem;
+    color: #e6e6f0;
+}
+
+.be-home-install-command {
+    flex: 1 1 auto;
+    padding: 0;
+    font-size: .875rem;
+    color: inherit;
+    background: none;
+    overflow-wrap: anywhere;
+    user-select: all;
+}
+
+.be-home-install-copy {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: .375rem;
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    color: #e6e6f0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: .25rem;
+}
+
+    .be-home-install-copy:hover {
+        background-color: rgba(255, 255, 255, .12);
+    }
+
+.be-home-actions {
+    margin-bottom: 0;
+}
+
+.be-home-btn-primary,
+.be-home-btn-primary:hover,
+.be-home-btn-primary:focus {
+    font-weight: 600;
+    color: #fff;
+    background-image: var(--be-home-button-gradient);
+    border-color: transparent;
+}
+
+    .be-home-btn-primary:hover {
+        filter: brightness(1.08);
+    }
+
+.be-home-btn-secondary {
+    background-color: var(--be-home-card-bg);
+    border-color: var(--be-home-card-border);
+}
+
+/* The frosted chart card of the hero */
+.be-home-hero-card {
+    overflow: hidden;
+    background-color: var(--be-home-card-bg);
+    border: 1px solid var(--be-home-card-border);
+    border-radius: .75rem;
+    box-shadow: 0 .75rem 2rem rgba(var(--be-home-violet-rgb), .12);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+.be-home-chart-types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+    padding: .5rem;
+    border-bottom: 1px solid var(--be-home-card-border);
+}
+
+.be-home-chart-type {
+    padding: .25rem .625rem;
+    font-size: .8125rem;
+    color: var(--bulma-text);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: .375rem;
+}
+
+    .be-home-chart-type:hover {
+        background-color: rgba(var(--be-home-violet-light-rgb), .1);
+    }
+
+    .be-home-chart-type.is-selected {
+        font-weight: 600;
+        color: var(--be-home-link);
+        background-color: rgba(var(--be-home-violet-light-rgb), .16);
+    }
+
+/* Holds the chart's height while a type is drawn, so switching never moves the page */
+.be-home-hero-chart-area {
+    min-height: 276px;
+    padding: .5rem .75rem;
+}
+
+.be-home-hero-excerpt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    padding: .5rem .75rem;
+    font-size: .8125rem;
+    border-top: 1px solid var(--be-home-card-border);
+}
+
+.be-home-hero-code {
+    padding: 0;
+    color: var(--bulma-text-strong);
+    background: none;
+}
+
+.be-home-hero-samples-link {
+    font-weight: 600;
+    color: var(--be-home-link);
+}
+
+.be-home-features {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 1rem 0 2.5rem;
+}
+
+.be-home-feature {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    padding: 1rem;
+    background-color: var(--bulma-scheme-main);
+    border: 1px solid var(--be-bulma-border-color);
+    border-radius: var(--be-bulma-border-radius);
+}
+
+    .be-home-feature i {
+        font-size: 1.375rem;
+        color: var(--be-home-link);
+    }
+
+.be-home-feature-title {
+    color: var(--bulma-text-strong);
+}
+
+.be-home-feature-text {
+    font-size: .875rem;
+    color: var(--bulma-text);
+}
+
+.be-home-section {
+    margin-bottom: 2.5rem;
+}
+
+.be-home-section-title {
+    margin-bottom: 1rem;
+    font-size: 1.75rem;
+    font-weight: 600;
+    text-align: center;
+    color: var(--bulma-text-strong);
+}
+
+.be-home-categories {
+    margin-bottom: 1rem;
+}
+
+.be-home-compat {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: .5rem 1.5rem;
+    margin-bottom: 2rem;
+    padding: .75rem 1rem;
+    font-size: .9375rem;
+    background-color: var(--bulma-scheme-main);
+    border: 1px solid var(--be-bulma-border-color);
+    border-radius: var(--be-bulma-border-radius);
+}
+
+    .be-home-compat a {
+        font-weight: 600;
+        color: var(--be-home-link);
+    }
+
+/* The GitHub star band in the palette; its button gradient keeps white text above 4.5:1 */
+.be-home-star .notification {
+    color: #fff;
+    background-image: var(--be-home-button-gradient);
+}
+
+    .be-home-star .notification a {
+        color: #fff;
+    }
+
+@media screen and (max-width: 767px) {
+    .be-home-actions .button {
+        width: 100%;
+        margin-right: 0;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .be-home-hero-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+        gap: 2rem;
+    }
+
+    .be-home-features {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .be-home-chart,
+    .be-home-chart:hover {
+        transition: none;
+        transform: none;
+    }
+}
+
+/* Demo navbar (story 26111801 CR-001): the button gradient on every page, white text and icons in the bar, and a dark mark
+   (black 22%) for hover, the current section and the version tag, which keeps white text at 6.8:1 or better along the gradient.
+   The theme dropdown, and below 1024px the expanded menu, stay on the theme surface with palette icons. */
+:root {
+    --be-demo-navbar-icon-docs: #512BD4;
+    --be-demo-navbar-icon-demos: #7C3AED;
+    --be-demo-navbar-icon-releases: #0E7490;
+    --be-demo-navbar-panel-tint: rgba(139, 92, 246, 0.14);
+}
+
+[data-theme=dark] {
+    --be-demo-navbar-icon-docs: #A78BFA;
+    --be-demo-navbar-icon-demos: #8B5CF6;
+    --be-demo-navbar-icon-releases: #22D3EE;
+    --be-demo-navbar-panel-tint: rgba(139, 92, 246, 0.24);
+}
+
+.be-demo-navbar {
+    background-color: #512BD4;
+    background-image: var(--be-home-button-gradient);
+}
+
+    /* The panels: the theme dropdown at every width, and the expanded menu below 1024px */
+    .be-demo-navbar .navbar-item,
+    .be-demo-navbar .navbar-link {
+        color: var(--bulma-text);
+    }
+
+    .be-demo-navbar a.navbar-item:hover,
+    .be-demo-navbar .navbar-item.is-current,
+    .be-demo-navbar .navbar-dropdown .navbar-item.is-selected {
+        color: var(--bulma-text-strong);
+        background-color: var(--be-demo-navbar-panel-tint);
+    }
+
+    .be-demo-navbar .navbar-item.is-current {
+        box-shadow: inset 3px 0 0 var(--be-home-link);
+    }
+
+    .be-demo-navbar .navbar-item:focus-visible,
+    .be-demo-navbar .navbar-link:focus-visible {
+        outline: 2px solid var(--be-home-link);
+        outline-offset: -2px;
+    }
+
+    .be-demo-navbar .be-demo-navbar-icon-docs {
+        color: var(--be-demo-navbar-icon-docs);
+    }
+
+    .be-demo-navbar .be-demo-navbar-icon-demos {
+        color: var(--be-demo-navbar-icon-demos);
+    }
+
+    .be-demo-navbar .be-demo-navbar-icon-releases {
+        color: var(--be-demo-navbar-icon-releases);
+    }
+
+    .be-demo-navbar .navbar-link:not(.is-arrowless)::after {
+        border-color: var(--be-home-link);
+    }
+
+    .be-demo-navbar .tag.is-link {
+        color: #fff;
+        background-color: #512BD4;
+        background-image: var(--be-home-button-gradient);
+    }
+
+    /* The bar itself: the brand and the menu (burger) button are always on the gradient */
+    .be-demo-navbar .navbar-brand .navbar-item,
+    .be-demo-navbar .navbar-burger {
+        color: #fff;
+    }
+
+    /* At 320px the brand name shortens with an ellipsis instead of pushing the burger past the edge (WCAG reflow) */
+    .be-demo-navbar .navbar-brand .navbar-item {
+        min-width: 0;
+    }
+
+        .be-demo-navbar .navbar-brand .navbar-item span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+    .be-demo-navbar .navbar-burger {
+        flex-shrink: 0;
+    }
+
+        .be-demo-navbar .navbar-brand a.navbar-item:hover,
+        .be-demo-navbar .navbar-burger:hover {
+            color: #fff;
+            background-color: rgba(0, 0, 0, .22);
+        }
+
+        .be-demo-navbar .navbar-brand .navbar-item:focus-visible,
+        .be-demo-navbar .navbar-burger:focus-visible {
+            outline: 2px solid #fff;
+            outline-offset: -2px;
+        }
+
+/* From 1024px the menu items sit in the bar, so they are white with the dark mark */
+@media screen and (min-width: 1024px) {
+    .be-demo-navbar .navbar-start > .navbar-item,
+    .be-demo-navbar .navbar-end > .navbar-item,
+    .be-demo-navbar .navbar-end > .navbar-item > .navbar-link,
+    .be-demo-navbar .navbar-start > .navbar-item .be-demo-navbar-icon {
+        color: #fff;
+    }
+
+    .be-demo-navbar .navbar-start > a.navbar-item:hover,
+    .be-demo-navbar .navbar-end > a.navbar-item:hover,
+    .be-demo-navbar .navbar-end > .navbar-item.has-dropdown:is(:hover, :focus-within) > .navbar-link,
+    .be-demo-navbar .navbar-start > .navbar-item.is-current {
+        color: #fff;
+        background-color: rgba(0, 0, 0, .22);
+    }
+
+    .be-demo-navbar .navbar-start > .navbar-item.is-current {
+        box-shadow: inset 0 -3px 0 #fff;
+    }
+
+    .be-demo-navbar .navbar-end > .navbar-item > .navbar-link:not(.is-arrowless)::after {
+        border-color: #fff;
+    }
+
+    .be-demo-navbar .navbar-start > .navbar-item:focus-visible,
+    .be-demo-navbar .navbar-end > .navbar-item:focus-visible,
+    .be-demo-navbar .navbar-end > .navbar-item > .navbar-link:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: -2px;
+    }
+
+    .be-demo-navbar .navbar-end .tag.is-link {
+        background-color: rgba(0, 0, 0, .22);
+        background-image: none;
+    }
+}
+
+/* Windows high contrast: draw the gradient words as plain text */
+@media (forced-colors: active) {
+    .be-home-gradient-text {
+        color: CanvasText;
+        -webkit-text-fill-color: CanvasText;
+        background-image: none;
+    }
+}
+
 /* Keyboard focus: every control added with the samples shows a visible focus ring */
 .be-sample-card:focus-visible,
 .be-sample-pager a:focus-visible,
@@ -653,6 +1178,13 @@ a.be-sample-card:hover {
 .be-bulma-doc-example-toolbar i[role=button]:focus-visible,
 .be-home-link:focus-visible,
 .be-home-chart:focus-visible,
+.be-home-pill:focus-visible,
+.be-home-badges a:focus-visible,
+.be-home-install-copy:focus-visible,
+.be-home-actions .button:focus-visible,
+.be-home-chart-type:focus-visible,
+.be-home-hero-samples-link:focus-visible,
+.be-home-compat a:focus-visible,
 .be-gallery input:focus-visible,
 .be-gallery select:focus-visible,
 .be-gallery button:focus-visible,

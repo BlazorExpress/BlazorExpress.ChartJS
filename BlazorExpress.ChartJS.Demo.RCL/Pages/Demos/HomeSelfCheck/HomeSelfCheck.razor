@@ -1,0 +1,108 @@
+@attribute [Route(pageUrl)]
+@layout DemosMainLayout
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
+@inject IConfiguration Configuration
+
+@* Unlisted page: not linked from the navigation. It checks the home page (story 26111801). *@
+<SiteMetaTags PageUrl="@pageUrl" Title="Home Self-Check" Description="Internal check page for the demo site." Robots="noindex, nofollow" />
+
+<PageHero Title="Home self-check" />
+
+<Block>
+    Switches the hero chart through every chart type, checks reduced motion and the theme colours, then loads the home page at 320, 375, 640, 768 and 1280 pixels wide
+    to check the layout, the content, the links, target sizes and contrast in both themes, and the gradient navbar on the docs, demos, blog and 404 pages.
+    Keep this tab in front and leave it alone while it runs: with no drawn frames the result is void.
+</Block>
+
+@if (cases is null)
+{
+    <Block>Running…</Block>
+}
+else
+{
+    <Block>
+        <strong>Passed:</strong> @cases.Count(c => c.Status == "pass") ·
+        <strong>Failed:</strong> <span class="@(cases.Any(c => c.Status == "fail") ? "has-text-danger" : "has-text-success")">@cases.Count(c => c.Status == "fail")</span>
+    </Block>
+
+    <div class="table-container">
+        <table class="table is-fullwidth is-narrow is-striped">
+            <thead>
+                <tr><th>Status</th><th>Case</th><th>Expected</th><th>Actual</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var item in cases)
+                {
+                    <tr class="@(item.Status == "fail" ? "has-background-danger-light" : null)">
+                        <td>@item.Status</td>
+                        <td>@item.Name</td>
+                        <td><code>@item.Expected</code></td>
+                        <td><code>@item.Actual</code></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<div class="columns">
+    <div class="column" data-self-check="hero-motion">
+        <HomeHeroChart ReducedMotion="false" />
+    </div>
+    <div class="column" data-self-check="hero-reduced">
+        <HomeHeroChart ReducedMotion="true" />
+    </div>
+</div>
+
+<div id="@frameHostId"></div>
+
+@code {
+    private const string frameHostId = "home-self-check-frames";
+    private const string pageUrl = DemoRouteConstants.Demos_HomeSelfCheck;
+
+    private List<SelfCheckCase>? cases;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var version = Configuration["version"]!;
+            var expected = new
+            {
+                frameHostId,
+                version = $"v{version}",
+                releaseShortDescription = Configuration["release:short_description"],
+                releaseNotesUrl = $"{DemoRouteConstants.Blog_Releases_Prefix}/{version.Replace('.', '-')}",
+                gettingStartedUrl = DemoRouteConstants.Docs_Getting_Started_Introduction,
+                samplesUrl = DemoRouteConstants.Demos_Samples,
+                colorUtilsUrl = DemoRouteConstants.Demos_ColorUtils,
+                totalSamples = SampleCatalog.All.Count,
+                installCommand = HomeInstallCommand.Command,
+                categoryCount = Enum.GetValues<SampleCategory>().Length,
+                charts = SampleCatalog.Charts.Select(chart => new
+                {
+                    key = chart.Key,
+                    label = HomeHeroChart.GetLabel(chart.Key),
+                    route = chart.Route,
+                    count = SampleCatalog.GetByChart(chart.Key).Count
+                })
+            };
+
+            try
+            {
+                cases = await JS.InvokeAsync<List<SelfCheckCase>>("homeSelfCheck.run", expected);
+            }
+            catch (JSException exception)
+            {
+                cases = [new("The self-check ran to the end", "no script error", exception.Message, "fail")];
+            }
+
+            StateHasChanged();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private sealed record SelfCheckCase(string Name, string Expected, string Actual, string Status);
+}

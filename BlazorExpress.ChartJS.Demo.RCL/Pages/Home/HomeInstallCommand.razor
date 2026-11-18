@@ -1,0 +1,10 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+<div class="be-home-install">
+    <code class="be-home-install-command">@Command</code>
+    @* The status sits beside the button, not in it, so screen readers announce it (WCAG 4.1.3). *@
+    <span class="be-home-install-status" role="status" aria-live="polite">@(isCopied ? CopiedText : null)</span>
+    <button type="button" class="be-home-install-copy" aria-label="Copy the install command" @onclick="CopyAsync">
+        <BootstrapIcon Name="@(isCopied ? BootstrapIconName.Check2 : BootstrapIconName.Copy)" />
+    </button>
+</div>
