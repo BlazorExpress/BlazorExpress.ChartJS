@@ -1,0 +1,29 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+<div class="be-home-hero-card">
+    <div class="be-home-chart-types" role="group" aria-label="Chart type">
+        @foreach (var chart in SampleCatalog.Charts)
+        {
+            var key = chart.Key;
+            <button type="button"
+                    class="be-home-chart-type @(key == selectedKey ? "is-selected" : null)"
+                    aria-pressed="@(key == selectedKey ? "true" : "false")"
+                    data-chart-key="@key"
+                    @onclick="() => SelectAsync(key)">
+                @GetLabel(key)
+            </button>
+        }
+    </div>
+
+    <div class="be-home-hero-chart-area">
+        @if (isReady)
+        {
+            <HomeHeroChartView @key="selectedKey" ChartKey="@selectedKey" ReducedMotion="@reducedMotion" />
+        }
+    </div>
+
+    <div class="be-home-hero-excerpt">
+        <code class="be-home-hero-code">@Excerpt</code>
+        <a class="be-home-hero-samples-link" href="@SelectedChart.Route">@SamplesLinkText</a>
+    </div>
+</div>

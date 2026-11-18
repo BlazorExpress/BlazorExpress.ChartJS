@@ -15,6 +15,11 @@ async function copyToClipboard(text, dotNetHelper) {
     setTimeout(() => notify('ResetCopyStatusJS'), isCopied ? 2000 : 3000);
 }
 
+// True when the visitor's system asks for reduced motion. The home page hero chart then draws without animation (story 26111801 AC-14).
+function demoPrefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 function highlightCode() {
     if (Prism) {
         Prism.plugins.customClass.prefix('prism-');
@@ -660,7 +665,9 @@ function applyDemoChartTheme(theme) {
 // This gives them a tab stop, a role and Enter or Space activation, and tells assistive technology which tab is shown.
 // The copy icon sits in the snippet of a demo and in the toolbar of a code block. The package components are unchanged.
 (() => {
-    const selector = '.tabs li > a:not([href]), :is(.be-bulma-doc-example-snippet, .be-bulma-doc-example-toolbar) i[role="button"]';
+    // The navbar burger, theme switch and theme items are links without an href too (story 26111801 AC-20).
+    const selector = '.tabs li > a:not([href]), :is(.be-bulma-doc-example-snippet, .be-bulma-doc-example-toolbar) i[role="button"], '
+        + '.be-demo-navbar .navbar-burger:not([href]), .be-demo-navbar .navbar-link:not([href]), .be-demo-navbar .navbar-dropdown .navbar-item:not([href])';
 
     const enhance = () => {
         for (const element of document.querySelectorAll(selector)) {
@@ -671,7 +678,7 @@ function applyDemoChartTheme(theme) {
             if (element.tagName === 'I' && !element.hasAttribute('aria-label'))
                 element.setAttribute('aria-label', 'Copy the source to the clipboard');
 
-            if (element.tagName === 'A') {
+            if (element.matches('.tabs li > a')) {
                 const pressed = String(element.parentElement.classList.contains('is-active'));
                 if (element.getAttribute('aria-pressed') !== pressed)
                     element.setAttribute('aria-pressed', pressed);
@@ -1406,6 +1413,440 @@ window.resizeSelfCheck = (() => {
 
         return cases;
     };
+
+    return { run };
+})();
+
+// Unlisted home self-check page (story 26111801; rules.md "W3C and WCAG 2.x conformance"). Switches the hero chart through
+// every type, checks reduced motion and theme colours, then loads the home page in frames 320, 375, 768 and 1280 pixels wide
+// to check layout, content, links, contrast, target size and markup structure.
+window.homeSelfCheck = (() => {
+    const result = selfCheckResult;
+    const chartJsType = {
+        'bar-chart': 'bar', 'bubble-chart': 'bubble', 'doughnut-chart': 'doughnut', 'line-chart': 'line',
+        'pie-chart': 'pie', 'polar-area-chart': 'polarArea', 'radar-chart': 'radar', 'scatter-chart': 'scatter',
+    };
+    let stalls = 0;
+    const frame = () => new Promise(resolve => {
+        const timer = setTimeout(() => { stalls++; resolve(); }, 1000);
+        requestAnimationFrame(() => { clearTimeout(timer); resolve(); });
+    });
+    const frames = async count => { for (let i = 0; i < count; i++) await frame(); };
+    const until = async (test, timeout = 5000) => {
+        const end = performance.now() + timeout;
+        while (performance.now() < end) {
+            const value = test();
+            if (value) return value;
+            await demoSleep(50);
+        }
+        return test();
+    };
+    const heroChart = (host, win = window) => {
+        const canvas = host?.querySelector('.be-home-hero-chart canvas');
+        return canvas && win.Chart ? win.Chart.getChart(canvas) : undefined;
+    };
+    const componentName = key => key.split('-').map(part => part[0].toUpperCase() + part.slice(1)).join('');
+    const path = link => link ? new URL(link.href).pathname + new URL(link.href).hash : '';
+
+    // Colour maths for WCAG contrast. Backgrounds are composed from the element up to the first opaque ancestor.
+    const parse = value => {
+        const match = /rgba?\(([^)]+)\)/.exec(value ?? '');
+        if (!match) return null;
+        const parts = match[1].split(/[\s,/]+/).filter(Boolean).map(Number);
+        return { r: parts[0], g: parts[1], b: parts[2], a: parts.length > 3 ? parts[3] : 1 };
+    };
+    const hex = value => ({ r: parseInt(value.slice(1, 3), 16), g: parseInt(value.slice(3, 5), 16), b: parseInt(value.slice(5, 7), 16), a: 1 });
+    const over = (top, bottom) => ({
+        r: top.r * top.a + bottom.r * (1 - top.a), g: top.g * top.a + bottom.g * (1 - top.a), b: top.b * top.a + bottom.b * (1 - top.a), a: 1,
+    });
+    const luminance = c => {
+        const channel = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+        return 0.2126 * channel(c.r) + 0.7152 * channel(c.g) + 0.0722 * channel(c.b);
+    };
+    const ratio = (a, b) => {
+        const [high, low] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+        return (high + 0.05) / (low + 0.05);
+    };
+    const background = (win, element) => {
+        const layers = [];
+        for (let node = element; node; node = node.parentElement) {
+            const colour = parse(win.getComputedStyle(node).backgroundColor);
+            if (colour && colour.a > 0) {
+                layers.push(colour);
+                if (colour.a >= 1) break;
+            }
+        }
+        let colour = layers.length && layers[layers.length - 1].a >= 1 ? layers.pop() : { r: 255, g: 255, b: 255, a: 1 };
+        for (let i = layers.length - 1; i >= 0; i--) colour = over(layers[i], colour);
+        return colour;
+    };
+    const textColour = (win, element) => {
+        const colour = parse(win.getComputedStyle(element).color);
+        let opacity = 1;
+        for (let node = element; node; node = node.parentElement) opacity *= Number(win.getComputedStyle(node).opacity);
+        return { ...colour, a: colour.a * opacity };
+    };
+
+    async function chartTypes(host, expected) {
+        const cases = [];
+        const buttons = () => [...host.querySelectorAll('.be-home-chart-type')];
+        const pressed = () => buttons().filter(b => b.getAttribute('aria-pressed') === 'true');
+        const first = await until(() => heroChart(host));
+        cases.push(result('S-01 Bar is drawn and selected on load', 'bar, Bar', `${first?.config.type}, ${pressed().map(b => b.textContent.trim()).join(',')}`));
+        cases.push(result('S-01 Buttons in catalogue order', expected.charts.map(c => c.label).join(', '), buttons().map(b => b.textContent.trim()).join(', ')));
+
+        for (const chart of expected.charts) {
+            buttons().find(b => b.dataset.chartKey === chart.key).click();
+            const drawn = await until(() => { const c = heroChart(host); return c?.config.type === chartJsType[chart.key] ? c : null; });
+            await frame();
+            const name = componentName(chart.key);
+            const link = host.querySelector('.be-home-hero-samples-link');
+            cases.push(result(`S-01 ${chart.label}: chart type, pressed button, excerpt, link text, link route`,
+                [chartJsType[chart.key], chart.key, `<${name} @ref="${name[0].toLowerCase()}${name.slice(1)}" />`, `Open ${chart.count} ${chart.label.toLowerCase()} chart samples`, chart.route].join(' | '),
+                [drawn?.config.type, pressed().map(b => b.dataset.chartKey).join(','), host.querySelector('.be-home-hero-code')?.textContent, link?.textContent.trim(), path(link)].join(' | ')));
+        }
+
+        return cases;
+    }
+
+    async function quickSwitching(host, expected) {
+        host.querySelectorAll('.be-home-chart-type').forEach(button => button.click());
+        const last = expected.charts[expected.charts.length - 1].key;
+        await until(() => heroChart(host)?.config.type === chartJsType[last]);
+        await frames(5);
+        const canvases = host.querySelectorAll('.be-home-hero-chart-area canvas').length;
+        return [result('S-02 Quick clicks on all 8 buttons end on the last type, with one chart', `${chartJsType[last]}, 1`, `${heroChart(host)?.config.type}, ${canvases}`)];
+    }
+
+    async function reducedMotion() {
+        const reduced = await until(() => heroChart(document.querySelector('[data-self-check=hero-reduced]')));
+        const normal = heroChart(document.querySelector('[data-self-check=hero-motion]'));
+        return [result('S-03 Animation duration: reduced motion is 0, normal is above 0', '0, true', `${reduced?.options.animation?.duration}, ${(normal?.options.animation?.duration ?? 0) > 0}`)];
+    }
+
+    async function themeColours(host) {
+        const before = document.documentElement.dataset.theme ?? 'light';
+        host.querySelector('.be-home-chart-type[data-chart-key="bar-chart"]').click();
+        await until(() => heroChart(host)?.config.type === 'bar');
+        await frames(3);
+        const read = () => { const c = heroChart(host); return `${c?.scales.x.options.ticks.color}, ${c?.scales.y.options.grid.color}`; };
+        setTheme('dark', false);
+        await frames(3);
+        const dark = read();
+        setTheme('light', false);
+        await frames(3);
+        const light = read();
+        setTheme(before, false);
+        await frames(2);
+        return [
+            result('S-04 After a switch to dark, the hero axis text and grid use the dark theme colours', `${demoChartThemes.dark.color}, ${demoChartThemes.dark.lineColor}`, dark),
+            result('S-04 After a switch back to light, they use the light theme colours', `${demoChartThemes.light.color}, ${demoChartThemes.light.lineColor}`, light),
+        ];
+    }
+
+    // Loads an address of the site in a frame. The home page is ready when its hero chart is drawn; another page when its navbar and h1 are.
+    async function loadFrame(hostId, width, path = '/') {
+        const iframe = document.createElement('iframe');
+        iframe.title = `${path} at ${width} pixels`;
+        // An outline, not a border, so the frame's viewport is exactly the width under test.
+        iframe.style.cssText = `display:block;width:${width}px;height:900px;margin-bottom:1rem;border:0;outline:1px solid #ccc;`;
+        const loaded = new Promise(resolve => iframe.addEventListener('load', resolve, { once: true }));
+        iframe.src = path;
+        document.getElementById(hostId).appendChild(iframe);
+        await loaded;
+        const win = iframe.contentWindow;
+        const ready = await until(() => {
+            const doc = iframe.contentDocument;
+            if (path === '/') return heroChart(doc, win) ? true : null;
+            return doc?.querySelector('.be-demo-navbar a[href="/docs"]') && doc.querySelector('h1') ? true : null;
+        }, 20000);
+        await frames(5);
+        return { doc: iframe.contentDocument, win, ready: !!ready };
+    }
+
+    function layout({ doc, win }, width) {
+        const columns = selector => {
+            const element = doc.querySelector(selector);
+            return element ? win.getComputedStyle(element).gridTemplateColumns.split(' ').filter(Boolean).length : 0;
+        };
+        const id = width === 640 ? 'S-19' : width < 768 ? 'S-05' : 'S-06';
+        const phone = width < 768;
+        const expected = phone ? '1, 2, 2' : '2, 3, 4';
+        const cases = [
+            result(`${id} ${width}px: no horizontal scroll`, true, doc.documentElement.scrollWidth <= doc.documentElement.clientWidth),
+            result(`${id} ${width}px: hero, feature and chart-card columns`, expected, `${columns('.be-home-hero-grid')}, ${columns('.be-home-features')}, ${columns('.be-home-charts')}`),
+        ];
+
+        if (phone) {
+            const lines = new Set([...doc.querySelectorAll('.be-home-chart-type')].map(b => Math.round(b.getBoundingClientRect().top))).size;
+            const buttons = [...doc.querySelectorAll('.be-home-actions .button')];
+            const fullWidth = buttons.every(b => Math.abs(b.getBoundingClientRect().width - b.parentElement.getBoundingClientRect().width) < 2);
+            // The chart-type buttons need to wrap only at phone widths (AC-12); at 640px they may fit one line.
+            if (width <= 375)
+                cases.push(result(`${id} ${width}px: chart-type buttons wrap, and the two action buttons are full width`, 'true, true', `${lines > 1}, ${fullWidth}`));
+            else
+                cases.push(result(`${id} ${width}px: the two action buttons are full width`, true, fullWidth));
+
+            // WCAG 2.2 target size (2.5.8): every visible control on the home page and in the navbar is at least 24 by 24 CSS px.
+            const small = [...doc.querySelectorAll('.be-home a, .be-home button, .be-demo-navbar a, .be-demo-navbar button')]
+                .filter(control => control.offsetParent !== null && control.closest('.message') === null)
+                .filter(control => { const box = control.getBoundingClientRect(); return box.width < 24 || box.height < 24; })
+                .map(control => `${control.textContent.trim().slice(0, 24) || control.getAttribute('aria-label')} ${Math.round(control.getBoundingClientRect().width)}x${Math.round(control.getBoundingClientRect().height)}`);
+            cases.push(result(`${width === 640 ? 'S-19' : 'S-13'} ${width}px: every home page and navbar control is at least 24 by 24 CSS px`, 'none smaller', small.length ? small.join('; ') : 'none smaller'));
+        }
+
+        return cases;
+    }
+
+    function content({ doc }, expected) {
+        const q = selector => doc.querySelector(selector);
+        const qa = selector => [...doc.querySelectorAll(selector)];
+        const home = q('.be-home');
+        const badges = qa('.be-home-badges a');
+        const actions = qa('.be-home-actions .button');
+        const description = doc.head.querySelector('meta[name=description]')?.content ?? '';
+
+        return [
+            result('S-07 Release pill: version, text and release notes link', `New in ${expected.version} | ${expected.releaseShortDescription} | ${expected.releaseNotesUrl}`,
+                `${q('.be-home-pill-tag')?.textContent.trim()} | ${q('.be-home-pill-text')?.textContent.trim()} | ${path(q('.be-home-pill'))}`),
+            result('S-07 Title', 'Chart.js charts for Blazor, configured in C#', q('.be-home-title')?.textContent.trim()),
+            result('S-07 The page has no "UI library" text', false, home.textContent.includes('UI library')),
+            result('S-07 NuGet badges: alt text and NuGet links', 'NuGet version, NuGet downloads | 2', `${badges.map(a => a.querySelector('img')?.alt).join(', ')} | ${badges.filter(a => a.href.includes('nuget.org/packages/BlazorExpress.ChartJS')).length}`),
+            result('S-07 Install command', expected.installCommand, q('.be-home-install-command')?.textContent.trim()),
+            result('S-07 Action buttons: text and routes', `Get started ${expected.gettingStartedUrl} | Browse ${expected.totalSamples} samples ${expected.samplesUrl}`, actions.map(a => `${a.textContent.trim()} ${path(a)}`).join(' | ')),
+            result('S-08 Six feature cards', 6, qa('.be-home-feature').length),
+            result('S-08 Chart cards: sample counts and routes', expected.charts.map(c => `${c.count} samples ${c.route}`).join(' | '),
+                qa('.be-home-chart').map(a => `${a.querySelector('.be-home-chart-count')?.textContent.trim()} ${path(a)}`).join(' | ')),
+            result('S-08 One tag per sample category, and the Color Utils link', `${expected.categoryCount}, ${expected.colorUtilsUrl}`, `${qa('.be-home-categories a.tag').length}, ${path(q('.be-home .be-home-link'))}`),
+            result('S-08 The compatibility row links to the full version table', `${expected.gettingStartedUrl}#supported-tech-stack`, path(q('.be-home-compat a'))),
+            result('S-08 No full version table and no logo image (only the 2 badge images)', '0, 2', `${home.querySelectorAll('table').length}, ${home.querySelectorAll('img').length}`),
+            result('S-08 Did you know and the GitHub star band are shown', true, !!q('.be-home .message.is-success') && !!q('.be-home-star .notification')),
+            result('S-11 Badge links open a new tab with noopener', 2, badges.filter(a => a.target === '_blank' && a.rel.includes('noopener')).length),
+            result('S-12 Page title, and a chart-specific meta description', 'Blazor Chart.js Components for .NET | BlazorExpress.ChartJS | true',
+                `${doc.title} | ${description.includes('Chart.js') && !description.includes('UI library')}`),
+        ];
+    }
+
+    // W3C markup and WCAG structure: page language, unique ids, one h1, no skipped heading level,
+    // an accessible name on every link and button, alt text on every image and a text alternative for the chart.
+    function structure({ doc }) {
+        const ids = [...doc.querySelectorAll('[id]')].map(e => e.id);
+        const duplicates = [...new Set(ids.filter((id, i) => ids.indexOf(id) !== i))];
+        const levels = [...doc.querySelectorAll('.be-home h1, .be-home h2, .be-home h3, .be-home h4')].map(h => Number(h.tagName[1]));
+        const skipped = levels.some((level, i) => i > 0 && level > levels[i - 1] + 1);
+        const unnamed = [...doc.querySelectorAll('.be-home a, .be-home button')].filter(c => !(c.textContent.trim() || c.getAttribute('aria-label') || c.querySelector('img[alt]:not([alt=""])'))).length;
+        const noAlt = [...doc.querySelectorAll('.be-home img')].filter(img => !img.hasAttribute('alt')).length;
+        const chartLabel = doc.querySelector('.be-home-hero-chart')?.getAttribute('aria-label') ?? '';
+        return [result('S-14 lang set; unique ids; 1 h1; no skipped heading; named controls; image alts; chart label',
+            'true | none | 1 | false | 0 | 0 | true',
+            `${!!doc.documentElement.lang} | ${duplicates.length ? duplicates.join(',') : 'none'} | ${doc.querySelectorAll('h1').length} | ${skipped} | ${unnamed} | ${noAlt} | ${chartLabel.startsWith('Sample ')}`)];
+    }
+
+    function contrast({ doc, win }, theme) {
+        const low = [];
+        const selectors = ['.be-home-pill-text', '.be-home-lead', '.be-home-install-command', '.be-home-chart-type:not(.is-selected)', '.be-home-chart-type.is-selected',
+            '.be-home-hero-code', '.be-home-hero-samples-link', '.be-home-feature-title', '.be-home-feature-text', '.be-home-section-title', '.be-home-chart-name',
+            '.be-home-chart-count', '.be-home-categories a.tag', '.be-home .be-home-link', '.be-home-compat span', '.be-home-compat a', '.be-home-btn-secondary'];
+        for (const selector of selectors) {
+            const element = doc.querySelector(selector);
+            if (!element) { low.push(`${selector} missing`); continue; }
+            const bg = background(win, element);
+            const value = ratio(over(textColour(win, element), bg), bg);
+            if (value < 4.5) low.push(`${selector} ${value.toFixed(2)}`);
+        }
+        const stops = name => (win.getComputedStyle(doc.documentElement).getPropertyValue(name).match(/#[0-9a-f]{6}/gi) ?? []).map(hex);
+        const titleBg = background(win, doc.querySelector('.be-home-title'));
+        stops('--be-home-text-gradient').forEach(stop => { const v = ratio(stop, titleBg); if (v < 3) low.push(`title gradient stop ${v.toFixed(2)}`); });
+        stops('--be-home-button-gradient').forEach(stop => { const v = ratio({ r: 255, g: 255, b: 255, a: 1 }, stop); if (v < 4.5) low.push(`white label on button stop ${v.toFixed(2)}`); });
+
+        // WCAG 1.4.11: the focus ring reaches 3:1 against the page.
+        const control = doc.querySelector('.be-home-chart-type');
+        control.focus({ focusVisible: true });
+        const ring = parse(win.getComputedStyle(control).outlineColor);
+        const ringRatio = ring ? ratio(ring, background(win, control.parentElement)) : 0;
+        control.blur();
+        if (ringRatio < 3) low.push(`focus ring ${ringRatio.toFixed(2)}`);
+
+        return result(`S-09 ${theme}: text 4.5:1, title gradient 3:1, button label 4.5:1, focus ring 3:1`, 'none below', low.length ? low.join('; ') : 'none below');
+    }
+
+    const white = { r: 255, g: 255, b: 255, a: 1 };
+    const black22 = { r: 0, g: 0, b: 0, a: 0.22 };
+    const gradientStops = ({ doc, win }) =>
+        (win.getComputedStyle(doc.documentElement).getPropertyValue('--be-home-button-gradient').match(/#[0-9a-f]{6}/gi) ?? []).map(hex);
+
+    // S-15: the gradient bar and the current-section mark on a page.
+    function navbarSection({ doc, win }, path, expectedSection, expectedAria) {
+        const navbar = doc.querySelector('.be-demo-navbar');
+        const gradient = win.getComputedStyle(navbar).backgroundImage.includes('rgb(81, 43, 212)') && win.getComputedStyle(navbar).backgroundImage.includes('rgb(14, 116, 144)');
+        const current = [...navbar.querySelectorAll('.navbar-start .navbar-item.is-current')];
+        const marked = current.map(a => `${a.textContent.trim()} ${a.getAttribute('aria-current')}`).join(',') || 'none';
+        const others = [...navbar.querySelectorAll('.navbar-start .navbar-item:not(.is-current)')].filter(a => a.hasAttribute('aria-current')).length;
+        return result(`S-15 ${path}: gradient bar, current section and aria-current`, `true, ${expectedSection === 'none' ? 'none' : `${expectedSection} ${expectedAria}`}, 0`, `${gradient}, ${marked}, ${others}`);
+    }
+
+    // S-16: white bar text and the dark mark against both ends of the gradient; the white focus ring at least 3:1.
+    function navbarBar(page, theme) {
+        const { doc, win } = page;
+        const low = [];
+        const barItems = [doc.querySelector('.be-demo-navbar .navbar-brand .navbar-item span'), ...doc.querySelectorAll('.be-demo-navbar .navbar-start > .navbar-item, .be-demo-navbar .navbar-end > a.navbar-item, .be-demo-navbar .navbar-end .navbar-link, .be-demo-navbar .navbar-end .tag')];
+        const notWhite = barItems.filter(e => win.getComputedStyle(e).color !== 'rgb(255, 255, 255)').map(e => e.textContent.trim() || e.getAttribute('aria-label'));
+        if (notWhite.length) low.push(`not white: ${notWhite.join(', ')}`);
+        for (const stop of gradientStops(page)) {
+            if (ratio(white, stop) < 4.5) low.push(`white on stop ${ratio(white, stop).toFixed(2)}`);
+            const marked = over(black22, stop);
+            if (ratio(white, marked) < 4.5) low.push(`white on marked stop ${ratio(white, marked).toFixed(2)}`);
+        }
+        const item = doc.querySelector('.be-demo-navbar .navbar-start > .navbar-item');
+        item.focus({ focusVisible: true });
+        const ring = parse(win.getComputedStyle(item).outlineColor);
+        item.blur();
+        for (const stop of gradientStops(page)) {
+            const value = ring ? ratio(ring, stop) : 0;
+            if (value < 3) low.push(`focus ring on stop ${value.toFixed(2)}`);
+        }
+        return result(`S-16 ${theme} 1280px: white bar text, text 4.5:1 on the gradient and the mark, focus ring 3:1`, 'none below', low.length ? low.join('; ') : 'none below');
+    }
+
+    // S-17: the theme-surface panels: the expanded phone menu (375px) or the theme dropdown (1280px).
+    async function navbarPanel(page, theme, width) {
+        const { doc, win } = page;
+        const low = [];
+        let panel;
+        const burger = doc.querySelector('.be-demo-navbar .navbar-burger');
+        if (width < 1024) {
+            if (win.getComputedStyle(burger).color !== 'rgb(255, 255, 255)') low.push('burger not white');
+            burger.click();
+            await until(() => doc.querySelector('.be-demo-navbar .navbar-menu.is-active'), 3000);
+            await frames(2);
+            panel = doc.querySelector('.be-demo-navbar .navbar-menu');
+        } else {
+            panel = doc.querySelector('.be-demo-navbar .navbar-dropdown');
+        }
+        const surface = parse(win.getComputedStyle(panel).backgroundColor);
+        const page_ = background(win, doc.querySelector('.be-home') ?? doc.body);
+        if (!surface || surface.a < 1) low.push('panel not opaque');
+        else if (Math.abs(luminance(surface) - luminance(page_)) > 0.2) low.push('panel is not the theme surface');
+        const bg = surface && surface.a >= 1 ? surface : page_;
+        for (const item of panel.querySelectorAll('.navbar-item')) {
+            if (item.closest('.navbar-dropdown') && width < 1024) continue;
+            const value = ratio(over(textColour(win, item), bg), bg);
+            if (value < 4.5) low.push(`${item.textContent.trim().slice(0, 16) || item.getAttribute('aria-label')} ${value.toFixed(2)}`);
+        }
+        for (const icon of panel.querySelectorAll('.be-demo-navbar-icon')) {
+            const value = ratio(over(textColour(win, icon), bg), bg);
+            if (value < 3) low.push(`icon ${value.toFixed(2)}`);
+        }
+        if (width < 1024) {
+            burger.click();
+            await frames(2);
+        }
+        return result(`S-17 ${theme} ${width}px: ${width < 1024 ? 'white burger; expanded menu' : 'theme dropdown'} on the theme surface, text 4.5:1, icons 3:1`, 'none below', low.length ? low.join('; ') : 'none below');
+    }
+
+    // S-18: navbar names, safe new-tab links, tab stops for the controls the package renders without href, unique ids.
+    function navbarMarkup({ doc }) {
+        const navbar = doc.querySelector('.be-demo-navbar');
+        const unnamed = [...navbar.querySelectorAll('a, button')].filter(c => !(c.getAttribute('aria-label') || c.innerText.trim() || c.querySelector('img[alt]:not([alt=""])'))).length;
+        const unsafe = [...navbar.querySelectorAll('a[target=_blank]')].filter(a => !a.rel.includes('noopener')).length;
+        const noTab = [...navbar.querySelectorAll('.navbar-burger, .navbar-link, .navbar-dropdown .navbar-item')].filter(c => c.getAttribute('tabindex') !== '0' || c.getAttribute('role') !== 'button').length;
+        const ids = [...navbar.querySelectorAll('[id]')].map(e => e.id);
+        const duplicates = ids.filter((id, i) => ids.indexOf(id) !== i).length;
+        return result('S-18 Navbar: unnamed controls, new-tab links without noopener, controls without a tab stop and button role, duplicate ids', '0, 0, 0, 0', `${unnamed}, ${unsafe}, ${noTab}, ${duplicates}`);
+    }
+
+    async function brokenBadge({ doc }) {
+        const hero = doc.querySelector('.be-home-hero');
+        const before = hero.getBoundingClientRect().height;
+        const image = doc.querySelector('.be-home-badges img');
+        const failed = new Promise(resolve => {
+            image.addEventListener('error', () => resolve(true), { once: true });
+            setTimeout(() => resolve(false), 5000);
+        });
+        image.src = 'https://invalid.invalid/badge.svg';
+        const error = await failed;
+        await frames(2);
+        const after = hero.getBoundingClientRect().height;
+        return [result('S-10 A badge that cannot load: load error, alt text kept, hero height within 2px', 'true, NuGet version, true', `${error}, ${image.alt}, ${Math.abs(after - before) <= 2}`)];
+    }
+
+    // The site animates the page background when the theme changes, so colours are read once the background stops changing.
+    async function settleTheme(page, theme) {
+        page.win.setTheme(theme, false);
+        let previous = '';
+        for (let i = 0; i < 40; i++) {
+            await demoSleep(100);
+            const current = page.win.getComputedStyle(page.doc.documentElement).backgroundColor;
+            if (current === previous) break;
+            previous = current;
+        }
+        await frames(2);
+    }
+
+    async function run(expected) {
+        stalls = 0;
+        const errors = [];
+        const original = console.error;
+        console.error = (...args) => { errors.push(args.join(' ')); original.apply(console, args); };
+        const onError = event => errors.push(event.message);
+        window.addEventListener('error', onError);
+        const cases = [];
+
+        try {
+            const host = document.querySelector('[data-self-check=hero-motion]');
+            cases.push(...await chartTypes(host, expected));
+            cases.push(...await quickSwitching(host, expected));
+            cases.push(...await reducedMotion());
+            cases.push(...await themeColours(host));
+
+            for (const width of [320, 375, 640, 768, 1280]) {
+                const page = await loadFrame(expected.frameHostId, width);
+                cases.push(result(`Home page loaded in a ${width}px frame`, true, page.ready));
+                if (!page.ready) continue;
+                cases.push(...layout(page, width));
+
+                if (width === 375) {
+                    for (const theme of ['light', 'dark']) {
+                        await settleTheme(page, theme);
+                        cases.push(await navbarPanel(page, theme, width));
+                    }
+                }
+
+                if (width === 1280) {
+                    cases.push(...content(page, expected));
+                    cases.push(...structure(page));
+                    cases.push(navbarSection(page, '/', 'none'));
+                    cases.push(navbarMarkup(page));
+                    for (const theme of ['light', 'dark']) {
+                        await settleTheme(page, theme);
+                        cases.push(contrast(page, theme));
+                        cases.push(navbarBar(page, theme));
+                        cases.push(await navbarPanel(page, theme, width));
+                    }
+                    cases.push(...await brokenBadge(page));
+                }
+            }
+
+            // The navbar on the other layouts: docs, demos, blog and the 404 page.
+            for (const [path, section, aria] of [
+                ['/docs/getting-started/introduction', 'Docs', 'true'], ['/demos/bar-chart', 'Demos', 'true'],
+                ['/blog/home', 'Releases', 'true'], ['/does-not-exist', 'none'],
+            ]) {
+                const page = await loadFrame(expected.frameHostId, 1280, path);
+                cases.push(result(`${path} loaded in a 1280px frame`, true, page.ready));
+                if (page.ready) cases.push(navbarSection(page, path, section, aria));
+            }
+
+            cases.push(result('Console and uncaught errors during the run', 0, errors.length));
+            cases.push(result('No frame stalled during the run (otherwise the run is void)', 0, stalls));
+        }
+        finally {
+            console.error = original;
+            window.removeEventListener('error', onError);
+        }
+
+        return cases;
+    }
 
     return { run };
 })();
