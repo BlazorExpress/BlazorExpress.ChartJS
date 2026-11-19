@@ -735,6 +735,33 @@ a.be-sample-card:hover {
     border-radius: .5rem;
 }
 
+/* On phones the pill stacks: the tag and the arrow on the first line, the description below at full width (QF-26111902).
+   Tablets (768px and up) and desktops keep the single row. */
+@media screen and (max-width: 767px) {
+    .be-home-pill {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-areas: "tag arrow" "text text";
+        row-gap: .375rem;
+        padding: .5rem .75rem .625rem .5rem;
+    }
+
+    .be-home-pill-tag {
+        grid-area: tag;
+        justify-self: start;
+    }
+
+    .be-home-pill-text {
+        grid-area: text;
+        padding-left: .125rem;
+    }
+
+    .be-home-pill > [aria-hidden="true"] {
+        grid-area: arrow;
+        justify-self: end;
+    }
+}
+
 .be-home-title {
     margin-bottom: .75rem;
     font-size: clamp(1.75rem, 4vw, 2.5rem);
