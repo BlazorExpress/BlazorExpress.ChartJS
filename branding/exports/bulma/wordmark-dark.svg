@@ -17,9 +17,9 @@
       <use href="#heritage-letterforms" fill="#FFFFFF"/>
     </mask>
   </defs>
-  <use href="#heritage-tile" fill="#087F6D" stroke="#087F6D" stroke-width="5" stroke-miterlimit="10"/>
+  <use href="#heritage-tile" fill="#512BD4" stroke="#512BD4" stroke-width="5" stroke-miterlimit="10"/>
   <use href="#heritage-sweep" fill="#FFFFFF"/>
-  <use href="#heritage-letterforms" fill="#087F6D"/>
+  <use href="#heritage-letterforms" fill="#512BD4"/>
   </g>
   <g transform="translate(120 0) scale(1)">
 <g>

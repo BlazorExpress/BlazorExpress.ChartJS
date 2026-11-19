@@ -16,7 +16,7 @@
       <use href="#heritage-letterforms" fill="#FFFFFF"/>
     </mask>
   </defs>
-  <use href="#heritage-tile" fill="#5C2D91" stroke="#5C2D91" stroke-width="5" stroke-miterlimit="10"/>
+  <use href="#heritage-tile" fill="#512BD4" stroke="#512BD4" stroke-width="5" stroke-miterlimit="10"/>
   <use href="#heritage-sweep" fill="#FFFFFF"/>
-  <use href="#heritage-letterforms" fill="#5C2D91"/>
+  <use href="#heritage-letterforms" fill="#512BD4"/>
 </svg>

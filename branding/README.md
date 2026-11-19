@@ -1,12 +1,12 @@
 # BlazorExpress Heritage branding
 
-The family uses one badge-free **Be** mark. Use the full identity name in wordmarks, link cards, and other placements with room for text.
+The family uses one badge-free **Be** mark in .NET purple (`#512BD4`). Use the full identity name in wordmarks, link cards, and other placements with room for text.
 
-| Identity | Default color | Ready-to-use kit |
-| --- | --- | --- |
-| BlazorExpress | Purple `#5C2D91` | [BlazorExpress](exports/blazorexpress/) |
-| BlazorExpress.Bulma | Teal `#087F6D` | [Bulma](exports/bulma/) |
-| BlazorExpress.ChartJS | Blue `#1A559C` | [ChartJS](exports/chartjs/) |
+| Identity | Ready-to-use kit |
+| --- | --- |
+| BlazorExpress | [BlazorExpress](exports/blazorexpress/) |
+| BlazorExpress.Bulma | [Bulma](exports/bulma/) |
+| BlazorExpress.ChartJS | [ChartJS](exports/chartjs/) |
 
 | Use | File | Placement |
 | --- | --- | --- |
@@ -19,7 +19,7 @@ The family uses one badge-free **Be** mark. Use the full identity name in wordma
 | Website link card | `website-card.png` | Serve the 1200 × 630 PNG at a public URL and use that URL in the Open Graph and Twitter image tags. |
 | Repository link preview | `github-preview.png` | Upload the 1280 × 640 PNG in **Settings → Social preview** for the Bulma or ChartJS repository. Use the separate website card for site links. |
 
-ChartJS serves the blue demo logo and loader, uses the favicon at the existing demo URL with the 16 px variant alongside it, and uses the blue card as the demo's default share image. Its README and NuGet packaging share the existing `nuget/logo.png` path. The purple and teal kits are ready for their maintainers to apply.
+ChartJS serves the purple demo logo and loader, uses the favicon at the existing demo URL with the 16 px variant alongside it, and uses the purple card as the demo's default share image. Its README and NuGet packaging share the existing `nuget/logo.png` path. The BlazorExpress and Bulma kits are ready for their maintainers to apply.
 
 ## Edit and regenerate
 

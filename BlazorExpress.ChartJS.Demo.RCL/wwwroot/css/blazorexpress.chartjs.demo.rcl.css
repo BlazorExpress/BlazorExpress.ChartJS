@@ -1098,8 +1098,13 @@ a.be-sample-card:hover {
         min-width: 0;
     }
 
-        .be-demo-navbar .navbar-brand .navbar-item img {
+        .be-demo-navbar .navbar-brand .be-navbar-brand-mark {
             flex: none;
+            box-sizing: border-box;
+            max-height: none;
+            padding: 2px;
+            border-radius: 5px;
+            background-color: #fff;
         }
 
         .be-demo-navbar .navbar-brand .be-navbar-brand-name {

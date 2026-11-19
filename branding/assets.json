@@ -1,8 +1,9 @@
 {
+  "color": "#512BD4",
   "identities": {
-    "blazorexpress": { "name": "BlazorExpress", "color": "#5C2D91" },
-    "bulma": { "name": "BlazorExpress.Bulma", "color": "#087F6D", "package": true, "github": true },
-    "chartjs": { "name": "BlazorExpress.ChartJS", "color": "#1A559C", "package": true, "github": true, "loader": true }
+    "blazorexpress": { "name": "BlazorExpress" },
+    "bulma": { "name": "BlazorExpress.Bulma", "package": true, "github": true },
+    "chartjs": { "name": "BlazorExpress.ChartJS", "package": true, "github": true, "loader": true }
   },
   "favicons": [16, 32],
   "avatar": { "size": 500, "limit": 1000000 },

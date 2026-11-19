@@ -1755,10 +1755,11 @@ window.homeSelfCheck = (() => {
         return result('S-18 Navbar: unnamed controls, new-tab links without noopener, controls without a tab stop and button role, duplicate ids', '0, 0, 0, 0', `${unnamed}, ${unsafe}, ${noTab}, ${duplicates}`);
     }
 
-    function heritageLayout({ doc }, width, theme, expected) {
+    function heritageLayout(page, width, theme, expected) {
+        const { doc, win } = page;
         const link = doc.querySelector('.be-demo-navbar .navbar-brand a.navbar-item');
         const name = link?.querySelector('.be-navbar-brand-name');
-        const navbarMark = link?.querySelector('img');
+        const navbarMark = link?.querySelector('.be-navbar-brand-mark');
         const footerMark = doc.querySelector('.be-footer-brand img');
         const footerName = doc.querySelector('.be-footer-brand-name');
         const loaded = mark => !!mark?.naturalWidth && new URL(mark.currentSrc).pathname.endsWith(expected.heritageLogo);
@@ -1768,8 +1769,14 @@ window.homeSelfCheck = (() => {
             return rect.width > 0 && rect.left >= 0 && rect.right <= doc.documentElement.clientWidth
                 && element.scrollWidth <= element.clientWidth;
         };
+        const markBox = navbarMark?.getBoundingClientRect();
+        const backing = navbarMark && parse(win.getComputedStyle(navbarMark).backgroundColor);
+        const stops = gradientStops(page);
+        const visibleMark = markBox?.width >= 36 && markBox?.height >= 36 && fits(navbarMark)
+            && backing?.a === 1 && stops.length === 2 && stops.every(stop => ratio(backing, stop) >= 3);
         return [
             result(`Heritage ${theme} ${width}px: both marks load`, true, loaded(navbarMark) && loaded(footerMark)),
+            result(`Heritage ${theme} ${width}px: navbar mark fits and backing contrasts with the gradient`, true, visibleMark),
             result(`Heritage ${theme} ${width}px: complete names fit the layout`, true,
                 fits(name) && fits(footerName) && name.textContent.trim() === expected.brandName
                 && footerName.textContent.trim() === expected.brandName),

@@ -55,7 +55,7 @@ function card(brand, artwork, lettering, width, height) {
     const background = cardLayout
         .replace(/^[\s\S]*?<svg[^>]*>/, '')
         .replace(/<\/svg>\s*$/, '')
-        .replaceAll('#5C2D91', brand.color)
+        .replaceAll('#5C2D91', manifest.color)
         .replace(/  <!-- (mark|wordmark) -->\r?\n/g, '');
     const foreground = cardLayout
         .split('\n')
@@ -73,7 +73,7 @@ for (const [id, brand] of Object.entries(manifest.identities)) {
     const paths = wordSource.match(/<g>[\s\S]*<\/g>/)?.[0];
     if (!width || !paths) throw new Error(`Missing outlined wordmark for ${brand.name}`);
     const lettering = { width, paths };
-    const artwork = mark(brand.color);
+    const artwork = mark(manifest.color);
     const logo = svg(512, 512, `${brand.name} logo`, artwork);
 
     add(`${id}/logo.svg`, logo);
