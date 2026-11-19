@@ -1,4 +1,4 @@
-﻿namespace BlazorExpress.ChartJS.Demo.RCL;
+namespace BlazorExpress.ChartJS.Demo.RCL;
 
 public static class DemoStringConstants
 {
@@ -48,6 +48,7 @@ public static class DemoStringConstants
     public const string StaticAssets_RootPath = "_content/BlazorExpress.ChartJS.Demo.RCL";
     public const string StaticAssets_Icons_Path = StaticAssets_RootPath + "/icons";
     public const string StaticAssets_Icons_Logo_png = StaticAssets_Icons_Path + "/logo.png";
+    public const string StaticAssets_Icons_Logo_svg = StaticAssets_Icons_Path + "/logo.svg";
 
     public const string StaticAssets_Images_Path = StaticAssets_RootPath + "/images";
 

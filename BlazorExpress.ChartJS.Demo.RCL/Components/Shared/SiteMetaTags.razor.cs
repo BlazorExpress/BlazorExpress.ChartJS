@@ -9,7 +9,7 @@ public partial class SiteMetaTags : ComponentBase
 {
     #region Fields and Constants
 
-    private const string DefaultImageUrl = DemoImageSrcConstants.LineChart;
+    private const string DefaultImageUrl = DemoImageSrcConstants.HeritageCard;
 
     private string absoluteImageUrl = default!;
     private string absoluteUrl = default!;
@@ -58,7 +58,7 @@ public partial class SiteMetaTags : ComponentBase
     [Parameter] public string? Description { get; set; }
 
     /// <summary>
-    /// Gets or sets the preview image, as an absolute URL or a path on this site. Default is the line chart image.
+    /// Gets or sets the preview image, as an absolute URL or a path on this site. Default is the ChartJS Heritage card.
     /// </summary>
     [Parameter] public string? ImageUrl { get; set; }
 

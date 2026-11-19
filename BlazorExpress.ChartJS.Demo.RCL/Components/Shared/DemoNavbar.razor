@@ -3,9 +3,9 @@
 @* The gradient navbar of every page (story 26111801 CR-001). The current section is marked from the address. *@
 <Navbar Class="px-3 be-demo-navbar" HasShadow="true">
     <NavbarBrand>
-        <NavbarItem Href="@DemoRouteConstants.Home_Prefix">
-            <img src="@BrandImgSrc" alt="@BrandImgAltText" />
-            <span class="ml-2 is-size-5 has-text-weight-bold">@ApplicationName</span>
+        <NavbarItem Href="@DemoRouteConstants.Home_Prefix" aria-label="@ApplicationName">
+            <img class="be-navbar-brand-mark" src="@BrandImgSrc" alt="@BrandImgAltText" width="36" height="36" />
+            <span class="be-navbar-brand-name ml-2 has-text-weight-bold">@ApplicationName</span>
         </NavbarItem>
         <NavbarBurger TargetId="@navbarMenuId" IsActive="@isNavbarMenuActive" ActiveStateChanged="ToggleNavbarMenu">
             <i class="bi bi-three-dots-vertical"></i>

@@ -1755,6 +1755,45 @@ window.homeSelfCheck = (() => {
         return result('S-18 Navbar: unnamed controls, new-tab links without noopener, controls without a tab stop and button role, duplicate ids', '0, 0, 0, 0', `${unnamed}, ${unsafe}, ${noTab}, ${duplicates}`);
     }
 
+    function heritageLayout(page, width, theme, expected) {
+        const { doc, win } = page;
+        const link = doc.querySelector('.be-demo-navbar .navbar-brand a.navbar-item');
+        const name = link?.querySelector('.be-navbar-brand-name');
+        const navbarMark = link?.querySelector('.be-navbar-brand-mark');
+        const footerMark = doc.querySelector('.be-footer-brand img');
+        const footerName = doc.querySelector('.be-footer-brand-name');
+        const loaded = mark => !!mark?.naturalWidth && new URL(mark.currentSrc).pathname.endsWith(expected.heritageLogo);
+        const fits = element => {
+            if (!element) return false;
+            const rect = element.getBoundingClientRect();
+            return rect.width > 0 && rect.left >= 0 && rect.right <= doc.documentElement.clientWidth
+                && element.scrollWidth <= element.clientWidth;
+        };
+        const markBox = navbarMark?.getBoundingClientRect();
+        const backing = navbarMark && parse(win.getComputedStyle(navbarMark).backgroundColor);
+        const stops = gradientStops(page);
+        const visibleMark = markBox?.width >= 36 && markBox?.height >= 36 && fits(navbarMark)
+            && backing?.a === 1 && stops.length === 2 && stops.every(stop => ratio(backing, stop) >= 3);
+        return [
+            result(`Heritage ${theme} ${width}px: both marks load`, true, loaded(navbarMark) && loaded(footerMark)),
+            result(`Heritage ${theme} ${width}px: navbar mark fits and backing contrasts with the gradient`, true, visibleMark),
+            result(`Heritage ${theme} ${width}px: complete names fit the layout`, true,
+                fits(name) && fits(footerName) && name.textContent.trim() === expected.brandName
+                && footerName.textContent.trim() === expected.brandName),
+            result(`Heritage ${theme} ${width}px: named home link and 24px target`, true,
+                path(link) === '/' && link?.getAttribute('aria-label') === expected.brandName
+                && link.getBoundingClientRect().height >= 24 && link.getBoundingClientRect().width >= 24),
+        ];
+    }
+
+    function heritageCards(doc, cardPath) {
+        const selectors = ['meta[property="og:image"]', 'meta[name="twitter:image"]'];
+        return selectors.every(selector => {
+            const tags = doc.head.querySelectorAll(selector);
+            return tags.length === 1 && new URL(tags[0].content, doc.baseURI).pathname.endsWith(cardPath);
+        });
+    }
+
     async function brokenBadge({ doc }) {
         const hero = doc.querySelector('.be-home-hero');
         const before = hero.getBoundingClientRect().height;
@@ -1798,12 +1837,22 @@ window.homeSelfCheck = (() => {
             cases.push(...await quickSwitching(host, expected));
             cases.push(...await reducedMotion());
             cases.push(...await themeColours(host));
+            const favicons = [...document.querySelectorAll('link[rel="icon"]')]
+                .map(icon => `${icon.getAttribute('href')}:${icon.getAttribute('sizes')}`).join(', ');
+            cases.push(result('Heritage favicon declarations', 'favicon-16.png:16x16, favicon.png:32x32', favicons));
+            cases.push(result('Heritage default card: one runtime image per platform', true, heritageCards(document, expected.heritageCard)));
 
             for (const width of [320, 375, 640, 768, 1280]) {
                 const page = await loadFrame(expected.frameHostId, width);
                 cases.push(result(`Home page loaded in a ${width}px frame`, true, page.ready));
                 if (!page.ready) continue;
                 cases.push(...layout(page, width));
+                if ([320, 768, 1280].includes(width)) {
+                    for (const theme of ['light', 'dark']) {
+                        await settleTheme(page, theme);
+                        cases.push(...heritageLayout(page, width, theme, expected));
+                    }
+                }
 
                 if (width === 375) {
                     for (const theme of ['light', 'dark']) {
@@ -1834,7 +1883,12 @@ window.homeSelfCheck = (() => {
             ]) {
                 const page = await loadFrame(expected.frameHostId, 1280, path);
                 cases.push(result(`${path} loaded in a 1280px frame`, true, page.ready));
-                if (page.ready) cases.push(navbarSection(page, path, section, aria));
+                if (page.ready) {
+                    cases.push(navbarSection(page, path, section, aria));
+                    if (path === '/demos/bar-chart') {
+                        cases.push(result('Heritage retains the bar chart page card override', true, heritageCards(page.doc, expected.barChartCard)));
+                    }
+                }
             }
 
             cases.push(result('Console and uncaught errors during the run', 0, errors.length));
