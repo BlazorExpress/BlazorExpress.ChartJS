@@ -8,6 +8,9 @@ public static class DemoImageSrcConstants
     public const string BubbleChart = $"{DemoStringConstants.StaticAssets_Images_Path}/bubble-chart.png";
     public const string DoughnutChart = $"{DemoStringConstants.StaticAssets_Images_Path}/doughnut-chart.png";
     public const string HeritageCard = $"{DemoStringConstants.StaticAssets_Images_Path}/heritage-card.png";
+    public const string Library_BlazorBootstrap = $"{DemoStringConstants.StaticAssets_Images_Path}/libraries/blazor-bootstrap.svg";
+    public const string Library_BlazorExpressBulma = $"{DemoStringConstants.StaticAssets_Images_Path}/libraries/blazorexpress-bulma.svg";
+    public const string Library_UnlimitedPdf = $"{DemoStringConstants.StaticAssets_Images_Path}/libraries/unlimitedpdf.png";
     public const string LineChart = $"{DemoStringConstants.StaticAssets_Images_Path}/line-chart.png";
     public const string PieChart = $"{DemoStringConstants.StaticAssets_Images_Path}/pie-chart.png";
     public const string PolarAreaChart = $"{DemoStringConstants.StaticAssets_Images_Path}/polar-area-chart.png";

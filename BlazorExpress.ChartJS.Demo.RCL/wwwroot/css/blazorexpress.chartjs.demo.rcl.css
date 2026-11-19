@@ -1140,6 +1140,80 @@ a.be-sample-card:hover {
     overflow-wrap: anywhere;
 }
 
+/* Footer column titles are headings for structure, styled as the earlier plain text */
+.be-footer-title {
+    font-weight: inherit;
+}
+
+/* Footer panel linking to the team's other libraries: one column on phones, three from Bulma's tablet width */
+.be-footer-libraries-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: .75rem;
+}
+
+@media screen and (min-width: 769px) {
+    .be-footer-libraries-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.be-footer-library {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    height: 100%;
+    padding: .75rem;
+    border: 1px solid var(--bulma-border-weak);
+    border-radius: var(--bulma-radius-medium);
+    background-color: var(--bulma-scheme-main);
+    color: var(--bulma-text);
+}
+
+    .be-footer-library:hover {
+        border-color: #512BD4;
+        color: var(--bulma-text);
+    }
+
+    .be-footer-library:focus-visible {
+        outline: 2px solid var(--bulma-text-strong);
+        outline-offset: 2px;
+    }
+
+.be-footer-library-logo {
+    flex: none;
+    box-sizing: border-box;
+    width: 40px;
+    height: 40px;
+    padding: 2px;
+    border-radius: 5px;
+    background-color: #fff;
+    object-fit: contain;
+}
+
+.be-footer-library-text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.be-footer-library-name {
+    color: var(--bulma-text-strong);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.be-footer-library-description {
+    font-size: .875rem;
+}
+
+.be-footer-library-external {
+    flex: none;
+    font-size: .75rem;
+    color: var(--bulma-text-weak);
+}
+
 /* From 1024px the menu items sit in the bar, so they are white with the dark mark */
 @media screen and (min-width: 1024px) {
     .be-demo-navbar .navbar-start > .navbar-item,
