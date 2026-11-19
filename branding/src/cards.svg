@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#F7F5FA"/>
+  <path d="M796 0H1200V356Z" fill="#5C2D91" fill-opacity=".07"/>
+  <path d="M946 0H1200V185Z" fill="#5C2D91" fill-opacity=".12"/>
+  <path d="M0 617H1200V630H0Z" fill="#5C2D91"/>
+  <path d="M105 185H201V190H105Z" fill="#5C2D91"/>
+  <!-- mark -->
+  <!-- wordmark -->
+</svg>

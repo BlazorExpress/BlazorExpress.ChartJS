@@ -1,0 +1,7 @@
+{
+  "name": "blazorexpress-heritage-artwork",
+  "private": true,
+  "type": "module",
+  "scripts": { "export": "node export.mjs", "check": "node export.mjs --check" },
+  "dependencies": { "@resvg/resvg-js": "2.6.2" }
+}

@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://chartjs.blazorexpress.com">
-    <img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/nuget/logo.png" alt="Blazor Express logo" width="200" height="200">
+    <img src="https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/refs/heads/main/nuget/logo.png" alt="BlazorExpress.ChartJS logo" width="200" height="200">
   </a>
 </p>
 

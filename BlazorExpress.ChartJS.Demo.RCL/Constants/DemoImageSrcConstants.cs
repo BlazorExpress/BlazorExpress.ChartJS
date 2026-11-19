@@ -1,4 +1,4 @@
-﻿namespace BlazorExpress.ChartJS.Demo.RCL;
+namespace BlazorExpress.ChartJS.Demo.RCL;
 
 public static class DemoImageSrcConstants
 {
@@ -7,6 +7,7 @@ public static class DemoImageSrcConstants
     public const string BarChart = $"{DemoStringConstants.StaticAssets_Images_Path}/bar-chart.png";
     public const string BubbleChart = $"{DemoStringConstants.StaticAssets_Images_Path}/bubble-chart.png";
     public const string DoughnutChart = $"{DemoStringConstants.StaticAssets_Images_Path}/doughnut-chart.png";
+    public const string HeritageCard = $"{DemoStringConstants.StaticAssets_Images_Path}/heritage-card.png";
     public const string LineChart = $"{DemoStringConstants.StaticAssets_Images_Path}/line-chart.png";
     public const string PieChart = $"{DemoStringConstants.StaticAssets_Images_Path}/pie-chart.png";
     public const string PolarAreaChart = $"{DemoStringConstants.StaticAssets_Images_Path}/polar-area-chart.png";

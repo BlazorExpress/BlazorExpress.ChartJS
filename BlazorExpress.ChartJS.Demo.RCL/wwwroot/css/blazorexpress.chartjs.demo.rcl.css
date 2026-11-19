@@ -1094,15 +1094,20 @@ a.be-sample-card:hover {
         color: #fff;
     }
 
-    /* At 320px the brand name shortens with an ellipsis instead of pushing the burger past the edge (WCAG reflow) */
     .be-demo-navbar .navbar-brand .navbar-item {
         min-width: 0;
     }
 
-        .be-demo-navbar .navbar-brand .navbar-item span {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+        .be-demo-navbar .navbar-brand .navbar-item img {
+            flex: none;
+        }
+
+        .be-demo-navbar .navbar-brand .be-navbar-brand-name {
+            display: block;
+            min-width: 0;
+            font-size: clamp(.875rem, 4vw, 1.25rem);
+            line-height: 1.15;
+            overflow-wrap: anywhere;
         }
 
     .be-demo-navbar .navbar-burger {
@@ -1120,6 +1125,15 @@ a.be-sample-card:hover {
             outline: 2px solid #fff;
             outline-offset: -2px;
         }
+
+.be-footer-brand > :first-child {
+    flex: none;
+}
+
+.be-footer-brand-name {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
 
 /* From 1024px the menu items sit in the bar, so they are white with the dark mark */
 @media screen and (min-width: 1024px) {

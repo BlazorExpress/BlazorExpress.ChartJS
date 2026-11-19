@@ -1,0 +1,13 @@
+{
+  "identities": {
+    "blazorexpress": { "name": "BlazorExpress", "color": "#5C2D91" },
+    "bulma": { "name": "BlazorExpress.Bulma", "color": "#087F6D", "package": true, "github": true },
+    "chartjs": { "name": "BlazorExpress.ChartJS", "color": "#1A559C", "package": true, "github": true, "loader": true }
+  },
+  "favicons": [16, 32],
+  "avatar": { "size": 500, "limit": 1000000 },
+  "packageIcon": { "size": 128, "limit": 1000000 },
+  "websiteCard": { "width": 1200, "height": 630 },
+  "githubPreview": { "width": 1280, "height": 640, "limit": 1000000 },
+  "loader": { "size": 144 }
+}

@@ -11,7 +11,7 @@
 
 <Block>
     Switches the hero chart through every chart type, checks reduced motion and the theme colours, then loads the home page at 320, 375, 640, 768 and 1280 pixels wide
-    to check the layout, the content, the links, target sizes and contrast in both themes, and the gradient navbar on the docs, demos, blog and 404 pages.
+    to check the layout, the content, the links, target sizes and contrast in both themes, and the gradient navbar on the docs, demos, blog and 404 pages. The branding cases check the loaded marks, names, favicon declarations, and default and page-specific link cards.
     Keep this tab in front and leave it alone while it runs: with no drawn frames the result is void.
 </Block>
 
@@ -71,6 +71,10 @@ else
             var expected = new
             {
                 frameHostId,
+                brandName = DemoStringConstants.NugetPackageName,
+                heritageLogo = DemoStringConstants.StaticAssets_Icons_Logo_svg,
+                heritageCard = DemoImageSrcConstants.HeritageCard,
+                barChartCard = DemoImageSrcConstants.BarChart,
                 version = $"v{version}",
                 releaseShortDescription = Configuration["release:short_description"],
                 releaseNotesUrl = $"{DemoRouteConstants.Blog_Releases_Prefix}/{version.Replace('.', '-')}",
