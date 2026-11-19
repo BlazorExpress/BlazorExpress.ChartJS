@@ -11,8 +11,8 @@ public partial class MainLayoutBaseFooter : ComponentBase
     private static readonly IReadOnlyList<FooterLibrary> libraries =
     [
         new("Blazor Bootstrap", "Blazor components built on the Bootstrap 5 CSS framework.", "https://docs.blazorbootstrap.com/", DemoImageSrcConstants.Library_BlazorBootstrap),
-        new("BlazorExpress.Bulma", "Enterprise-class Blazor components built on the Bulma CSS framework.", "https://bulma.blazorexpress.com/", DemoImageSrcConstants.Library_BlazorExpressBulma),
         new("UnlimitedPDF", "A pure .NET library to create, merge and split PDFs, and convert HTML to PDF.", "https://unlimitedpdf.dev/", DemoImageSrcConstants.Library_UnlimitedPdf),
+        new("BlazorExpress.Bulma", "Enterprise-class Blazor components built on the Bulma CSS framework.", "https://bulma.blazorexpress.com/", DemoImageSrcConstants.Library_BlazorExpressBulma),
     ];
 
     #endregion
