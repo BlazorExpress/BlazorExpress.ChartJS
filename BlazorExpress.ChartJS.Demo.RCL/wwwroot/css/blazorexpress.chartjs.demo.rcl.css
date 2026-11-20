@@ -682,8 +682,9 @@ a.be-sample-card:hover {
     --be-home-dot: rgba(255, 255, 255, 0.1);
 }
 
-/* Only the home page swaps the shared masthead glow; the 404 page uses the same layout and keeps the site glow. */
-.be-bulma-masthead:has(.be-home-aurora) {
+/* The home page and the 404 page (QF-26112001) swap the shared masthead glow for the Aurora palette. */
+.be-bulma-masthead:has(.be-home-aurora),
+.be-bulma-masthead:has(.be-not-found) {
     background-image: linear-gradient(180deg, rgba(var(--be-bulma-body-bg-rgb), 0.01), rgba(var(--be-bulma-body-bg-rgb), 1) 85%),
         radial-gradient(ellipse at top left, rgba(var(--be-home-violet-rgb), 0.45), transparent 50%),
         radial-gradient(ellipse at top right, rgba(var(--be-home-cyan-rgb), 0.4), transparent 50%),
@@ -1059,9 +1060,139 @@ a.be-sample-card:hover {
 
 @media (prefers-reduced-motion: reduce) {
     .be-home-chart,
-    .be-home-chart:hover {
+    .be-home-chart:hover,
+    .be-not-found-link,
+    .be-not-found-link:hover {
         transition: none;
         transform: none;
+    }
+}
+
+/* The 404 page (QF-26112001): the home Aurora palette, a centered frosted card with a gradient 404 mark, the missing address
+   and two actions, then three link cards (one column on phones, three from 768px up). */
+.be-not-found {
+    padding: 2rem 0 3rem;
+}
+
+.be-not-found-card {
+    max-width: 42rem;
+    margin: 0 auto 2.5rem;
+    padding: 2.5rem 1.5rem 2rem;
+    text-align: center;
+    background-color: var(--be-home-card-bg);
+    border: 1px solid var(--be-home-card-border);
+    border-radius: .75rem;
+    box-shadow: 0 .75rem 2rem rgba(var(--be-home-violet-rgb), .12);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+.be-not-found-code {
+    margin-bottom: .5rem;
+    font-size: clamp(5rem, 20vw, 8rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -.04em;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background-image: var(--be-home-text-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.be-not-found-title {
+    margin-bottom: .75rem;
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -.015em;
+    color: var(--bulma-text-strong);
+}
+
+.be-not-found-lead {
+    max-width: 32rem;
+    margin: 0 auto 1rem;
+    font-size: 1.125rem;
+    color: var(--bulma-text);
+}
+
+.be-not-found-path {
+    margin-bottom: 1rem;
+}
+
+    .be-not-found-path code {
+        display: inline-block;
+        max-width: 100%;
+        padding: .25rem .625rem;
+        font-size: .875rem;
+        overflow-wrap: anywhere;
+        border-radius: .375rem;
+    }
+
+.be-not-found-actions {
+    margin-top: 1.5rem;
+}
+
+.be-not-found-next-title {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-align: center;
+    color: var(--bulma-text-strong);
+}
+
+.be-not-found-links {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+}
+
+.be-not-found-link {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    padding: 1.25rem;
+    color: inherit;
+    background-color: var(--bulma-scheme-main);
+    border: 1px solid var(--be-bulma-border-color);
+    border-radius: var(--be-bulma-border-radius);
+    transition: box-shadow .15s ease, transform .15s ease;
+}
+
+    .be-not-found-link:hover {
+        color: inherit;
+        box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .14);
+        transform: translateY(-2px);
+    }
+
+    .be-not-found-link i {
+        margin-bottom: .25rem;
+        font-size: 1.5rem;
+        color: var(--be-home-link);
+    }
+
+.be-not-found-link-name {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--bulma-text-strong);
+}
+
+.be-not-found-link-text {
+    font-size: .875rem;
+    color: var(--bulma-text);
+}
+
+@media screen and (min-width: 768px) {
+    .be-not-found {
+        padding-top: 3rem;
+    }
+
+    .be-not-found-card {
+        padding: 3rem 2.5rem 2.5rem;
+    }
+
+    .be-not-found-links {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
@@ -1354,7 +1485,8 @@ a.be-sample-card:hover {
 
 /* Windows high contrast: draw the gradient words as plain text */
 @media (forced-colors: active) {
-    .be-home-gradient-text {
+    .be-home-gradient-text,
+    .be-not-found-code {
         color: CanvasText;
         -webkit-text-fill-color: CanvasText;
         background-image: none;
@@ -1371,6 +1503,8 @@ a.be-sample-card:hover {
 .be-bulma-doc-example-toolbar i[role=button]:focus-visible,
 .be-home-link:focus-visible,
 .be-home-chart:focus-visible,
+.be-not-found-link:focus-visible,
+.be-not-found-actions .button:focus-visible,
 .be-home-pill:focus-visible,
 .be-home-badges a:focus-visible,
 .be-home-install-copy:focus-visible,
