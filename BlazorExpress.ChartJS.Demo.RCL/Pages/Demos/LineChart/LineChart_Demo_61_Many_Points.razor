@@ -1,0 +1,67 @@
+@using System.Globalization
+
+<LineChart role="img" aria-label="Line chart: warehouse temperature in °C, one reading a minute for 5,000 minutes, Monday 00:00 to Thursday 11:19" @ref="lineChart" />
+
+@code {
+    private const int PointCount = 5000;
+
+    private LineChart lineChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var options = new LineChartOptions
+            {
+                Responsive = true,
+                // Duration = 0 draws the chart once, instead of animating 5,000 points frame by frame.
+                Animation = new ChartAnimation { Duration = 0 },
+                // Index mode finds the hovered label by its x position, without testing every point for a hit.
+                Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false },
+            };
+            options.Scales.X!.Ticks = new ChartAxesTicks { MaxTicksLimit = 8, MaxRotation = 0 };
+            options.Scales.Y!.BeginAtZero = false;
+
+            await lineChart.InitializeAsync(GetChartData(), options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData GetChartData()
+    {
+        var random = new Random(42); // a fixed seed gives the same readings on every render
+        var start = new DateTime(2026, 3, 2, 0, 0, 0); // a Monday
+        var labels = new List<string>(PointCount);
+        var values = new List<double?>(PointCount);
+
+        for (var minute = 0; minute < PointCount; minute++)
+        {
+            var time = start.AddMinutes(minute);
+            labels.Add(time.ToString("ddd HH:mm", CultureInfo.InvariantCulture));
+
+            // Warmest at 15:00 and coolest at 03:00, plus a little sensor noise.
+            var dayFraction = time.TimeOfDay.TotalHours / 24;
+            values.Add(Math.Round(18 + 3 * Math.Sin(2 * Math.PI * (dayFraction - 0.375)) + (random.NextDouble() - 0.5) * 0.6, 2));
+        }
+
+        var color = ColorUtility.CategoricalTwelveColors[0].ToColor();
+
+        return new ChartData
+        {
+            Labels = labels,
+            Datasets =
+            [
+                new LineChartDataset
+                {
+                    Label = "Warehouse (°C)",
+                    Data = values,
+                    BorderColor = color.ToRgbString(),
+                    BackgroundColor = color.ToRgbString(),
+                    BorderWidth = 1.5,
+                    PointRadius = [0], // no circle per point: Chart.js draws one line
+                },
+            ],
+        };
+    }
+}

@@ -526,6 +526,62 @@ public static partial class SampleCatalog
                 ChartJsSampleUrl = null,
                 ApiLinks = [Api("BarChartDataset", "barchart-dataset-properties"), Api("BarChartOptions", "barchart-options-properties"), Api("BarChartDataLabels", "barchart-data-labels-properties"), Api("ChartFunction", "chart-function-properties"), Api("BarChart parameters", "parameters")],
             },
+            new()
+            {
+                ChartKey = ChartKey,
+                Slug = "load-from-an-api",
+                Title = "Load from an API",
+                Description = "Monthly sales read from a JSON endpoint with HttpClient, with loading, empty and error states, drawn as bars with the target as a line.",
+                UseWhen = "the chart's data comes from your own API, and the page should show that it is loading, that there is no data yet, or that the request failed.",
+                Category = SampleCategory.Scenarios,
+                Tags = ["bar", "real data", "http"],
+                DemoTypes = [typeof(BarChart_Demo_37_Load_From_An_Api)],
+                IsNewIn200 = true,
+                ChartJsSampleUrl = null,
+                ApiLinks = [Api("ChartData", "chart-data-properties"), Api("BarChartDataset", "barchart-dataset-properties"), Api("BarChartOptions", "barchart-options-properties"), Api("ChartAxesTitle", "chart-axes-title-properties"), Api("BarChart methods", "methods")],
+            },
+            new()
+            {
+                ChartKey = ChartKey,
+                Slug = "charts-from-a-list",
+                Title = "Charts from a list",
+                Description = "One small bar chart per sales region, rendered with @foreach, and a button that adds a region and initializes only its chart.",
+                UseWhen = "a dashboard shows one chart per item of a list, and items can be added while the page is open.",
+                Category = SampleCategory.Scenarios,
+                Tags = ["bar", "dashboard"],
+                DemoTypes = [typeof(BarChart_Demo_38_Charts_From_A_List)],
+                IsNewIn200 = true,
+                ChartJsSampleUrl = null,
+                ApiLinks = [Api("BarChartDataset", "barchart-dataset-properties"), Api("BarChartOptions", "barchart-options-properties"), Api("ChartPluginsLegend", "chart-plugins-legend-properties"), Api("BarChart methods", "methods")],
+            },
+            new()
+            {
+                ChartKey = ChartKey,
+                Slug = "drill-down-on-click",
+                Title = "Drill down on click",
+                Description = "Yearly sales per product category; a click on a bar shows that category's sales by month, and a button goes back.",
+                UseWhen = "a dashboard shows totals first, and a click on a bar should show the detail behind it in the same chart.",
+                Category = SampleCategory.Scenarios,
+                Tags = ["bar", "dashboard", "events"],
+                DemoTypes = [typeof(BarChart_Demo_39_Drill_Down_On_Click)],
+                IsNewIn200 = true,
+                ChartJsSampleUrl = null,
+                ApiLinks = [Api("ChartData", "chart-data-properties"), Api("BarChartDataset", "barchart-dataset-properties"), Api("ChartClickEventArgs", "chart-click-event-args-properties"), Api("BarChart parameters", "parameters"), Api("BarChart methods", "methods"), Api("Common events", "common-events")],
+            },
+            new()
+            {
+                ChartKey = ChartKey,
+                Slug = "colour-bars-by-value",
+                Title = "Colour bars by value",
+                Description = "Monthly profit with one colour per bar, worked out from its value: green for a profit, red for a loss.",
+                UseWhen = "the colour of a bar should depend on its value, for example to make loss months stand out.",
+                Category = SampleCategory.Scenarios,
+                Tags = ["bar", "colors"],
+                DemoTypes = [typeof(BarChart_Demo_40_Colour_Bars_By_Value)],
+                IsNewIn200 = true,
+                ChartJsSampleUrl = null,
+                ApiLinks = [Api("BarChartDataset", "barchart-dataset-properties"), Api("BarChartOptions", "barchart-options-properties"), Api("ChartAxesTitle", "chart-axes-title-properties"), Api("ChartPluginsLegend", "chart-plugins-legend-properties"), Api("BarChart parameters", "parameters")],
+            },
         ];
     }
 

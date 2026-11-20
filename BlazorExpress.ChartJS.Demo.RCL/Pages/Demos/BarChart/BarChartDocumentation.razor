@@ -642,6 +642,75 @@
     <CodeChunk Class="mb-3" LanguageCode="LanguageCode.JavaScript" FilePath="~\Pages\Demos\BarChart\BarChart_Demo_36_Datalabels_Formatter_Snippet.js" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
     <Demo Type="typeof(BarChart_Demo_36_Datalabels_Formatter)" Tabs="true" />
 </SampleSection>
+
+<SampleSection Slug="load-from-an-api">
+    <Block>
+        A chart whose data comes from an API has three more states than the chart itself: loading, no data and a failed request. This demo reads monthly sales from a JSON file with <code>HttpClient</code>, shows each state in place of the chart, and draws the sales as bars with the target as a line.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Inject <code>HttpClient</code>, and read the data with <code>GetFromJsonAsync&lt;T[]&gt;</code> into a record that matches one JSON item. Use your own API endpoint in place of the demo's JSON file.</li>
+                <li>Show a loading message while the request runs, a "No sales yet." message when the array is empty, and a short message when <code>HttpRequestException</code> is thrown, instead of the chart.</li>
+                <li>Render the <code>BarChart</code> only when there is data. It is rendered anew after each load, so set a flag when the data arrives and call <code>InitializeAsync</code> in <code>OnAfterRenderAsync</code> when the flag is set.</li>
+                <li>Add a <code>LineChartDataset</code> next to the <code>BarChartDataset</code> in <code>Datasets</code> to draw the target as a line.</li>
+                <li>Cancel the request in <code>Dispose</code> with a <code>CancellationTokenSource</code>, so a page the user left does not keep loading.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_37_Load_From_An_Api)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="charts-from-a-list">
+    <Block>
+        A dashboard often shows one chart per item of a list. This demo draws one small bar chart per sales region, and the <strong>Add a region</strong> button adds a region and initializes only its new chart.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Render one <code>BarChart</code> per item with <code>@@foreach</code>, and give its container <code>@@key</code> set to a value that names the item, so Blazor keeps each chart with its item.</li>
+                <li>Capture each chart with <code>@@ref="charts[region.Name]"</code> into a <code>Dictionary&lt;string, BarChart&gt;</code>.</li>
+                <li>In <code>OnAfterRenderAsync</code>, call <code>InitializeAsync</code> for each item whose chart is not initialized yet, and remember it. On the first render that is every chart; after an item is added, only the new one.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_38_Charts_From_A_List)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="drill-down-on-click">
+    <Block>
+        A drill-down chart shows totals first and the detail behind a total on a click. Here a click on a category's bar, or its button, shows that category's sales by month, and <strong>Back to all categories</strong> shows the totals again.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>OnClick</code> on the <code>BarChart</code>. Its <code>ChartClickEventArgs.Label</code> is the label of the clicked bar, here the category.</li>
+                <li>In the handler, remember the category and call <code>UpdateAsync</code> with a <code>ChartData</code> that has the months as <code>Labels</code> and that category's monthly values.</li>
+                <li>Add a button for each category that calls the same method, so keyboard users can drill down too: a click on a bar in the canvas cannot be reached with the keyboard.</li>
+                <li>Show a heading that names what the chart shows, and change the chart's <code>aria-label</code> to match.</li>
+                <li>Add a button that clears the category and calls <code>UpdateAsync</code> with the totals again.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_39_Drill_Down_On_Click)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="colour-bars-by-value">
+    <Block>
+        <code>BackgroundColor</code> takes one colour per bar, so each bar's colour can be worked out from its value. This demo colours profit months green and loss months red. Colour is not the only cue: loss bars go below zero, and the sentence under the chart says what the colours mean.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Build the colour list from the values, for example <code>profit.Select(value =&gt; value &lt; 0 ? LossColor : ProfitColor).ToList()</code>.</li>
+                <li>Set it as the dataset's <code>BackgroundColor</code> and <code>BorderColor</code>: the first colour is used for the first bar, the second for the second, and so on.</li>
+                <li>Pick colours with at least 3:1 contrast against both light and dark backgrounds, such as <code>rgb(29, 158, 117)</code> and <code>rgb(216, 90, 48)</code>.</li>
+                <li>Explain the colours in text, in the dataset <code>Label</code> or in a sentence under the chart, so the chart does not rely on colour alone.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_40_Colour_Bars_By_Value)" Tabs="true" />
+</SampleSection>
 </CascadingValue>
 
 <SamplePageFooter ChartKey="@SampleChartKeys.BarChart" Sample="@Sample" />

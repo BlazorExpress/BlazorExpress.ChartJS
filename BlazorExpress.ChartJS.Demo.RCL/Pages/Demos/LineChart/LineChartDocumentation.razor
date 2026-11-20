@@ -584,14 +584,16 @@
 
 <SampleSection Slug="time-live-streaming">
     <Block>
-        Time charts can grow while they are shown: add a reading at its own time, or a new day with a value for each dataset.
+        A server room sensor sends a temperature every 2 seconds, and the chart shows the last 30 readings on a time axis. A <code>PeriodicTimer</code> stands in for the feed here; in your app, a SignalR hub handler or any other source calls the same update method.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>For a reading, call <code>AddDataAsync(chartData, "Sensor", new LineChartDatasetData("Sensor", time, value))</code>. The label argument is the dataset's label, and the point is appended to its <code>TimeData</code>.</li>
-                <li>For a new day, call <code>AddTimeDataAsync(chartData, new DateOnly(2026, 1, 6), new LineChartDatasetData("Daily sales", 24))</code>. The date is added to <code>ChartData.TimeLabels</code>.</li>
-                <li>Click the buttons to add data to each chart.</li>
+                <li>Keep the readings in a <code>List&lt;ChartTimePoint&gt;</code> and use it as the dataset's <code>TimeData</code>, with <code>Type = ChartAxesType.Time</code> on the x-axis.</li>
+                <li>Call <code>InitializeAsync</code> in <code>OnAfterRenderAsync</code> when <code>firstRender</code> is <code>true</code>, then start the timer: <code>while (await timer.WaitForNextTickAsync())</code> calls the update method through <code>InvokeAsync</code>.</li>
+                <li>In the update method, add the new reading, remove the oldest once there are more than 30, and call <code>UpdateAsync(chartData, lineChartOptions)</code>.</li>
+                <li>With SignalR, call the same method from the hub handler instead of the timer: <code>hubConnection.On&lt;Reading&gt;("reading", reading =&gt; InvokeAsync(() =&gt; AddReadingAsync(reading)))</code>.</li>
+                <li>Implement <code>IDisposable</code> and dispose the timer, which ends the loop when the component goes away.</li>
             </ol>
         </div>
     </Block>
@@ -994,6 +996,90 @@ blazorexpress.chartjs.registerFunction('demo.greyOverGaps', ctx => touchesGap(ct
     </Block>
     <CodeChunk Class="mb-3" LanguageCode="LanguageCode.JavaScript" FilePath="~\Pages\Demos\LineChart\LineChart_Demo_57_Progress_Bar_Snippet.js" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
     <Demo Type="typeof(LineChart_Demo_57_Progress_Bar)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="charts-in-tabs-and-a-dialog">
+    <Block>
+        A store dashboard shows visitors, orders and returns in three tabs, and monthly revenue in a dialog. Every chart is created once, while its tab or the dialog is still hidden, and draws at full size the first time it is shown: Chart.js watches each chart's container and redraws the chart when the container gets a size.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Render every tab panel, and hide the inactive ones with the <code>hidden</code> attribute instead of leaving them out of the page, so each chart is created once and keeps its state.</li>
+                <li>Mark up the tabs with <code>role="tablist"</code>, <code>role="tab"</code> and <code>aria-selected</code> on the buttons, and <code>role="tabpanel"</code> on the panels; a click sets the active tab.</li>
+                <li>Put the other chart in a <code>&lt;dialog&gt;</code> and toggle its <code>open</code> attribute with <code>@@onclick</code>; no JavaScript is needed.</li>
+                <li>Call <code>InitializeAsync</code> for every chart in <code>OnAfterRenderAsync</code> when <code>firstRender</code> is <code>true</code>, hidden ones included. Nothing needs to run when a tab or the dialog opens.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_58_Charts_In_Tabs_And_Dialog)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="dark-theme-colours">
+    <Block>
+        The chart's tick, grid, border, axis title and legend colours come from two palettes in C#, one for a light page and one for a dark page. Every text colour has a contrast of at least 4.5:1 and every line at least 3:1 against <code>#ffffff</code> for the light palette and <code>#0d1117</code> for the dark one. Switch the site theme to see the chart follow it.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Add the JavaScript shown below to your own script file. It watches the <code>data-theme</code> attribute on <code>&lt;html&gt;</code>, reads <code>prefers-color-scheme</code> when there is no attribute, and calls <code>OnThemeChanged(isDark)</code> on each change.</li>
+                <li>Inject <code>IJSRuntime</code>, create a <code>DotNetObjectReference</code> to the component, and call <code>demoThemeObserver.observe</code> in <code>OnAfterRenderAsync</code>. It returns whether the page is dark now, so the first palette is right before <code>InitializeAsync</code>.</li>
+                <li>Set the palette's colours on <code>Ticks.Color</code>, <code>Grid.Color</code>, <code>Border.Color</code> and <code>Title.Color</code> of each axis, and on <code>Plugins.Legend.Labels.Color</code>.</li>
+                <li>In the <code>[JSInvokable]</code> <code>OnThemeChanged</code> method, apply the other palette and call <code>UpdateAsync(chartData, options)</code>. If your app already raises its own theme event, call the same method from it instead of the observer.</li>
+                <li>Implement <code>IAsyncDisposable</code>: call <code>demoThemeObserver.disconnect</code>, then dispose the <code>DotNetObjectReference</code>.</li>
+            </ol>
+        </div>
+    </Block>
+    <CodeChunk Class="mb-3" LanguageCode="LanguageCode.JavaScript" FilePath="~\Pages\Demos\LineChart\LineChart_Demo_59_Dark_Theme_Colors_Snippet.js" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
+    <Demo Type="typeof(LineChart_Demo_59_Dark_Theme_Colors)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="fixed-height-container">
+    <Block>
+        A server's CPU usage fills a dashboard panel that is always 240 pixels high, whatever its width; resize the window or open the page on a phone to see the chart keep the height. Chart.js sizes a responsive chart from its container, so the container needs <code>position: relative</code> and a height.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Wrap the chart in <code>&lt;div style="position: relative; height: 240px;"&gt;</code>.</li>
+                <li>Set <code>ContainerStyle="height: 100%;"</code> on the <code>LineChart</code>: its own container is the canvas's parent, so it must fill the panel.</li>
+                <li>Create <code>LineChartOptions { Responsive = true, MaintainAspectRatio = false }</code>, so the chart takes its container's height instead of a height that follows its width.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_60_Fixed_Height_Container)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="many-points">
+    <Block>
+        A warehouse sensor logs the temperature every minute, and the chart shows 5,000 readings, about 3.5 days. Three settings keep it fast: no circle is drawn for each point, the chart draws once instead of animating every point, and the tooltip finds the hovered reading by its x position instead of testing every point.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>PointRadius = [0]</code> on the <code>LineChartDataset</code>, so Chart.js draws one line and no point circles. The hovered point still shows.</li>
+                <li>Set <code>Animation = new ChartAnimation { Duration = 0 }</code> on the options, so the chart is drawn at once.</li>
+                <li>Set <code>Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false }</code>, so the tooltip shows the reading under the pointer without a hit test on every point.</li>
+                <li>Set <code>Scales.X.Ticks = new ChartAxesTicks { MaxTicksLimit = 8, MaxRotation = 0 }</code>, so the x-axis shows at most 8 labels, kept level.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_61_Many_Points)" Tabs="true" />
+</SampleSection>
+<SampleSection Slug="time-add-readings-and-days">
+    <Block>
+        Time charts can grow while they are shown: add a reading at its own time, or a new day with one value for each dataset. Each call updates the <code>ChartData</code> you pass in and redraws the chart.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>For a reading, call <code>AddDataAsync(chartData, "Office temperature (°C)", new LineChartDatasetData("Office temperature (°C)", time, value))</code>. The label argument is the dataset's label, and the point is appended to its <code>TimeData</code>.</li>
+                <li>For a new day, call <code>AddTimeDataAsync(chartData, new DateOnly(2026, 1, 6), new LineChartDatasetData("Online orders", 204))</code>. The date is added to <code>ChartData.TimeLabels</code>.</li>
+                <li>Click the buttons to add data to each chart. For a moving window of the latest readings, see the Live streaming sample.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_62_Time_Add_Readings_And_Days)" Tabs="true" />
 </SampleSection>
 </CascadingValue>
 

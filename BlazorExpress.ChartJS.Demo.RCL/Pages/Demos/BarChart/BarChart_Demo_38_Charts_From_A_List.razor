@@ -1,0 +1,69 @@
+<div class="columns is-multiline">
+    @foreach (var region in regions)
+    {
+        <div class="column is-half-tablet is-one-third-desktop" @key="region.Name">
+            <p class="has-text-weight-semibold mb-2">@region.Name</p>
+            <BarChart role="img" aria-label="@($"Bar chart: {region.Name} region sales per quarter in thousand US dollars, Q1 to Q4")" @ref="charts[region.Name]" />
+        </div>
+    }
+</div>
+
+<button type="button" class="button is-primary is-small" disabled="@(regionsToAdd.Count == 0)" @onclick="AddRegion">Add a region</button>
+
+@code {
+    private readonly List<Region> regions =
+    [
+        new("North", [182, 205, 197, 240]),
+        new("South", [150, 162, 171, 188]),
+        new("East", [210, 198, 225, 262]),
+        new("West", [134, 149, 166, 158]),
+    ];
+    private readonly Queue<Region> regionsToAdd = new([new("Central", [98, 117, 124, 141]), new("Overseas", [64, 82, 95, 120])]);
+    private readonly Dictionary<string, BarChart> charts = [];
+    private readonly HashSet<string> initializedRegions = [];
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Each chart is initialized once, after it is rendered: all of them on the first render, later only the new one.
+        foreach (var region in regions.Where(r => !initializedRegions.Contains(r.Name)).ToList())
+        {
+            initializedRegions.Add(region.Name);
+            await charts[region.Name].InitializeAsync(GetChartData(region), GetChartOptions());
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void AddRegion() => regions.Add(regionsToAdd.Dequeue());
+
+    private static ChartData GetChartData(Region region)
+    {
+        var color = ColorUtility.CategoricalTwelveColors[0].ToColor();
+
+        return new ChartData
+        {
+            Labels = ["Q1", "Q2", "Q3", "Q4"],
+            Datasets =
+            [
+                new BarChartDataset
+                {
+                    Label = $"{region.Name} sales (thousand USD)",
+                    Data = region.QuarterlySales,
+                    BackgroundColor = [color.ToRgbaString(0.5)],
+                    BorderColor = [color.ToRgbString()],
+                    BorderWidth = [2],
+                },
+            ],
+        };
+    }
+
+    private static BarChartOptions GetChartOptions()
+    {
+        var options = new BarChartOptions { Responsive = true };
+        options.Plugins.Legend.Display = false; // the region name above the chart says what it shows
+
+        return options;
+    }
+
+    private sealed record Region(string Name, List<double?> QuarterlySales);
+}

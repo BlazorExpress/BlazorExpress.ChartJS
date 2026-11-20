@@ -1,0 +1,94 @@
+<p class="has-text-weight-semibold mb-2" aria-live="polite">@(category is null ? "All categories, 2025" : $"{category} by month")</p>
+
+<BarChart role="img" aria-label="@AriaLabel" @ref="barChart" Width="600" OnClick="HandleClickAsync" />
+
+@if (category is null)
+{
+    <p class="mt-3 mb-2">Click a bar, or use a button, to see that category's sales by month.</p>
+    @* The buttons give keyboard users the same drill-down as a click on a bar. *@
+    <div class="buttons">
+        @foreach (var name in MonthlySales.Keys)
+        {
+            <button type="button" class="button is-small" @onclick="() => ShowCategoryAsync(name)">@name</button>
+        }
+    </div>
+}
+else
+{
+    <button type="button" class="button is-small mt-3" @onclick="ShowAllCategoriesAsync">Back to all categories</button>
+}
+
+@code {
+    private static readonly List<string> Months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    // Monthly sales per product category, in thousand US dollars. The yearly totals are their sums.
+    private static readonly Dictionary<string, List<double?>> MonthlySales = new()
+    {
+        ["Laptops"] = [42, 38, 45, 47, 50, 52, 48, 61, 66, 58, 72, 95],
+        ["Tablets"] = [21, 19, 24, 22, 25, 23, 26, 30, 28, 27, 35, 48],
+        ["Phones"] = [55, 51, 58, 60, 57, 62, 64, 66, 81, 70, 78, 104],
+        ["Accessories"] = [12, 11, 14, 13, 15, 16, 15, 18, 17, 16, 22, 31],
+    };
+
+    private readonly BarChartOptions barChartOptions = new() { Responsive = true };
+    private BarChart barChart = default!;
+    private string? category; // null while the chart shows all categories
+
+    private string AriaLabel => category is null
+        ? "Bar chart: 2025 sales per product category in thousand US dollars"
+        : $"Bar chart: {category} sales per month in 2025, in thousand US dollars";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await barChart.InitializeAsync(GetAllCategoriesData(), barChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    // Drill down only from the overview, and only on a bar of a known category.
+    private Task HandleClickAsync(ChartClickEventArgs eventArgs) =>
+        category is null && eventArgs.Label is not null ? ShowCategoryAsync(eventArgs.Label) : Task.CompletedTask;
+
+    private async Task ShowCategoryAsync(string name)
+    {
+        if (!MonthlySales.ContainsKey(name))
+            return;
+
+        category = name;
+        await barChart.UpdateAsync(GetCategoryData(category), barChartOptions);
+    }
+
+    private async Task ShowAllCategoriesAsync()
+    {
+        category = null;
+        await barChart.UpdateAsync(GetAllCategoriesData(), barChartOptions);
+    }
+
+    private static ChartData GetAllCategoriesData() =>
+        CreateChartData(MonthlySales.Keys.ToList(), "Sales 2025 (thousand USD)", MonthlySales.Values.Select(months => months.Sum()).ToList(), 0);
+
+    private static ChartData GetCategoryData(string category) =>
+        CreateChartData(Months, $"{category} sales 2025 (thousand USD)", MonthlySales[category], 1);
+
+    private static ChartData CreateChartData(List<string> labels, string datasetLabel, List<double?> data, int colorIndex)
+    {
+        var color = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
+
+        return new ChartData
+        {
+            Labels = labels,
+            Datasets =
+            [
+                new BarChartDataset
+                {
+                    Label = datasetLabel,
+                    Data = data,
+                    BackgroundColor = [color.ToRgbaString(0.5)],
+                    BorderColor = [color.ToRgbString()],
+                    BorderWidth = [2],
+                },
+            ],
+        };
+    }
+}

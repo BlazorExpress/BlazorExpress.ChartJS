@@ -1,0 +1,8 @@
+[
+  { "month": "January", "sales": 18400, "target": 20000 },
+  { "month": "February", "sales": 21300, "target": 20000 },
+  { "month": "March", "sales": 24750, "target": 22000 },
+  { "month": "April", "sales": 22100, "target": 22000 },
+  { "month": "May", "sales": 26900, "target": 24000 },
+  { "month": "June", "sales": 29400, "target": 24000 }
+]

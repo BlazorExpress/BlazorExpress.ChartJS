@@ -1,0 +1,44 @@
+@* The panel sets the height. ContainerStyle makes the chart's own container, the canvas's parent, fill it. *@
+<div style="position: relative; height: 240px;">
+    <LineChart role="img" aria-label="Line chart: CPU usage in percent per hour, 08:00 to 19:00, filling a 240-pixel-high panel" @ref="lineChart" ContainerStyle="height: 100%;" />
+</div>
+
+@code {
+    private LineChart lineChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // MaintainAspectRatio = false: the chart takes its container's height instead of a height that follows its width.
+            var options = new LineChartOptions { Responsive = true, MaintainAspectRatio = false };
+            options.Scales.Y!.Max = 100;
+            // null keeps Chart.js's theme-aware default text colour
+            options.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "CPU (%)", Color = null };
+
+            await lineChart.InitializeAsync(GetChartData(), options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData GetChartData()
+    {
+        var color = ColorUtility.CategoricalTwelveColors[0].ToColor();
+
+        return new ChartData
+        {
+            Labels = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"],
+            Datasets =
+            [
+                new LineChartDataset
+                {
+                    Label = "Web server CPU (%)",
+                    Data = [22, 38, 54, 61, 58, 47, 63, 71, 66, 52, 35, 24],
+                    BackgroundColor = color.ToRgbaString(),
+                    BorderColor = color.ToRgbString(),
+                },
+            ],
+        };
+    }
+}
