@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Point defaults: <code>Elements.Point</code> with <code>PointStyle</code>, <code>HoverRadius</code>, <code>HoverBorderWidth</code></p>
-        <BubbleChart @ref="elementsChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: Hover and elements, point defaults" @ref="elementsChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Hover a whole dataset: <code>Hover = new ChartHover { Mode = InteractionMode.Dataset }</code></p>
-        <BubbleChart @ref="hoverChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: Hover and elements, hover a whole dataset" @ref="hoverChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Click only: <code>Events = ["click"]</code> (pointer moves do nothing; click a bubble)</p>
-        <BubbleChart @ref="clickOnlyChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: Hover and elements, click only" @ref="clickOnlyChart" />
     </div>
 </div>
 

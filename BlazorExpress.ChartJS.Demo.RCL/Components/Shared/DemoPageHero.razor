@@ -1,0 +1,15 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+@* Local copy of the BlazorExpress.Bulma.Docx PageHero. The title stays the page's only h1, and the subtitle is lead text, not
+   a heading (story 26111901 AC-02). Without a subtitle the package renders an empty h2; this renders the same element as an
+   empty div, so the spacing is unchanged and no empty heading reaches assistive technology. *@
+<h1 class="title is-1">@Title</h1>
+<hr class="be-bulma-doc-hr be-bulma-doc-hr-title" />
+@if (SubTitleTemplate is not null)
+{
+    <div class="subtitle be-bulma-doc-subtitle">@SubTitleTemplate</div>
+}
+else
+{
+    <div class="subtitle be-bulma-subtitle">@SubTitle</div>
+}

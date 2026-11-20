@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Dataset colors set: <code>BackgroundColor</code>, <code>BorderColor</code></p>
-        <ScatterChart @ref="datasetColorsChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: Colors plugin, dataset colors set" @ref="datasetColorsChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">No dataset colors, <code>Colors = new() { Enabled = true }</code>: the default gray stays</p>
-        <ScatterChart @ref="enabledChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: Colors plugin (chart 2 of 3)" @ref="enabledChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">No dataset colors, <code>ForceOverride = true</code>: Chart.js palette</p>
-        <ScatterChart @ref="forceOverrideChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: Colors plugin (chart 3 of 3)" @ref="forceOverrideChart" />
     </div>
 </div>
 

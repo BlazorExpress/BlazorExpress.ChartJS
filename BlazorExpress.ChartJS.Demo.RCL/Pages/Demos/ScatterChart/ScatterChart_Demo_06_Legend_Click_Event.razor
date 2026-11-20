@@ -5,7 +5,7 @@
     </label>
 </div>
 
-<ScatterChart @ref="scatterChart" Width="600" LegendClickToggles="legendClickToggles" OnLegendClick="HandleLegendClickAsync" />
+<ScatterChart role="img" aria-label="Scatter chart: Legend click event" @ref="scatterChart" Width="600" LegendClickToggles="legendClickToggles" OnLegendClick="HandleLegendClickAsync" />
 
 @if (legendClicks.Count > 0)
 {

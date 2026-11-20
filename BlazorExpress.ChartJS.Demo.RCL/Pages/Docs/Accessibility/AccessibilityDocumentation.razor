@@ -1,0 +1,74 @@
+@attribute [Route(pageUrl)]
+@layout DocsMainLayout
+
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" />
+
+<DemoPageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</DemoPageHero>
+
+<div class="content">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Why a chart needs a text alternative" PageUrl="@pageUrl" Link="why-a-text-alternative">
+        <Block>
+            <p>
+                Every BlazorExpress.ChartJS chart draws on a <code>canvas</code>. Screen readers can't read what is drawn on a canvas, so a chart
+                without a text alternative is silent to their users (WCAG 1.1.1). The
+                <a href="https://www.chartjs.org/docs/latest/general/accessibility.html" target="_blank" rel="noopener noreferrer">Chart.js accessibility guide<span class="is-sr-only"> (opens in a new tab)</span></a>
+                recommends giving the canvas <code>role="img"</code> and a label, or fallback content.
+            </p>
+            <p>
+                Every chart component passes attributes it doesn't define straight to its <code>canvas</code>. You add them to the component tag
+                as you would to any HTML element. No option or JavaScript is needed.
+            </p>
+        </Block>
+    </DemoSection>
+
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Short label" PageUrl="@pageUrl" Link="short-label">
+        <Block>
+            <p>Give every chart a short name that says what kind of chart it is and what it shows.</p>
+            <strong>How to use:</strong>
+            <ol>
+                <li>Add <code>role="img"</code> to the chart component, so assistive technology treats the canvas as one image.</li>
+                <li>Add <code>aria-label</code> with the chart type and what it shows, for example "Bar chart: monthly sales in two regions, January to June".</li>
+                <li>Keep the label short; put numbers a reader needs in a long description instead.</li>
+            </ol>
+        </Block>
+        <Demo Type="typeof(Accessibility_Demo_01_Short_Label)" Tabs="true" />
+    </DemoSection>
+
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Long description" PageUrl="@pageUrl" Link="long-description">
+        <Block>
+            <p>
+                When readers need the values, not just the gist, such as on a dashboard, add a long description: a short summary and the data as a table.
+                Keep both visible, so everyone can use them.
+            </p>
+            <strong>How to use:</strong>
+            <ol>
+                <li>Keep <code>role="img"</code> and a short <code>aria-label</code> on the chart.</li>
+                <li>Write a one or two sentence summary in an element with an <code>id</code>, and point the chart's <code>aria-describedby</code> at that id.</li>
+                <li>Show the same numbers in a <code>table</code> with a <code>caption</code> and header cells (<code>th scope="col"</code> and <code>scope="row"</code>). Build the table from the data you give the chart, so they can't disagree.</li>
+            </ol>
+        </Block>
+        <Demo Type="typeof(Accessibility_Demo_02_Long_Description)" Tabs="true" />
+    </DemoSection>
+
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Colour and contrast" PageUrl="@pageUrl" Link="colour-and-contrast">
+        <Block>
+            <ul>
+                <li>Don't tell series apart by colour alone (WCAG 1.4.1): keep the legend shown, or label the data, when a chart has more than one series or slice.</li>
+                <li>Give bars, lines, points and slices at least 3:1 contrast against the chart background, or a border that reaches it (WCAG 1.4.11). Check both light and dark themes if your app has them.</li>
+                <li>Keep axis, legend and title text at least 4.5:1 against the background (WCAG 1.4.3).</li>
+            </ul>
+        </Block>
+    </DemoSection>
+</div>
+
+@code {
+    private const string pageUrl = DemoRouteConstants.Docs_Accessibility;
+    private const string pageTitle = "Accessible charts";
+    private const string pageDescription = "Give every chart a text alternative with <code>role=\"img\"</code> and <code>aria-label</code>, add a long description where the numbers matter, and keep colours readable.";
+    private const string metaTitle = "Accessible Blazor Charts";
+    private const string metaDescription = "Make BlazorExpress.ChartJS charts accessible: role img and aria-label, a long description with aria-describedby and a data table, and colour contrast.";
+}

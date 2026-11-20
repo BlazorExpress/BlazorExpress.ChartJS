@@ -1,0 +1,13 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+@* Local copy of the BlazorExpress.Bulma.Docx DoYouKnow panel with the same text, classes and destinations. Its new-tab links
+   are safe and say they open a new tab (rules.md A11Y-003); the package version has neither (story 26111901, upstream follow-up). *@
+<Message Class="@ClassNames" Color="MessageColor.Success">
+    <MessageBody>
+        <div class="is-size-5 has-text-weight-semibold mb-2"><BootstrapIcon Name="BootstrapIconName.Lightbulb" /> DO YOU KNOW?</div>
+        <div>
+            This demo website is built using the <strong><a href="//www.nuget.org/packages/blazorexpress.bulma/" target="_blank" rel="noopener noreferrer">BlazorExpress.Bulma<span class="is-sr-only"> (opens in a new tab)</span></a></strong> library and published on the Azure Web App.
+            See our source code on <a href="//github.com/BlazorExpress/BlazorExpress.Bulma" target="_blank" rel="noopener noreferrer">GitHub<span class="is-sr-only"> (opens in a new tab)</span></a>.
+        </div>
+    </MessageBody>
+</Message>

@@ -344,6 +344,15 @@ h1:focus-visible {
     }
 }
 
+/* Reduced motion (story 26111901 AC-06): the loading spinners stand still. The loader keeps its text and status role. */
+@media (prefers-reduced-motion: reduce) {
+    .be-loader-ring,
+    .be-loader-inline-spinner,
+    .be-loader-orbit {
+        animation: none;
+    }
+}
+
 /* Samples: cards, sample pages and the gallery */
 .be-sample-grid {
     display: grid;
@@ -367,6 +376,15 @@ a.be-sample-card:hover {
     color: inherit;
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .14);
     transform: translateY(-2px);
+}
+
+/* Reduced motion (story 26111901 AC-06): the sample card keeps its hover shadow but does not move, as the home chart cards. */
+@media (prefers-reduced-motion: reduce) {
+    .be-sample-card,
+    a.be-sample-card:hover {
+        transition: none;
+        transform: none;
+    }
 }
 
 .be-sample-card.is-unavailable {
@@ -423,7 +441,6 @@ a.be-sample-card:hover {
     opacity: .85;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
-    line-clamp: 3;
 }
 
 .be-sample-card-flags {
@@ -1167,6 +1184,62 @@ a.be-sample-card:hover {
     overflow-wrap: anywhere;
 }
 
+/* DemoSection's # anchor link, with the rules the package Section scopes to its own markup: hidden until the heading is
+   hovered or the link is focused */
+.be-bulma-doc-anchor-link {
+    font-weight: 400;
+    color: rgba(13, 110, 253, 0.5);
+    transition: color 0.15s ease-in-out;
+    opacity: 0;
+    padding-left: 0.125rem;
+    text-decoration: none;
+    -webkit-font-smoothing: antialiased;
+}
+
+    .be-bulma-doc-anchor-link:focus,
+    .be-bulma-doc-anchor-link:hover {
+        color: #0d6efd;
+        text-decoration: none;
+    }
+
+:hover > .be-bulma-doc-anchor-link,
+.be-bulma-doc-anchor-link:focus {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .be-bulma-doc-anchor-link {
+        transition: none;
+    }
+}
+
+/* Skip link (A11Y-001): the first Tab stop on every page. It stays off screen until it has focus, then shows as a white pill
+   at the top left over the navbar. The ring is white with a gap, as for the navbar items, so it reads against the gradient. */
+.be-skip-link {
+    position: fixed;
+    top: .5rem;
+    left: .5rem;
+    z-index: 1000;
+    padding: .5rem 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #1f2937;
+    background-color: #fff;
+    border-radius: .5rem;
+    transform: translateY(-200%);
+}
+
+    .be-skip-link:focus {
+        transform: none;
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+    }
+
+/* The skip link's target takes programmatic focus only; it shows no ring of its own */
+.be-main:focus {
+    outline: none;
+}
+
 /* Footer column titles are headings for structure, styled as the earlier plain text */
 .be-footer-title {
     font-weight: inherit;
@@ -1314,7 +1387,7 @@ a.be-sample-card:hover {
 .be-playground-code-header button:focus-visible,
 .breadcrumb a:focus-visible,
 .tags a.tag:focus-visible {
-    outline: 3px solid var(--bulma-link, #485fc7);
+    outline: 3px solid var(--be-focus-ring, var(--bulma-link, #485fc7));
     outline-offset: 2px;
 }
 
@@ -1353,4 +1426,118 @@ a.be-sample-card:hover {
     border: 0;
     font-size: 1.1rem;
     cursor: pointer;
+}
+
+/* Contrast overrides (story 26111901, CR-001, AC-11; rules.md A11Y-005). Each color that fell below WCAG 2.2 AA moves to the
+   nearest passing shade of its own hue (HSL lightness in whole-percent steps), only in the theme where it failed. Vendor and
+   package files stay as published. Every value, its old color and its contrast is listed in the work item's evidence/swatches.md. */
+
+/* Dark: the shared focus ring (2.85:1 on the home chart-type panel) reaches 3:1 on every dark surface its controls sit on. */
+[data-theme=dark] {
+    --be-focus-ring: #4d61ff;
+}
+
+/* Light: sidebar menu group labels (docs, demos and blog menus). Bulma's has-text helpers are !important. */
+[data-theme=light] .be-bulma-page-menu .menu-label.has-text-danger {
+    color: #eb002f !important;
+}
+
+[data-theme=light] .be-bulma-page-menu .menu-label.has-text-warning {
+    color: #996b00 !important;
+}
+
+[data-theme=light] .be-bulma-page-menu .menu-label.has-text-info {
+    color: #007db2 !important;
+}
+
+[data-theme=light] .be-bulma-page-menu .menu-label.has-text-success {
+    color: #29855b !important;
+}
+
+/* Light: the type column of the docs API tables, also on a hovered row. */
+[data-theme=light] .be-bulma-page-content .table td.has-text-danger {
+    color: #e6002f !important;
+}
+
+/* Light: the getting started "New in 2.0.0" kicker. */
+[data-theme=light] .be-release-kicker {
+    color: #00806c;
+}
+
+/* Light: the chart type line on sample cards (opacity .7 gave 4.10:1). */
+[data-theme=light] .be-sample-card-chart {
+    opacity: .75;
+}
+
+/* Dark: plain light tags (the gallery's group counts, the release notes section links), also on hover. */
+[data-theme=dark] span.tag.is-light:not(.is-primary):not(.is-link):not(.is-info):not(.is-success):not(.is-warning):not(.is-danger) {
+    color: #676e89;
+}
+
+[data-theme=dark] a.tag.is-light:not(.is-primary):not(.is-link):not(.is-info):not(.is-success):not(.is-warning):not(.is-danger),
+[data-theme=dark] a.tag.is-light:not(.is-primary):not(.is-link):not(.is-info):not(.is-success):not(.is-warning):not(.is-danger):hover {
+    color: #656f85;
+}
+
+/* Light code highlighting (prism-vs.min.css) on the code backgrounds #f5f2f0, #f8f8f8 and #fff. */
+[data-theme=light] .prism-token.prism-boolean,
+[data-theme=light] .prism-token.prism-constant,
+[data-theme=light] .prism-token.prism-inserted,
+[data-theme=light] .prism-token.prism-number,
+[data-theme=light] .prism-token.prism-symbol,
+[data-theme=light] .prism-token.prism-url,
+[data-theme=light] .prism-token.prism-variable {
+    color: #267877;
+}
+
+[data-theme=light] .prism-token.prism-class-name,
+[data-theme=light] .language-json .prism-token.prism-property,
+[data-theme=light] .prism-line-numbers .prism-line-numbers-rows > span:before {
+    color: #23778f;
+}
+
+[data-theme=light] .prism-token.prism-attr-name,
+[data-theme=light] .prism-token.prism-entity,
+[data-theme=light] .prism-token.prism-property,
+[data-theme=light] .prism-token.prism-regex {
+    color: #e00000;
+}
+
+[data-theme=light] .prism-token.prism-important {
+    color: #996200;
+}
+
+[data-theme=light] .prism-token.prism-namespace {
+    opacity: .75;
+}
+
+/* Dark code highlighting (prism-vsc-dark-plus.min.css) on #1b1f22 and #1e1e1e. */
+[data-theme=dark] .prism-token.prism-tag .prism-token.prism-punctuation,
+[data-theme=dark] .prism-token.prism-cdata,
+[data-theme=dark] .language-html .prism-token.prism-punctuation {
+    color: #868686;
+}
+
+[data-theme=dark] :not(pre) > code[class*=language-] {
+    color: #de5974;
+}
+
+/* Both themes: a heading's # anchor link while the heading is hovered (rgba(13, 110, 253, .5) gave 2.07:1 on white and 1.88:1
+   on the dark page; the # is 24 px, so 3:1). The link's own hover and focus color, #0d6efd, already passes. */
+[data-theme=light] .be-bulma-doc-anchor-link:not(:hover):not(:focus) {
+    color: #4e94fe;
+}
+
+[data-theme=dark] .be-bulma-doc-anchor-link:not(:hover):not(:focus) {
+    color: #175fc9;
+}
+
+/* Dark: text in a self-check table's failing and resized rows. Bulma's has-background-danger-light (#ffccd6) and
+   has-background-warning-light (#ffedc2) stay light in dark, and the dark text #ebecf0 gave 1.20:1 and 1.02:1. */
+[data-theme=dark] tr.has-background-danger-light > td {
+    color: #575d75;
+}
+
+[data-theme=dark] tr.has-background-warning-light > td {
+    color: #656b86;
 }

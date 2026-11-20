@@ -5,7 +5,7 @@
     </label>
 </div>
 
-<LineChart @ref="lineChart" Width="600" LegendClickToggles="legendClickToggles" OnLegendClick="HandleLegendClickAsync" />
+<LineChart role="img" aria-label="Line chart: Legend click event" @ref="lineChart" Width="600" LegendClickToggles="legendClickToggles" OnLegendClick="HandleLegendClickAsync" />
 
 @if (legendClicks.Count > 0)
 {

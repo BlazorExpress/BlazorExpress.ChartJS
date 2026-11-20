@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Colors = new() { Enabled = true }</code>, no dataset colors (stays grey)</p>
-        <RadarChart @ref="enabledChart" />
+        <RadarChart role="img" aria-label="Radar chart: Colors plugin (chart 1 of 3)" @ref="enabledChart" />
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Enabled = true</code>, <code>ForceOverride = true</code>, no dataset colors</p>
-        <RadarChart @ref="paletteChart" />
+        <RadarChart role="img" aria-label="Radar chart: Colors plugin (chart 2 of 3)" @ref="paletteChart" />
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>ForceOverride = true</code> replacing dataset colors</p>
-        <RadarChart @ref="overrideChart" />
+        <RadarChart role="img" aria-label="Radar chart: Colors plugin (chart 3 of 3)" @ref="overrideChart" />
     </div>
 </div>
 

@@ -3,23 +3,23 @@
 
 <SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
-<PageHero Title="@pageTitle">
+<DemoPageHero Title="@pageTitle">
     <SubTitleTemplate>
         @((MarkupString)pageDescription)
     </SubTitleTemplate>
-</PageHero>
+</DemoPageHero>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Categorical 6-color" PageUrl="@pageUrl" Link="categorical-6-color">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Categorical 6-color" PageUrl="@pageUrl" Link="categorical-6-color">
     <Block>
         <ColorUtil_Demo_01_CategoricalSixColor />
     </Block>
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Categorical 12-color" PageUrl="@pageUrl" Link="categorical-12-color">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Categorical 12-color" PageUrl="@pageUrl" Link="categorical-12-color">
     <Block>
         <ColorUtil_Demo_02_CategoricalTwelveColor />
     </Block>
-</Section>
+</DemoSection>
 
 @code {
     private const string pageUrl = DemoRouteConstants.Demos_ColorUtils;

@@ -98,11 +98,11 @@ public partial class HomeHeroChartView : ComponentBase
         // Reduced motion (AC-14): Chart.js draws the final frame at once when the duration is 0.
         var animation = ReducedMotion ? new ChartAnimation { Duration = 0 } : null;
 
+        // Charts with two series keep their legend, so the series are not told apart by colour alone (WCAG 1.4.1, rules.md A11Y-004).
         switch (ChartKey)
         {
             case SampleChartKeys.BubbleChart:
                 var bubble = new BubbleChartOptions { Animation = animation, MaintainAspectRatio = false };
-                bubble.Plugins.Legend.Display = false;
                 return bubble;
             case SampleChartKeys.DoughnutChart:
                 var doughnut = new DoughnutChartOptions { Animation = animation, MaintainAspectRatio = false };
@@ -110,7 +110,6 @@ public partial class HomeHeroChartView : ComponentBase
                 return doughnut;
             case SampleChartKeys.LineChart:
                 var line = new LineChartOptions { Animation = animation, MaintainAspectRatio = false };
-                line.Plugins.Legend.Display = false;
                 return line;
             case SampleChartKeys.PieChart:
                 var pie = new PieChartOptions { Animation = animation, MaintainAspectRatio = false };
@@ -122,15 +121,12 @@ public partial class HomeHeroChartView : ComponentBase
                 return polarArea;
             case SampleChartKeys.RadarChart:
                 var radar = new RadarChartOptions { Animation = animation, MaintainAspectRatio = false };
-                radar.Plugins.Legend.Display = false;
                 return radar;
             case SampleChartKeys.ScatterChart:
                 var scatter = new ScatterChartOptions { Animation = animation, MaintainAspectRatio = false };
-                scatter.Plugins.Legend.Display = false;
                 return scatter;
             default:
                 var bar = new BarChartOptions { Animation = animation, MaintainAspectRatio = false };
-                bar.Plugins.Legend.Display = false;
                 return bar;
         }
     }

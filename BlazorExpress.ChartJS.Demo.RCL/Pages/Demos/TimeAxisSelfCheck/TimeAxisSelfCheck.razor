@@ -6,7 +6,7 @@
 @* Unlisted page: not linked from the navigation. It runs the built-in date adapter's checks in this browser's time zone. *@
 <SiteMetaTags PageUrl="@pageUrl" Title="Time Axis Self-Check" Description="Internal check page for the demo site." Robots="noindex, nofollow" />
 
-<PageHero Title="Time axis self-check" />
+<DemoPageHero Title="Time axis self-check" />
 
 <Block>
     Runs the built-in date adapter's checks in this browser's time zone. To check another zone, open DevTools,
@@ -22,7 +22,7 @@ else
     <Block>
         <strong>Time zone:</strong> <code>@result.Zone</code> ·
         <strong>Passed:</strong> @result.Passed ·
-        <strong>Failed:</strong> <span class="@(result.Failed > 0 ? "has-text-danger" : "has-text-success")">@result.Failed</span> ·
+        <strong>Failed:</strong> @result.Failed ·
         <strong>Skipped:</strong> @result.Skipped
     </Block>
 
@@ -50,7 +50,7 @@ else
     <strong>Bubble chart on a time axis</strong>: three bubbles at 09:00, 09:20 and 10:00 (wall clock) on 5 Jan 2026.
 </Block>
 <div style="overflow-x: auto;">
-    <BubbleChart @ref="bubbleChart" Width="560" Height="320" />
+    <BubbleChart role="img" aria-label="Bubble chart: time axis self-check" @ref="bubbleChart" Width="560" Height="320" />
 </div>
 
 @code {

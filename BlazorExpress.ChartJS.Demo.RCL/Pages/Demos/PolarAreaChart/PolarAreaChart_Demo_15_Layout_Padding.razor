@@ -2,19 +2,19 @@
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2">No padding (default)</p>
         <div style="border: 1px dashed #b5b5b5;">
-            <PolarAreaChart @ref="noPaddingChart" />
+            <PolarAreaChart role="img" aria-label="Polar area chart: Layout padding (chart 1 of 3)" @ref="noPaddingChart" />
         </div>
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Layout.Padding = 20</code> (all sides)</p>
         <div style="border: 1px dashed #b5b5b5;">
-            <PolarAreaChart @ref="allSidesChart" />
+            <PolarAreaChart role="img" aria-label="Polar area chart: Layout padding (chart 2 of 3)" @ref="allSidesChart" />
         </div>
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code></p>
         <div style="border: 1px dashed #b5b5b5;">
-            <PolarAreaChart @ref="perSideChart" />
+            <PolarAreaChart role="img" aria-label="Polar area chart: Layout padding (chart 3 of 3)" @ref="perSideChart" />
         </div>
     </div>
 </div>

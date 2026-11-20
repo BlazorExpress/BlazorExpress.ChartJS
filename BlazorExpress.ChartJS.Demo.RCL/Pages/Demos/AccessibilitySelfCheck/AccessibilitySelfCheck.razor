@@ -1,0 +1,55 @@
+@attribute [Route(pageUrl)]
+@layout DemosMainLayout
+
+@* Unlisted page: not linked from the navigation. It checks every routed page against WCAG 2.2 AA (story 26111901). *@
+<SiteMetaTags PageUrl="@pageUrl" Title="Accessibility Self-Check" Description="Internal check page for the demo site." Robots="noindex, nofollow" />
+
+<DemoPageHero Title="Accessibility self-check" />
+
+<Block>
+    Opens every routed page in the frame below at 320, 768 and 1280 pixels wide, in light and dark, and checks the skip link and main landmark,
+    the heading outline, new-tab links, chart text alternatives and chart contrast, then reflow, text contrast, focus ring, target size, names, ids and image alternatives.
+    Add <code>?area=home</code>, <code>docs</code>, <code>demos</code>, <code>samples</code>, <code>blog</code> or <code>other</code> to walk one area, and <code>?chart=line-chart</code> to walk one chart's pages.
+    Keep this tab in front and leave it alone while it runs: with no drawn frames the result is void.
+    Add <code>?w3c=1</code> to also send each page's rendered markup to the W3C Nu checker and this repository's CSS files to the W3C CSS validator
+    (one request at a time, without cookies), or <code>?w3c=only</code> to run just those. Without it, nothing is sent.
+    <code>&amp;pace=30</code> sets the seconds between requests (3 to 120, default 3); after 3 refused requests in a row nothing more is sent.
+</Block>
+
+@if (summary is null)
+{
+    <Block>Running… <span id="@progressId"></span></Block>
+}
+else
+{
+    <Block>
+        <strong>Pages:</strong> @summary.Pages ·
+        <strong>Passed:</strong> @summary.Passed ·
+        <strong>Failed:</strong> @summary.Failed ·
+        <strong>Not run:</strong> @summary.NotRun ·
+        <strong>Frames:</strong> @summary.Frames ·
+        <strong>Stalled frames:</strong> @summary.Stalls
+    </Block>
+
+    <div class="table-container">
+        <table class="table is-fullwidth is-narrow is-striped">
+            <thead>
+                <tr><th>Status</th><th>Page</th><th>Case</th><th>Expected</th><th>Actual</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var item in shownCases)
+                {
+                    <tr class="@(item.Status == "fail" ? "has-background-danger-light" : null)">
+                        <td>@item.Status</td>
+                        <td><code>@item.Page</code></td>
+                        <td>@item.Name</td>
+                        <td><code>@item.Expected</code></td>
+                        <td><code>@item.Actual</code></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<div id="@frameHostId"></div>

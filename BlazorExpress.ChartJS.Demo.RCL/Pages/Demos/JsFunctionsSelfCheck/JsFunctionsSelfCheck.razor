@@ -6,7 +6,7 @@
 @* Unlisted page: not linked from the navigation. It checks JavaScript function references (ChartFunction) on live charts. *@
 <SiteMetaTags PageUrl="@pageUrl" Title="JavaScript Functions Self-Check" Description="Internal check page for the demo site." Robots="noindex, nofollow" />
 
-<PageHero Title="JavaScript functions self-check" />
+<DemoPageHero Title="JavaScript functions self-check" />
 
 <Block>
     Registers test functions, draws the charts below with <code>ChartFunction</code> references, then checks each case on the live charts.
@@ -21,7 +21,7 @@ else
 {
     <Block>
         <strong>Passed:</strong> @cases.Count(c => c.Status == "pass") ·
-        <strong>Failed:</strong> <span class="@(cases.Any(c => c.Status == "fail") ? "has-text-danger" : "has-text-success")">@cases.Count(c => c.Status == "fail")</span>
+        <strong>Failed:</strong> @cases.Count(c => c.Status == "fail")
     </Block>
 
     <div class="table-container">
@@ -45,14 +45,14 @@ else
 }
 
 <div class="columns is-multiline">
-    <div class="column is-half"><Block><strong>Ticks, tooltip, gradient, segment</strong></Block><LineChart @ref="ticksChart" Width="420" Height="240" /></div>
-    <div class="column is-half"><Block><strong>Unregistered and late functions</strong></Block><LineChart @ref="missingChart" Width="420" Height="240" /></div>
-    <div class="column is-half"><Block><strong>Throwing tick callback</strong></Block><LineChart @ref="throwsChart" Width="420" Height="240" /></div>
-    <div class="column is-half"><Block><strong>Legend functions</strong></Block><BarChart @ref="legendChart" Width="420" Height="240" OnLegendClick="OnLegendClick" /></div>
-    <div class="column is-half"><Block><strong>Datalabels formatter</strong></Block><BarChart @ref="datalabelsChart" Width="420" Height="240" /></div>
-    <div class="column is-half"><Block><strong>Pie slice colours and add-data</strong></Block><PieChart @ref="pieChart" Width="240" Height="240" /></div>
-    <div class="column is-half"><Block><strong>Ticks.Format currency</strong></Block><LineChart @ref="formatChart" Width="420" Height="240" /></div>
-    <div class="column is-half"><Block><strong>Ticks.Format compact</strong></Block><LineChart @ref="compactChart" Width="420" Height="240" /></div>
+    <div class="column is-half"><Block><strong>Ticks, tooltip, gradient, segment</strong></Block><LineChart role="img" aria-label="Line chart: Ticks, tooltip, gradient, segment" @ref="ticksChart" Width="420" Height="240" /></div>
+    <div class="column is-half"><Block><strong>Unregistered and late functions</strong></Block><LineChart role="img" aria-label="Line chart: Unregistered and late functions" @ref="missingChart" Width="420" Height="240" /></div>
+    <div class="column is-half"><Block><strong>Throwing tick callback</strong></Block><LineChart role="img" aria-label="Line chart: Throwing tick callback" @ref="throwsChart" Width="420" Height="240" /></div>
+    <div class="column is-half"><Block><strong>Legend functions</strong></Block><BarChart role="img" aria-label="Bar chart: Legend functions" @ref="legendChart" Width="420" Height="240" OnLegendClick="OnLegendClick" /></div>
+    <div class="column is-half"><Block><strong>Datalabels formatter</strong></Block><BarChart role="img" aria-label="Bar chart: Datalabels formatter" @ref="datalabelsChart" Width="420" Height="240" /></div>
+    <div class="column is-half"><Block><strong>Pie slice colours and add-data</strong></Block><PieChart role="img" aria-label="Pie chart: Pie slice colours and add-data" @ref="pieChart" Width="240" Height="240" /></div>
+    <div class="column is-half"><Block><strong>Ticks.Format currency</strong></Block><LineChart role="img" aria-label="Line chart: Ticks.Format currency" @ref="formatChart" Width="420" Height="240" /></div>
+    <div class="column is-half"><Block><strong>Ticks.Format compact</strong></Block><LineChart role="img" aria-label="Line chart: Ticks.Format compact" @ref="compactChart" Width="420" Height="240" /></div>
 </div>
 
 @code {

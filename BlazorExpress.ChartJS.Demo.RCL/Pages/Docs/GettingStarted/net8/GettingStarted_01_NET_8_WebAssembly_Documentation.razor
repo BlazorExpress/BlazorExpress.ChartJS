@@ -3,25 +3,25 @@
 
 <SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
-<PageHero Title="@pageTitle">
+<DemoPageHero Title="@pageTitle">
     <SubTitleTemplate>
         @((MarkupString)pageDescription)
     </SubTitleTemplate>
-</PageHero>
+</DemoPageHero>
 
 <div class="content">
-    <Section Class="p-0" Size="HeadingSize.H4" Name="Prerequisites" PageUrl="@pageUrl" Link="prerequisites">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Prerequisites" PageUrl="@pageUrl" Link="prerequisites">
         <Block>
             <ul>
-                <li>.NET 8 SDK (<a href="https://dotnet.microsoft.com/download/dotnet/8.0" target="_blank">Download</a>) or later version</li>
+                <li>.NET 8 SDK (<a href="https://dotnet.microsoft.com/download/dotnet/8.0" target="_blank" rel="noopener noreferrer">Download<span class="is-sr-only"> (opens in a new tab)</span></a>) or later version</li>
                 <li>Visual Studio 2022 or later / VS Code / Other</li>
                 <li>Basic knowledge of Blazor WebAssembly</li>
             </ul>
         </Block>
-    </Section>
+    </DemoSection>
 
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="1. Manual Installation" PageUrl="@pageUrl" Link="1-manual-installation">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="1. Manual Installation" PageUrl="@pageUrl" Link="1-manual-installation">
         <Block>
             <ol>
                 <li>
@@ -44,9 +44,9 @@
                 </li>
             </ol>
         </Block>
-    </Section>
+    </DemoSection>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="2. Usage Example" PageUrl="@pageUrl" Link="2-usage-example">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="2. Usage Example" PageUrl="@pageUrl" Link="2-usage-example">
         <Block>
             <ol>
                 <li>
@@ -55,9 +55,9 @@
                 </li>
             </ol>
         </Block>
-    </Section>
+    </DemoSection>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="3. Troubleshooting" PageUrl="@pageUrl" Link="3-troubleshooting">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="3. Troubleshooting" PageUrl="@pageUrl" Link="3-troubleshooting">
         <Block>
             <ul>
                 <li>Ensure all JS references are correct in <code>index.html</code>.</li>
@@ -65,20 +65,20 @@
                 <li>Check the browser console for errors if components do not render as expected.</li>
             </ul>
         </Block>
-    </Section>
+    </DemoSection>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="References" PageUrl="@pageUrl" Link="references">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="References" PageUrl="@pageUrl" Link="references">
         <Block>
             <ul>
                 <li>
-                    <a href="https://github.com/BlazorExpress/BlazorExpress.ChartJS" target="_blank">GitHub Repository</a>
+                    <a href="https://github.com/BlazorExpress/BlazorExpress.ChartJS" target="_blank" rel="noopener noreferrer">GitHub Repository<span class="is-sr-only"> (opens in a new tab)</span></a>
                 </li>
                 <li>
-                    <a href="https://www.nuget.org/packages/BlazorExpress.ChartJS" target="_blank">NuGet Package</a>
+                    <a href="https://www.nuget.org/packages/BlazorExpress.ChartJS" target="_blank" rel="noopener noreferrer">NuGet Package<span class="is-sr-only"> (opens in a new tab)</span></a>
                 </li>
             </ul>
         </Block>
-    </Section>
+    </DemoSection>
 </div>
 
 @code {

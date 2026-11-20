@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Position: x <code>Position = "top"</code>, y <code>Position = "right"</code></p>
-        <LineChart @ref="positionChart" />
+        <LineChart role="img" aria-label="Line chart: Axis position and reverse, position" @ref="positionChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Reverse: y <code>Reverse = true</code> (lower values at the top, as for a ranking)</p>
-        <LineChart @ref="reverseChart" />
+        <LineChart role="img" aria-label="Line chart: Axis position and reverse, reverse" @ref="reverseChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">x <code>Reverse = true</code>, y <code>Display = false</code></p>
-        <LineChart @ref="hiddenAxisChart" />
+        <LineChart role="img" aria-label="Line chart: Axis position and reverse (chart 3 of 3)" @ref="hiddenAxisChart" />
     </div>
 </div>
 

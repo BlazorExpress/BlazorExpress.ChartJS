@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Default title: <code>Display = true</code>, <code>Text</code></p>
-        <BubbleChart @ref="defaultTitleChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: Axis title, default title" @ref="defaultTitleChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Styled title: <code>Color</code>, <code>Font</code>, <code>Padding = 10</code></p>
-        <BubbleChart @ref="styledTitleChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: Axis title, styled title" @ref="styledTitleChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Aligned title: <code>TitleAlignment.Start</code> on x, <code>TitleAlignment.End</code> on y</p>
-        <BubbleChart @ref="alignedTitleChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: Axis title, aligned title" @ref="alignedTitleChart" />
     </div>
 </div>
 

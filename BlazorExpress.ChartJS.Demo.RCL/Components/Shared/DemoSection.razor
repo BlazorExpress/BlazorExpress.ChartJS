@@ -1,0 +1,12 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+@* Local copy of the BlazorExpress.Bulma.Docx Section with the same markup and anchor link. The heading's level (Level)
+   follows the page outline, and its look (Size) stays separate, so pages keep their headings' size (story 26111901 AC-02). *@
+<section class="@ClassNames" @attributes="@AdditionalAttributes">
+    <DemoHeading Level="Level" Id="@Link?.ToLower()" Class="@headerClassNames">
+        <span class="anchor-name">@Name</span>
+        <a class="be-bulma-doc-anchor-link ml-1" href="@link" @onclick="OnClick">#</a>
+    </DemoHeading>
+
+    @ChildContent
+</section>

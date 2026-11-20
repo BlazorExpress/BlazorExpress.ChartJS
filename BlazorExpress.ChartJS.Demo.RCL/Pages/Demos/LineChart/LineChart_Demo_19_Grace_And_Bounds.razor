@@ -1,19 +1,19 @@
 <div class="columns is-multiline">
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">y <code>Grace = "10%"</code>: 10% of half the data range added above and below</p>
-        <LineChart @ref="gracePercentChart" />
+        <LineChart role="img" aria-label="Line chart: Grace and bounds (chart 1 of 4)" @ref="gracePercentChart" />
     </div>
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">y <code>Grace = 5</code>: 5 data units added above and below</p>
-        <LineChart @ref="graceUnitsChart" />
+        <LineChart role="img" aria-label="Line chart: Grace and bounds (chart 2 of 4)" @ref="graceUnitsChart" />
     </div>
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">y <code>Bounds = "data"</code> (ends at the lowest point, not a tick), <code>SuggestedMax = 100</code></p>
-        <LineChart @ref="boundsChart" />
+        <LineChart role="img" aria-label="Line chart: Grace and bounds (chart 3 of 4)" @ref="boundsChart" />
     </div>
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">Stacked axes: <code>Stack = "demo"</code>, <code>StackWeight</code> 2 and 1, <code>Offset = true</code></p>
-        <LineChart @ref="stackedAxesChart" />
+        <LineChart role="img" aria-label="Line chart: Grace and bounds, stacked axes" @ref="stackedAxesChart" />
     </div>
 </div>
 

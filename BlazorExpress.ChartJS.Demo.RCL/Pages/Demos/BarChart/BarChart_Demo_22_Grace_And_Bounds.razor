@@ -1,19 +1,19 @@
 <div class="columns is-multiline">
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">y <code>Grace = "10%"</code>: 10% of half the data range added above the highest bar</p>
-        <BarChart @ref="gracePercentChart" />
+        <BarChart role="img" aria-label="Bar chart: Grace and bounds (chart 1 of 4)" @ref="gracePercentChart" />
     </div>
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">y <code>Grace = 5</code>: 5 data units added above the highest bar</p>
-        <BarChart @ref="graceUnitsChart" />
+        <BarChart role="img" aria-label="Bar chart: Grace and bounds (chart 2 of 4)" @ref="graceUnitsChart" />
     </div>
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">y <code>Bounds = "data"</code> (ends at the highest bar, not the next tick), <code>SuggestedMin = -50</code></p>
-        <BarChart @ref="boundsChart" />
+        <BarChart role="img" aria-label="Bar chart: Grace and bounds (chart 3 of 4)" @ref="boundsChart" />
     </div>
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">Stacked axes: <code>Stack = "demo"</code>, <code>StackWeight</code> 2 and 1, <code>Offset = true</code></p>
-        <BarChart @ref="stackedAxesChart" />
+        <BarChart role="img" aria-label="Bar chart: Grace and bounds, stacked axes" @ref="stackedAxesChart" />
     </div>
 </div>
 

@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Elements.Arc</code> border width, color and <code>BorderAlign = "inner"</code></p>
-        <PolarAreaChart @ref="elementsChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: Hover and elements (chart 1 of 3)" @ref="elementsChart" />
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Hover = new() { Mode = InteractionMode.Nearest, Intersect = false }</code></p>
-        <PolarAreaChart @ref="hoverChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: Hover and elements (chart 2 of 3)" @ref="hoverChart" />
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Events = ["click"]</code> (pointer moves do nothing; click a slice)</p>
-        <PolarAreaChart @ref="clickOnlyChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: Hover and elements (chart 3 of 3)" @ref="clickOnlyChart" />
     </div>
 </div>
 

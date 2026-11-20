@@ -1,0 +1,12 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+@* Local copy of the BlazorExpress.Bulma.Docx StarOnGitHub banner with the same text, classes and destination. The link is safe
+   and says it opens a new tab (rules.md A11Y-003), and the decorative stars are hidden from assistive technology. *@
+<Notification Class="has-text-centered" Color="NotificationColor.Link" HideDeleteButton="true">
+    <a href="@githubUrl" class="be-bulma-text-decoration-none" target="_blank" rel="noopener noreferrer">
+        <i class="bi bi-star-fill" aria-hidden="true"></i>
+        <span>If you like @nugetPackageName, give it a star on GitHub!</span>
+        <i class="bi bi-star-fill" aria-hidden="true"></i>
+        <span class="is-sr-only"> (opens in a new tab)</span>
+    </a>
+</Notification>

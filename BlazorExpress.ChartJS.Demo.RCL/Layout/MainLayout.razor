@@ -3,13 +3,16 @@
 
 <BulmaLayout>
     <HeaderSection>
+        <a class="be-skip-link" href="#main-content">Skip to main content</a>
         <DemoNavbar BrandImgSrc="@DemoStringConstants.StaticAssets_Icons_Logo_svg"
                        BrandImgAltText=""
                        ApplicationName="@DemoStringConstants.NugetPackageName" />
     </HeaderSection>
     <ContentSection>
         <div class="be-bulma-masthead p-5">
-            @Body
+            <main id="main-content" class="be-main" tabindex="-1">
+                @Body
+            </main>
             <div class="container is-max-desktop mb-4">
                 <MainLayoutBaseFooter Version="@Version"
                                       DotNetVersion="@DotNetVersion"

@@ -4,13 +4,13 @@
 
 <SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
-<PageHero Title="@pageTitle">
+<DemoPageHero Title="@pageTitle">
     <SubTitleTemplate>
         @((MarkupString)pageDescription)
     </SubTitleTemplate>
-</PageHero>
+</DemoPageHero>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Release Notes" PageUrl="@pageUrl" Link="release-notes">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Release Notes" PageUrl="@pageUrl" Link="release-notes">
     <Block>
         <ul>
             <li>
@@ -20,9 +20,9 @@
         </ul>
         <a href="@DemoRouteConstants.Blog_Releases">All releases</a>
     </Block>
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Latest Articles" PageUrl="@pageUrl" Link="latest-articles">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Latest Articles" PageUrl="@pageUrl" Link="latest-articles">
     <Block>
         Welcome to the official <strong>BlazorExpress.ChartJS Blog</strong>! Here you’ll find the latest news, tutorials, and best practices for building interactive charts and data visualizations in your Blazor WebAssembly applications using ChartJS.
         <br /><br />
@@ -35,9 +35,9 @@
         </ul>
         Whether you’re new to Blazor or looking to enhance your data visualization skills, our blog provides practical insights and inspiration for your next project.
     </Block>
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Popular Topics" PageUrl="@pageUrl" Link="popular-topics">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Popular Topics" PageUrl="@pageUrl" Link="popular-topics">
     <Block>
         <ul>
             <li>How to create interactive charts in Blazor WebAssembly</li>
@@ -47,7 +47,7 @@
             <li>Best practices for Blazor and ChartJS performance</li>
         </ul>
     </Block>
-</Section>
+</DemoSection>
 
 @code {
     private const string pageUrl = DemoRouteConstants.Blog_Home;

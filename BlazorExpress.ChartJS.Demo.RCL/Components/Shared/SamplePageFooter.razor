@@ -21,7 +21,7 @@
                 <ul class="be-sample-footer-links">
                     @if (!string.IsNullOrWhiteSpace(sample.ChartJsSampleUrl))
                     {
-                        <li><a href="@sample.ChartJsSampleUrl" target="_blank" rel="noopener noreferrer">The matching Chart.js sample</a></li>
+                        <li><a href="@sample.ChartJsSampleUrl" target="_blank" rel="noopener noreferrer">The matching Chart.js sample<span class="is-sr-only"> (opens in a new tab)</span></a></li>
                     }
                     <li><a href="@chart.DocsRoute">@chart.Name documentation</a></li>
                     <li><a href="@chart.Route">All @chart.Name samples</a></li>

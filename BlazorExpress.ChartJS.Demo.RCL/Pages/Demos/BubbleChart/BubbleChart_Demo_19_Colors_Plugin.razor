@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">No dataset colors, <code>Colors = new() { Enabled = true }</code>: Chart.js palette</p>
-        <BubbleChart @ref="paletteChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: Colors plugin (chart 1 of 3)" @ref="paletteChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">No dataset colors, <code>Enabled = false</code>: Chart.js default gray</p>
-        <BubbleChart @ref="disabledChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: Colors plugin (chart 2 of 3)" @ref="disabledChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Dataset colors set, <code>ForceOverride = true</code>: palette replaces them</p>
-        <BubbleChart @ref="forceOverrideChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: Colors plugin (chart 3 of 3)" @ref="forceOverrideChart" />
     </div>
 </div>
 

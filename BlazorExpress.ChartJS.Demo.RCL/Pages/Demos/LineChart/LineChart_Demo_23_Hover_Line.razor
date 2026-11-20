@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Default: grey, 2 px, dashed</p>
-        <LineChart @ref="defaultChart" />
+        <LineChart role="img" aria-label="Line chart: Hover line, default" @ref="defaultChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>TooltipLine = new() { Color = "red", Width = 1, Dash = [] }</code>: solid red</p>
-        <LineChart @ref="styledChart" />
+        <LineChart role="img" aria-label="Line chart: Hover line (chart 2 of 3)" @ref="styledChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>TooltipLine = new() { Display = false }</code>: no line</p>
-        <LineChart @ref="hiddenChart" />
+        <LineChart role="img" aria-label="Line chart: Hover line (chart 3 of 3)" @ref="hiddenChart" />
     </div>
 </div>
 

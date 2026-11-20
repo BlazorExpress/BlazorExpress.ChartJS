@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Display = true</code>, <code>Text</code> (default black, size 12, bold)</p>
-        <BarChart @ref="defaultTitleChart" />
+        <BarChart role="img" aria-label="Bar chart: Axis title (chart 1 of 3)" @ref="defaultTitleChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Color</code>, <code>Font</code> (size 14, italic), <code>Padding = 10</code></p>
-        <BarChart @ref="styledTitleChart" />
+        <BarChart role="img" aria-label="Bar chart: Axis title (chart 2 of 3)" @ref="styledTitleChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">x <code>TitleAlignment.Start</code>, y <code>TitleAlignment.End</code>, <code>Padding</code> per side</p>
-        <BarChart @ref="alignedTitleChart" />
+        <BarChart role="img" aria-label="Bar chart: Axis title (chart 3 of 3)" @ref="alignedTitleChart" />
     </div>
 </div>
 

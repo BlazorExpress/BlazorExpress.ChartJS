@@ -3,14 +3,14 @@
 
 <SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
-<PageHero Title="@pageTitle">
+<DemoPageHero Title="@pageTitle">
     <SubTitleTemplate>
         @((MarkupString)pageDescription)
     </SubTitleTemplate>
-</PageHero>
+</DemoPageHero>
 
 @* One entry per release, newest first. Add a release here, in the Blog menu (BlogMainLayout.razor.cs), on the Blog home page, in sitemap.xml and in llms.txt. *@
-<Section Class="p-0" Size="HeadingSize.H4" Name="2.0.0" PageUrl="@pageUrl" Link="2-0-0">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="2.0.0" PageUrl="@pageUrl" Link="2-0-0">
     <Block>
         <p>
             Time axes, JavaScript functions, chart methods and events, and wider Chart.js 4.6 options.
@@ -21,13 +21,13 @@
             <a class="button is-small" href="@(DemoRouteConstants.Blog_Release_2_0_0)#breaking-changes">Breaking changes</a>
         </div>
     </Block>
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Earlier releases" PageUrl="@pageUrl" Link="earlier-releases">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Earlier releases" PageUrl="@pageUrl" Link="earlier-releases">
     <Block>
-        Releases before 2.0.0 are listed in <a href="@changelogUrl" target="_blank" rel="noopener noreferrer">CHANGELOG.md</a> and on <a href="@nugetVersionsUrl" target="_blank" rel="noopener noreferrer">NuGet</a>.
+        Releases before 2.0.0 are listed in <a href="@changelogUrl" target="_blank" rel="noopener noreferrer">CHANGELOG.md<span class="is-sr-only"> (opens in a new tab)</span></a> and on <a href="@nugetVersionsUrl" target="_blank" rel="noopener noreferrer">NuGet<span class="is-sr-only"> (opens in a new tab)</span></a>.
     </Block>
-</Section>
+</DemoSection>
 
 @code {
     private const string pageUrl = DemoRouteConstants.Blog_Releases;

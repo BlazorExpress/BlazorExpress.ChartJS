@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>BorderRadiusCorners</code> top-left and bottom-right 20, <code>BorderSkipped = false</code></p>
-        <BarChart @ref="leafChart" />
+        <BarChart role="img" aria-label="Bar chart: Per corner border radius (chart 1 of 3)" @ref="leafChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">All four corners 12 with the default <code>BorderSkipped</code> (<code>"start"</code>): the base stays square</p>
-        <BarChart @ref="skippedChart" />
+        <BarChart role="img" aria-label="Bar chart: Per corner border radius (chart 2 of 3)" @ref="skippedChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>HoverBorderRadiusCorners</code>: square bars that round on hover</p>
-        <BarChart @ref="hoverChart" />
+        <BarChart role="img" aria-label="Bar chart: Per corner border radius, hoverBorderRadiusCorners" @ref="hoverChart" />
     </div>
 </div>
 

@@ -1,19 +1,19 @@
 <div class="columns is-multiline">
     <div class="column is-half">
         <p class="is-size-7 has-text-weight-semibold mb-2">Default: <code>BeginAtZero = true</code></p>
-        <RadarChart @ref="defaultChart" />
+        <RadarChart role="img" aria-label="Radar chart: Radial scale, default" @ref="defaultChart" />
     </div>
     <div class="column is-half">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>BeginAtZero = false</code> (starts from the data minimum)</p>
-        <RadarChart @ref="dataMinimumChart" />
+        <RadarChart role="img" aria-label="Radar chart: Radial scale (chart 2 of 4)" @ref="dataMinimumChart" />
     </div>
     <div class="column is-half">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Min = 60</code>, <code>Max = 100</code>, <code>StepSize = 10</code>, <code>ShowLabelBackdrop = false</code>, <code>Circular = true</code></p>
-        <RadarChart @ref="fixedRangeChart" />
+        <RadarChart role="img" aria-label="Radar chart: Radial scale (chart 3 of 4)" @ref="fixedRangeChart" />
     </div>
     <div class="column is-half">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Reverse = true</code>, <code>BeginAtZero = false</code></p>
-        <RadarChart @ref="reverseChart" />
+        <RadarChart role="img" aria-label="Radar chart: Radial scale (chart 4 of 4)" @ref="reverseChart" />
     </div>
 </div>
 

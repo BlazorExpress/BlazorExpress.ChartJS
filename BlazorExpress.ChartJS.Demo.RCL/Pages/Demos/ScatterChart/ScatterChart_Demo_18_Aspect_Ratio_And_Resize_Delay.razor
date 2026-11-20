@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Square: <code>AspectRatio = 1</code></p>
-        <ScatterChart @ref="squareChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: Aspect ratio and resize delay, square" @ref="squareChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Default width: <code>AspectRatio = 2</code>, <code>ResizeDelay = 300</code></p>
-        <ScatterChart @ref="defaultRatioChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: Aspect ratio and resize delay, default width" @ref="defaultRatioChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Wide: <code>AspectRatio = 3</code>, <code>DevicePixelRatio = 2</code></p>
-        <ScatterChart @ref="wideChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: Aspect ratio and resize delay, wide" @ref="wideChart" />
     </div>
 </div>
 

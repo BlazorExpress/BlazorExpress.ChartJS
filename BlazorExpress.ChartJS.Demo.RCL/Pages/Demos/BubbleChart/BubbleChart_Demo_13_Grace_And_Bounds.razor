@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Grace: <code>Grace = "10%"</code> on y, <code>Grace = 5</code> on x</p>
-        <BubbleChart @ref="graceChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: Grace and bounds, grace" @ref="graceChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Bounds: <code>Bounds = "data"</code> on x, <code>Bounds = "ticks"</code> with <code>SuggestedMin</code>/<code>SuggestedMax</code> on y</p>
-        <BubbleChart @ref="boundsChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: Grace and bounds, bounds" @ref="boundsChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Stacked axes: <code>Stack = "demo"</code>, <code>StackWeight</code> 2 and 1, <code>Offset = true</code></p>
-        <BubbleChart @ref="stackedAxesChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: Grace and bounds, stacked axes" @ref="stackedAxesChart" />
     </div>
 </div>
 

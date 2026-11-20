@@ -41,6 +41,7 @@ public partial class DocsMainLayout : MainLayoutBase
                 new Link { Href = DemoRouteConstants.Docs_Getting_Started_Introduction, Text = "Introduction" },
                 new Link { Href = DemoRouteConstants.Docs_Getting_Started_Blazor_WebAssembly_NET8, Text = "Blazor WebAssembly (.NET 8)" },
                 new Link { Href = DemoRouteConstants.Docs_Getting_Started_Blazor_WebApp_NET_8_Interactive_Render_Mode_Server_Global_Location, Text = "Blazor WebApp (.NET 8) Server" },
+                new Link { Href = DemoRouteConstants.Docs_Accessibility, Text = "Accessible charts" },
             ]
         });
 

@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Base = 50</code>: bars start at the target value 50</p>
-        <BarChart @ref="baseChart" />
+        <BarChart role="img" aria-label="Bar chart: Base and inflate amount (chart 1 of 3)" @ref="baseChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>InflateAmount = 0</code> vs <code>InflateAmount = 6</code> (pixels added on each side)</p>
-        <BarChart @ref="inflateChart" />
+        <BarChart role="img" aria-label="Bar chart: Base and inflate amount (chart 2 of 3)" @ref="inflateChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>PointStyle</code> per dataset, legend <code>Labels = new() { UsePointStyle = true }</code></p>
-        <BarChart @ref="pointStyleChart" />
+        <BarChart role="img" aria-label="Bar chart: Base and inflate amount (chart 3 of 3)" @ref="pointStyleChart" />
     </div>
 </div>
 

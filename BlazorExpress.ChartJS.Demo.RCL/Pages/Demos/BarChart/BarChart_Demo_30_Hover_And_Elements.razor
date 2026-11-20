@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Elements.Bar</code>: <code>BorderRadius = 8</code>, <code>BorderWidth = 3</code> for every dataset</p>
-        <BarChart @ref="elementsChart" />
+        <BarChart role="img" aria-label="Bar chart: Hover and elements (chart 1 of 3)" @ref="elementsChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Hover = new() { Mode = Index, Intersect = false }</code>: the whole month highlights, the tooltip still needs a bar</p>
-        <BarChart @ref="hoverChart" />
+        <BarChart role="img" aria-label="Bar chart: Hover and elements (chart 2 of 3)" @ref="hoverChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Events = ["click"]</code>: pointer moves do nothing; click a bar to highlight it and open its tooltip</p>
-        <BarChart @ref="eventsChart" />
+        <BarChart role="img" aria-label="Bar chart: Hover and elements (chart 3 of 3)" @ref="eventsChart" />
     </div>
 </div>
 

@@ -12,7 +12,6 @@ public partial class SamplesGallery : ComponentBase
     private const string ChartParameter = "chart";
     private const string metaDescription = "Browse every BlazorExpress.ChartJS sample: bar, line, area, pie, doughnut, polar area, radar, scatter and bubble charts, with search and filters. Each sample has a live demo and its source.";
     private const string metaTitle = "Blazor Chart Samples Gallery";
-    private const string pageDescription = "Every sample in one place. Search by name, or filter by chart, category or tag. Each card opens a page with the live demo and its source.";
     private const string pageUrl = DemoRouteConstants.Demos_Samples;
     private const string QueryParameter = "q";
     private const string TagParameter = "tag";

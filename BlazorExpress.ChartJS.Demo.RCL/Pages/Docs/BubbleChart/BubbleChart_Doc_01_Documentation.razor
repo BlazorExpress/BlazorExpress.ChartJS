@@ -3,215 +3,215 @@
 
 <SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
-<PageHero Title="@pageTitle">
+<DemoPageHero Title="@pageTitle">
     <SubTitleTemplate>
         @((MarkupString)pageDescription)
     </SubTitleTemplate>
-</PageHero>
+</DemoPageHero>
 
 <DemoLink Href="@DemoRouteConstants.Demos_BubbleChart" />
 
 <Image Src="@imageUrl" class="img-fluid" alt="Blazor Bar Chart - API Documentation" />
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Parameters" PageUrl="@pageUrl" Link="parameters">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Parameters" PageUrl="@pageUrl" Link="parameters">
     <DocxTable TItem="BubbleChart" DocType="DocType.Parameters" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Methods" PageUrl="@pageUrl" Link="methods">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Methods" PageUrl="@pageUrl" Link="methods">
     <DocxTable TItem="BubbleChart" DocType="DocType.Methods" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Common Parameters" PageUrl="@pageUrl" Link="common-parameters">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Common Parameters" PageUrl="@pageUrl" Link="common-parameters">
     <DocxTable TItem="ChartComponentBase" DocType="DocType.Parameters" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Common Events" PageUrl="@pageUrl" Link="common-events">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Common Events" PageUrl="@pageUrl" Link="common-events">
     <DocxTable TItem="ChartComponentBase" DocType="DocType.Events" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Common Methods" PageUrl="@pageUrl" Link="common-methods">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Common Methods" PageUrl="@pageUrl" Link="common-methods">
     <Block>
         Every chart inherits these methods from <code>ChartComponentBase</code>. The chart's own versions of <code>AddDataAsync</code>, <code>AddDatasetAsync</code>, <code>InitializeAsync</code> and <code>UpdateAsync</code> are listed under <strong>Methods</strong> above.
         <code>HandleClickAsync</code>, <code>HandleHoverAsync</code> and <code>HandleLegendClickAsync</code> are called by the browser to raise <code>OnClick</code>, <code>OnHover</code> and <code>OnLegendClick</code>; you don't call them yourself.
     </Block>
     <DocxTable TItem="ChartComponentBase" DocType="DocType.Methods" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartData Properties" PageUrl="@pageUrl" Link="chart-data-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartData Properties" PageUrl="@pageUrl" Link="chart-data-properties">
     <DocxTable TItem="ChartData" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="BubbleChartDataset Properties" PageUrl="@pageUrl" Link="bubblechart-dataset-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="BubbleChartDataset Properties" PageUrl="@pageUrl" Link="bubblechart-dataset-properties">
     <DocxTable TItem="BubbleChartDataset" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="BubbleChartDatasetData Properties" PageUrl="@pageUrl" Link="bubblechart-dataset-data-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="BubbleChartDatasetData Properties" PageUrl="@pageUrl" Link="bubblechart-dataset-data-properties">
     <DocxTable TItem="BubbleChartDatasetData" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="BubbleChartDataPoint Properties" PageUrl="@pageUrl" Link="bubblechart-data-point-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="BubbleChartDataPoint Properties" PageUrl="@pageUrl" Link="bubblechart-data-point-properties">
     <Block>
         <code>X</code> and <code>Y</code> are the position of the bubble on the x and y axes. <code>R</code> is its radius in pixels; it is not scaled by the axes.
     </Block>
     <DocxTable TItem="BubbleChartDataPoint" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="BubbleChartDatasetDataLabels Properties" PageUrl="@pageUrl" Link="bubblechart-dataset-data-labels-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="BubbleChartDatasetDataLabels Properties" PageUrl="@pageUrl" Link="bubblechart-dataset-data-labels-properties">
     <DocxTable TItem="BubbleChartDatasetDataLabels" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartDatasetDataLabels Properties" PageUrl="@pageUrl" Link="chart-dataset-data-labels-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartDatasetDataLabels Properties" PageUrl="@pageUrl" Link="chart-dataset-data-labels-properties">
     <DocxTable TItem="ChartDatasetDataLabels" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="BubbleChartOptions Properties" PageUrl="@pageUrl" Link="bubblechart-options-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="BubbleChartOptions Properties" PageUrl="@pageUrl" Link="bubblechart-options-properties">
     <DocxTable TItem="BubbleChartOptions" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="BubbleChartPlugins Properties" PageUrl="@pageUrl" Link="bubblechart-plugins-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="BubbleChartPlugins Properties" PageUrl="@pageUrl" Link="bubblechart-plugins-properties">
     <DocxTable TItem="BubbleChartPlugins" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="BubbleChartDataLabels Properties" PageUrl="@pageUrl" Link="bubblechart-data-labels-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="BubbleChartDataLabels Properties" PageUrl="@pageUrl" Link="bubblechart-data-labels-properties">
     <DocxTable TItem="BubbleChartDataLabels" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="BubbleChartDataLabelsFont Properties" PageUrl="@pageUrl" Link="bubblechart-data-labels-font-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="BubbleChartDataLabelsFont Properties" PageUrl="@pageUrl" Link="bubblechart-data-labels-font-properties">
     <DocxTable TItem="BubbleChartDataLabelsFont" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsLegend Properties" PageUrl="@pageUrl" Link="chart-plugins-legend-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsLegend Properties" PageUrl="@pageUrl" Link="chart-plugins-legend-properties">
     <DocxTable TItem="ChartPluginsLegend" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsLegendLabels Properties" PageUrl="@pageUrl" Link="chart-plugins-legend-labels-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsLegendLabels Properties" PageUrl="@pageUrl" Link="chart-plugins-legend-labels-properties">
     <DocxTable TItem="ChartPluginsLegendLabels" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsLegendTitle Properties" PageUrl="@pageUrl" Link="chart-plugins-legend-title-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsLegendTitle Properties" PageUrl="@pageUrl" Link="chart-plugins-legend-title-properties">
     <DocxTable TItem="ChartPluginsLegendTitle" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsTitle Properties" PageUrl="@pageUrl" Link="chart-plugins-title-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsTitle Properties" PageUrl="@pageUrl" Link="chart-plugins-title-properties">
     <DocxTable TItem="ChartPluginsTitle" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsSubtitle Properties" PageUrl="@pageUrl" Link="chart-plugins-subtitle-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsSubtitle Properties" PageUrl="@pageUrl" Link="chart-plugins-subtitle-properties">
     <DocxTable TItem="ChartPluginsSubtitle" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartFont Properties" PageUrl="@pageUrl" Link="chart-font-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartFont Properties" PageUrl="@pageUrl" Link="chart-font-properties">
     <DocxTable TItem="ChartFont" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsTooltip Properties" PageUrl="@pageUrl" Link="chart-plugins-tooltip-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsTooltip Properties" PageUrl="@pageUrl" Link="chart-plugins-tooltip-properties">
     <DocxTable TItem="ChartPluginsTooltip" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsTooltipCallbacks Properties" PageUrl="@pageUrl" Link="chart-plugins-tooltip-callbacks-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsTooltipCallbacks Properties" PageUrl="@pageUrl" Link="chart-plugins-tooltip-callbacks-properties">
     <DocxTable TItem="ChartPluginsTooltipCallbacks" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsTooltipFont Properties" PageUrl="@pageUrl" Link="chart-plugins-tooltip-font-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsTooltipFont Properties" PageUrl="@pageUrl" Link="chart-plugins-tooltip-font-properties">
     <DocxTable TItem="ChartPluginsTooltipFont" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsColors Properties" PageUrl="@pageUrl" Link="chart-plugins-colors-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsColors Properties" PageUrl="@pageUrl" Link="chart-plugins-colors-properties">
     <DocxTable TItem="ChartPluginsColors" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsFiller Properties" PageUrl="@pageUrl" Link="chart-plugins-filler-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartPluginsFiller Properties" PageUrl="@pageUrl" Link="chart-plugins-filler-properties">
     <DocxTable TItem="ChartPluginsFiller" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Interaction Properties" PageUrl="@pageUrl" Link="interaction-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Interaction Properties" PageUrl="@pageUrl" Link="interaction-properties">
     <DocxTable TItem="Interaction" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartHover Properties" PageUrl="@pageUrl" Link="chart-hover-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartHover Properties" PageUrl="@pageUrl" Link="chart-hover-properties">
     <DocxTable TItem="ChartHover" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartLayout Properties" PageUrl="@pageUrl" Link="chart-layout-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartLayout Properties" PageUrl="@pageUrl" Link="chart-layout-properties">
     <DocxTable TItem="ChartLayout" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartElements Properties" PageUrl="@pageUrl" Link="chart-elements-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartElements Properties" PageUrl="@pageUrl" Link="chart-elements-properties">
     <DocxTable TItem="ChartElements" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartElementsArc Properties" PageUrl="@pageUrl" Link="chart-elements-arc-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartElementsArc Properties" PageUrl="@pageUrl" Link="chart-elements-arc-properties">
     <DocxTable TItem="ChartElementsArc" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartElementsBar Properties" PageUrl="@pageUrl" Link="chart-elements-bar-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartElementsBar Properties" PageUrl="@pageUrl" Link="chart-elements-bar-properties">
     <DocxTable TItem="ChartElementsBar" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartElementsLine Properties" PageUrl="@pageUrl" Link="chart-elements-line-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartElementsLine Properties" PageUrl="@pageUrl" Link="chart-elements-line-properties">
     <DocxTable TItem="ChartElementsLine" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartElementsPoint Properties" PageUrl="@pageUrl" Link="chart-elements-point-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartElementsPoint Properties" PageUrl="@pageUrl" Link="chart-elements-point-properties">
     <DocxTable TItem="ChartElementsPoint" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartAnimation Properties" PageUrl="@pageUrl" Link="chart-animation-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartAnimation Properties" PageUrl="@pageUrl" Link="chart-animation-properties">
     <DocxTable TItem="ChartAnimation" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartPadding Properties" PageUrl="@pageUrl" Link="chart-padding-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartPadding Properties" PageUrl="@pageUrl" Link="chart-padding-properties">
     <DocxTable TItem="ChartPadding" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Scales Properties" PageUrl="@pageUrl" Link="scales-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Scales Properties" PageUrl="@pageUrl" Link="scales-properties">
     <DocxTable TItem="Scales" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartAxes Properties" PageUrl="@pageUrl" Link="chart-axes-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartAxes Properties" PageUrl="@pageUrl" Link="chart-axes-properties">
     <DocxTable TItem="ChartAxes" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartAxesTicks Properties" PageUrl="@pageUrl" Link="chart-axes-ticks-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartAxesTicks Properties" PageUrl="@pageUrl" Link="chart-axes-ticks-properties">
     <DocxTable TItem="ChartAxesTicks" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartAxesTicksMajor Properties" PageUrl="@pageUrl" Link="chart-axes-ticks-major-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartAxesTicksMajor Properties" PageUrl="@pageUrl" Link="chart-axes-ticks-major-properties">
     <DocxTable TItem="ChartAxesTicksMajor" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartNumberFormat Properties" PageUrl="@pageUrl" Link="chart-number-format-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartNumberFormat Properties" PageUrl="@pageUrl" Link="chart-number-format-properties">
     <DocxTable TItem="ChartNumberFormat" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartAxesTitle Properties" PageUrl="@pageUrl" Link="chart-axes-title-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartAxesTitle Properties" PageUrl="@pageUrl" Link="chart-axes-title-properties">
     <DocxTable TItem="ChartAxesTitle" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartAxesGrid Properties" PageUrl="@pageUrl" Link="chart-axes-grid-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartAxesGrid Properties" PageUrl="@pageUrl" Link="chart-axes-grid-properties">
     <DocxTable TItem="ChartAxesGrid" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartAxesBorder Properties" PageUrl="@pageUrl" Link="chart-axes-border-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartAxesBorder Properties" PageUrl="@pageUrl" Link="chart-axes-border-properties">
     <DocxTable TItem="ChartAxesBorder" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartAxesTime Properties" PageUrl="@pageUrl" Link="chart-axes-time-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartAxesTime Properties" PageUrl="@pageUrl" Link="chart-axes-time-properties">
     <Block>
         Options of a <code>time</code> or <code>timeseries</code> axis. See the <a href="@(DemoRouteConstants.Docs_LineChart)#time-axis">time axis documentation</a> for dates, time zones and formats.
     </Block>
     <DocxTable TItem="ChartAxesTime" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartAxesTimeDisplayFormats Properties" PageUrl="@pageUrl" Link="chart-axes-time-display-formats-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartAxesTimeDisplayFormats Properties" PageUrl="@pageUrl" Link="chart-axes-time-display-formats-properties">
     <DocxTable TItem="ChartAxesTimeDisplayFormats" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="BubbleChartTimePoint Properties" PageUrl="@pageUrl" Link="bubble-chart-time-point-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="BubbleChartTimePoint Properties" PageUrl="@pageUrl" Link="bubble-chart-time-point-properties">
     <DocxTable TItem="BubbleChartTimePoint" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartTimeValue" PageUrl="@pageUrl" Link="chart-time-value">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartTimeValue" PageUrl="@pageUrl" Link="chart-time-value">
     <Block>
         A <code>ChartTimeValue</code> is a date or a date and time on a time axis. It has no properties to set: assign a .NET date value and it converts implicitly.
         <div class="content">
@@ -223,31 +223,31 @@
         </div>
         It is the item type of <code>ChartData.TimeLabels</code>, the type of <code>BubbleChartTimePoint.X</code>, and the type of the axis limits <code>ChartAxes.MinTime</code>, <code>MaxTime</code>, <code>SuggestedMinTime</code> and <code>SuggestedMaxTime</code>.
     </Block>
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartDimension Properties" PageUrl="@pageUrl" Link="chart-dimension-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartDimension Properties" PageUrl="@pageUrl" Link="chart-dimension-properties">
     <DocxTable TItem="ChartDimension" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartFunction Properties" PageUrl="@pageUrl" Link="chart-function-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartFunction Properties" PageUrl="@pageUrl" Link="chart-function-properties">
     <DocxTable TItem="ChartFunction" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartLegendClickEventArgs Properties" PageUrl="@pageUrl" Link="chart-legend-click-event-args-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartLegendClickEventArgs Properties" PageUrl="@pageUrl" Link="chart-legend-click-event-args-properties">
     <DocxTable TItem="ChartLegendClickEventArgs" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartHoverEventArgs Properties" PageUrl="@pageUrl" Link="chart-hover-event-args-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartHoverEventArgs Properties" PageUrl="@pageUrl" Link="chart-hover-event-args-properties">
     <DocxTable TItem="ChartHoverEventArgs" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartActiveElement Properties" PageUrl="@pageUrl" Link="chart-active-element-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartActiveElement Properties" PageUrl="@pageUrl" Link="chart-active-element-properties">
     <DocxTable TItem="ChartActiveElement" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="ChartClickEventArgs Properties" PageUrl="@pageUrl" Link="chart-click-event-args-properties">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="ChartClickEventArgs Properties" PageUrl="@pageUrl" Link="chart-click-event-args-properties">
     <DocxTable TItem="ChartClickEventArgs" DocType="DocType.Properties" />
-</Section>
+</DemoSection>
 
 @code {
     private const string componentName = nameof(BubbleChart);

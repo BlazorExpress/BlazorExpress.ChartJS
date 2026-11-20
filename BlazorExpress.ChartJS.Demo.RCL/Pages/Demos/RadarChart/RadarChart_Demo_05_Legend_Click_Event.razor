@@ -5,7 +5,7 @@
     </label>
 </div>
 
-<RadarChart @ref="radarChart" Width="600" LegendClickToggles="legendClickToggles" OnLegendClick="HandleLegendClickAsync" />
+<RadarChart role="img" aria-label="Radar chart: Legend click event" @ref="radarChart" Width="600" LegendClickToggles="legendClickToggles" OnLegendClick="HandleLegendClickAsync" />
 
 @if (legendClicks.Count > 0)
 {

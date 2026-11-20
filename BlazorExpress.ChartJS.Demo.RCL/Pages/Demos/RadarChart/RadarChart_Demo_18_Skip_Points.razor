@@ -1,11 +1,11 @@
 <div class="columns is-multiline">
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">Missing values break the line: <code>SpanGaps = false</code></p>
-        <RadarChart @ref="gapsChart" />
+        <RadarChart role="img" aria-label="Radar chart: Skip points, missing values break the line" @ref="gapsChart" />
     </div>
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">Missing values are bridged: <code>SpanGaps = true</code></p>
-        <RadarChart @ref="spannedChart" />
+        <RadarChart role="img" aria-label="Radar chart: Skip points, missing values are bridged" @ref="spannedChart" />
     </div>
 </div>
 

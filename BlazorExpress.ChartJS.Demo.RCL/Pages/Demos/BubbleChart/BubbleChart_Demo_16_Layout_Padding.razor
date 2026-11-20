@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">No padding (default): <code>Layout.Padding = 0</code></p>
-        <BubbleChart @ref="noPaddingChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
+        <BubbleChart role="img" aria-label="Bubble chart: Layout padding (chart 1 of 3)" @ref="noPaddingChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">All sides: <code>Layout.Padding = 20</code></p>
-        <BubbleChart @ref="allSidesChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
+        <BubbleChart role="img" aria-label="Bubble chart: Layout padding, all sides" @ref="allSidesChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Per side: <code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code></p>
-        <BubbleChart @ref="perSideChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
+        <BubbleChart role="img" aria-label="Bubble chart: Layout padding, per side" @ref="perSideChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
     </div>
 </div>
 

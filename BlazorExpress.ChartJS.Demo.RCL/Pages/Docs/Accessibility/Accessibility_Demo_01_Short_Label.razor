@@ -1,0 +1,29 @@
+<BarChart role="img" aria-label="Bar chart: monthly sales in two regions, January to June" @ref="barChart" Width="600" />
+
+@code {
+    private BarChart barChart = default!;
+    private ChartData chartData = default!;
+    private BarChartOptions barChartOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = ["January", "February", "March", "April", "May", "June"],
+            Datasets =
+            [
+                new BarChartDataset { Label = "North", Data = [42, 55, 49, 68, 74, 81], BackgroundColor = ["#147af3"] },
+                new BarChartDataset { Label = "South", Data = [18, 24, 31, 29, 40, 47], BackgroundColor = ["#cb5d00"] },
+            ]
+        };
+        barChartOptions = new BarChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await barChart.InitializeAsync(chartData, barChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

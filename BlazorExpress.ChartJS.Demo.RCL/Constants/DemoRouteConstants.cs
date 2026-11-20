@@ -53,6 +53,9 @@ public static class DemoRouteConstants
     // Unlisted: checks the home page hero chart, layout widths, contrast and links.
     public const string Demos_HomeSelfCheck = Demos_Prefix + "/home-self-check";
 
+    // Unlisted: walks every routed page and checks it against WCAG 2.2 AA (story 26111901). Query: area, chart.
+    public const string Demos_AccessibilitySelfCheck = Demos_Prefix + "/accessibility-self-check";
+
     // Utils
     public const string Demos_Utils_Prefix = Demos_Prefix + "/utils";
     public const string Demos_ColorUtils = Demos_Utils_Prefix + "/color-utility";
@@ -66,6 +69,9 @@ public static class DemoRouteConstants
     public const string Docs_Getting_Started_Introduction = Docs_Getting_Started_Prefix + "/introduction";
     public const string Docs_Getting_Started_Blazor_WebAssembly_NET8 = Docs_Getting_Started_Prefix + "/blazor-webassembly-net-8";
     public const string Docs_Getting_Started_Blazor_WebApp_NET_8_Interactive_Render_Mode_Server_Global_Location = Docs_Getting_Started_Prefix + "/blazor-webapp-server-global-net-8";
+
+    // Accessible charts: text alternatives, long descriptions and contrast (story 26111901, rules.md A11Y-002).
+    public const string Docs_Accessibility = Docs_Prefix + "/accessibility";
 
     // Charts
     public const string Docs_BarChart = Docs_Prefix + "/bar-chart";

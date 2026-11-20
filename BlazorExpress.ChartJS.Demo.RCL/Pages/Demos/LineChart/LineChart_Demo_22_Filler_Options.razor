@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Propagate = true</code>: Store C fills past the hidden Store B down to Store A</p>
-        <LineChart @ref="propagateChart" />
+        <LineChart role="img" aria-label="Line chart: Filler options (chart 1 of 3)" @ref="propagateChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Propagate = false</code>: Store C's fill target is hidden, so Store C is not filled</p>
-        <LineChart @ref="noPropagateChart" />
+        <LineChart role="img" aria-label="Line chart: Filler options (chart 2 of 3)" @ref="noPropagateChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>DrawTime = "beforeDraw"</code>: the fills are drawn under the grid lines</p>
-        <LineChart @ref="drawTimeChart" />
+        <LineChart role="img" aria-label="Line chart: Filler options (chart 3 of 3)" @ref="drawTimeChart" />
     </div>
 </div>
 

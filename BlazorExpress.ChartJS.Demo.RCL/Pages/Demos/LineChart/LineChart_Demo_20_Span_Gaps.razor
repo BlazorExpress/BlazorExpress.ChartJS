@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Default: the line breaks at each <code>null</code> value</p>
-        <LineChart @ref="defaultChart" />
+        <LineChart role="img" aria-label="Line chart: Span gaps, default" @ref="defaultChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>SpanGaps = true</code>: the line is drawn across the <code>null</code> values</p>
-        <LineChart @ref="spanGapsChart" />
+        <LineChart role="img" aria-label="Line chart: Span gaps (chart 2 of 3)" @ref="spanGapsChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>MaxSpanGap = 1</code> on a linear x-axis: breaks where days are missing</p>
-        <LineChart @ref="maxSpanGapChart" />
+        <LineChart role="img" aria-label="Line chart: Span gaps (chart 3 of 3)" @ref="maxSpanGapChart" />
     </div>
 </div>
 

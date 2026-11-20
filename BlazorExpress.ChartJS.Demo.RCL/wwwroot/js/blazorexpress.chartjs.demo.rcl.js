@@ -103,31 +103,28 @@ window
         setTheme(theme);
     });
 
+// One Prism theme link at a time. setTheme runs on every load and theme change, so links from earlier calls are removed:
+// a second link with the same id is invalid markup, and a light link left in place leaks light colours into dark (story 26111901, FN-07).
 function updateDemoCodeThemeCss(theme) {
-    if (theme === "dark") {
-        let prismThemeLightLinkEl = document.getElementById('prismThemeLightLink');
-        if (prismThemeLightLinkEl)
-            prismThemeLightLinkEl?.remove();
+    const links = {
+        dark: { id: "prismThemeDarkLink", href: "/_content/BlazorExpress.ChartJS.Demo.RCL/css/prism-vsc-dark-plus.min.css" },
+        light: { id: "prismThemeLightLink", href: "/_content/BlazorExpress.ChartJS.Demo.RCL/css/prism-vs.min.css" },
+    };
+    const wanted = links[theme];
+    if (!wanted)
+        return;
 
-        let prismThemeDarkLinkEl = document.createElement("link");
-        prismThemeDarkLinkEl.setAttribute("rel", "stylesheet");
-        prismThemeDarkLinkEl.setAttribute("href", "/_content/BlazorExpress.ChartJS.Demo.RCL/css/prism-vsc-dark-plus.min.css");
-        prismThemeDarkLinkEl.setAttribute("id", "prismThemeDarkLink");
+    const existing = [...document.querySelectorAll(`#${links.dark.id}, #${links.light.id}`)];
+    const kept = existing.find(link => link.id === wanted.id);
+    existing.filter(link => link !== kept).forEach(link => link.remove());
+    if (kept)
+        return;
 
-        document.head.append(prismThemeDarkLinkEl);
-    }
-    else if (theme === "light") {
-        let prismThemeDarkLinkEl = document.getElementById('prismThemeDarkLink');
-        if (prismThemeDarkLinkEl)
-            prismThemeDarkLinkEl?.remove();
-
-        let prismThemeLightLinkEl = document.createElement("link");
-        prismThemeLightLinkEl.setAttribute("rel", "stylesheet");
-        prismThemeLightLinkEl.setAttribute("href", "/_content/BlazorExpress.ChartJS.Demo.RCL/css/prism-vs.min.css");
-        prismThemeLightLinkEl.setAttribute("id", "prismThemeLightLink");
-
-        document.head.append(prismThemeLightLinkEl);
-    }
+    const link = document.createElement("link");
+    link.setAttribute("rel", "stylesheet");
+    link.setAttribute("href", wanted.href);
+    link.setAttribute("id", wanted.id);
+    document.head.append(link);
 }
 
 // Runs the built-in date adapter's checks in the browser's current time zone, for the unlisted time-axis self-check page.
@@ -417,6 +414,8 @@ function runTimeAxisSelfCheck() {
         const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
         gradient.addColorStop(0.45, `rgba(${rgb}, 0.25)`);
         gradient.addColorStop(1, `rgb(${rgb})`);
+        // The rim meets the chart background, so the contrast plugin judges the slice by this colour.
+        gradient.demoEdgeColour = `rgb(${rgb})`;
         return gradient;
     });
 
@@ -471,7 +470,8 @@ window.jsFunctionsSelfCheck = (() => {
         register('selfCheck.chartClick', () => { });
         register('selfCheck.segmentDash', ctx => (ctx.p0.skip || ctx.p1.skip ? [6, 6] : undefined));
         register('selfCheck.formatter', value => `n=${value}`);
-        register('selfCheck.sliceColor', context => ['#4e79a7', '#f28e2b', '#e15759', '#76b7b2', '#59a14f'][context.dataIndex % 5]);
+        // A line's own stroke is resolved without a data index: it takes the first colour (story 26111901 AC-05).
+        register('selfCheck.sliceColor', context => ['#4e79a7', '#f28e2b', '#e15759', '#76b7b2', '#59a14f'][(context.dataIndex ?? 0) % 5]);
         register('selfCheck.gradient', context => {
             counters.gradient++;
             const { ctx, chartArea } = context.chart;
@@ -658,15 +658,179 @@ function applyDemoChartTheme(theme) {
 
     if (!isFirst)
         window.demoThumbnails?.invalidate();
+
+    // The page background animates to the new theme, and demoMarkContrast measures marks against it: check them again once it
+    // has settled.
+    setTimeout(() => Chart.helpers.each(Chart.instances, chart => { try { chart.update('none'); } catch { /* see above */ } }), 600);
 }
+
+// Chart mark contrast for the demo site (story 26111901 AC-05; rules.md A11Y-004 and A11Y-005). WCAG 1.4.11 needs bars, slices
+// and points (or their border) at 3:1 against the chart's background, and a line at 3:1 itself. Where a sample's own colours fall
+// short in the current theme, a bar, slice or point gets a border in the nearest passing shade of its own fill's hue, and a line
+// gets the nearest passing shade of its own colour. Fills, the samples' C# and the library's palettes are unchanged; the plugin
+// only runs on this site. It works before the datasets are resolved, so Chart.js animates the borders like any other option.
+const demoMarkContrast = (() => {
+    const original = new WeakMap(); // dataset -> { borderColor, borderWidth, applied }
+    // Gradients, patterns and scriptable values are left alone (null), except a demo gradient that names its edge colour.
+    const toRgb = value => demoSelfCheckColour.canvasColour(value);
+    const toHsl = ({ r, g, b }) => {
+        r /= 255; g /= 255; b /= 255;
+        const max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
+        if (max === min) return { h: 0, s: 0, l };
+        const d = max - min, s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        const h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+        return { h: h / 6, s, l };
+    };
+    const fromHsl = ({ h, s, l }) => {
+        if (s === 0) { const v = Math.round(l * 255); return { r: v, g: v, b: v, a: 1 }; }
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+        const f = t => { t = (t + 1) % 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < 1 / 2 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; };
+        return { r: Math.round(f(h + 1 / 3) * 255), g: Math.round(f(h) * 255), b: Math.round(f(h - 1 / 3) * 255), a: 1 };
+    };
+    const css = c => `rgb(${c.r}, ${c.g}, ${c.b})`;
+
+    // The nearest shade of the colour's own hue that reaches `min` (3:1 for marks, 4.5:1 for text): darker on a light
+    // background, lighter on a dark one. Text walks whole-percent lightness steps (A11Y-005), which gives the shades the
+    // developer approved (I-19); marks keep the walk from the exact lightness that their verified borders came from.
+    const passingShade = (colour, bg, min = 3) => {
+        const { over, ratio, luminance } = demoSelfCheckColour;
+        const hsl = toHsl(over(colour, bg));
+        const darker = luminance(bg) > 0.18;
+        if (min > 3) {
+            for (let percent = Math.round(hsl.l * 100) + (darker ? -1 : 1); percent >= 0 && percent <= 100; percent += darker ? -1 : 1) {
+                const shade = fromHsl({ ...hsl, l: percent / 100 });
+                if (ratio(shade, bg) >= min) return css(shade);
+            }
+            return darker ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)';
+        }
+        const step = darker ? -0.01 : 0.01;
+        for (let l = hsl.l; l >= 0 && l <= 1; l += step) {
+            const shade = fromHsl({ ...hsl, l });
+            if (ratio(shade, bg) >= min) return css(shade);
+        }
+        return darker ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)';
+    };
+
+    const passes = (colour, bg, min = 3) => !!colour && demoSelfCheckColour.ratio(demoSelfCheckColour.over(colour, bg), bg) >= min;
+
+    // Axis text a sample colours itself (tick labels and axis titles) must reach 4.5:1 (AC-05). A colour that falls short in
+    // the current theme is drawn in its nearest passing shade; the sample's own colour is remembered, so it comes back in a
+    // theme where it passes. The developer approved the shades this gives for the current samples (I-19).
+    // Kept per chart and axis id: Chart.js rebuilds the scale option objects on every update.
+    const textOriginal = new WeakMap(); // chart -> Map(axis id -> { ticks: { own, applied }, title: { own, applied } })
+    const axisText = (chart, bg) => {
+        let axes = textOriginal.get(chart);
+        if (!axes) textOriginal.set(chart, axes = new Map());
+        for (const [id, scale] of Object.entries(chart.config.options?.scales ?? {})) {
+            if (!scale) continue;
+            let saved = axes.get(id);
+            if (!saved) axes.set(id, saved = {});
+            for (const part of ['ticks', 'title']) {
+                const options = scale[part];
+                if (!options) continue;
+                // A colour this plugin did not set was chosen by the sample, the app or the theme code: start from it.
+                if (!saved[part] || options.color !== saved[part].applied) saved[part] = { own: options.color, applied: options.color };
+                const own = saved[part].own;
+                const rgb = typeof own === 'string' ? toRgb(own) : null;
+                const drawn = rgb && !passes(rgb, bg, 4.5) ? passingShade(rgb, bg, 4.5) : own;
+                saved[part].applied = drawn;
+                // Written through the chart's resolved options as well, which Chart.js reads when it lays out this update.
+                if (options.color !== drawn) {
+                    options.color = drawn;
+                    const resolved = chart.options.scales?.[id]?.[part];
+                    if (resolved) resolved.color = drawn;
+                }
+            }
+        }
+    };
+
+    // A dataset option as Chart.js resolves it for one element: a value, an array indexed by the data index, or a scriptable
+    // function. A dataset-level call (the legend) has no data index and takes the first element's value.
+    const resolveAt = (value, context) => {
+        if (typeof value === 'function') return value(context, context.chart.options);
+        if (Array.isArray(value)) return value[(context.dataIndex ?? 0) % value.length];
+        return value;
+    };
+
+    return {
+        id: 'demoMarkContrast',
+        beforeUpdate(chart) {
+            const win = chart.canvas.ownerDocument.defaultView;
+            axisText(chart, demoSelfCheckColour.background(win, chart.canvas));
+        },
+        beforeDatasetsUpdate(chart) {
+            const win = chart.canvas.ownerDocument.defaultView;
+            const bg = demoSelfCheckColour.background(win, chart.canvas);
+            chart.data.datasets.forEach((dataset, index) => {
+                let saved = original.get(dataset);
+                // A dataset whose border is not the one this plugin set was replaced or changed by the app: start from it.
+                if (!saved || dataset.borderColor !== saved.applied.borderColor || dataset.borderWidth !== saved.applied.borderWidth) {
+                    saved = { borderColor: dataset.borderColor, borderWidth: dataset.borderWidth, applied: {} };
+                    original.set(dataset, saved);
+                }
+                saved.bg = bg;
+                const type = chart.getDatasetMeta(index).type ?? chart.config.type;
+                let borderColor = saved.borderColor, borderWidth = saved.borderWidth;
+                if (type === 'line' || type === 'radar') {
+                    // The line is the mark: a stroke under 3:1 moves to its nearest passing shade. An array (one colour per
+                    // point) is judged per entry and stays an array.
+                    const fix = value => { const stroke = toRgb(value); return stroke && !passes(stroke, bg) ? passingShade(stroke, bg) : value; };
+                    if (Array.isArray(borderColor)) {
+                        if (borderColor.some(value => fix(value) !== value)) borderColor = borderColor.map(fix);
+                    } else {
+                        const stroke = toRgb(borderColor ?? win.Chart.defaults.borderColor);
+                        if (stroke && !passes(stroke, bg)) borderColor = passingShade(stroke, bg);
+                    }
+                } else {
+                    // Bars, slices and points: scriptable border options, so each element is judged on its own resolved fill,
+                    // whether the sample gave a colour, an array or a function. An element whose fill or own border already
+                    // reaches 3:1 keeps its border. A scriptable's result is final in Chart.js, so where the sample set no border
+                    // the element's own default is returned (the white slice separators, the 1 px point outline).
+                    const element = type === 'bar' ? 'bar' : type === 'pie' || type === 'doughnut' || type === 'polarArea' ? 'arc' : 'point';
+                    const defaults = chart.options.elements?.[element] ?? {};
+                    const judge = context => {
+                        // No colour of its own (and no Colors plugin colour): Chart.js draws the default fill.
+                        const fill = toRgb(resolveAt(context.dataset.backgroundColor, context) ?? win.Chart.defaults.backgroundColor);
+                        const ownColour = resolveAt(saved.borderColor, context) ?? resolveAt(defaults.borderColor, context);
+                        const ownWidth = resolveAt(saved.borderWidth, context) ?? resolveAt(defaults.borderWidth, context) ?? 0;
+                        if (!fill || passes(fill, saved.bg) || (ownWidth >= 1 && passes(toRgb(ownColour), saved.bg))) return { colour: ownColour, width: ownWidth };
+                        return { colour: passingShade(fill, saved.bg), width: Math.max(ownWidth, 1) };
+                    };
+                    borderColor = context => judge(context).colour;
+                    borderWidth = context => judge(context).width;
+                }
+                dataset.borderColor = borderColor;
+                dataset.borderWidth = borderWidth;
+                saved.applied = { borderColor, borderWidth };
+            });
+        },
+    };
+})();
+
+if (window.Chart) Chart.register(demoMarkContrast);
+
+// Charts draw without animation when the visitor's system asks for reduced motion (story 26111901 AC-06). Chart.js does
+// not read the setting, so every demo, docs and sample chart would animate. Chart.js has already resolved its options when
+// `beforeUpdate` runs, but each dataset reads `chart.options.animation` again before it animates, so setting it to false
+// here stops this update's animations and later ones. Turning the setting off again takes effect on the next page load.
+const demoReducedMotion = {
+    id: 'demoReducedMotion',
+    beforeUpdate(chart) {
+        if (demoPrefersReducedMotion() && chart.options.animation !== false)
+            chart.options.animation = false;
+    },
+};
+
+if (window.Chart) Chart.register(demoReducedMotion);
 
 // Keyboard reach for the demo tabs and the copy icon (story 26110206 A-03). The UI package of the demo site renders the
 // "Example / View Source" tabs as links without an href and the copy control as an icon, and the Tab key skips both.
 // This gives them a tab stop, a role and Enter or Space activation, and tells assistive technology which tab is shown.
-// The copy icon sits in the snippet of a demo and in the toolbar of a code block. The package components are unchanged.
+// The copy icon sits in the snippet of a demo and in the toolbar of a code block; any other package copy icon is covered too
+// (story 26111901 FN-06). The package components are unchanged.
 (() => {
     // The navbar burger, theme switch and theme items are links without an href too (story 26111801 AC-20).
-    const selector = '.tabs li > a:not([href]), :is(.be-bulma-doc-example-snippet, .be-bulma-doc-example-toolbar) i[role="button"], '
+    const selector = '.tabs li > a:not([href]), :is(.be-bulma-doc-example-snippet, .be-bulma-doc-example-toolbar) i[role="button"], i.bi-clipboard[role="button"], '
         + '.be-demo-navbar .navbar-burger:not([href]), .be-demo-navbar .navbar-link:not([href]), .be-demo-navbar .navbar-dropdown .navbar-item:not([href])';
 
     const enhance = () => {
@@ -683,6 +847,15 @@ function applyDemoChartTheme(theme) {
                 if (element.getAttribute('aria-pressed') !== pressed)
                     element.setAttribute('aria-pressed', pressed);
             }
+
+            // The package opens the navbar menu with a class and leaves the burger's `aria-expanded` at "false", so the
+            // state is kept in step here (story 26111901 AC-06, WCAG 4.1.2).
+            if (element.matches('.navbar-burger')) {
+                const menu = document.getElementById(element.dataset.target);
+                const expanded = String(!!(menu?.classList.contains('is-active') || element.classList.contains('is-active')));
+                if (element.getAttribute('aria-expanded') !== expanded)
+                    element.setAttribute('aria-expanded', expanded);
+            }
         }
     };
 
@@ -691,8 +864,10 @@ function applyDemoChartTheme(theme) {
         if (scheduled)
             return;
 
+        // A timer, not an animation frame: a page in a hidden or background pane draws no frames, and its controls must
+        // still get their name and tab stop (FN-06).
         scheduled = true;
-        requestAnimationFrame(() => {
+        setTimeout(() => {
             scheduled = false;
             enhance();
         });
@@ -1132,6 +1307,9 @@ window.resizeSelfCheck = (() => {
 
         const canvas = document.createElement('canvas');
         canvas.id = `resize-self-check-${++sequence}`;
+        // Every chart on a page is a named image (rules.md A11Y-002), including the ones this check creates.
+        canvas.setAttribute('role', 'img');
+        canvas.setAttribute('aria-label', `Line chart: resize check ${sequence}`);
         container.appendChild(canvas);
         host.appendChild(container);
 
@@ -1417,6 +1595,135 @@ window.resizeSelfCheck = (() => {
     return { run };
 })();
 
+// Skip link (story 26111901, A11Y-001): moves keyboard focus to the page's main landmark. Handled before Blazor's link
+// interception, so following the link changes neither the route nor the history.
+document.addEventListener('click', event => {
+    const link = event.target.closest?.('a.be-skip-link');
+    if (!link) return;
+    const main = document.getElementById('main-content');
+    if (!main) return;
+    event.preventDefault();
+    event.stopPropagation();
+    main.focus({ preventScroll: true });
+    main.scrollIntoView({ block: 'start' });
+}, true);
+
+// Colour maths and focus-ring reading shared by the self-check pages (story 26111901; rules.md A11Y-006).
+const demoSelfCheckColour = (() => {
+    // Colour maths for WCAG contrast. Backgrounds are composed from the element up to the first opaque ancestor.
+    const parse = value => {
+        const match = /rgba?\(([^)]+)\)/.exec(value ?? '');
+        if (!match) return null;
+        const parts = match[1].split(/[\s,/]+/).filter(Boolean).map(Number);
+        return { r: parts[0], g: parts[1], b: parts[2], a: parts.length > 3 ? parts[3] : 1 };
+    };
+    const hex = value => ({ r: parseInt(value.slice(1, 3), 16), g: parseInt(value.slice(3, 5), 16), b: parseInt(value.slice(5, 7), 16), a: 1 });
+    // Any CSS colour string (a name, hex, rgb or hsl) as a canvas normalises it; null for gradients, patterns and functions.
+    // A demo gradient that names the colour at its edge (`demoEdgeColour`, where it meets the chart background) is read as
+    // that colour (story 26111901 AC-05).
+    const probe = document.createElement('canvas').getContext('2d');
+    const canvasColour = value => {
+        if (typeof value?.demoEdgeColour === 'string') value = value.demoEdgeColour;
+        if (typeof value !== 'string') return null;
+        probe.fillStyle = '#010203';
+        probe.fillStyle = value;
+        const style = probe.fillStyle;
+        return style.startsWith('#') ? hex(style) : parse(style);
+    };
+    const over = (top, bottom) => ({
+        r: top.r * top.a + bottom.r * (1 - top.a), g: top.g * top.a + bottom.g * (1 - top.a), b: top.b * top.a + bottom.b * (1 - top.a), a: 1,
+    });
+    const luminance = c => {
+        const channel = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+        return 0.2126 * channel(c.r) + 0.7152 * channel(c.g) + 0.0722 * channel(c.b);
+    };
+    const ratio = (a, b) => {
+        const [high, low] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+        return (high + 0.05) / (low + 0.05);
+    };
+    const background = (win, element) => {
+        const layers = [];
+        for (let node = element; node; node = node.parentElement) {
+            const colour = parse(win.getComputedStyle(node).backgroundColor);
+            if (colour && colour.a > 0) {
+                layers.push(colour);
+                if (colour.a >= 1) break;
+            }
+        }
+        let colour = layers.length && layers[layers.length - 1].a >= 1 ? layers.pop() : { r: 255, g: 255, b: 255, a: 1 };
+        for (let i = layers.length - 1; i >= 0; i--) colour = over(layers[i], colour);
+        return colour;
+    };
+    const textColour = (win, element) => {
+        const colour = parse(win.getComputedStyle(element).color);
+        let opacity = 1;
+        for (let node = element; node; node = node.parentElement) opacity *= Number(win.getComputedStyle(node).opacity);
+        return { ...colour, a: colour.a * opacity };
+    };
+
+    // CSS specificity (ids, classes and the like, elements) of one selector, enough to rank the focus rules that match a control.
+    // :where() counts nothing; :is() and :not() count their argument.
+    const specificity = selector => {
+        const s = selector.replace(/:where\([^)]*\)/g, '').replace(/:(?:is|not)\(([^)]*)\)/g, ' $1 ');
+        const ids = (s.match(/#[\w-]+/g) ?? []).length;
+        const classes = (s.match(/\.[\w-]+|\[[^\]]+\]|:(?!:)[\w-]+/g) ?? []).length;
+        const elements = (s.replace(/\[[^\]]+\]/g, '').match(/(?:^|[\s>+~])[a-z][\w-]*/gi) ?? []).length + (s.match(/::[\w-]+/g) ?? []).length;
+        return ids * 10000 + classes * 100 + elements;
+    };
+
+    // The page's :focus and :focus-visible rules that match a control, weakest first (specificity, then document order).
+    // Rules in stylesheets from other origins can't be read and are left out.
+    function focusRules(doc, win, control) {
+        const found = [];
+        let order = 0;
+        const visit = list => {
+            for (const r of list) {
+                if (r.cssRules && !r.selectorText) { if (!r.media || win.matchMedia(r.media.mediaText).matches) visit(r.cssRules); continue; }
+                order++;
+                if (!r.selectorText || !/:focus(?!-within)/.test(r.selectorText)) continue;
+                let weight = -1;
+                for (const selector of r.selectorText.split(',')) {
+                    if (!/:focus(?!-within)/.test(selector)) continue;
+                    const base = selector.replace(/:focus-visible|:focus(?!-within)/g, '').trim() || '*';
+                    let matches = false;
+                    try { matches = control.matches(base); } catch { matches = false; }
+                    if (matches) weight = Math.max(weight, specificity(base));
+                }
+                if (weight >= 0) found.push({ rule: r, weight, order });
+            }
+        };
+        for (const sheet of doc.styleSheets) {
+            let rules;
+            try { rules = sheet.cssRules; } catch { continue; }
+            visit(rules);
+        }
+        return found.sort((a, b) => a.weight - b.weight || a.order - b.order).map(f => f.rule);
+    }
+
+    // Runs read() while the control wears its focus styles, applied inline from its focus rules, then restores it.
+    // :focus and :focus-visible match only while the window has system focus, which an unfocused or hidden pane lacks.
+    // Each rule's declaration text is appended, weakest first, so a stronger rule wins. Copying longhands one by one would
+    // lose a shorthand that uses var() (such as outline: 3px solid var(--bulma-link)): its longhands read as empty strings.
+    function withFocusStyles(doc, win, control, read) {
+        const rules = focusRules(doc, win, control);
+        const saved = control.style.cssText;
+        control.style.cssText = [saved, ...rules.map(rule => rule.style.cssText)].filter(Boolean).join('; ');
+        try { return read(rules); }
+        finally { control.style.cssText = saved; }
+    }
+
+    // The focus ring a control shows, or null when no readable rule gives it one (the browser's default ring then applies).
+    function focusRing(doc, win, control) {
+        return withFocusStyles(doc, win, control, rules => {
+            if (!rules.some(r => r.style.outline || r.style.outlineStyle || r.style.outlineColor || r.style.boxShadow)) return null;
+            const style = win.getComputedStyle(control);
+            return { style: style.outlineStyle, width: parseFloat(style.outlineWidth), colour: parse(style.outlineColor), shadow: style.boxShadow };
+        });
+    }
+
+    return { parse, hex, canvasColour, over, luminance, ratio, background, textColour, specificity, focusRing, withFocusStyles };
+})();
+
 // Unlisted home self-check page (story 26111801; rules.md "W3C and WCAG 2.x conformance"). Switches the hero chart through
 // every type, checks reduced motion and theme colours, then loads the home page in frames 320, 375, 768 and 1280 pixels wide
 // to check layout, content, links, contrast, target size and markup structure.
@@ -1448,44 +1755,7 @@ window.homeSelfCheck = (() => {
     const componentName = key => key.split('-').map(part => part[0].toUpperCase() + part.slice(1)).join('');
     const path = link => link ? new URL(link.href).pathname + new URL(link.href).hash : '';
 
-    // Colour maths for WCAG contrast. Backgrounds are composed from the element up to the first opaque ancestor.
-    const parse = value => {
-        const match = /rgba?\(([^)]+)\)/.exec(value ?? '');
-        if (!match) return null;
-        const parts = match[1].split(/[\s,/]+/).filter(Boolean).map(Number);
-        return { r: parts[0], g: parts[1], b: parts[2], a: parts.length > 3 ? parts[3] : 1 };
-    };
-    const hex = value => ({ r: parseInt(value.slice(1, 3), 16), g: parseInt(value.slice(3, 5), 16), b: parseInt(value.slice(5, 7), 16), a: 1 });
-    const over = (top, bottom) => ({
-        r: top.r * top.a + bottom.r * (1 - top.a), g: top.g * top.a + bottom.g * (1 - top.a), b: top.b * top.a + bottom.b * (1 - top.a), a: 1,
-    });
-    const luminance = c => {
-        const channel = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
-        return 0.2126 * channel(c.r) + 0.7152 * channel(c.g) + 0.0722 * channel(c.b);
-    };
-    const ratio = (a, b) => {
-        const [high, low] = [luminance(a), luminance(b)].sort((x, y) => y - x);
-        return (high + 0.05) / (low + 0.05);
-    };
-    const background = (win, element) => {
-        const layers = [];
-        for (let node = element; node; node = node.parentElement) {
-            const colour = parse(win.getComputedStyle(node).backgroundColor);
-            if (colour && colour.a > 0) {
-                layers.push(colour);
-                if (colour.a >= 1) break;
-            }
-        }
-        let colour = layers.length && layers[layers.length - 1].a >= 1 ? layers.pop() : { r: 255, g: 255, b: 255, a: 1 };
-        for (let i = layers.length - 1; i >= 0; i--) colour = over(layers[i], colour);
-        return colour;
-    };
-    const textColour = (win, element) => {
-        const colour = parse(win.getComputedStyle(element).color);
-        let opacity = 1;
-        for (let node = element; node; node = node.parentElement) opacity *= Number(win.getComputedStyle(node).opacity);
-        return { ...colour, a: colour.a * opacity };
-    };
+    const { parse, hex, over, luminance, ratio, background, textColour, focusRing } = demoSelfCheckColour;
 
     async function chartTypes(host, expected) {
         const cases = [];
@@ -1660,12 +1930,13 @@ window.homeSelfCheck = (() => {
         stops('--be-home-button-gradient').forEach(stop => { const v = ratio({ r: 255, g: 255, b: 255, a: 1 }, stop); if (v < 4.5) low.push(`white label on button stop ${v.toFixed(2)}`); });
 
         // WCAG 1.4.11: the focus ring reaches 3:1 against the page.
+        // The ring is read from the page's focus rules (A11Y-006): live :focus-visible needs window focus, and without
+        // it outline-color is the text colour, which used to pass a ring that wasn't drawn.
         const control = doc.querySelector('.be-home-chart-type');
-        control.focus({ focusVisible: true });
-        const ring = parse(win.getComputedStyle(control).outlineColor);
-        const ringRatio = ring ? ratio(ring, background(win, control.parentElement)) : 0;
-        control.blur();
-        if (ringRatio < 3) low.push(`focus ring ${ringRatio.toFixed(2)}`);
+        const ring = focusRing(doc, win, control);
+        const ringRatio = ring && ring.style !== 'none' && ring.width >= 1 && ring.colour ? ratio(ring.colour, background(win, control.parentElement)) : 0;
+        if (!ring) low.push('no focus ring rule');
+        else if (ringRatio < 3) low.push(`focus ring ${ringRatio.toFixed(2)}`);
 
         return result(`S-09 ${theme}: text 4.5:1, title gradient 3:1, button label 4.5:1, focus ring 3:1`, 'none below', low.length ? low.join('; ') : 'none below');
     }
@@ -1698,11 +1969,11 @@ window.homeSelfCheck = (() => {
             if (ratio(white, marked) < 4.5) low.push(`white on marked stop ${ratio(white, marked).toFixed(2)}`);
         }
         const item = doc.querySelector('.be-demo-navbar .navbar-start > .navbar-item');
-        item.focus({ focusVisible: true });
-        const ring = parse(win.getComputedStyle(item).outlineColor);
-        item.blur();
-        for (const stop of gradientStops(page)) {
-            const value = ring ? ratio(ring, stop) : 0;
+        const ring = focusRing(doc, win, item);
+        const drawn = ring && ring.style !== 'none' && ring.width >= 1 && ring.colour ? ring.colour : null;
+        if (!drawn) low.push('no focus ring rule');
+        for (const stop of drawn ? gradientStops(page) : []) {
+            const value = ratio(drawn, stop);
             if (value < 3) low.push(`focus ring on stop ${value.toFixed(2)}`);
         }
         return result(`S-16 ${theme} 1280px: white bar text, text 4.5:1 on the gradient and the mark, focus ring 3:1`, 'none below', low.length ? low.join('; ') : 'none below');
@@ -1903,6 +2174,427 @@ window.homeSelfCheck = (() => {
     }
 
     return { run };
+})();
+
+// Unlisted accessibility self-check page (story 26111901; rules.md "W3C and WCAG 2.x conformance" and A11Y-001 to A11Y-004).
+// Loads each routed page in a frame and checks it at 320, 768 and 1280 pixels wide, in light and dark. The cases are named
+// by the story's acceptance criteria. A page that does not load is recorded as failed and the walk continues.
+window.accessibilitySelfCheck = (() => {
+    const result = (page, name, expected, actual) => ({ page, ...selfCheckResult(name, expected, actual) });
+    const { parse, canvasColour, over, ratio, background, textColour, focusRing, withFocusStyles } = demoSelfCheckColour;
+    let stalls = 0;
+    let drawn = 0;
+    const frame = () => new Promise(resolve => {
+        const timer = setTimeout(() => { stalls++; resolve(); }, 1000);
+        requestAnimationFrame(() => { clearTimeout(timer); drawn++; resolve(); });
+    });
+    const frames = async count => { for (let i = 0; i < count; i++) await frame(); };
+
+    const tabbableSelector = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), summary, [tabindex]:not([tabindex="-1"])';
+    const controlSelector = 'a[href], button, [role="button"], input:not([type="hidden"]), select, textarea, summary';
+    const isShown = (win, element) => {
+        if (!element.isConnected || element.closest('[hidden], [aria-hidden="true"]')) return false;
+        const style = win.getComputedStyle(element);
+        if (style.visibility === 'hidden' || style.display === 'none') return false;
+        const box = element.getBoundingClientRect();
+        return box.width > 0 && box.height > 0;
+    };
+    const isScreenReaderOnly = (win, element) => !!element.closest('.is-sr-only, .be-skip-link:not(:focus)');
+    const accessibleName = (doc, element) => {
+        const labelledBy = element.getAttribute('aria-labelledby');
+        if (labelledBy) return labelledBy.split(/\s+/).map(id => doc.getElementById(id)?.textContent ?? '').join(' ').trim();
+        const label = element.getAttribute('aria-label') ?? '';
+        if (label.trim()) return label.trim();
+        if (element.labels?.length) return [...element.labels].map(l => l.textContent).join(' ').trim();
+        const text = element.textContent.trim() || [...element.querySelectorAll('img[alt]')].map(img => img.alt).join(' ').trim();
+        return text || (element.getAttribute('title') ?? '').trim() || (element.getAttribute('placeholder') ?? '').trim();
+    };
+    const sha = async text => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)))]
+        .map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 16);
+
+    async function loadFrame(hostId, path) {
+        const iframe = document.createElement('iframe');
+        iframe.title = `${path} under test`;
+        iframe.style.cssText = 'display:block;width:1280px;height:900px;margin-bottom:1rem;border:0;outline:1px solid #ccc;';
+        const loaded = new Promise(resolve => iframe.addEventListener('load', resolve, { once: true }));
+        iframe.src = path;
+        document.getElementById(hostId).appendChild(iframe);
+        await loaded;
+        const end = performance.now() + 20000;
+        while (performance.now() < end && !(iframe.contentDocument?.querySelector('h1') && iframe.contentDocument.querySelector('footer'))) await demoSleep(100);
+        await frames(5);
+        await demoSleep(400);
+        const doc = iframe.contentDocument;
+        // Colours are read right after a theme switch, so transitions are switched off in the page under test:
+        // without drawn frames a transition never finishes, and a mid-transition colour is not the page's colour.
+        if (doc?.head) {
+            const still = doc.createElement('style');
+            still.setAttribute('data-self-check', '');
+            still.textContent = '*, *::before, *::after { transition: none !important; animation: none !important; }';
+            doc.head.appendChild(still);
+        }
+        return { iframe, doc, win: iframe.contentWindow, ready: !!doc?.querySelector('h1') };
+    }
+
+    async function setWidth(page, width) {
+        page.iframe.style.width = `${width}px`;
+        await frames(4);
+        await demoSleep(250);
+    }
+
+    // The site animates the page background when the theme changes, so colours are read once the background stops changing.
+    async function settleTheme(page, theme) {
+        page.win.setTheme(theme, false);
+        let previous = '';
+        for (let i = 0; i < 40; i++) {
+            await demoSleep(100);
+            const current = page.win.getComputedStyle(page.doc.documentElement).backgroundColor;
+            if (current === previous) break;
+            previous = current;
+        }
+        await frames(3);
+    }
+
+    // AC-01 (A11Y-001): the first Tab stop is a skip link to the single main landmark, which holds the h1; navbar and footer are outside it.
+    function landmarks({ doc, win }, path) {
+        const mains = doc.querySelectorAll('main, [role="main"]');
+        const main = mains[0];
+        const first = [...doc.querySelectorAll(tabbableSelector)].find(e => isShown(win, e) || e.matches('.be-skip-link'));
+        const isSkip = !!first?.matches('a[href="#main-content"]') && doc.getElementById('main-content') === main;
+        let visibleOnFocus = false;
+        if (isSkip) {
+            visibleOnFocus = withFocusStyles(doc, win, first, () => {
+                const box = first.getBoundingClientRect();
+                return box.width >= 24 && box.height >= 24 && box.top >= 0 && box.left >= 0 && box.bottom <= win.innerHeight;
+            });
+        }
+        const h1InMain = !!main && !!main.querySelector('h1') && doc.querySelectorAll('h1').length === main.querySelectorAll('h1').length;
+        const outside = !!main && ![...doc.querySelectorAll('.be-demo-navbar, footer, .be-bulma-page-menu')].some(e => main.contains(e));
+        return result(path, 'AC-01 skip link first and visible on focus; one main; h1 in main; navbar, menu and footer outside',
+            'true | true | 1 | true | true', `${isSkip} | ${visibleOnFocus} | ${mains.length} | ${h1InMain} | ${outside}`);
+    }
+
+    // AC-02: one h1, no skipped level, no empty heading; and, when the T-01 baseline is present, the same ids, text and sizes.
+    async function headings({ doc, win }, path, baseline) {
+        const all = [...doc.querySelectorAll('h1, h2, h3, h4, h5, h6')];
+        const levels = all.filter(h => isShown(win, h)).map(h => Number(h.tagName[1]));
+        const skips = levels.filter((level, i) => i > 0 && level > levels[i - 1] + 1).length;
+        const empty = all.filter(h => !h.textContent.trim()).length;
+        const cases = [result(path, 'AC-02 one h1; skipped levels; empty headings', '1 | 0 | 0', `${doc.querySelectorAll('h1').length} | ${skips} | ${empty}`)];
+        const before = baseline?.pages?.[path.split('?')[0]];
+        if (before) {
+            // R2-T05 made the package hero subtitle a div (it is not a heading), so the expected hash is rebuilt from the
+            // T-01 list without those entries; every other heading keeps its T-01 id, text, size and weight.
+            const kept = (before.list ?? []).filter(h => !/\bbe-bulma-(doc-)?subtitle\b/.test(h.cls ?? ''));
+            const expectedHash = before.list ? await sha(kept.map(h => [h.id || '', h.text, h.size, h.weight].join('|')).join('\n')) : before.hash;
+            const canon = all.map(h => {
+                const style = win.getComputedStyle(h);
+                const text = (h.querySelector('.anchor-name')?.textContent ?? h.textContent).trim().replace(/\s+/g, ' ').slice(0, 80);
+                return [h.id || '', text, style.fontSize, style.fontWeight].join('|');
+            }).join('\n');
+            cases.push(result(path, 'AC-02, AC-10 heading ids, text and sizes match the T-01 baseline (hero subtitles excepted)', expectedHash, await sha(canon)));
+        }
+        return cases;
+    }
+
+    // AC-03 (A11Y-003): new-tab links have noopener and say they open in a new tab.
+    function newTabLinks({ doc }, path) {
+        const links = [...doc.querySelectorAll('a[target="_blank"]')];
+        const unsafe = links.filter(a => !/\bnoopener\b/.test(a.rel)).length;
+        const unannounced = links.filter(a => !/opens in a new tab/i.test(accessibleName(doc, a))).length;
+        return result(path, 'AC-03 new-tab links without noopener; without a new-tab name', '0 | 0', `${unsafe} | ${unannounced}`);
+    }
+
+    // AC-04 (A11Y-002): every chart canvas is an image with a name, on the canvas or on a wrapper with role="img".
+    function chartNames({ doc }, path) {
+        const canvases = [...doc.querySelectorAll('canvas')];
+        const unnamed = canvases.filter(canvas => {
+            const holder = canvas.closest('[role="img"]');
+            return !holder || !accessibleName(doc, holder);
+        }).length;
+        return result(path, 'AC-04 charts without role="img" and a name', 0, unnamed);
+    }
+
+    // AC-05 (A11Y-004): data marks (fill or a visible border) at 3:1, chart text at 4.5:1, a legend or labels when more than one series.
+    function chartContrast({ doc, win }, path, theme) {
+        const colour = canvasColour;
+        let marks = 0, text = 0, legend = 0, measured = 0;
+        for (const canvas of doc.querySelectorAll('canvas')) {
+            const chart = win.Chart?.getChart(canvas);
+            if (!chart || !isShown(win, canvas)) continue;
+            measured++;
+            const bg = background(win, canvas);
+            const lines = ['line', 'radar'];
+            chart.data.datasets.forEach((dataset, index) => {
+                const meta = chart.getDatasetMeta(index);
+                if (meta.hidden || !chart.isDatasetVisible(index)) return;
+                const type = meta.type ?? chart.config.type;
+                const elements = lines.includes(type) && meta.dataset ? [meta.dataset] : meta.data;
+                for (const element of elements) {
+                    const options = element.options ?? {};
+                    const fill = colour(options.backgroundColor);
+                    const border = (options.borderWidth ?? 0) >= 1 ? colour(options.borderColor) : null;
+                    const best = Math.max(fill && !lines.includes(type) ? ratio(over(fill, bg), bg) : 0, border ? ratio(over(border, bg), bg) : 0);
+                    if ((fill || border) && best < 3) { marks++; break; }
+                }
+            });
+            const textColours = [chart.legend?.options?.labels?.color, ...Object.values(chart.scales ?? {}).map(s => s.options?.ticks?.color), win.Chart.defaults.color];
+            if (textColours.map(colour).filter(Boolean).some(c => ratio(over(c, bg), bg) < 4.5)) text++;
+            const series = ['pie', 'doughnut', 'polarArea'].includes(chart.config.type) ? (chart.data.labels?.length ?? 0) : chart.data.datasets.length;
+            const labelled = chart.legend?.options?.display !== false || chart.options?.plugins?.datalabels?.display === true || !!chart.$datalabels;
+            // A two-part gauge (a value and its remainder) whose value is written in its shown title does not rely on colour.
+            const gauge = series === 2 && chart.options?.plugins?.title?.display === true && !!chart.options.plugins.title.text;
+            if (series > 1 && !labelled && !gauge) legend++;
+        }
+        return result(path, `AC-05 ${theme}: charts with marks below 3:1; with text below 4.5:1; with several series and no legend (${measured} drawn)`, '0 | 0 | 0', `${marks} | ${text} | ${legend}`);
+    }
+
+    // AC-06 per theme: text contrast and the focus ring, named controls, unique ids, lang and image alternatives.
+    function pageContrast({ doc, win }, path, theme) {
+        const low = [];
+        let unmeasured = 0;
+        const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT);
+        const seen = new Set();
+        while (walker.nextNode() && seen.size < 800) {
+            const element = walker.currentNode.parentElement;
+            if (!element || seen.has(element) || !walker.currentNode.data.trim()) continue;
+            seen.add(element);
+            if (!isShown(win, element) || isScreenReaderOnly(win, element) || element.closest('.be-demo-navbar, canvas, script, style, noscript, iframe')) continue;
+            // Text that is fully transparent until hover or focus (such as a heading's # anchor) is not shown text.
+            if (textColour(win, element).a === 0) continue;
+            // WCAG 1.4.3 exempts text in an inactive control, such as a disabled button or a sample card that is not available yet.
+            if (element.closest('[aria-disabled="true"], :disabled')) continue;
+            let hasImage = false;
+            for (let node = element; node && node !== doc.documentElement; node = node.parentElement) {
+                const style = win.getComputedStyle(node);
+                if (style.backgroundImage !== 'none') { hasImage = true; break; }
+                if ((parse(style.backgroundColor)?.a ?? 0) >= 1) break;
+            }
+            if (hasImage) { unmeasured++; continue; }
+            const style = win.getComputedStyle(element);
+            const size = parseFloat(style.fontSize);
+            const large = size >= 24 || (size >= 18.66 && Number(style.fontWeight) >= 700);
+            const bg = background(win, element);
+            const value = ratio(over(textColour(win, element), bg), bg);
+            if (value < (large ? 3 : 4.5)) low.push(`${element.tagName.toLowerCase()}${element.className ? '.' + String(element.className).trim().split(/\s+/)[0] : ''} "${element.textContent.trim().slice(0, 24)}" ${value.toFixed(2)}`);
+        }
+        const rings = [];
+        // The skip link is drawn over the navbar's gradient, not over its parent in the markup, so its white ring can't be
+        // measured here; AC-01 checks that it shows on focus.
+        for (const control of [...doc.querySelectorAll(tabbableSelector)].filter(e => isShown(win, e) && !e.closest('.be-demo-navbar, .be-skip-link')).slice(0, 12)) {
+            const ring = focusRing(doc, win, control);
+            if (!ring) continue; // the browser's default focus ring
+            const bg = background(win, control.parentElement);
+            const outline = ring.style !== 'none' && ring.width >= 1 && ring.colour ? ratio(over(ring.colour, bg), bg) : 0;
+            const shadow = ring.shadow && ring.shadow !== 'none';
+            if (outline < 3 && !shadow) rings.push(`${control.tagName.toLowerCase()} "${accessibleName(doc, control).slice(0, 20)}" ${outline.toFixed(2)}`);
+        }
+        return [
+            result(path, `AC-06 ${theme}: text below 4.5:1 (3:1 large)`, 'none', low.length ? `${low.length}: ${low.slice(0, 6).join('; ')}` : 'none'),
+            result(path, `AC-06 ${theme}: focus ring below 3:1`, 'none', rings.length ? rings.join('; ') : 'none'),
+        ];
+    }
+
+    function markup({ doc, win }, path) {
+        const ids = [...doc.querySelectorAll('[id]')].map(e => e.id);
+        const duplicates = [...new Set(ids.filter((id, i) => ids.indexOf(id) !== i))];
+        const noAlt = [...doc.querySelectorAll('img')].filter(img => !img.hasAttribute('alt')).length;
+        return result(path, 'AC-06 lang; duplicate ids; images without alt', 'true | none | 0',
+            `${!!doc.documentElement.lang} | ${duplicates.length ? duplicates.slice(0, 5).join(',') : 'none'} | ${noAlt}`);
+    }
+
+    // AC-06 per width: every shown control has a name. Some controls are shown only at some widths (the sidebar menu button
+    // below 769 px), so this runs at each width.
+    function controlNames({ doc, win }, path, width) {
+        const unnamed = [...doc.querySelectorAll(controlSelector)].filter(e => isShown(win, e) && !accessibleName(doc, e))
+            .map(e => e.outerHTML.slice(0, 60));
+        return result(path, `AC-06 ${width}px: unnamed controls`, 0, `${unnamed.length}${unnamed.length ? ' ' + unnamed.slice(0, 3).join(' ') : ''}`);
+    }
+
+    // AC-06 per width: no horizontal scroll and 24 by 24 CSS px targets (WCAG 2.5.8; links inside a line of text are excepted).
+    function reflow({ doc, win }, path, width) {
+        const scroll = doc.documentElement.scrollWidth > doc.documentElement.clientWidth + 1;
+        // WCAG 2.5.8 inline exception: a link displayed inline whose nearest block holds more text than the link (it sits in a sentence).
+        const inline = control => {
+            if (control.tagName !== 'A' || !win.getComputedStyle(control).display.startsWith('inline')) return false;
+            let block = control.parentElement;
+            while (block && win.getComputedStyle(block).display.startsWith('inline')) block = block.parentElement;
+            return !!block && block.textContent.trim().length > control.textContent.trim().length + 10;
+        };
+        const targets = [...doc.querySelectorAll(controlSelector)].filter(c => isShown(win, c) && !c.closest('canvas'));
+        const boxes = new Map(targets.map(c => [c, c.getBoundingClientRect()]));
+        const undersized = c => boxes.get(c).width < 24 || boxes.get(c).height < 24;
+        // WCAG 2.5.8 spacing exception: an undersized target passes when a 24 CSS px circle on its centre reaches no other
+        // target, and no other undersized target's circle.
+        const centre = box => ({ x: box.left + box.width / 2, y: box.top + box.height / 2 });
+        const spaced = c => {
+            const at = centre(boxes.get(c));
+            return targets.every(other => {
+                if (other === c || other.contains(c) || c.contains(other)) return true;
+                const box = boxes.get(other);
+                const dx = Math.max(box.left - at.x, 0, at.x - box.right), dy = Math.max(box.top - at.y, 0, at.y - box.bottom);
+                if (Math.hypot(dx, dy) < 12) return false;
+                if (undersized(other)) { const o = centre(box); if (Math.hypot(o.x - at.x, o.y - at.y) < 24) return false; }
+                return true;
+            });
+        };
+        const small = targets.filter(c => !inline(c) && undersized(c) && !spaced(c))
+            .map(c => `${accessibleName(doc, c).slice(0, 20) || c.tagName.toLowerCase()} ${Math.round(c.getBoundingClientRect().width)}x${Math.round(c.getBoundingClientRect().height)}`);
+        return result(path, `AC-06 ${width}px: horizontal scroll; targets below 24 by 24 CSS px`, 'false | none', `${scroll} | ${small.length ? `${small.length}: ${small.slice(0, 4).join('; ')}` : 'none'}`);
+    }
+
+    // AC-07 (Q-06): the opt-in W3C mode (?w3c=1, or ?w3c=only to skip the other checks). Only the rendered markup of the demo's
+    // public pages and the CSS files this repository serves are sent, one request at a time with a pause, without cookies.
+    // A request that fails, times out or is refused is recorded as "not run" with the reason, never as a pass.
+    // The pause between requests is ?pace= seconds (3 to 120, default 3). After 3 refused or failed requests in a row the
+    // service is treated as unavailable (a rate limit or its bot protection) and nothing more is sent in this run.
+    const w3cMessages = [];
+    let lastW3cRequest = 0;
+    let w3cPaceMs = 3000;
+    let w3cFailuresInARow = 0;
+    const w3cFetch = async (url, init) => {
+        if (w3cFailuresInARow >= 3) throw new Error('stopped after 3 failed requests in a row (rate limit or bot protection)');
+        const wait = lastW3cRequest + w3cPaceMs - performance.now();
+        if (wait > 0) await demoSleep(wait);
+        lastW3cRequest = performance.now();
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 30000);
+        try {
+            const response = await fetch(url, { ...init, credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer', signal: controller.signal });
+            w3cFailuresInARow = response.ok ? 0 : w3cFailuresInARow + 1;
+            return response;
+        }
+        catch (error) { w3cFailuresInARow++; throw error; }
+        finally { clearTimeout(timer); }
+    };
+    const notRun = (page, name, expected, reason) => ({ page, name, expected, actual: `not run: ${reason}`, status: 'not run' });
+    const reason = error => error?.name === 'AbortError' ? 'timed out after 30 s' : (error?.message || 'request failed');
+
+    async function w3cMarkup({ doc }, path) {
+        const name = 'AC-07 W3C Nu checker: errors in the rendered markup (warnings listed, not failed)';
+        const clone = doc.documentElement.cloneNode(true);
+        clone.querySelectorAll('[data-self-check]').forEach(element => element.remove());
+        // Blazor runtime attributes exist only in the live DOM, never in served markup: _bl_N (@ref element references) and
+        // b-xxxxxxxxxx (CSS isolation scopes, from the packages). They are left out of the copy sent (developer decision I-10).
+        let stripped = 0;
+        for (const element of clone.querySelectorAll('*')) {
+            for (const attribute of [...element.attributes]) {
+                if (/^_bl_\d+$/.test(attribute.name) || /^b-[a-z0-9]{10}$/.test(attribute.name)) { element.removeAttribute(attribute.name); stripped++; }
+            }
+        }
+        const html = `<!DOCTYPE html>\n${clone.outerHTML}`;
+        try {
+            const response = await w3cFetch('https://validator.w3.org/nu/?out=json', { method: 'POST', body: html, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+            if (!response.ok) return notRun(path, name, '0 errors', `HTTP ${response.status}`);
+            const messages = (await response.json()).messages ?? [];
+            w3cMessages.push({ path, messages, stripped });
+            const errors = messages.filter(m => m.type === 'error' || m.type === 'non-document-error');
+            const warnings = messages.filter(m => m.type === 'info' && m.subType === 'warning').length;
+            const first = errors.slice(0, 3).map(m => `line ${m.lastLine ?? '?'}: ${m.message}`).join(' | ');
+            return { page: path, name, expected: '0 errors', actual: `${errors.length} errors, ${warnings} warnings, ${stripped} Blazor runtime attributes left out${first ? `: ${first}` : ''}`, status: errors.length ? 'fail' : 'pass' };
+        }
+        catch (error) { return notRun(path, name, '0 errors', reason(error)); }
+    }
+
+    // The CSS files this repository serves: the demo stylesheet, its two Prism theme copies and the host's scoped bundle.
+    // Package stylesheets (BlazorExpress.Bulma and its scoped CSS) and CDN files are outside this repository.
+    async function w3cStyles() {
+        const base = '_content/BlazorExpress.ChartJS.Demo.RCL/css/';
+        const own = [...document.querySelectorAll('link[rel="stylesheet"]')].map(link => link.href)
+            .filter(href => href.startsWith(location.origin) && !href.includes('/_content/BlazorExpress.Bulma'));
+        const files = [...new Set([...own, new URL(`${base}prism-vs.min.css`, document.baseURI).href, new URL(`${base}prism-vsc-dark-plus.min.css`, document.baseURI).href])];
+        const cases = [];
+        for (const href of files) {
+            const file = new URL(href).pathname;
+            const name = `AC-07 W3C CSS validator: errors in ${file} (warnings listed, not failed)`;
+            try {
+                const text = await (await fetch(href, { cache: 'no-store' })).text();
+                const form = new FormData();
+                form.append('text', text);
+                form.append('output', 'json');
+                form.append('profile', 'css3svg');
+                form.append('warning', '1');
+                const response = await w3cFetch('https://jigsaw.w3.org/css-validator/validator', { method: 'POST', body: form });
+                if (!response.ok) { cases.push(notRun('-', name, '0 errors', `HTTP ${response.status}`)); continue; }
+                const report = (await response.json()).cssvalidation ?? {};
+                w3cMessages.push({ path: file, css: report });
+                const errors = report.errors ?? [];
+                const warnings = report.result?.warningcount ?? (report.warnings ?? []).length;
+                const first = errors.slice(0, 3).map(e => `line ${e.line ?? '?'}: ${(e.message ?? '').trim()}`).join(' | ');
+                cases.push({ page: '-', name, expected: '0 errors', actual: `${errors.length} errors, ${warnings} warnings${first ? `: ${first}` : ''}`, status: errors.length ? 'fail' : 'pass' });
+            }
+            catch (error) { cases.push(notRun('-', name, '0 errors', reason(error))); }
+        }
+        return cases;
+    }
+
+    async function checkPage(hostId, path, baseline, w3c) {
+        const cases = [];
+        const page = await loadFrame(hostId, path);
+        try {
+            cases.push(result(path, 'Page loaded with an h1 and a footer', true, page.ready));
+            if (!page.ready) return cases;
+            await settleTheme(page, 'light');
+            if (w3c) cases.push(await w3cMarkup(page, path));
+            if (w3c === 'only') return cases;
+            cases.push(landmarks(page, path));
+            cases.push(...await headings(page, path, baseline));
+            cases.push(newTabLinks(page, path));
+            cases.push(chartNames(page, path));
+            cases.push(markup(page, path));
+            for (const width of [320, 768, 1280]) {
+                await setWidth(page, width);
+                cases.push(reflow(page, path, width));
+                cases.push(controlNames(page, path, width));
+            }
+            for (const theme of ['light', 'dark']) {
+                await settleTheme(page, theme);
+                cases.push(chartContrast(page, path, theme));
+                cases.push(...pageContrast(page, path, theme));
+            }
+        }
+        catch (error) {
+            cases.push(result(path, 'Checks ran without a script error', 'no error', error.message));
+        }
+        finally {
+            page.iframe.remove();
+        }
+        return cases;
+    }
+
+    async function run(expected) {
+        stalls = 0;
+        drawn = 0;
+        w3cMessages.length = 0;
+        w3cFailuresInARow = 0;
+        w3cPaceMs = Math.min(Math.max(Number(expected.w3cPace) || 3, 3), 120) * 1000;
+        const cases = [];
+        let baseline = null;
+        try { baseline = JSON.parse(localStorage.getItem('wcag-26111901-baseline') ?? 'null'); } catch { baseline = null; }
+        const progress = () => document.getElementById(expected.progressId);
+        const undrawn = [];
+        for (const [index, { path }] of expected.pages.entries()) {
+            if (progress()) progress().textContent = `${index + 1} of ${expected.pages.length}: ${path}`;
+            const before = drawn;
+            cases.push(...await checkPage(expected.frameHostId, path, baseline, expected.w3c));
+            if (drawn === before) undrawn.push(path);
+        }
+        // A page checked while no frame drew (a hidden pane or a background tab) is void: charts, layout and theme
+        // changes don't update. A stall is a second with no frame. With frames drawing on every page, a few stalls come
+        // from a frame booting the app and blocking the thread, so they are reported but don't void the run.
+        if (expected.w3c) {
+            if (progress()) progress().textContent = 'W3C CSS validator';
+            cases.push(...await w3cStyles());
+            const unvalidated = cases.filter(c => c.name.startsWith('AC-07') && c.status === 'not run').length;
+            cases.push(result('-', 'AC-07 every page and CSS file has a W3C result', '0 without a result', `${unvalidated} without a result`));
+        }
+        cases.push(result('-', `Every page drew frames while it was checked (otherwise the run is void; ${stalls} stalled frames)`, 'none undrawn',
+            undrawn.length ? `${undrawn.length} undrawn: ${undrawn.slice(0, 5).join(', ')}` : 'none undrawn'));
+        return { pages: expected.pages.length, frames: drawn, stalls, cases };
+    }
+
+    // The full W3C messages of the last run, for the evidence record.
+    return { run, w3cMessages: () => w3cMessages };
 })();
 
 // SiteMetaTags calls this once its tags are on the page. index.html carries site-wide defaults (marked data-site-default)

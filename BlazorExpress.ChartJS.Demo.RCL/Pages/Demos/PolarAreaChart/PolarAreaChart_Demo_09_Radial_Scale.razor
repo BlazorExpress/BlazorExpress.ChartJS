@@ -1,19 +1,19 @@
 <div class="columns is-multiline">
     <div class="column is-half">
         <p class="is-size-7 has-text-weight-semibold mb-2">Default: <code>BeginAtZero = true</code></p>
-        <PolarAreaChart @ref="defaultChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: Radial scale, default" @ref="defaultChart" />
     </div>
     <div class="column is-half">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>BeginAtZero = false</code> (starts from the data minimum)</p>
-        <PolarAreaChart @ref="dataMinimumChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: Radial scale (chart 2 of 4)" @ref="dataMinimumChart" />
     </div>
     <div class="column is-half">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Min = 40</code>, <code>Max = 80</code>, <code>StepSize = 10</code>, <code>ShowLabelBackdrop = false</code>, <code>Circular = false</code></p>
-        <PolarAreaChart @ref="fixedRangeChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: Radial scale (chart 3 of 4)" @ref="fixedRangeChart" />
     </div>
     <div class="column is-half">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Reverse = true</code></p>
-        <PolarAreaChart @ref="reverseChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: Radial scale (chart 4 of 4)" @ref="reverseChart" />
     </div>
 </div>
 

@@ -7,7 +7,7 @@
 @* Unlisted page: not linked from the navigation. It checks the home page (story 26111801). *@
 <SiteMetaTags PageUrl="@pageUrl" Title="Home Self-Check" Description="Internal check page for the demo site." Robots="noindex, nofollow" />
 
-<PageHero Title="Home self-check" />
+<DemoPageHero Title="Home self-check" />
 
 <Block>
     Switches the hero chart through every chart type, checks reduced motion and the theme colours, then loads the home page at 320, 375, 640, 768 and 1280 pixels wide
@@ -23,7 +23,7 @@ else
 {
     <Block>
         <strong>Passed:</strong> @cases.Count(c => c.Status == "pass") ·
-        <strong>Failed:</strong> <span class="@(cases.Any(c => c.Status == "fail") ? "has-text-danger" : "has-text-success")">@cases.Count(c => c.Status == "fail")</span>
+        <strong>Failed:</strong> @cases.Count(c => c.Status == "fail")
     </Block>
 
     <div class="table-container">

@@ -4,11 +4,11 @@
 
 <SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
-<PageHero Title="@pageTitle">
+<DemoPageHero Title="@pageTitle">
     <SubTitleTemplate>
         @((MarkupString)pageDescription)
     </SubTitleTemplate>
-</PageHero>
+</DemoPageHero>
 
 <section class="be-release-spotlight">
     <p class="be-release-kicker">New in 2.0.0</p>
@@ -23,15 +23,15 @@
 </section>
 
 <div class="content">
-    <Section Class="p-0" Size="HeadingSize.H4" Name="Introduction" PageUrl="@pageUrl" Link="introduction">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Introduction" PageUrl="@pageUrl" Link="introduction">
         <Block>
             <p>
-                BlazorExpress.ChartJS is an open-source Blazor component library for <a href="https://www.chartjs.org/" target="_blank" rel="noopener">Chart.js</a>.
+                BlazorExpress.ChartJS is an open-source Blazor component library for <a href="https://www.chartjs.org/" target="_blank" rel="noopener">Chart.js<span class="is-sr-only"> (opens in a new tab)</span></a>.
                 You describe a chart's data and options in C#; the library draws it with Chart.js in the browser, and updates, resizes and disposes it with the component.
                 It runs in Blazor WebAssembly, Blazor Web Apps (Server and Auto render modes) and .NET MAUI Blazor Hybrid apps, on .NET 8, 9, 10 and 11, under the Apache-2.0 license.
             </p>
         </Block>
-    </Section>
+    </DemoSection>
 </div>
 
 <div class="be-intro-grid mb-5">
@@ -61,7 +61,7 @@
     </div>
 </div>
 
-<div class="be-intro-links mb-5" aria-label="Chart documentation">
+<div class="be-intro-links mb-5" role="group" aria-label="Chart documentation">
     <a class="tag is-link is-light is-medium" href="@DemoRouteConstants.Docs_BarChart">Bar chart</a>
     <a class="tag is-link is-light is-medium" href="@DemoRouteConstants.Docs_BubbleChart">Bubble chart</a>
     <a class="tag is-link is-light is-medium" href="@DemoRouteConstants.Docs_DoughnutChart">Doughnut chart</a>
@@ -73,7 +73,7 @@
 </div>
 
 <div class="content">
-    <Section Class="p-0" Size="HeadingSize.H4" Name="Quick start" PageUrl="@pageUrl" Link="quick-start">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Quick start" PageUrl="@pageUrl" Link="quick-start">
         <Block>
             <p>
                 Four steps add a first chart to an existing Blazor project. For a full walkthrough for your project type, see the
@@ -107,9 +107,9 @@
                 Each chart's docs page lists its parameters, events and methods.
             </p>
         </Block>
-    </Section>
+    </DemoSection>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="Setup guides" PageUrl="@pageUrl" Link="setup-guides">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Setup guides" PageUrl="@pageUrl" Link="setup-guides">
         <Block>
             <p>Step-by-step guides by hosting model:</p>
             <div class="table-container">
@@ -136,9 +136,9 @@
                 </table>
             </div>
         </Block>
-    </Section>
+    </DemoSection>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="Supported tech stack" PageUrl="@pageUrl" Link="supported-tech-stack">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Supported tech stack" PageUrl="@pageUrl" Link="supported-tech-stack">
         <Block>
             <p>Pick the top row for new projects. Older rows are kept for teams upgrading from earlier releases.</p>
             <div class="table-container">
@@ -180,9 +180,9 @@
                 </table>
             </div>
         </Block>
-    </Section>
+    </DemoSection>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="Time axes" PageUrl="@pageUrl" Link="time-axes">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Time axes" PageUrl="@pageUrl" Link="time-axes">
         <Block>
             <p>
                 From 2.0.0, <code>time</code> and <code>timeseries</code> axes work with only Chart.js and
@@ -190,11 +190,11 @@
                 <code>chartjs-adapter-date-fns</code>; the library's adapter replaces it. See the <a href="@DemoRouteConstants.Docs_LineChart#time-axis">time axis documentation</a>.
             </p>
         </Block>
-    </Section>
+    </DemoSection>
 </div>
 
 <section id="javascript-functions" class="content mb-5">
-    <h4 class="title is-4">JavaScript functions</h4>
+    <h2 class="title is-4">JavaScript functions</h2>
     <p>
         Some Chart.js options take a JavaScript function: tick labels, tooltip text, legend filters and clicks, line segment styles, gradient colours and more.
         Chart.js calls these functions while it draws, so they must be JavaScript. From 2.0.0 you write them in your own JavaScript file, register each one by name,

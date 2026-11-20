@@ -4,6 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- The base element comes before every link and script (HTML; W3C Nu checker, story 26111901 AC-07). -->
+    <base href="/" />
 
     <!-- Site-wide defaults for clients that do not run the app (link previews, agents, simple crawlers).
          Each page writes its own tags with SiteMetaTags, which then removes the ones marked data-site-default.
@@ -29,7 +31,6 @@
     <!-- A plain-text guide to this site for AI agents (https://llmstxt.org). -->
     <link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt">
 
-    <base href="/" />
     <!-- .NET 11 template: the preload link, the import map and the fingerprint placeholders in asset URLs
          are filled in by dotnet publish (OverrideHtmlAssetPlaceholders). Publish must build: publish with no-build leaves them unfilled. -->
     <link rel="preload" id="webassembly" />

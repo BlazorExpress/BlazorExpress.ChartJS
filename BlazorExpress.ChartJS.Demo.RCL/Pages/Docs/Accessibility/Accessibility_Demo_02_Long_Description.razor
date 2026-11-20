@@ -1,0 +1,61 @@
+<LineChart role="img" aria-label="Line chart: monthly sales in two regions" aria-describedby="sales-chart-summary" @ref="lineChart" Width="600" />
+
+<p id="sales-chart-summary" class="mt-3">
+    North sales rose from 42 in January to 81 in June. South sales rose from 18 to 47, staying below North every month.
+</p>
+
+<div class="table-container">
+    <table class="table is-narrow is-striped">
+        <caption>Monthly sales by region</caption>
+        <thead>
+            <tr>
+                <th scope="col">Month</th>
+                @foreach (var dataset in datasets)
+                {
+                    <th scope="col">@dataset.Label</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < months.Count; i++)
+            {
+                <tr>
+                    <th scope="row">@months[i]</th>
+                    @foreach (var dataset in datasets)
+                    {
+                        <td>@dataset.Data![i]</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private LineChart lineChart = default!;
+    private ChartData chartData = default!;
+    private LineChartOptions lineChartOptions = default!;
+
+    private readonly List<string> months = ["January", "February", "March", "April", "May", "June"];
+
+    private readonly List<LineChartDataset> datasets =
+    [
+        new() { Label = "North", Data = [42, 55, 49, 68, 74, 81], BorderColor = "#147af3", BackgroundColor = "#147af3" },
+        new() { Label = "South", Data = [18, 24, 31, 29, 40, 47], BorderColor = "#cb5d00", BackgroundColor = "#cb5d00" },
+    ];
+
+    protected override void OnInitialized()
+    {
+        // The chart and the table use the same numbers, so the long description always matches what is drawn.
+        chartData = new ChartData { Labels = months, Datasets = [.. datasets] };
+        lineChartOptions = new LineChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await lineChart.InitializeAsync(chartData, lineChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

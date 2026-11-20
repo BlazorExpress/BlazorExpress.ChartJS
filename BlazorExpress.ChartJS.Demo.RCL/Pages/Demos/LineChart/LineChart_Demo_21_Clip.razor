@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Default: with y <code>Min = 0</code> / <code>Max = 100</code>, the line is cut at the chart area</p>
-        <LineChart @ref="defaultChart" />
+        <LineChart role="img" aria-label="Line chart: Clip, default" @ref="defaultChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>ClipSides</code> top and bottom 20: the line overflows by up to 20 px</p>
-        <LineChart @ref="overflowChart" />
+        <LineChart role="img" aria-label="Line chart: Clip, clipSides top and bottom 20" @ref="overflowChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>ClipSides</code> all sides -10: the line is cut 10 px inside the chart area</p>
-        <LineChart @ref="insideChart" />
+        <LineChart role="img" aria-label="Line chart: Clip, clipSides all sides -10" @ref="insideChart" />
     </div>
 </div>
 

@@ -3,11 +3,11 @@
 
 <SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
 
-<PageHero Title="@pageTitle">
+<DemoPageHero Title="@pageTitle">
     <SubTitleTemplate>
         @((MarkupString)pageDescription)
     </SubTitleTemplate>
-</PageHero>
+</DemoPageHero>
 
 <div class="notification is-warning is-light">
     <strong>Upgrading from 1.x?</strong> 2.0.0 changes some defaults and behaviour without any code change.
@@ -24,7 +24,7 @@
     <a class="tag is-light is-medium" href="@(pageUrl)#for-contributors">For contributors</a>
 </nav>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Install" PageUrl="@pageUrl" Link="install">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Install" PageUrl="@pageUrl" Link="install">
     <Block>
         <CodeChunk LanguageCode="LanguageCode.Text" FilePath="~\Pages\Docs\GettingStarted\net8\01_A_Manual_Install_01_Run_Net_CLI_Command_Snippet.razor" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
         <p class="mt-3">
@@ -32,13 +32,13 @@
             Apps that load <code>blazorexpress.chartjs.js</code> from the package need no script change.
         </p>
     </Block>
-</Section>
+</DemoSection>
 
 <div class="content be-release-notes">
     @* Generated from CHANGELOG.md ## 2.0.0; keep the wording in step with it. *@
     <p>2.0.0 is a major release. Code compiled against 1.2.4 keeps working: package validation against 1.2.4 reports no binary break. Some charts look or behave differently without any code change, though, so read <strong>Breaking changes</strong> before you upgrade. Chart.js 4.6.1 is the documented version.</p>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="Breaking changes" PageUrl="@pageUrl" Link="breaking-changes">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Breaking changes" PageUrl="@pageUrl" Link="breaking-changes">
         <Block>
             <p>Each item says how to keep the 1.2.4 behaviour where there is a way.</p>
             <ul>
@@ -52,9 +52,9 @@
                 <li><strong><code>blazorexpress.chartjs.js</code> changed.</strong> <code>initialize</code> and <code>update</code> take new optional trailing arguments. Apps that load the script from the package (<code>_content/BlazorExpress.ChartJS/blazorexpress.chartjs.js</code>) need nothing. Apps that copied the file into their own folder must copy the new one.</li>
             </ul>
         </Block>
-    </Section>
+    </DemoSection>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="What's new" PageUrl="@pageUrl" Link="whats-new">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="What's new" PageUrl="@pageUrl" Link="whats-new">
         <Block>
             <ul>
                 <li><strong>.NET 11.</strong> The package targets <code>net11.0</code> alongside <code>net8.0</code>, <code>net9.0</code> and <code>net10.0</code>, built against <code>Microsoft.AspNetCore.Components.Web</code> 11.0.0. Nothing changes for apps on the other targets.</li>
@@ -75,9 +75,9 @@
                 <li><strong>Datasets:</strong> floating bars (<code>BarChartDataset.FloatingData</code>, also through <code>AddDataAsync</code> with <code>new BarChartDatasetData(label, start, end)</code>), bar <code>Base</code>, per-corner <code>BorderRadiusCorners</code> and <code>HoverBorderRadiusCorners</code>, <code>InflateAmount</code> and <code>PointStyle</code>; line <code>MaxSpanGap</code>; per-side <code>ClipSides</code>; <code>SpacingMode</code> on arc datasets; scatter <code>Segment</code>; radar <code>RAxisID</code>.</li>
             </ul>
         </Block>
-    </Section>
+    </DemoSection>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="What's changed" PageUrl="@pageUrl" Link="whats-changed">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="What's changed" PageUrl="@pageUrl" Link="whats-changed">
         <Block>
             <ul>
                 <li><strong>Chart.js 4.6.1</strong> is the documented version (a new "2.0.0+" row in the version tables). The browser console shows a one-time warning when a Chart.js version below 4.6.0 is loaded.</li>
@@ -87,9 +87,9 @@
                 <li>Decimation and the <code>parsing</code> and <code>normalized</code> options are not included in 2.0.0.</li>
             </ul>
         </Block>
-    </Section>
+    </DemoSection>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="Fixed" PageUrl="@pageUrl" Link="fixed">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Fixed" PageUrl="@pageUrl" Link="fixed">
         <Block>
             <ul>
                 <li>A chart placed in a container that starts hidden (a tab, accordion, collapsible panel or dialog), or one whose container is resized as an animation ends, could stay blank until the window was resized or the chart was hovered. A responsive chart now always draws at its container's size.</li>
@@ -99,17 +99,17 @@
                 <li>A registered JavaScript function that throws is logged to the console once, and the chart keeps drawing.</li>
             </ul>
         </Block>
-    </Section>
+    </DemoSection>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="Security" PageUrl="@pageUrl" Link="security">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Security" PageUrl="@pageUrl" Link="security">
         <Block>
             <ul>
                 <li>A <code>ChartFunction</code> names a function you registered with <code>registerFunction</code>. It is looked up only in that registry, never on <code>window</code> or through globals, and never evaluated as code (no <code>eval</code> or <code>new Function</code>). An unregistered name logs one console error naming the function and the option, and the option keeps its Chart.js default.</li>
             </ul>
         </Block>
-    </Section>
+    </DemoSection>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="Docs and demos" PageUrl="@pageUrl" Link="docs-and-demos">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Docs and demos" PageUrl="@pageUrl" Link="docs-and-demos">
         <Block>
             <ul>
                 <li>A samples gallery with a page per sample, each with "How to use" steps and copyable source, covering the official Chart.js samples the library can express.</li>
@@ -118,27 +118,27 @@
                 <li>The Pie chart demo page links to the Pie chart docs, and the README's Getting Started link opens the getting-started page.</li>
             </ul>
         </Block>
-    </Section>
+    </DemoSection>
 
-    <Section Class="p-0" Size="HeadingSize.H4" Name="For contributors" PageUrl="@pageUrl" Link="for-contributors">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="For contributors" PageUrl="@pageUrl" Link="for-contributors">
         <Block>
             <ul>
                 <li>New test project <code>BlazorExpress.ChartJS.Tests</code> (xUnit v3 and bUnit). Run it with <code>dotnet test --solution BlazorExpress.ChartJS.slnx</code>. The root <code>global.json</code> opts in to Microsoft.Testing.Platform, which needs the .NET 10 SDK; older SDKs ignore the setting.</li>
                 <li>The demo site deploys to production only when the workflow is run by hand with "Do you want to release to production?" ticked. Pushes to <code>main</code> no longer deploy, and pull requests still get preview deploys.</li>
             </ul>
         </Block>
-    </Section>
+    </DemoSection>
 </div>
 
-<Section Class="p-0" Size="HeadingSize.H4" Name="Links" PageUrl="@pageUrl" Link="links">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Links" PageUrl="@pageUrl" Link="links">
     <Block>
         <ul>
-            <li><a href="@changelogUrl" target="_blank" rel="noopener">Full changelog on GitHub</a></li>
-            <li><a href="@nugetUrl" target="_blank" rel="noopener">BlazorExpress.ChartJS 2.0.0 on NuGet</a></li>
+            <li><a href="@changelogUrl" target="_blank" rel="noopener">Full changelog on GitHub<span class="is-sr-only"> (opens in a new tab)</span></a></li>
+            <li><a href="@nugetUrl" target="_blank" rel="noopener">BlazorExpress.ChartJS 2.0.0 on NuGet<span class="is-sr-only"> (opens in a new tab)</span></a></li>
             <li><a href="@DemoRouteConstants.Docs_Getting_Started_Introduction">Getting started</a> and the <a href="@DemoRouteConstants.Demos_Samples">samples gallery</a></li>
         </ul>
     </Block>
-</Section>
+</DemoSection>
 
 @code {
     private const string pageUrl = DemoRouteConstants.Blog_Release_2_0_0;

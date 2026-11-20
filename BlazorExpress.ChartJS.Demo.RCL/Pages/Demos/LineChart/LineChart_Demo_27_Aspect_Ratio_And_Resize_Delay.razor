@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>AspectRatio = 1</code> (square)</p>
-        <LineChart @ref="squareChart" />
+        <LineChart role="img" aria-label="Line chart: Aspect ratio and resize delay (chart 1 of 3)" @ref="squareChart" />
     </div>
     <div class="column is-two-thirds">
         <p class="has-text-weight-semibold mb-2"><code>AspectRatio = 2</code> (the line chart default), <code>DevicePixelRatio = 2</code></p>
-        <LineChart @ref="defaultRatioChart" />
+        <LineChart role="img" aria-label="Line chart: Aspect ratio and resize delay (chart 2 of 3)" @ref="defaultRatioChart" />
     </div>
     <div class="column is-full">
         <p class="has-text-weight-semibold mb-2"><code>AspectRatio = 3</code>, <code>ResizeDelay = 300</code> (resize the window to see the delay)</p>
-        <LineChart @ref="wideChart" />
+        <LineChart role="img" aria-label="Line chart: Aspect ratio and resize delay (chart 3 of 3)" @ref="wideChart" />
     </div>
 </div>
 

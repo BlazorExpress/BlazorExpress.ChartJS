@@ -1,8 +1,9 @@
 @namespace BlazorExpress.ChartJS.Demo.RCL
 
 <div class="be-sample-thumb @(hasImage ? "has-image" : null)" @ref="container">
-    @* The script sets this image's source once the chart has been captured. *@
-    <img class="be-sample-thumb-image" alt="" />
+    @* The script sets this image's source once the chart has been captured. Until then it is hidden and holds a 1 by 1 transparent
+       placeholder, because an img must have a source (W3C Nu checker, story 26111901 AC-07). Blazor leaves the source the script sets alone. *@
+    <img class="be-sample-thumb-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" />
     <div class="be-sample-thumb-placeholder">@ChildContent</div>
 
     @if (isCapturing)

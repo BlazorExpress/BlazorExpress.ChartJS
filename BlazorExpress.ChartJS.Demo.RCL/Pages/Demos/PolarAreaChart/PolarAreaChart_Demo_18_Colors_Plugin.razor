@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Colors = new() { Enabled = true }</code>, no dataset colors</p>
-        <PolarAreaChart @ref="enabledChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: Colors plugin (chart 1 of 3)" @ref="enabledChart" />
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Enabled = false</code>, no dataset colors</p>
-        <PolarAreaChart @ref="disabledChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: Colors plugin (chart 2 of 3)" @ref="disabledChart" />
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>ForceOverride = true</code> replacing dataset colors</p>
-        <PolarAreaChart @ref="overrideChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: Colors plugin (chart 3 of 3)" @ref="overrideChart" />
     </div>
 </div>
 

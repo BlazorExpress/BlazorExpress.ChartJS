@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Mode = Index</code>, <code>Intersect = false</code>, <code>Position = "average"</code>, <code>Padding</code>, <code>CornerRadius</code>, border, <code>MultiKeyBackground</code></p>
-        <LineChart @ref="indexChart" />
+        <LineChart role="img" aria-label="Line chart: Tooltip options (chart 1 of 3)" @ref="indexChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Mode = Nearest</code>, <code>Intersect = true</code>, <code>Position = "nearest"</code>, <code>BoxWidth</code> / <code>BoxHeight</code> / <code>BoxPadding</code></p>
-        <LineChart @ref="nearestChart" />
+        <LineChart role="img" aria-label="Line chart: Tooltip options (chart 2 of 3)" @ref="nearestChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>UsePointStyle = true</code>: the color boxes use each dataset's <code>PointStyle</code></p>
-        <LineChart @ref="pointStyleChart" />
+        <LineChart role="img" aria-label="Line chart: Tooltip options (chart 3 of 3)" @ref="pointStyleChart" />
     </div>
 </div>
 

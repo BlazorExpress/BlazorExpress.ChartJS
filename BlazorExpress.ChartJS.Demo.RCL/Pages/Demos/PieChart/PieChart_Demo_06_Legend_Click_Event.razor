@@ -5,7 +5,7 @@
     </label>
 </div>
 
-<PieChart @ref="pieChart" Width="400" LegendClickToggles="legendClickToggles" OnLegendClick="HandleLegendClickAsync" />
+<PieChart role="img" aria-label="Pie chart: Legend click event" @ref="pieChart" Width="400" LegendClickToggles="legendClickToggles" OnLegendClick="HandleLegendClickAsync" />
 
 @if (legendClicks.Count > 0)
 {

@@ -4,7 +4,7 @@
 @* Unlisted page: not linked from the navigation. It checks the sample catalog, then opens every sample page in turn. *@
 <SiteMetaTags PageUrl="@pageUrl" Title="Samples Self-Check" Description="Internal check page for the demo site." Robots="noindex, nofollow" />
 
-<PageHero Title="Samples self-check" />
+<DemoPageHero Title="Samples self-check" />
 
 <Block>
     Checks the sample catalog against the demo components and their embedded sources, then opens every sample page in the frame below
@@ -21,7 +21,7 @@ else
 {
     <Block>
         <strong>Passed:</strong> @cases.Count(c => c.Status == Pass) ·
-        <strong>Failed:</strong> <span class="@(cases.Any(c => c.Status == Fail) ? "has-text-danger" : "has-text-success")">@cases.Count(c => c.Status == Fail)</span>
+        <strong>Failed:</strong> @cases.Count(c => c.Status == Fail)
     </Block>
     <div class="table-container">
         <table class="table is-fullwidth is-narrow is-striped">
@@ -48,7 +48,7 @@ else
     <strong>Opened:</strong> @walkResults.Count of @walkTotal ·
     <strong>Passed:</strong> @walkResults.Count(r => r.Status == Pass) ·
     <strong>Resized:</strong> <span class="@(walkResults.Any(r => r.Status == Resized) ? "has-text-warning-dark" : null)">@walkResults.Count(r => r.Status == Resized)</span> (@walkResults.Sum(r => r.Resized) charts) ·
-    <strong>Failed:</strong> <span class="@(walkResults.Any(r => r.Status == Fail) ? "has-text-danger" : "has-text-success")">@walkResults.Count(r => r.Status == Fail)</span>
+    <strong>Failed:</strong> @walkResults.Count(r => r.Status == Fail)
     @if (walkDone)
     {
         <span> · done</span>

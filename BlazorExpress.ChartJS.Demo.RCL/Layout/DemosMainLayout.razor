@@ -3,6 +3,7 @@
 
 <BulmaLayout>
     <HeaderSection>
+        <a class="be-skip-link" href="#main-content">Skip to main content</a>
         <DemoNavbar BrandImgSrc="@DemoStringConstants.StaticAssets_Icons_Logo_svg"
                        BrandImgAltText=""
                        ApplicationName="@DemoStringConstants.NugetPackageName" />
@@ -17,9 +18,10 @@
                     <MenuList>
                         @foreach (var link in group.Links)
                         {
-                            <MenuItem>
-                                @if (link.Links?.Any() ?? false) // level 2 links
-                                {
+                            @* A link with a sub-list is one item holding the sub-list; a leaf link is its own item, not an item inside an item (no li inside li, AC-07). *@
+                            if (link.Links?.Any() ?? false) // level 2 links
+                            {
+                                <MenuItem>
                                     <NavLink ActiveClass="is-active">@link.Text</NavLink>
                                     <MenuList>
                                         @foreach (var cLink in link.Links)
@@ -27,12 +29,12 @@
                                             <MenuItem Href="@cLink.Href" Match="@cLink.Match">@cLink.Text</MenuItem>
                                         }
                                     </MenuList>
-                                }
-                                else
-                                {
-                                    <MenuItem Href="@link.Href" Match="@link.Match">@link.Text</MenuItem>
-                                }
-                            </MenuItem>
+                                </MenuItem>
+                            }
+                            else
+                            {
+                                <MenuItem Href="@link.Href" Match="@link.Match">@link.Text</MenuItem>
+                            }
                         }
                     </MenuList>
                 }
@@ -41,10 +43,12 @@
     </SidebarSection>
     <ContentSection>
         <div class="p-5">
-            <Button Class="bi bi-box-arrow-right menu-toggle-button ml-1 mt-0 mb-1" @onclick="ToggleSidebarSection" />
-            @Body
-            <DoYouKnow Class="mt-3" />
-            <StarOnGitHub />
+            <Button Class="bi bi-box-arrow-right menu-toggle-button ml-1 mt-0 mb-1" aria-label="Show or hide the menu" @onclick="ToggleSidebarSection" />
+            <main id="main-content" class="be-main" tabindex="-1">
+                @Body
+            </main>
+            <DemoDoYouKnow Class="mt-3" />
+            <DemoStarOnGitHub />
             <MainLayoutBaseFooter Version="@Version"
                                   DotNetVersion="@DotNetVersion"
                                   DocsUrl="@DocsUrl"
