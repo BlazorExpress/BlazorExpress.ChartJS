@@ -16,9 +16,11 @@
             {
                 // Each dataset is one ring, the first one outermost. Datalabels.Anchor places the labels of a ring
                 // at the outer edge (End), the middle (Center) or the inner edge (Start) of each segment.
-                new DoughnutChartDataset { Label = "2023 revenue ($k)", Data = new List<double?> { 180, 320, 140, 60 }, BackgroundColor = colors, Datalabels = new() { Anchor = DataLabelAnchor.End } },
+                // Alignment then moves a label from its anchor into the segment (Start: toward the centre, End: away from it),
+                // so labels at the edges stay on their ring instead of spilling off the canvas or into the hole.
+                new DoughnutChartDataset { Label = "2023 revenue ($k)", Data = new List<double?> { 180, 320, 140, 60 }, BackgroundColor = colors, Datalabels = new() { Anchor = DataLabelAnchor.End, Alignment = DataLabelAlignment.Start } },
                 new DoughnutChartDataset { Label = "2024 revenue ($k)", Data = new List<double?> { 240, 300, 150, 90 }, BackgroundColor = colors, Datalabels = new() { Anchor = DataLabelAnchor.Center } },
-                new DoughnutChartDataset { Label = "2025 revenue ($k)", Data = new List<double?> { 310, 280, 160, 130 }, BackgroundColor = colors, Datalabels = new() { Anchor = DataLabelAnchor.Start } },
+                new DoughnutChartDataset { Label = "2025 revenue ($k)", Data = new List<double?> { 310, 280, 160, 130 }, BackgroundColor = colors, Datalabels = new() { Anchor = DataLabelAnchor.Start, Alignment = DataLabelAlignment.End } },
             },
         };
 

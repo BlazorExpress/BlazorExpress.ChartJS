@@ -60,6 +60,7 @@
             <ol>
                 <li>Create one <code>DoughnutChartDataset</code> per ring with the same <code>Labels</code>; the first dataset is the outer ring.</li>
                 <li>Set <code>Datalabels = new() { Anchor = DataLabelAnchor.End }</code> on a dataset to place its labels at the outer edge of each segment, or use <code>DataLabelAnchor.Center</code> or <code>DataLabelAnchor.Start</code>.</li>
+                <li>Add <code>Alignment = DataLabelAlignment.Start</code> to an <code>End</code> anchor (or <code>DataLabelAlignment.End</code> to a <code>Start</code> anchor) to move the label from the edge into its segment, so it does not spill off the canvas or into the hole.</li>
                 <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "...", Color = null }</code> to name the chart; <code>Color = null</code> keeps the text readable on light and dark pages.</li>
                 <li>Pass the plugin name when you initialize the chart: <code>InitializeAsync(chartData: chartData, chartOptions: doughnutChartOptions, plugins: new string[] { "ChartDataLabels" })</code>.</li>
             </ol>

@@ -56,6 +56,9 @@ public static class DemoRouteConstants
     // Unlisted: walks every routed page and checks it against WCAG 2.2 AA (story 26111901). Query: area, chart.
     public const string Demos_AccessibilitySelfCheck = Demos_Prefix + "/accessibility-self-check";
 
+    // Unlisted: captures the README and docs chart images from their samples and downloads them as one zip (work item 26112001).
+    public const string Demos_ScreenshotCapture = Demos_Prefix + "/screenshot-capture";
+
     // Utils
     public const string Demos_Utils_Prefix = Demos_Prefix + "/utils";
     public const string Demos_ColorUtils = Demos_Utils_Prefix + "/color-utility";

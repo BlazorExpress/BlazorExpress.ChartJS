@@ -2620,8 +2620,6 @@ window.screenshotCapture = (() => {
         return false;
     };
 
-    const frameReady = () => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-
     const capture = async (frame, url, canvasIndex, cssWidth) => {
         frame.src = `${url}${url.includes('?') ? '&' : '?'}capture=${Date.now()}`;
         const canvases = () => [...frame.contentDocument.querySelectorAll('.be-bulma-doc-example-demo canvas, .be-playground-chart canvas')];
@@ -2637,14 +2635,19 @@ window.screenshotCapture = (() => {
         const canvas = canvases()[canvasIndex];
         const chart = win.Chart.getChart(canvas);
         const wrapper = canvas.parentElement;
+        // Widen the chart's own container and redraw at device pixel ratio 2, repeating until Chart.js reports the size:
+        // the page's own resize handling can run on a later frame and would size the chart back to its column.
         wrapper.style.maxWidth = 'none';
         wrapper.style.width = `${cssWidth}px`;
         chart.options.devicePixelRatio = 2;
         chart.options.animation = false;
-        chart.resize();
-        chart.update('none');
-        await frameReady();
-        await demoSleep(300);
+        for (let attempt = 0; attempt < 40; attempt++) {
+            chart.resize();
+            chart.update('none');
+            await demoSleep(100);
+            if (Math.round(chart.width) === cssWidth && canvas.width === cssWidth * 2)
+                break;
+        }
 
         const output = document.createElement('canvas');
         output.width = canvas.width;

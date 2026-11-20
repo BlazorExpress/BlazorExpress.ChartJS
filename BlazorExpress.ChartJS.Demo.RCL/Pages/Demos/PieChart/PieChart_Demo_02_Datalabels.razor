@@ -16,9 +16,10 @@
             {
                 // Each dataset is one ring, the first one outermost. Datalabels.Anchor places the labels of a ring
                 // at the outer edge (End), the middle (Center) or the inner edge (Start) of each slice.
-                new PieChartDataset { Label = "2023 revenue ($k)", Data = new List<double?> { 180, 320, 140, 60 }, BackgroundColor = colors, Datalabels = new() { Anchor = DataLabelAnchor.End } },
+                // Alignment = Start then moves an End label from the outer edge back into its segment, so it stays on the canvas.
+                new PieChartDataset { Label = "2023 revenue ($k)", Data = new List<double?> { 180, 320, 140, 60 }, BackgroundColor = colors, Datalabels = new() { Anchor = DataLabelAnchor.End, Alignment = DataLabelAlignment.Start } },
                 new PieChartDataset { Label = "2024 revenue ($k)", Data = new List<double?> { 240, 300, 150, 90 }, BackgroundColor = colors, Datalabels = new() { Anchor = DataLabelAnchor.Center } },
-                new PieChartDataset { Label = "2025 revenue ($k)", Data = new List<double?> { 310, 280, 160, 130 }, BackgroundColor = colors, Datalabels = new() { Anchor = DataLabelAnchor.End } },
+                new PieChartDataset { Label = "2025 revenue ($k)", Data = new List<double?> { 310, 280, 160, 130 }, BackgroundColor = colors, Datalabels = new() { Anchor = DataLabelAnchor.End, Alignment = DataLabelAlignment.Start } },
             },
         };
 
