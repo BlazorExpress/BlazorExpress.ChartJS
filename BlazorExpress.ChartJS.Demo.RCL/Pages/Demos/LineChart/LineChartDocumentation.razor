@@ -20,26 +20,20 @@
 <CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.LineChart, Sample)">
 <SampleSection Slug="how-it-works">
     <Block>
-        The <strong>Line Chart</strong> component visualizes data trends using connected data points, making it ideal for tracking changes over time or comparing multiple series.
+        A line chart joins one value per label, which suits a trend over time. This one shows website visitors and sign-ups per month from January to June; sign-ups are far smaller numbers, so they use a second y-axis on the right.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Define your chart data by specifying <code>Labels</code> for the X-axis and one or more <code>Datasets</code> for the Y-axis values.</li>
-                <li>Customize the chart appearance and behavior using the <code>Options</code> property (e.g., colors, line styles, tooltips, axis settings).</li>
-                <li>Add the <code>LineChart</code> component to your page and bind your data and options.</li>
-                <li>Refer to the demo code below for examples of basic usage, advanced customization, and dynamic updates.</li>
+                <li>Add a <code>LineChart</code> with <code>@@ref</code>, and a <code>role="img"</code> and <code>aria-label</code> that say what the chart shows.</li>
+                <li>Create a <code>ChartData</code> with the months in <code>Labels</code> and one <code>LineChartDataset</code> per series, with one value per label in <code>Data</code> and its colors in <code>BorderColor</code> and <code>BackgroundColor</code>.</li>
+                <li>Set <code>YAxisID = "y1"</code> on the sign-ups dataset, and add that axis with <code>Scales.AdditionalAxes</code>, <code>Position = "right"</code> and <code>DrawOnChartArea = false</code> so only the left axis draws grid lines.</li>
+                <li>Create <code>LineChartOptions { Responsive = true }</code> so the chart resizes with its container.</li>
+                <li>Call <code>InitializeAsync(chartData, lineChartOptions)</code> in <code>OnAfterRenderAsync</code> when <code>firstRender</code> is <code>true</code>.</li>
             </ol>
         </div>
-        These demos demonstrate how to set up a line chart, configure its appearance, and update the data or options to fit your application's needs.
     </Block>
-    <Demo Type="typeof(LineChart_Demo_01_A_Examples)" Tabs="true" />
-    <Block>
-        <p>
-            You can further enhance your charts by updating datasets, changing styles, or handling chart events. Review the demo code for practical scenarios and copy the relevant parts into your own project to get started quickly.
-        </p>
-    </Block>
-    <Demo Type="typeof(LineChart_Demo_01_B_Examples)" Tabs="true" />
+    <Demo Type="typeof(LineChart_Demo_01_How_It_Works)" Tabs="true" />
 </SampleSection>
 
 <SampleSection Slug="playground">
@@ -435,6 +429,7 @@
             <ol>
                 <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Website visitors" }</code>.</li>
                 <li>Set <code>Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "January to June" }</code>.</li>
+                <li>Set <code>Color = null</code> on both to use the Chart.js default text color instead of black, so the text stays readable on a dark background.</li>
                 <li>Set <code>Position</code> to <code>"top"</code>, <code>"left"</code>, <code>"bottom"</code> or <code>"right"</code>, and <code>Align</code> to <code>"start"</code>, <code>"center"</code> or <code>"end"</code>.</li>
                 <li>Set <code>Padding = new ChartPadding { Top = 10, Bottom = 20 }</code> for space around the title, and <code>FullSize = false</code> to size it to the chart area instead of the canvas.</li>
             </ol>

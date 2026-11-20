@@ -5,22 +5,22 @@
     {
         <button type="button" class="button is-primary is-small mr-1" @onclick="() => ToggleDatasetAsync(label)">Toggle @label</button>
     }
-    <button type="button" class="button is-warning is-small" @onclick="() => scatterChart.HideAsync(datasetLabels.IndexOf(FirstDataset), PointIndex)">Hide Third Sensor A</button>
-    <button type="button" class="button is-info is-small" @onclick="() => scatterChart.ShowAsync(datasetLabels.IndexOf(FirstDataset), PointIndex)">Show Third Sensor A</button>
+    <button type="button" class="button is-warning is-small" @onclick="() => scatterChart.HideAsync(datasetLabels.IndexOf(FirstDataset), PointIndex)">Hide North greenhouse at 14:00</button>
+    <button type="button" class="button is-info is-small" @onclick="() => scatterChart.ShowAsync(datasetLabels.IndexOf(FirstDataset), PointIndex)">Show North greenhouse at 14:00</button>
     <button type="button" class="button is-success is-small" @onclick="RefreshWithoutAnimationAsync">Refresh data without animation</button>
 </div>
 
 <p class="mt-3 mb-0">Visible datasets: @visibleDatasetCount of @datasetLabels.Count</p>
 
 @code {
-    private const string FirstDataset = "Sensor A";
+    private const string FirstDataset = "North greenhouse";
     private const int PointIndex = 2;
     private ScatterChart scatterChart = default!;
     private ScatterChartOptions scatterChartOptions = default!;
     private ChartData chartData = default!;
-    private readonly List<string> labels = new() { "First", "Second", "Third", "Fourth" };
-    private readonly List<string> datasetLabels = new() { "Sensor A", "Sensor B", "Sensor C" };
-    private readonly Dictionary<string, string> colors = new() { ["Sensor A"] = "54, 162, 235", ["Sensor B"] = "255, 159, 64", ["Sensor C"] = "75, 192, 192" };
+    private readonly List<string> labels = new() { "06:00", "10:00", "14:00", "18:00" };
+    private readonly List<string> datasetLabels = new() { "North greenhouse", "South greenhouse", "East greenhouse" };
+    private readonly Dictionary<string, string> colors = new() { ["North greenhouse"] = "54, 162, 235", ["South greenhouse"] = "255, 159, 64", ["East greenhouse"] = "75, 192, 192" };
     private int visibleDatasetCount = 3;
 
     protected override void OnInitialized()
@@ -45,7 +45,8 @@
                 .Select(label => (IChartDataset)new ScatterChartDataset
                 {
                     Label = label,
-                    Data = labels.Select(_ => new ScatterChartDataPoint(Random.Shared.Next(0, 100), Random.Shared.Next(0, 100))).ToList(),
+                    // x = temperature (°C), y = relative humidity (%), one reading at each time of day
+                    Data = labels.Select(_ => new ScatterChartDataPoint(Random.Shared.Next(15, 32), Random.Shared.Next(45, 81))).ToList(),
                     BackgroundColor = $"rgba({colors[label]}, 0.6)",
                     BorderColor = $"rgb({colors[label]})",
                     BorderWidth = 2,

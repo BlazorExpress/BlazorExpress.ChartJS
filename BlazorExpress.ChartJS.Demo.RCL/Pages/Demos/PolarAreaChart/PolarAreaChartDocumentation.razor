@@ -20,22 +20,19 @@
 <CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.PolarAreaChart, Sample)">
 <SampleSection Slug="how-it-works">
     <Block>
-        The <strong>Polar Area Chart</strong> component visualizes each data value as a segment with equal angles but varying radius, making it ideal for comparing values across categories in a circular layout.
+        A polar area chart gives every category a slice with the same angle and sizes the slice by its value, so you can compare a handful of categories at a glance. This one shows the support tickets received last month on each channel.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Add the <code>PolarAreaChart</code> component to your page and set its dimensions (e.g., <code>Width="600"</code>).</li>
-                <li>Prepare your chart data by specifying <code>Labels</code> for each category and one or more <code>Datasets</code> with values and background colors.</li>
-                <li>Configure chart options such as <code>Responsive</code> and <code>Title</code> using the <code>PolarAreaChartOptions</code> object.</li>
-                <li>Initialize the chart in <code>OnAfterRenderAsync</code> by calling <code>polarAreaChart.InitializeAsync(chartData, polarAreaChartOptions)</code>.</li>
-                <li>Use the demo's interactive buttons to randomize data, add datasets, or add new data points dynamically and see the chart update in real time.</li>
-                <li>Refer to the demo code below for practical examples of data preparation, dynamic updates, and chart customization.</li>
+                <li>Add the <code>PolarAreaChart</code> component with <code>@@ref</code>, <code>role="img"</code> and an <code>aria-label</code> that says what the chart shows.</li>
+                <li>Create a <code>ChartData</code> with one label per slice in <code>Labels</code> and one <code>PolarAreaChartDataset</code> that holds a value in <code>Data</code> and a color in <code>BackgroundColor</code> for each label.</li>
+                <li>Create a <code>PolarAreaChartOptions</code> with <code>Responsive = true</code> so the chart fits its container.</li>
+                <li>Call <code>InitializeAsync(chartData, polarAreaChartOptions)</code> in <code>OnAfterRenderAsync</code> when <code>firstRender</code> is <code>true</code>.</li>
             </ol>
         </div>
-        This demo demonstrates how to set up a Polar Area Chart, bind your data, and interactively update the chart to fit your application's needs.
     </Block>
-    <Demo Type="typeof(PolarAreaChart_Demo_01_Examples)" Tabs="true" />
+    <Demo Type="typeof(PolarAreaChart_Demo_01_How_It_Works)" Tabs="true" />
 </SampleSection>
 
 <SampleSection Slug="playground">
@@ -230,13 +227,13 @@
 
 <SampleSection Slug="title-and-subtitle">
     <Block>
-        The title and subtitle plugins draw text around the chart area. Chart.js hides both by default; in this library the title and subtitle color defaults to <code>"black"</code>.
+        The title and subtitle plugins draw text around the chart area. Chart.js hides both by default; in this library the title and subtitle color defaults to <code>"black"</code>, which cannot be read on a dark page, so the demo sets <code>Color = null</code> to use the Chart.js default text color (<code>Chart.defaults.color</code>) instead.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Sales by region" }</code>.</li>
-                <li>Add <code>Plugins.Subtitle = new() { Display = true, Text = "Q1 2026" }</code>; it is drawn below the title.</li>
+                <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Sales by region", Color = null }</code>.</li>
+                <li>Add <code>Plugins.Subtitle = new() { Display = true, Text = "Q1 2026", Color = null }</code>; it is drawn below the title.</li>
                 <li>Move either one with <code>Position</code> (<code>"top"</code>, <code>"left"</code>, <code>"bottom"</code>, <code>"right"</code>) and align it with <code>Align</code> (<code>"start"</code>, <code>"center"</code>, <code>"end"</code>).</li>
                 <li>Add space with <code>Padding = new ChartPadding { Top = 10, Bottom = 20 }</code>, and set <code>FullSize = false</code> to keep the title within the chart area width.</li>
             </ol>

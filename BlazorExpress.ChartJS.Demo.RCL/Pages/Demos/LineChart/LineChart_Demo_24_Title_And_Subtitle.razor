@@ -23,12 +23,13 @@
         if (firstRender)
         {
             var topOptions = new LineChartOptions();
-            topOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Website visitors", Position = "top" };
-            topOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "January to June", Position = "top" };
+            // null keeps Chart.js's theme-aware default text colour
+            topOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Website visitors", Position = "top", Color = null };
+            topOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "January to June", Position = "top", Color = null };
 
             var sidesOptions = new LineChartOptions();
-            sidesOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Website visitors", Position = "left" };
-            sidesOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Source: web analytics", Position = "bottom" };
+            sidesOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Website visitors", Position = "left", Color = null };
+            sidesOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Source: web analytics", Position = "bottom", Color = null };
 
             var alignedOptions = new LineChartOptions();
             alignedOptions.Plugins.Title = new ChartPluginsTitle
@@ -38,9 +39,10 @@
                 Align = "start",
                 Padding = new ChartPadding { Top = 10, Bottom = 20 }, // more space between the title and the legend
                 FullSize = false, // sized to the chart area, so "start" lines up with the y-axis instead of the canvas edge
-                Font = new ChartFont { Size = 18, Weight = "bold" }
+                Font = new ChartFont { Size = 18, Weight = "bold" },
+                Color = null
             };
-            alignedOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "January to June", Align = "start" };
+            alignedOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "January to June", Align = "start", Color = null };
 
             await topChart.InitializeAsync(GetChartData(), topOptions);
             await sidesChart.InitializeAsync(GetChartData(), sidesOptions);

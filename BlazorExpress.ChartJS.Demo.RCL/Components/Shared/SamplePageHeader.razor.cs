@@ -21,6 +21,7 @@ public partial class SamplePageHeader : ComponentBase
     protected override void OnParametersSet()
     {
         RedirectOldAnchor();
+        RedirectRetiredSample();
         chart = SampleCatalog.GetChart(ChartKey);
         sample = SampleCatalog.Find(ChartKey, Sample);
         metaTitle = sample is null || chart is null ? string.Empty : $"{sample.Title} - Blazor {chart.Name} sample";
@@ -41,6 +42,18 @@ public partial class SamplePageHeader : ComponentBase
         var target = SampleCatalog.Find(ChartKey, Uri.UnescapeDataString(fragment));
         if (target is not null)
             NavigationManager.NavigateTo(target.Url, replace: true);
+    }
+
+    // A removed or merged sample's URL opens its replacement or the chart page instead of "sample not found" (rules.md DEMO-002).
+    // The history entry is replaced, so Back leaves the retired URL rather than returning to it.
+    private void RedirectRetiredSample()
+    {
+        if (string.IsNullOrWhiteSpace(Sample) || SampleCatalog.Find(ChartKey, Sample) is not null)
+            return;
+
+        var target = SampleCatalog.GetRetiredTarget(ChartKey, Sample);
+        if (target is not null)
+            NavigationManager.NavigateTo(target, replace: true);
     }
 
     #endregion

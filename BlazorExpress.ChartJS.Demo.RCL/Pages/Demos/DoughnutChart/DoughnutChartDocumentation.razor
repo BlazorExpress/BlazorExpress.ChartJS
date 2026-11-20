@@ -20,21 +20,19 @@
 <CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.DoughnutChart, Sample)">
 <SampleSection Slug="how-it-works">
     <Block>
-        The <strong>Doughnut Chart</strong> component provides a simple way to visualize categorical data as proportional segments of a circle.
+        A doughnut chart shows how a whole splits into parts. This one shows a team's monthly budget: each slice is a spending category, sized by its share of the total, and the legend names the categories. Hover a slice to see its amount.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Add the <code>DoughnutChart</code> component to your page.</li>
-                <li>Define your data and labels using the chart's data model.</li>
-                <li>Customize appearance and behavior using the <code>Options</code> property (e.g., colors, legend, tooltips).</li>
-                <li>Bind your data and options to the component.</li>
-                <li>Refer to the demo code below for a working example and further customization options.</li>
+                <li>Add a <code>DoughnutChart</code> to the page with <code>@@ref</code>, <code>role="img"</code> and an <code>aria-label</code> that says what the chart shows.</li>
+                <li>Create a <code>ChartData</code> with one entry per slice in <code>Labels</code>, and one <code>DoughnutChartDataset</code> whose <code>Data</code> holds a value per label and whose <code>BackgroundColor</code> holds a color per slice.</li>
+                <li>Create <code>DoughnutChartOptions { Responsive = true }</code> so the chart resizes with its container.</li>
+                <li>Call <code>InitializeAsync(chartData, doughnutChartOptions)</code> in <code>OnAfterRenderAsync</code> when <code>firstRender</code> is <code>true</code>.</li>
             </ol>
         </div>
-        This demo shows how to configure a basic doughnut chart, assign data, and adjust chart options for your scenario.
     </Block>
-    <Demo Type="typeof(DoughnutChart_Demo_01_Examples)" Tabs="true" />
+    <Demo Type="typeof(DoughnutChart_Demo_01_How_It_Works)" Tabs="true" />
 </SampleSection>
 
 <SampleSection Slug="playground">
@@ -246,7 +244,7 @@
 
 <SampleSection Slug="title-and-subtitle">
     <Block>
-        <code>Plugins.Title</code> and <code>Plugins.Subtitle</code> draw a title and a smaller line of text, placed by <code>Position</code> and aligned by <code>Align</code>. The subtitle is drawn just after the title on the same side. In this library both default to <code>Color = "black"</code>.
+        <code>Plugins.Title</code> and <code>Plugins.Subtitle</code> draw a title and a smaller line of text, placed by <code>Position</code> and aligned by <code>Align</code>. The subtitle is drawn just after the title on the same side. In this library both default to <code>Color = "black"</code>; the sample sets <code>Color = null</code> so the text uses the Chart.js default colour (<code>Chart.defaults.color</code>), which a site can change for a dark theme.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">

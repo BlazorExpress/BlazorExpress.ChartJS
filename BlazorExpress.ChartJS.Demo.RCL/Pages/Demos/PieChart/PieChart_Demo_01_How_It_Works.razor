@@ -1,0 +1,36 @@
+<PieChart role="img" aria-label="Pie chart: share of website visits by traffic source" @ref="pieChart" Width="600" />
+
+@code {
+    private PieChart pieChart = default!;
+    private PieChartOptions pieChartOptions = default!;
+    private ChartData chartData = default!;
+
+    protected override void OnInitialized()
+    {
+        var labels = new List<string> { "Search", "Direct", "Social", "Email", "Referral" };
+
+        chartData = new ChartData
+        {
+            Labels = labels,
+            Datasets = new List<IChartDataset>
+            {
+                new PieChartDataset
+                {
+                    Label = "Share of visits (%)",
+                    Data = new List<double?> { 44, 24, 15, 10, 7 },
+                    BackgroundColor = Enumerable.Range(0, labels.Count).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList(),
+                },
+            },
+        };
+
+        pieChartOptions = new PieChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await pieChart.InitializeAsync(chartData, pieChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

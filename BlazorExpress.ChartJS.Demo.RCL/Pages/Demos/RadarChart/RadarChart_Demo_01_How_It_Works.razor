@@ -1,0 +1,48 @@
+<RadarChart role="img" aria-label="Radar chart: two laptops rated from 1 to 10 on battery, performance, display, weight, price and build quality" @ref="radarChart" Width="600" />
+
+@code {
+    private RadarChart radarChart = default!;
+    private RadarChartOptions radarChartOptions = default!;
+    private ChartData chartData = default!;
+
+    protected override void OnInitialized()
+    {
+        var laptopA = ColorUtility.CategoricalTwelveColors[0].ToColor();
+        var laptopB = ColorUtility.CategoricalTwelveColors[1].ToColor();
+
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "Battery", "Performance", "Display", "Weight", "Price", "Build quality" },
+            Datasets = new List<IChartDataset>
+            {
+                new RadarChartDataset
+                {
+                    Label = "Laptop A",
+                    Data = new List<double?> { 9, 6, 7, 9, 8, 7 },
+                    BackgroundColor = laptopA.ToRgbaString(0.2),
+                    BorderColor = laptopA.ToRgbString(),
+                    BorderWidth = 2,
+                    Fill = true,
+                },
+                new RadarChartDataset
+                {
+                    Label = "Laptop B",
+                    Data = new List<double?> { 6, 10, 9, 5, 4, 9 },
+                    BackgroundColor = laptopB.ToRgbaString(0.2),
+                    BorderColor = laptopB.ToRgbString(),
+                    BorderWidth = 2,
+                    Fill = true,
+                },
+            },
+        };
+        radarChartOptions = new RadarChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await radarChart.InitializeAsync(chartData, radarChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

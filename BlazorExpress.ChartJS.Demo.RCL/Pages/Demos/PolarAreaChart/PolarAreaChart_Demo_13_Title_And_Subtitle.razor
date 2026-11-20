@@ -27,10 +27,11 @@
             {
                 Display = true,
                 Text = "Sales by region",
+                Color = null, // null keeps Chart.js's theme-aware default text colour
                 Position = "top",
                 Font = new ChartFont { Size = 16 }
             };
-            topOptions.Plugins.Subtitle = new() { Display = true, Text = "Q1 2026" };
+            topOptions.Plugins.Subtitle = new() { Display = true, Text = "Q1 2026", Color = null };
             await topChart.InitializeAsync(GetChartData(), topOptions);
 
             var leftBottomOptions = new PolarAreaChartOptions();
@@ -38,10 +39,11 @@
             {
                 Display = true,
                 Text = "Sales by region",
+                Color = null,
                 Position = "left",
                 Font = new ChartFont { Size = 16 }
             };
-            leftBottomOptions.Plugins.Subtitle = new() { Display = true, Text = "Q1 2026", Position = "bottom" };
+            leftBottomOptions.Plugins.Subtitle = new() { Display = true, Text = "Q1 2026", Color = null, Position = "bottom" };
             await leftBottomChart.InitializeAsync(GetChartData(), leftBottomOptions);
 
             var startAlignedOptions = new PolarAreaChartOptions();
@@ -52,10 +54,10 @@
                 Align = "start",
                 Padding = new ChartPadding { Top = 10, Bottom = 20 },
                 FullSize = false,
-                Color = "#4046ca",
+                Color = null,
                 Font = new ChartFont { Size = 16 }
             };
-            startAlignedOptions.Plugins.Subtitle = new() { Display = true, Text = "Q1 2026", Align = "start", Padding = new ChartPadding { Bottom = 10 } };
+            startAlignedOptions.Plugins.Subtitle = new() { Display = true, Text = "Q1 2026", Color = null, Align = "start", Padding = new ChartPadding { Bottom = 10 } };
             await startAlignedChart.InitializeAsync(GetChartData(), startAlignedOptions);
         }
         await base.OnAfterRenderAsync(firstRender);

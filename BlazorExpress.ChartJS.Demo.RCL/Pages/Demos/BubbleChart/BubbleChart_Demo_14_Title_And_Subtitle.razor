@@ -23,26 +23,26 @@
 
     protected override void OnInitialized()
     {
-        // title and subtitle Color default to "black"
         topOptions = new BubbleChartOptions();
-        topOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Study time vs score", Position = "top" };
-        topOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Two classes, eight students each" };
+        topOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Study time vs score", Position = "top", Color = null }; // null keeps Chart.js's theme-aware default text colour
+        topOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Two classes, eight students each", Color = null };
 
         sideOptions = new BubbleChartOptions();
-        sideOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Study time vs score", Position = "left" };
-        sideOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Two classes, eight students each", Position = "bottom" };
+        sideOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Study time vs score", Position = "left", Color = null };
+        sideOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Two classes, eight students each", Position = "bottom", Color = null };
 
         alignedOptions = new BubbleChartOptions();
         alignedOptions.Plugins.Title = new ChartPluginsTitle
         {
             Display = true,
             Text = "Study time vs score",
+            Color = null,
             Align = "start",
             Padding = new() { Top = 10, Bottom = 20 },
             FullSize = false, // the title spans the chart area only, not the full canvas width
             Font = new ChartFont { Size = 16 }
         };
-        alignedOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Two classes, eight students each", Align = "start" };
+        alignedOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Two classes, eight students each", Align = "start", Color = null };
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

@@ -21,20 +21,19 @@
 <CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.BarChart, Sample)">
 <SampleSection Slug="how-it-works">
     <Block>
-        The <strong>Bar Chart</strong> component visualizes data as vertical bars, making it easy to compare values across categories or track changes over time.
+        A <strong>Bar Chart</strong> compares values across categories. This one shows the units a shop sold each month, January to June, for laptops, tablets and phones, with one colored bar per product in every month.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Add the <code>BarChart</code> component to your page.</li>
-                <li>Provide <code>Labels</code> for the X-axis categories and one or more <code>Datasets</code> for the Y-axis values.</li>
-                <li>Customize appearance and behavior using the <code>Options</code> property (e.g., colors, tooltips, axis settings).</li>
-                <li>Refer to the demo code for examples of basic and advanced usage, including multiple datasets and custom styling.</li>
+                <li>Add the <code>BarChart</code> component with <code>@@ref</code>, <code>role="img"</code> and an <code>aria-label</code> that says what the chart shows.</li>
+                <li>Create a <code>ChartData</code> with the months as <code>Labels</code> and one <code>BarChartDataset</code> per product in <code>Datasets</code>, each with a <code>Label</code>, one <code>Data</code> value per month and a <code>BackgroundColor</code>.</li>
+                <li>Create <code>BarChartOptions</code> with <code>Responsive = true</code> so the chart resizes with its container.</li>
+                <li>Call <code>InitializeAsync(chartData, barChartOptions)</code> in <code>OnAfterRenderAsync</code> when <code>firstRender</code> is <code>true</code>.</li>
             </ol>
         </div>
-        This demo showcases the essential setup for a bar chart and demonstrates how to bind your data for quick visualization.
     </Block>
-    <Demo Type="typeof(BarChart_Demo_01_Examples)" Tabs="true" />
+    <Demo Type="typeof(BarChart_Demo_01_How_It_Works)" Tabs="true" />
 </SampleSection>
 
 <SampleSection Slug="playground">
@@ -458,7 +457,7 @@
 
 <SampleSection Slug="title-and-subtitle">
     <Block>
-        <code>Plugins.Title</code> and <code>Plugins.Subtitle</code> draw text outside the chart area; Chart.js places the subtitle between the title and the chart. Both are hidden until <code>Display = true</code>, and in this library their text defaults to <code>"black"</code>.
+        <code>Plugins.Title</code> and <code>Plugins.Subtitle</code> draw text outside the chart area; Chart.js places the subtitle between the title and the chart. Both are hidden until <code>Display = true</code>, and in this library their text defaults to <code>"black"</code>; the demo sets <code>Color = null</code> so Chart.js uses its default text color, which stays readable on a dark page when your app sets <code>Chart.defaults.color</code> for its theme.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">

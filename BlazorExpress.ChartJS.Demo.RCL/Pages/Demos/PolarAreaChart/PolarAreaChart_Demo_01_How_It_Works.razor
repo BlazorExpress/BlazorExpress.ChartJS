@@ -1,0 +1,33 @@
+<PolarAreaChart role="img" aria-label="Polar area chart: support tickets received last month by channel" @ref="polarAreaChart" Width="600" />
+
+@code {
+    private PolarAreaChart polarAreaChart = default!;
+    private PolarAreaChartOptions polarAreaChartOptions = default!;
+    private ChartData chartData = default!;
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "Email", "Live chat", "Phone", "Social media", "Community forum" },
+            Datasets = new List<IChartDataset>
+            {
+                new PolarAreaChartDataset
+                {
+                    Label = "Tickets",
+                    Data = new List<double?> { 1240, 860, 520, 310, 190 },
+                    BackgroundColor = ColorUtility.CategoricalTwelveColors.Take(5).Select(color => color.ToColor().ToRgbaString(0.5)).ToList(),
+                },
+            },
+        };
+        polarAreaChartOptions = new PolarAreaChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await polarAreaChart.InitializeAsync(chartData, polarAreaChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

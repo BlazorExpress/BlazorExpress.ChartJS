@@ -20,22 +20,21 @@
 <CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.ScatterChart, Sample)">
 <SampleSection Slug="how-it-works">
     <Block>
-        The <strong>Scatter Chart</strong> component visualizes individual data points as (X, Y) coordinates, making it ideal for displaying relationships or distributions between two numeric variables.
+        The <strong>Scatter Chart</strong> component draws one point per item at its (x, y) position, so you can see how two numbers relate.
+        Here each point is a marketing campaign, with its ad spend on the x-axis and the revenue it brought in on the y-axis, both in thousands of dollars: revenue rises with spend, with some spread between campaigns.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Add the <code>ScatterChart</code> component to your page and set its dimensions (e.g., <code>Width="560"</code>, <code>Height="480"</code>).</li>
-                <li>Prepare your chart data by creating one or more <code>ScatterChartDataset</code> objects, each containing a list of <code>ScatterChartDataPoint</code> instances with X and Y values.</li>
-                <li>Customize the appearance of each dataset using properties like <code>BackgroundColor</code>, <code>BorderColor</code>, and <code>BorderWidth</code>.</li>
-                <li>Configure chart options using the <code>ScatterChartOptions</code> object as needed.</li>
-                <li>Initialize the chart in <code>OnAfterRenderAsync</code> by calling <code>scatterChart.InitializeAsync(chartData, scatterChartOptions)</code>.</li>
-                <li>Refer to the demo code below for practical examples of data preparation, dataset customization, and chart initialization.</li>
+                <li>Add <code>&lt;ScatterChart @@ref="scatterChart" Width="560" Height="480" /&gt;</code> to the page, with <code>role="img"</code> and an <code>aria-label</code> that says what the chart shows.</li>
+                <li>Create a <code>ScatterChartDataset</code> with a <code>Label</code>, a <code>BackgroundColor</code> and <code>BorderColor</code>, and a <code>Data</code> list with one <code>ScatterChartDataPoint(x, y)</code> per campaign.</li>
+                <li>Add the dataset to the <code>Datasets</code> of a <code>ChartData</code> object.</li>
+                <li>Create <code>new ScatterChartOptions { Responsive = true }</code> and name each axis with its unit: <code>Scales.X.Title = new ChartAxesTitle { Display = true, Text = "Ad spend (thousands of $)" }</code>, and the same for <code>Scales.Y</code>. Axis titles are black by default in this library; <code>Color = null</code> uses the Chart.js text color instead.</li>
+                <li>Call <code>scatterChart.InitializeAsync(chartData, scatterChartOptions)</code> in <code>OnAfterRenderAsync</code> when <code>firstRender</code> is <code>true</code>.</li>
             </ol>
         </div>
-        This demo shows how to set up a scatter chart, bind your data, and customize the chart's appearance to fit your application's needs.
     </Block>
-    <Demo Type="typeof(ScatterChart_Demo_01_Examples)" Tabs="true" />
+    <Demo Type="typeof(ScatterChart_Demo_01_How_It_Works)" Tabs="true" />
 </SampleSection>
 
 <SampleSection Slug="playground">
@@ -280,6 +279,7 @@
             <ol>
                 <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "..." }</code>.</li>
                 <li>Set <code>Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "..." }</code>.</li>
+                <li>Set <code>Color = null</code> on both to use the Chart.js text color instead of black, so they stay readable on a dark page.</li>
                 <li>Move them with <code>Position</code> (<code>"top"</code>, <code>"left"</code>, <code>"bottom"</code>, <code>"right"</code>) and <code>Align</code> (<code>"start"</code>, <code>"center"</code>, <code>"end"</code>).</li>
                 <li>Add space with <code>Padding</code>, and set <code>FullSize = false</code> to keep the title within the chart area.</li>
             </ol>

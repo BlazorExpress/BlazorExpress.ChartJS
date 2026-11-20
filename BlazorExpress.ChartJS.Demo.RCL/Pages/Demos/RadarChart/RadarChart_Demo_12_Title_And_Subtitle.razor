@@ -28,9 +28,10 @@
                 Display = true,
                 Text = "Team skills",
                 Position = "top",
+                Color = null, // null keeps Chart.js's theme-aware default text colour
                 Font = new ChartFont { Size = 16 }
             };
-            topOptions.Plugins.Subtitle = new() { Display = true, Text = "Season 2026" };
+            topOptions.Plugins.Subtitle = new() { Display = true, Text = "Season 2026", Color = null };
             await topChart.InitializeAsync(GetChartData(), topOptions);
 
             var leftBottomOptions = new RadarChartOptions();
@@ -39,9 +40,10 @@
                 Display = true,
                 Text = "Team skills",
                 Position = "left",
+                Color = null,
                 Font = new ChartFont { Size = 16 }
             };
-            leftBottomOptions.Plugins.Subtitle = new() { Display = true, Text = "Season 2026", Position = "bottom" };
+            leftBottomOptions.Plugins.Subtitle = new() { Display = true, Text = "Season 2026", Color = null, Position = "bottom" };
             await leftBottomChart.InitializeAsync(GetChartData(), leftBottomOptions);
 
             var startAlignedOptions = new RadarChartOptions();
@@ -52,10 +54,10 @@
                 Align = "start",
                 Padding = new ChartPadding { Top = 10, Bottom = 20 },
                 FullSize = false,
-                Color = "#4046ca",
+                Color = null,
                 Font = new ChartFont { Size = 16 }
             };
-            startAlignedOptions.Plugins.Subtitle = new() { Display = true, Text = "Season 2026", Align = "start", Padding = new ChartPadding { Bottom = 10 } };
+            startAlignedOptions.Plugins.Subtitle = new() { Display = true, Text = "Season 2026", Color = null, Align = "start", Padding = new ChartPadding { Bottom = 10 } };
             await startAlignedChart.InitializeAsync(GetChartData(), startAlignedOptions);
         }
         await base.OnAfterRenderAsync(firstRender);
@@ -69,8 +71,8 @@
             Labels = ["Speed", "Power", "Defense", "Stamina", "Agility", "Skill"],
             Datasets =
             [
-                CreateDataset("Team A", [65, 59, 90, 81, 56, 55], 0),
-                CreateDataset("Team B", [28, 48, 40, 19, 96, 27], 1)
+                CreateDataset("Northside FC", [65, 59, 90, 81, 56, 55], 0),
+                CreateDataset("Riverside FC", [28, 48, 40, 19, 96, 27], 1)
             ]
         };
 

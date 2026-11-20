@@ -39,6 +39,10 @@ else
 
     <h1 class="title is-3 mb-2">@sample.Title</h1>
     <p class="subtitle is-6 mt-1 mb-3">@sample.Description</p>
+    @if (!string.IsNullOrWhiteSpace(sample.UseWhen))
+    {
+        <p class="mb-3"><strong>Use it when</strong> @sample.UseWhen</p>
+    }
 
     <div class="tags mb-4">
         <a class="tag is-warning is-light" href="@DemoRouteConstants.GetSamplesCategoryUrl(sample.Category)">@sample.Category.GetDisplayName()</a>

@@ -1,0 +1,56 @@
+<BubbleChart role="img" aria-label="Bubble chart: average household income and population growth of eight US cities, bubble size by population" @ref="bubbleChart" Width="600" />
+
+@code {
+    private BubbleChart bubbleChart = default!;
+    private BubbleChartOptions bubbleChartOptions = default!;
+    private ChartData chartData = default!;
+
+    protected override void OnInitialized()
+    {
+        var color = ColorUtility.CategoricalTwelveColors[0].ToColor();
+
+        chartData = new ChartData
+        {
+            // the label at each index names the bubble at that index; the tooltip shows it as its title
+            Labels = new List<string> { "New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "San Antonio", "Austin", "Seattle" },
+            Datasets = new List<IChartDataset>
+            {
+                new BubbleChartDataset
+                {
+                    Label = "US cities (bubble size: population)",
+                    // X: income in thousands of dollars, Y: growth in percent, R: radius in pixels, scaled from population
+                    Data = new List<BubbleChartDataPoint>
+                    {
+                        new(76, -6.2, 25),
+                        new(80, -3.6, 14),
+                        new(71, -3.4, 12),
+                        new(60, 0.7, 11),
+                        new(72, 2.9, 9),
+                        new(59, 3.2, 9),
+                        new(89, 1.8, 7),
+                        new(116, 2.4, 7),
+                    },
+                    BackgroundColor = new List<string> { color.ToRgbaString(0.5) },
+                    BorderColor = new List<string> { color.ToRgbString() },
+                    BorderWidth = 1,
+                },
+            },
+        };
+
+        bubbleChartOptions = new BubbleChartOptions { Responsive = true };
+
+        // null keeps Chart.js's theme-aware default text colour
+        // Incomes start near 60, so the x-axis starts at the data rather than at zero.
+        bubbleChartOptions.Scales.X!.BeginAtZero = false;
+        bubbleChartOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Average household income (thousands of USD)", Color = null };
+        bubbleChartOptions.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Population growth, 2020 to 2023 (%)", Color = null };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await bubbleChart.InitializeAsync(chartData, bubbleChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

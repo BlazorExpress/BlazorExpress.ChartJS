@@ -26,6 +26,9 @@ public static partial class SampleCatalog
         new(SampleChartKeys.ScatterChart, "Scatter chart", DemoRouteConstants.Demos_ScatterChart, DemoRouteConstants.Docs_ScatterChart, DemoImageSrcConstants.ScatterChart, BootstrapIconName.GraphUpArrow),
     ];
 
+    // Samples the site published and later removed or merged (rules.md DEMO-002). Their URLs open the replacement or the chart page.
+    private static readonly IReadOnlyList<RetiredSample> retired = [];
+
     // Story 26110206 R-03: these Chart.js samples need a library capability that is not in this release.
     private static readonly IReadOnlyList<UnavailableSample> unavailable =
     [
@@ -54,6 +57,19 @@ public static partial class SampleCatalog
 
     public static SampleChart? GetChart(string? chartKey) =>
         charts.FirstOrDefault(c => c.Key == chartKey);
+
+    /// <summary>
+    /// Where a retired sample URL leads: the replacement sample's URL, or the chart page when the sample was removed.
+    /// <see langword="null" /> when the slug was never retired from that chart page.
+    /// </summary>
+    public static string? GetRetiredTarget(string? chartKey, string? slug)
+    {
+        var entry = retired.FirstOrDefault(r => r.ChartKey == chartKey && string.Equals(r.Slug, slug, StringComparison.OrdinalIgnoreCase));
+        if (entry is null)
+            return null;
+
+        return Find(entry.ChartKey, entry.ReplacementSlug)?.Url ?? GetChart(entry.ChartKey)?.Route;
+    }
 
     /// <summary>The next sample on the same chart page, or <see langword="null" /> after the last one.</summary>
     public static SampleInfo? GetNext(SampleInfo sample) => GetNeighbour(sample, 1);
@@ -99,6 +115,9 @@ public static partial class SampleCatalog
     public static IReadOnlyList<SampleInfo> All => all.Value;
 
     public static IReadOnlyList<SampleChart> Charts => charts;
+
+    /// <summary>The samples the site published and later removed or merged. See <see cref="GetRetiredTarget" />.</summary>
+    public static IReadOnlyList<RetiredSample> Retired => retired;
 
     /// <summary>The Chart.js samples the library cannot express yet, with the capability each waits for.</summary>
     public static IReadOnlyList<UnavailableSample> Unavailable => unavailable;

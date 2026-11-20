@@ -5,11 +5,11 @@
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">No dataset colors, <code>Colors = new() { Enabled = true }</code>: the default gray stays</p>
-        <ScatterChart role="img" aria-label="Scatter chart: Colors plugin (chart 2 of 3)" @ref="enabledChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: Colors plugin, enabled without dataset colors" @ref="enabledChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">No dataset colors, <code>ForceOverride = true</code>: Chart.js palette</p>
-        <ScatterChart role="img" aria-label="Scatter chart: Colors plugin (chart 3 of 3)" @ref="forceOverrideChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: Colors plugin, force override" @ref="forceOverrideChart" />
     </div>
 </div>
 
@@ -50,11 +50,12 @@
 
     private static ChartData GetChartData(bool withColors) => new()
     {
+        // x = hours of study, y = exam score (%), one point per student
         Datasets =
         [
-            CreateDataset("Group A", 0, withColors, [new(5, 12), new(15, 28), new(25, 20), new(35, 42), new(45, 38), new(55, 60)]),
-            CreateDataset("Group B", 1, withColors, [new(10, 40), new(20, 35), new(30, 55), new(40, 48), new(50, 30), new(60, 45)]),
-            CreateDataset("Group C", 2, withColors, [new(8, 62), new(18, 50), new(28, 66), new(38, 58), new(48, 72), new(58, 68)])
+            CreateDataset("Class A", 0, withColors, [new(1, 52), new(2, 58), new(3, 61), new(4, 70), new(5, 68), new(6, 77)]),
+            CreateDataset("Class B", 1, withColors, [new(1, 45), new(2, 55), new(3, 50), new(4, 63), new(5, 72), new(6, 70)]),
+            CreateDataset("Class C", 2, withColors, [new(1, 48), new(2, 51), new(3, 59), new(4, 62), new(5, 66), new(6, 75)])
         ]
     };
 

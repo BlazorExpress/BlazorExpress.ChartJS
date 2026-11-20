@@ -1,0 +1,34 @@
+<DoughnutChart role="img" aria-label="Doughnut chart: a team's monthly budget by category, in dollars" @ref="doughnutChart" Width="600" />
+
+@code {
+    private DoughnutChart doughnutChart = default!;
+    private DoughnutChartOptions doughnutChartOptions = default!;
+    private ChartData chartData = default!;
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "Salaries", "Rent", "Marketing", "Software", "Travel" },
+            Datasets = new List<IChartDataset>
+            {
+                new DoughnutChartDataset
+                {
+                    Label = "Monthly budget ($)",
+                    Data = new List<double?> { 48000, 9500, 6200, 3400, 2100 },
+                    BackgroundColor = Enumerable.Range(0, 5).Select(index => ColorUtility.CategoricalTwelveColors[index].ToColor().ToRgbString()).ToList(),
+                },
+            },
+        };
+
+        doughnutChartOptions = new DoughnutChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await doughnutChart.InitializeAsync(chartData, doughnutChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

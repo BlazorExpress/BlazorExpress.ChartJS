@@ -1,0 +1,45 @@
+<ScatterChart role="img" aria-label="Scatter chart: revenue against ad spend for 12 marketing campaigns" @ref="scatterChart" Width="560" Height="480" />
+
+@code {
+    private ScatterChart scatterChart = default!;
+    private ChartData chartData = default!;
+    private ScatterChartOptions scatterChartOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        var color = ColorUtility.CategoricalTwelveColors[0].ToColor();
+
+        chartData = new ChartData
+        {
+            Datasets = new List<IChartDataset>
+            {
+                new ScatterChartDataset
+                {
+                    Label = "Marketing campaigns",
+                    // one point per campaign: (ad spend, revenue), both in thousands of dollars
+                    Data = new List<ScatterChartDataPoint>
+                    {
+                        new(2.5, 9), new(4, 16), new(6.5, 14), new(8, 27), new(11, 31), new(13.5, 44),
+                        new(16, 38), new(19, 57), new(22.5, 63), new(27, 70), new(33, 91), new(39.5, 102),
+                    },
+                    BackgroundColor = color.ToRgbaString(0.5),
+                    BorderColor = color.ToRgbString(),
+                    BorderWidth = 2,
+                },
+            },
+        };
+
+        scatterChartOptions = new ScatterChartOptions { Responsive = true };
+        // null keeps Chart.js's theme-aware default text colour
+        scatterChartOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Ad spend (thousands of $)", Color = null };
+        scatterChartOptions.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Revenue (thousands of $)", Color = null };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await scatterChart.InitializeAsync(chartData, scatterChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

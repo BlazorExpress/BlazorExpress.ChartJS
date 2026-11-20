@@ -20,22 +20,19 @@
 <CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.PieChart, Sample)">
 <SampleSection Slug="how-it-works">
     <Block>
-        The <strong>Pie Chart</strong> component visualizes categorical data as proportional slices of a circle, making it ideal for showing parts of a whole.
+        A <strong>Pie Chart</strong> shows how a whole splits into parts. This one shows where a website's visits come from: each traffic source is a slice, sized by its share of all visits, and the legend names the sources.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Add the <code>PieChart</code> component to your page and set its dimensions (e.g., <code>Width="600"</code>).</li>
-                <li>Prepare your chart data by specifying <code>Labels</code> for each category and one or more <code>Datasets</code> with values and background colors.</li>
-                <li>Configure chart options such as <code>Responsive</code> and <code>Title</code> using the <code>PieChartOptions</code> object.</li>
-                <li>Initialize the chart in <code>OnAfterRenderAsync</code> by calling <code>pieChart.InitializeAsync(chartData, pieChartOptions)</code>.</li>
-                <li>Use the demo's interactive buttons to randomize data, add datasets, or add new data points dynamically.</li>
-                <li>Refer to the demo code below for practical examples of data preparation, dynamic updates, and chart customization.</li>
+                <li>Add the <code>PieChart</code> component to the page with <code>@@ref</code>, a <code>Width</code>, <code>role="img"</code> and an <code>aria-label</code> that says what the chart shows.</li>
+                <li>Create a <code>ChartData</code> with one label per slice in <code>Labels</code>, and one <code>PieChartDataset</code> whose <code>Data</code> holds a value per label and whose <code>BackgroundColor</code> holds a color per slice.</li>
+                <li>Create <code>PieChartOptions</code> with <code>Responsive = true</code> so the chart resizes with its container.</li>
+                <li>Call <code>pieChart.InitializeAsync(chartData, pieChartOptions)</code> in <code>OnAfterRenderAsync</code> when <code>firstRender</code> is <code>true</code>.</li>
             </ol>
         </div>
-        This demo demonstrates how to set up a pie chart, bind your data, and interactively update the chart to fit your application's needs.
     </Block>
-    <Demo Type="typeof(PieChart_Demo_01_Examples)" Tabs="true" />
+    <Demo Type="typeof(PieChart_Demo_01_How_It_Works)" Tabs="true" />
 </SampleSection>
 
 <SampleSection Slug="playground">
@@ -265,13 +262,13 @@
 
 <SampleSection Slug="title-and-subtitle">
     <Block>
-        <code>Plugins.Title</code> and <code>Plugins.Subtitle</code> draw a title and a smaller line of text, placed by <code>Position</code> and aligned by <code>Align</code>. The subtitle is drawn just after the title on the same side. In this library both default to <code>Color = "black"</code>.
+        <code>Plugins.Title</code> and <code>Plugins.Subtitle</code> draw a title and a smaller line of text, placed by <code>Position</code> and aligned by <code>Align</code>. The subtitle is drawn just after the title on the same side. In this library both default to <code>Color = "black"</code>, which cannot be read on a dark page, so the demo sets <code>Color = null</code> to use the Chart.js default text color (<code>Chart.defaults.color</code>) instead.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Browser share" }</code>.</li>
-                <li>Set <code>Plugins.Subtitle = new() { Display = true, Text = "Visitors in October" }</code>.</li>
+                <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Browser share", Color = null }</code>.</li>
+                <li>Set <code>Plugins.Subtitle = new() { Display = true, Text = "Visitors in October", Color = null }</code>.</li>
                 <li>Use <code>Position</code> (<code>"top"</code>, <code>"left"</code>, <code>"bottom"</code> or <code>"right"</code>) and <code>Align</code> (<code>"start"</code>, <code>"center"</code> or <code>"end"</code>) to place each one.</li>
                 <li>Set <code>Padding = new() { Top = 10, Bottom = 30 }</code> for more space, and <code>FullSize = false</code> to keep the title within the chart area instead of the full canvas width.</li>
             </ol>

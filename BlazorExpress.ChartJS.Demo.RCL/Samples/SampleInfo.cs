@@ -60,6 +60,12 @@ public sealed class SampleInfo
 
     public string Url => DemoRouteConstants.GetSampleUrl(ChartKey, Slug);
 
+    /// <summary>
+    /// The developer's situation the sample answers, completing "Use it when ...", for example
+    /// <c>"a click on a bar should show or act on that bar's value."</c> Shown on the sample page (rules.md DEMO-001, item 1).
+    /// </summary>
+    public string? UseWhen { get; init; }
+
     /// <summary>Whether a demo references a registered JavaScript function (<c>ChartFunction</c>).</summary>
     public bool UsesJsFunction { get; init; }
 

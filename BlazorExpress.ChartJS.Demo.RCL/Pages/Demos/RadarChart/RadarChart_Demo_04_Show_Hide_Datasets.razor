@@ -5,22 +5,22 @@
     {
         <button type="button" class="button is-primary is-small mr-1" @onclick="() => ToggleDatasetAsync(label)">Toggle @label</button>
     }
-    <button type="button" class="button is-warning is-small" @onclick="() => radarChart.HideAsync(datasetLabels.IndexOf(FirstDataset), PointIndex)">Hide Comfort Vehicle A</button>
-    <button type="button" class="button is-info is-small" @onclick="() => radarChart.ShowAsync(datasetLabels.IndexOf(FirstDataset), PointIndex)">Show Comfort Vehicle A</button>
+    <button type="button" class="button is-warning is-small" @onclick="() => radarChart.HideAsync(datasetLabels.IndexOf(FirstDataset), PointIndex)">Hide Sedan Comfort point</button>
+    <button type="button" class="button is-info is-small" @onclick="() => radarChart.ShowAsync(datasetLabels.IndexOf(FirstDataset), PointIndex)">Show Sedan Comfort point</button>
     <button type="button" class="button is-success is-small" @onclick="RefreshWithoutAnimationAsync">Refresh data without animation</button>
 </div>
 
 <p class="mt-3 mb-0">Visible datasets: @visibleDatasetCount of @datasetLabels.Count</p>
 
 @code {
-    private const string FirstDataset = "Vehicle A";
+    private const string FirstDataset = "Sedan";
     private const int PointIndex = 2;
     private RadarChart radarChart = default!;
     private RadarChartOptions radarChartOptions = default!;
     private ChartData chartData = default!;
     private readonly List<string> labels = new() { "Speed", "Reliability", "Comfort", "Safety", "Efficiency" };
-    private readonly List<string> datasetLabels = new() { "Vehicle A", "Vehicle B", "Vehicle C" };
-    private readonly Dictionary<string, string> colors = new() { ["Vehicle A"] = "54, 162, 235", ["Vehicle B"] = "255, 159, 64", ["Vehicle C"] = "75, 192, 192" };
+    private readonly List<string> datasetLabels = new() { "Sedan", "SUV", "Hatchback" };
+    private readonly Dictionary<string, string> colors = new() { ["Sedan"] = "54, 162, 235", ["SUV"] = "255, 159, 64", ["Hatchback"] = "75, 192, 192" };
     private int visibleDatasetCount = 3;
 
     protected override void OnInitialized()

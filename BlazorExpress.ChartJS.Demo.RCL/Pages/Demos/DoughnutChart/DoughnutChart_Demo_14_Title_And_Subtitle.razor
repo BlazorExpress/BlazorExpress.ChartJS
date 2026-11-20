@@ -23,13 +23,14 @@
         if (firstRender)
         {
             var topOptions = new DoughnutChartOptions();
-            topOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Browser share", Position = "top", Font = new ChartFont { Size = 16 } };
-            topOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October" };
+            // null keeps Chart.js's theme-aware default text colour
+            topOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Browser share", Position = "top", Font = new ChartFont { Size = 16 }, Color = null };
+            topOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October", Color = null };
             await doughnutChart1.InitializeAsync(CreateChartData(), topOptions);
 
             var sideOptions = new DoughnutChartOptions();
-            sideOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Browser share", Position = "left" };
-            sideOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October", Position = "bottom" };
+            sideOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Browser share", Position = "left", Color = null };
+            sideOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October", Position = "bottom", Color = null };
             await doughnutChart2.InitializeAsync(CreateChartData(), sideOptions);
 
             var startOptions = new DoughnutChartOptions();
@@ -41,8 +42,9 @@
                 Align = "start",
                 Padding = new() { Top = 10, Bottom = 30 },
                 FullSize = false,
+                Color = null,
             };
-            startOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October", Align = "start" };
+            startOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October", Align = "start", Color = null };
             await doughnutChart3.InitializeAsync(CreateChartData(), startOptions);
         }
 

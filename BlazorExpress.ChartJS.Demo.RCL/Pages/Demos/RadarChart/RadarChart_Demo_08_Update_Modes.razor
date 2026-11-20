@@ -16,7 +16,7 @@
     private RadarChartOptions radarChartOptions = default!;
     private ChartData chartData = default!;
     private readonly List<string> labels = new() { "Speed", "Reliability", "Comfort", "Safety", "Efficiency" };
-    private readonly Dictionary<string, string> colors = new() { ["Vehicle A"] = "54, 162, 235", ["Vehicle B"] = "255, 159, 64" };
+    private readonly Dictionary<string, string> colors = new() { ["Sedan"] = "54, 162, 235", ["SUV"] = "255, 159, 64" };
     private string status = "Animations take 2 seconds here, so there is time to click Stop.";
 
     protected override void OnInitialized()

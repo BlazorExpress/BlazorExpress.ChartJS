@@ -1,0 +1,38 @@
+<BarChart role="img" aria-label="Bar chart: units sold per month, January to June, for laptops, tablets and phones" @ref="barChart" Width="600" />
+
+@code {
+    private BarChart barChart = default!;
+    private BarChartOptions barChartOptions = default!;
+    private ChartData chartData = default!;
+
+    protected override void OnInitialized()
+    {
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "January", "February", "March", "April", "May", "June" },
+            Datasets = new List<IChartDataset>
+            {
+                CreateDataset("Laptops", 0, new List<double?> { 120, 95, 140, 132, 158, 176 }),
+                CreateDataset("Tablets", 1, new List<double?> { 64, 58, 72, 80, 77, 91 }),
+                CreateDataset("Phones", 2, new List<double?> { 185, 162, 170, 194, 188, 200 }),
+            },
+        };
+        barChartOptions = new BarChartOptions { Responsive = true };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await barChart.InitializeAsync(chartData, barChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static BarChartDataset CreateDataset(string label, int colorIndex, List<double?> data) =>
+        new()
+        {
+            Label = label,
+            Data = data,
+            BackgroundColor = new List<string> { ColorUtility.CategoricalTwelveColors[colorIndex].ToColor().ToRgbString() },
+        };
+}
