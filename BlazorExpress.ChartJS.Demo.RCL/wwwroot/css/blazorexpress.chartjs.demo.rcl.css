@@ -1371,22 +1371,140 @@ a.be-sample-card:hover {
     outline: none;
 }
 
-/* Footer column titles are headings for structure, styled as the earlier plain text */
-.be-footer-title {
-    font-weight: inherit;
+/* Footer in two tiers (QF-26112002). The libraries band sits on the page background above the footer, set off from the page
+   by a hairline. The footer below starts with a violet top edge and ends with a bar of project facts. The band is a size
+   container, so it lays out by its own width in every layout, with or without the docs sidebar. */
+.be-footer-libraries {
+    container-type: inline-size;
+    margin-top: 3rem;
+    padding: 2rem 0;
+    border-top: 1px solid var(--bulma-border-weak);
 }
 
-/* Footer panel linking to the team's other libraries: one column on phones, three from Bulma's tablet width */
+/* The heading sits above the cards, and beside them once the band is wide enough for both */
+.be-footer-libraries-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+}
+
+@container (min-width: 58rem) {
+    .be-footer-libraries-layout {
+        grid-template-columns: 12rem minmax(0, 1fr);
+        align-items: center;
+        gap: 1.5rem;
+    }
+}
+
+.be-footer-libraries-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--bulma-text-strong);
+}
+
+.be-footer-libraries-lead {
+    font-size: .875rem;
+}
+
+/* One card per row in a narrow band, three in a row from 44rem */
 .be-footer-libraries-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: .75rem;
 }
 
-@media screen and (min-width: 769px) {
+@container (min-width: 44rem) {
     .be-footer-libraries-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+}
+
+.be-footer {
+    container-type: inline-size;
+    padding-bottom: 1.5rem;
+    border-top: 3px solid #512BD4;
+    border-radius: 0 0 var(--bulma-radius-large) var(--bulma-radius-large);
+}
+
+[data-theme=dark] .be-footer {
+    border-top-color: #8B5CF6;
+}
+
+/* Footer column titles are headings for structure */
+.be-footer-title {
+    margin-bottom: .5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--bulma-text-strong);
+}
+
+.be-footer-tagline {
+    max-width: 22rem;
+    margin-bottom: .75rem;
+    font-size: .875rem;
+}
+
+/* Social links: 36px icon buttons, like the navbar's */
+.be-footer-social {
+    display: flex;
+    gap: .5rem;
+}
+
+    .be-footer-social a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        border: 1px solid var(--bulma-border-weak);
+        border-radius: var(--bulma-radius);
+        background-color: var(--bulma-scheme-main);
+        color: var(--bulma-text-strong);
+    }
+
+        .be-footer-social a:hover {
+            border-color: #512BD4;
+            color: var(--bulma-text-strong);
+        }
+
+        .be-footer-social a:focus-visible {
+            outline: 2px solid var(--bulma-text-strong);
+            outline-offset: 2px;
+        }
+
+/* The bottom bar: license, version and .NET on the left, the credit on the right; they stack when there is no room */
+.be-footer-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: .5rem 1.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--bulma-border-weak);
+    font-size: .875rem;
+}
+
+.be-footer-facts {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+    /* A middle dot between facts, hidden from assistive technology */
+    .be-footer-facts li + li::before {
+        content: "\00B7";
+        content: "\00B7" / "";
+        margin: 0 .5rem;
+    }
+
+/* In a narrow footer the facts stack, one per line without dots, so no line starts with a dot */
+@container (max-width: 30rem) {
+    .be-footer-facts {
+        flex-direction: column;
+    }
+
+        .be-footer-facts li + li::before {
+            content: none;
+        }
 }
 
 .be-footer-library {
