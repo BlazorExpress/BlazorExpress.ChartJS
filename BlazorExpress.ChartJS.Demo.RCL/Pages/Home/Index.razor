@@ -5,13 +5,14 @@
 @* The home page in the Aurora style (story 26111801). The be-home-aurora class also swaps the shared masthead glow for the home palette. *@
 <div class="be-home be-home-aurora">
     <section class="be-home-hero container is-max-desktop">
+        @* The release pill spans the whole hero, above both columns (QF-26112003). *@
+        <a class="be-home-pill" href="@releaseNotesUrl">
+            <span class="be-home-pill-tag">New in @version</span>
+            <span class="be-home-pill-text">@releaseShortDescription</span>
+            <span aria-hidden="true">→</span>
+        </a>
         <div class="be-home-hero-grid">
             <div class="be-home-hero-text">
-                <a class="be-home-pill" href="@releaseNotesUrl">
-                    <span class="be-home-pill-tag">New in @version</span>
-                    <span class="be-home-pill-text">@releaseShortDescription</span>
-                    <span aria-hidden="true">→</span>
-                </a>
                 <h1 class="be-home-title">Chart.js charts for Blazor, <span class="be-home-gradient-text">configured in C#</span></h1>
                 <p class="be-home-lead">@pageDescription</p>
                 <div class="be-home-badges">

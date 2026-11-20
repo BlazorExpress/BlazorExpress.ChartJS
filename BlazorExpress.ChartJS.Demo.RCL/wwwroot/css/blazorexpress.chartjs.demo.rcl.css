@@ -719,12 +719,15 @@ a.be-sample-card:hover {
     align-items: center;
 }
 
-/* The release pill: the tag and the arrow line up with the first line of the text, which may wrap */
+/* The release pill spans the whole hero, above both columns (QF-26112003). The tag and the arrow line up with the
+   first line of the text, which may wrap at tablet widths, and the arrow sits at the right edge. */
 .be-home-pill {
-    display: inline-flex;
+    position: relative;
+    z-index: 1;
+    display: flex;
     align-items: flex-start;
     gap: .625rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     padding: .375rem .75rem .375rem .375rem;
     font-size: .875rem;
     line-height: 1.5rem;
@@ -741,6 +744,10 @@ a.be-sample-card:hover {
 .be-home-pill-text {
     min-width: 0;
 }
+
+    .be-home-pill > [aria-hidden="true"] {
+        margin-left: auto;
+    }
 
 .be-home-pill-tag {
     flex-shrink: 0;
