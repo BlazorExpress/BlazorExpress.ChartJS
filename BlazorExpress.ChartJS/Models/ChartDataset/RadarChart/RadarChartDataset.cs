@@ -10,7 +10,7 @@ public class RadarChartDataset : ChartDataset<double?>
     #region Properties, Indexers
 
     /// <summary>
-    /// Get or sets the line fill color.
+    /// Gets or sets the line fill color.
     /// Use <see cref="BackgroundColorFunction" /> for a registered JavaScript function; when set, it is sent instead of this value.
     /// <para>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
@@ -18,7 +18,7 @@ public class RadarChartDataset : ChartDataset<double?>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("rgba(0, 0, 0, 0.1)")]
-    [Description("Get or sets the line fill color.")]
+    [Description("Gets or sets the line fill color.")]
     [JsonIgnore]
     public string BackgroundColor { get; set; } = "rgba(0, 0, 0, 0.1)";
 
@@ -61,7 +61,7 @@ public class RadarChartDataset : ChartDataset<double?>
     public string BorderCapStyle { get; set; } = "butt";
 
     /// <summary>
-    /// Get or sets the line color.
+    /// Gets or sets the line color.
     /// Use <see cref="BorderColorFunction" /> for a registered JavaScript function; when set, it is sent instead of this value.
     /// <para>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
@@ -69,7 +69,7 @@ public class RadarChartDataset : ChartDataset<double?>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("rgba(0, 0, 0, 0.1)")]
-    [Description("Get or sets the line color.")]
+    [Description("Gets or sets the line color.")]
     [JsonIgnore]
     public string BorderColor { get; set; } = "rgba(0, 0, 0, 0.1)";
 
@@ -150,7 +150,7 @@ public class RadarChartDataset : ChartDataset<double?>
     /// Gets or sets the data labels configuration for the radar chart dataset.
     /// <para>
     /// Use this property to customize the display of data labels, such as their position, format, or
-    /// visibility, in the pie chart dataset. If not set, a default configuration is applied.
+    /// visibility, in the radar chart dataset. If not set, a default configuration is applied.
     /// </para>
     /// <see href="https://chartjs-plugin-datalabels.netlify.app/guide/getting-started.html#configuration" />
     /// </summary>
@@ -294,26 +294,26 @@ public class RadarChartDataset : ChartDataset<double?>
     public double? HoverBorderDashOffset { get; set; }
 
     /// <summary>
-    /// Line joint style.
+    /// Line joint style when hovered.
     /// There are three possible values for this property: 'round', 'bevel', and 'miter'.
     /// <para>
     /// Default value is 'miter'.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
-    [DefaultValue(null)]
-    [Description("Line joint style. There are three possible values for this property: 'round', 'bevel', and 'miter'.")]
+    [DefaultValue("miter")]
+    [Description("Line joint style when hovered. There are three possible values for this property: 'round', 'bevel', and 'miter'.")]
     public string HoverBorderJoinStyle { get; set; } = "miter";
 
     /// <summary>
-    /// The bar border width when hovered (in pixels) when hovered.
+    /// The line width (in pixels) when hovered.
     /// <para>
     /// Default value is <see langword="null" />.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("The bar border width when hovered (in pixels) when hovered.")]
+    [Description("The line width (in pixels) when hovered.")]
     [ParameterTypeName("double?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? HoverBorderWidth { get; set; }
@@ -554,8 +554,7 @@ public class RadarChartDataset : ChartDataset<double?>
 
     /// <summary>
     /// Style of the point.
-    /// Supported values are 'circle', 'cross', 'crossRot', 'dash', 'line', 'rect', 'rectRounded', 'rectRot', 'star', 'triangle' and false.
-    /// the point.
+    /// Supported values are 'circle', 'cross', 'crossRot', 'dash', 'line', 'rect', 'rectRounded', 'rectRot', 'star', and 'triangle'.
     /// <para>
     /// Default value is 'circle'.
     /// </para>
@@ -563,7 +562,7 @@ public class RadarChartDataset : ChartDataset<double?>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("circle")]
-    [Description("Style of the point. Supported values are 'circle', 'cross', 'crossRot', 'dash', 'line', 'rect', 'rectRounded', 'rectRot', 'star', 'triangle' and false.")]
+    [Description("Style of the point. Supported values are 'circle', 'cross', 'crossRot', 'dash', 'line', 'rect', 'rectRounded', 'rectRot', 'star', and 'triangle'.")]
     [ParameterTypeName("List<string>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? PointStyle { get; set; }
@@ -584,8 +583,6 @@ public class RadarChartDataset : ChartDataset<double?>
     /// <summary>
     /// If <see langword="true" />, lines will be drawn between points with no or null data.
     /// If <see langword="false" />, points with null data will create a break in the line.
-    /// Can also be a number specifying the maximum gap length to span.
-    /// The unit of the value depends on the scale used.
     /// <para>
     /// Default value is <see langword="null" />.
     /// </para>

@@ -70,14 +70,14 @@ public class ChartDataset<TData> : IChartDataset
     internal object? ClipValue => (object?)ClipSides ?? Clip;
 
     /// <summary>
-    /// Get or sets the Data.
+    /// Gets or sets the data values of the dataset.
     /// <para>
     /// Default value is <see langword="null"/>.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Get or sets the Data.")]
+    [Description("Gets or sets the data values of the dataset.")]
     [EditorRequired]
     [ParameterTypeName("List<TData>?")]
     [JsonIgnore]
@@ -170,15 +170,15 @@ public class ChartDataset<TData> : IChartDataset
     public string? Stack { get; set; }
 
     /// <summary>
-    /// Gets or sets the chart type.
+    /// Gets the chart type of the dataset, for example <c>"bar"</c>.
     /// <para>
     /// Default value is <see langword="null"/>.
-    /// This value is auto-set based on the chart type.
+    /// Each dataset class sets it to its own chart type.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Gets or sets the chart type. This value is auto-set based on the chart type.")]
+    [Description("Gets the chart type of the dataset, for example \"bar\". Each dataset class sets it to its own chart type.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Type { get; protected set; }
 

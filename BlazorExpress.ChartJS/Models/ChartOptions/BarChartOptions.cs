@@ -35,7 +35,7 @@ public class BarChartOptions : ChartOptions
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
-    [DefaultValue(null)]
+    [DefaultValue("new()")]
     [Description("Gets or sets the interaction options for the bar chart.")]
     public Interaction Interaction { get; set; } = new();
 
@@ -46,7 +46,7 @@ public class BarChartOptions : ChartOptions
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
-    [DefaultValue(null)]
+    [DefaultValue("new()")]
     [Description("Gets or sets the layout options for the bar chart.")]
     [ParameterTypeName("ChartLayout")]
     public ChartLayout Layout { get; set; } = new();
@@ -58,7 +58,7 @@ public class BarChartOptions : ChartOptions
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
-    [DefaultValue(null)]
+    [DefaultValue("new()")]
     [Description("Gets or sets the plugins configuration for the bar chart.")]
     [ParameterTypeName("BarChartPlugins")]
     public BarChartPlugins Plugins { get; set; } = new();
@@ -70,7 +70,7 @@ public class BarChartOptions : ChartOptions
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
-    [DefaultValue(null)]
+    [DefaultValue("new()")]
     [Description("Gets or sets the scales configuration for the bar chart.")]
     public Scales Scales { get; set; } = new();
 

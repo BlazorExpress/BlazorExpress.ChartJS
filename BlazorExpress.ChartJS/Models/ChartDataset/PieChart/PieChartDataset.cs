@@ -142,14 +142,14 @@ public class PieChartDataset : ChartDataset<double?>
     public List<string>? BorderJoinStyle { get; set; } // TODO: change this to enum
 
     /// <summary>
-    /// It is applied to all corners of the arc (outerStart, outerEnd, innerStart, innerRight).
+    /// The arc border radius (in pixels), applied to all corners of the arc (outerStart, outerEnd, innerStart, innerEnd).
     /// <para>
     /// Default value is 0.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(0)]
-    [Description("It is applied to all corners of the arc (outerStart, outerEnd, innerStart, innerRight).")]
+    [Description("The arc border radius (in pixels), applied to all corners of the arc (outerStart, outerEnd, innerStart, innerEnd).")]
     [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? BorderRadius { get; set; }
@@ -281,7 +281,7 @@ public class PieChartDataset : ChartDataset<double?>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Arc border length and spacing of dashes when hovered. ")]
+    [Description("Arc border length and spacing of dashes when hovered.")]
     [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? HoverBorderDash { get; set; }

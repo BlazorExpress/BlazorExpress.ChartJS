@@ -39,7 +39,7 @@ public class ChartDatasetDataLabels
     /// <summary>
     /// Gets or sets the data labels anchor.
     /// <para>
-    /// Default value is <see cref="DataLabelAnchor.None"/>.
+    /// Default value is <see cref="DataLabelAnchor.Center"/>.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]

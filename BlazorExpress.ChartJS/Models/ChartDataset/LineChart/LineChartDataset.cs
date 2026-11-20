@@ -279,7 +279,7 @@ public class LineChartDataset : ChartDataset<double?>
     //https://www.chartjs.org/docs/latest/charts/line.html#general
 
     /// <summary>
-    /// Supported values are 'default', and 'monotone'.
+    /// The cubic interpolation mode of the line. Supported values are 'default' and 'monotone'.
     /// <para>
     /// Default value is 'default'.
     /// </para>
@@ -287,7 +287,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("default")]
-    [Description("Supported values are 'default', and 'monotone'.")]
+    [Description("The cubic interpolation mode of the line. Supported values are 'default' and 'monotone'.")]
     public string CubicInterpolationMode { get; set; } = "default";
 
     /// <summary>
@@ -459,7 +459,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("miter")]
-    [Description("Line joint style. There are three possible values for this property: 'round', 'bevel', and 'miter'.")]
+    [Description("Line joint style when hovered. There are three possible values for this property: 'round', 'bevel', and 'miter'.")]
     public string HoverBorderJoinStyle { get; set; } = "miter";
 
     /// <summary>
@@ -852,7 +852,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(0)]
-    [Description("Bezier curve tension of the line. Set to 0 to draw straightlines. This option is ignored if monotone cubic interpolation is used.")]
+    [Description("Bezier curve tension of the line. Set to 0 to draw straight lines. This option is ignored if monotone cubic interpolation is used.")]
     public double Tension { get; set; }
 
     /// <summary>
@@ -883,7 +883,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
-    [DefaultValue("Default value is 'first x axis'.")]
+    [DefaultValue(null)]
     [Description("The ID of the x-axis to plot this dataset on. Default value is 'first x axis'.")]
     [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -896,7 +896,7 @@ public class LineChartDataset : ChartDataset<double?>
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
-    [DefaultValue("Default value is 'first y axis'.")]
+    [DefaultValue(null)]
     [Description("The ID of the y-axis to plot this dataset on. Default value is 'first y axis'.")]
     [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

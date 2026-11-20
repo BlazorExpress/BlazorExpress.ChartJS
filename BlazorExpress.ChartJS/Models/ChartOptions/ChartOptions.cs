@@ -98,15 +98,15 @@ public class ChartOptions : IChartOptions
     public ChartHover? Hover { get; set; }
 
     /// <summary>
-    /// Gets or sets the locale for the chart.
+    /// Gets or sets the locale for the chart, for example <c>"de-DE"</c>. It is used to format numbers, and the month and weekday names of dates.
     /// <para>
-    /// By default, the chart is using the default locale of the platform which is running on.
+    /// When it is not set, the chart uses the browser's locale.
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/locale.html" />
     /// </summary>
     [AddedVersion("1.0.0")]
-    [DefaultValue("By default, the chart is using the default locale of the platform which is running on.")]
-    [Description("Gets or sets the locale for the chart.")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the locale for the chart, used to format numbers and dates. When it is not set, the chart uses the browser's locale.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [ParameterTypeName("string?")]
     public string? Locale { get; set; }

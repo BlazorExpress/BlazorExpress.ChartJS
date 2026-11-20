@@ -11,7 +11,7 @@
 
 <DemoLink Href="@DemoRouteConstants.Demos_LineChart" />
 
-<Image Src="@imageUrl" class="img-fluid" alt="Blazor Line Chart - API Documentation" />
+<Image Src="@imageUrl" class="img-fluid" alt="Line chart: website visitors and sign-ups per month on two axes" />
 
 <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Parameters" PageUrl="@pageUrl" Link="parameters">
     <DocxTable TItem="LineChart" DocType="DocType.Parameters" />
@@ -205,6 +205,7 @@
         <code>TimeData</code> points on a line, bar, scatter or bubble dataset (each value at its own date). Every date is a <code>ChartTimeValue</code>:
         assign a <code>DateOnly</code>, <code>DateTime</code> or <code>DateTimeOffset</code> directly. Axis limits take dates through <code>MinTime</code>,
         <code>MaxTime</code>, <code>SuggestedMinTime</code> and <code>SuggestedMaxTime</code>.
+        The table shows each value with the formats <code>dd MMM</code> (dates) and <code>HH:mm</code> (times).
     </Block>
     <div class="table-container">
         <table class="table is-bordered is-striped is-fullwidth">
