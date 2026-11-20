@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Step size and limits: <code>StepSize = 5</code> on y, <code>Precision = 0</code> and <code>MaxTicksLimit = 5</code> on x</p>
-        <ScatterChart role="img" aria-label="Scatter chart: Tick options, step size and limits" @ref="stepChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: sign-ups against budget for email and social media campaigns, y ticks every 5 sign-ups and at most 5 x ticks" @ref="stepChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Count and rotation: <code>Count = 5</code> and <code>CrossAlign = "far"</code> on y, <code>AutoSkip = false</code> and <code>MinRotation = 45</code> on x</p>
-        <ScatterChart role="img" aria-label="Scatter chart: Tick options, count and rotation" @ref="countChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: sign-ups against budget for email and social media campaigns, 5 y ticks and rotated x labels" @ref="countChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Font and placement: <code>Mirror = true</code> and <code>Font</code> on y, <code>LabelOffset = 12</code> on x</p>
-        <ScatterChart role="img" aria-label="Scatter chart: Tick options, font and placement" @ref="fontChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: sign-ups against budget for email and social media campaigns, styled tick labels with the y labels inside the chart" @ref="fontChart" />
     </div>
 </div>
 
@@ -58,12 +58,13 @@
 
     #region Data Preparation
 
+    // x: campaign budget in hundreds of dollars, y: sign-ups
     private static ChartData GetChartData() => new()
     {
         Datasets =
         [
-            CreateDataset("Group A", 0, [new(5, 12), new(15, 28), new(25, 20), new(35, 42), new(45, 38), new(55, 60), new(65, 52), new(75, 70)]),
-            CreateDataset("Group B", 1, [new(10, 40), new(20, 35), new(30, 55), new(40, 48), new(50, 30), new(60, 45), new(70, 25), new(80, 35)])
+            CreateDataset("Email campaigns", 0, [new(5, 12), new(15, 28), new(25, 20), new(35, 42), new(45, 38), new(55, 60), new(65, 52), new(75, 70)]),
+            CreateDataset("Social media campaigns", 1, [new(10, 40), new(20, 35), new(30, 55), new(40, 48), new(50, 30), new(60, 45), new(70, 25), new(80, 35)])
         ]
     };
 

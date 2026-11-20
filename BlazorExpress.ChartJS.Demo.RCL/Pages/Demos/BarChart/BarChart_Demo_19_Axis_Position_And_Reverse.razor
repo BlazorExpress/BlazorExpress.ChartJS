@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Position: x <code>Position = "top"</code>, y <code>Position = "right"</code></p>
-        <BarChart role="img" aria-label="Bar chart: Axis position and reverse, position" @ref="positionChart" />
+        <BarChart role="img" aria-label="Bar chart: units sold per month for laptops and tablets, with the x-axis on top and the y-axis on the right" @ref="positionChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Reverse: y <code>Reverse = true</code> (bars hang from the top)</p>
-        <BarChart role="img" aria-label="Bar chart: Axis position and reverse, reverse" @ref="reverseChart" />
+        <BarChart role="img" aria-label="Bar chart: units sold per month for laptops and tablets, with a reversed y-axis so the bars hang from the top" @ref="reverseChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">x <code>Reverse = true</code>, y <code>Display = false</code></p>
-        <BarChart role="img" aria-label="Bar chart: Axis position and reverse (chart 3 of 3)" @ref="hiddenAxisChart" />
+        <BarChart role="img" aria-label="Bar chart: units sold per month for laptops and tablets, months from June to January and no y-axis" @ref="hiddenAxisChart" />
     </div>
 </div>
 
@@ -47,8 +47,8 @@
         Labels = ["January", "February", "March", "April", "May", "June"],
         Datasets =
         [
-            CreateDataset("Product A", 0, [35, 48, 42, 61, 55, 70]),
-            CreateDataset("Product B", 1, [22, 30, 38, 33, 46, 41])
+            CreateDataset("Laptops", 0, [35, 48, 42, 61, 55, 70]),
+            CreateDataset("Tablets", 1, [22, 30, 38, 33, 46, 41])
         ]
     };
 

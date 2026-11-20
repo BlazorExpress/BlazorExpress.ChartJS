@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>SpacingMode = "angular"</code></p>
-        <PolarAreaChart role="img" aria-label="Polar area chart: Spacing mode (chart 1 of 3)" @ref="angularChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: sales by region with angular spacing between slices" @ref="angularChart" />
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>SpacingMode = "proportional"</code> (Chart.js default for polar area)</p>
-        <PolarAreaChart role="img" aria-label="Polar area chart: Spacing mode (chart 2 of 3)" @ref="proportionalChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: sales by region with proportional spacing between slices" @ref="proportionalChart" />
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>SpacingMode = "parallel"</code></p>
-        <PolarAreaChart role="img" aria-label="Polar area chart: Spacing mode (chart 3 of 3)" @ref="parallelChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: sales by region with parallel spacing between slices" @ref="parallelChart" />
     </div>
 </div>
 
@@ -48,8 +48,8 @@
         {
             var c = ColorUtility.CategoricalTwelveColors[index].ToColor();
             backgroundColors.Add(c.ToRgbaString(0.5));
-            borderColors.Add("#ffffff");
-            borderWidths.Add(4);
+            borderColors.Add(c.ToRgbString()); // each slice's own color, so the outline suits light and dark themes
+            borderWidths.Add(2);
         }
 
         return new PolarAreaChartDataset

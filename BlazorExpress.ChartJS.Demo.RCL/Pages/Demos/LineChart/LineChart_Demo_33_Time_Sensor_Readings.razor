@@ -1,4 +1,4 @@
-<LineChart role="img" aria-label="Line chart: Sensor readings" @ref="lineChart" Width="600" />
+<LineChart role="img" aria-label="Line chart: temperature readings from the server room and office sensors between 09:00 and 10:00, each at its own times" @ref="lineChart" Width="600" />
 
 @code {
     private LineChart lineChart = default!;
@@ -7,8 +7,8 @@
 
     protected override void OnInitialized()
     {
-        var sensorAColor = ColorUtility.CategoricalTwelveColors[4].ToColor();
-        var sensorBColor = ColorUtility.CategoricalTwelveColors[5].ToColor();
+        var serverRoomColor = ColorUtility.CategoricalTwelveColors[4].ToColor();
+        var officeColor = ColorUtility.CategoricalTwelveColors[5].ToColor();
 
         chartData = new ChartData
         {
@@ -17,7 +17,7 @@
             {
                 new LineChartDataset
                 {
-                    Label = "Sensor A",
+                    Label = "Server room",
                     TimeData = new List<ChartTimePoint>
                     {
                         new(new DateTime(2026, 1, 5, 9, 0, 0), 21.5),
@@ -25,13 +25,13 @@
                         new(new DateTime(2026, 1, 5, 9, 31, 0), 23.4),
                         new(new DateTime(2026, 1, 5, 9, 48, 0), 23.0),
                     },
-                    BackgroundColor = sensorAColor.ToRgbaString(),
-                    BorderColor = sensorAColor.ToRgbString(),
+                    BackgroundColor = serverRoomColor.ToRgbaString(),
+                    BorderColor = serverRoomColor.ToRgbString(),
                     PointRadius = new List<double> { 4 },
                 },
                 new LineChartDataset
                 {
-                    Label = "Sensor B",
+                    Label = "Office",
                     TimeData = new List<ChartTimePoint>
                     {
                         new(new DateTime(2026, 1, 5, 9, 3, 0), 19.8),
@@ -39,8 +39,8 @@
                         new(new DateTime(2026, 1, 5, 9, 24, 0), null), // no reading: a gap in the line
                         new(new DateTime(2026, 1, 5, 9, 45, 0), 21.0),
                     },
-                    BackgroundColor = sensorBColor.ToRgbaString(),
-                    BorderColor = sensorBColor.ToRgbString(),
+                    BackgroundColor = officeColor.ToRgbaString(),
+                    BorderColor = officeColor.ToRgbString(),
                     PointRadius = new List<double> { 4 },
                 },
             },
@@ -57,7 +57,8 @@
                 TooltipFormat = "HH:mm:ss",
             },
         };
-        lineChartOptions.Scales.Y = new ChartAxes { BeginAtZero = false, Title = new ChartAxesTitle { Display = true, Text = "°C" } };
+        // null keeps Chart.js's theme-aware default text colour
+        lineChartOptions.Scales.Y = new ChartAxes { BeginAtZero = false, Title = new ChartAxesTitle { Display = true, Text = "Temperature (°C)", Color = null } };
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

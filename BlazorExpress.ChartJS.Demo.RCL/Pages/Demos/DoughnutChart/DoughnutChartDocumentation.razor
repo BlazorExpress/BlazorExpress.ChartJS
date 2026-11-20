@@ -58,10 +58,10 @@
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Enable data labels by configuring the chart's plugin options, such as <code>Options.Plugins.Datalabels.Display = true</code>.</li>
-                <li>You can customize the label content, formatting, and position using the available plugin settings.</li>
-                <li>Assign your data and labels as usual to the chart's data model.</li>
-                <li>Refer to the demo code below for a working example and further configuration options.</li>
+                <li>Create one <code>DoughnutChartDataset</code> per ring with the same <code>Labels</code>; the first dataset is the outer ring.</li>
+                <li>Set <code>Datalabels = new() { Anchor = DataLabelAnchor.End }</code> on a dataset to place its labels at the outer edge of each segment, or use <code>DataLabelAnchor.Center</code> or <code>DataLabelAnchor.Start</code>.</li>
+                <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "...", Color = null }</code> to name the chart; <code>Color = null</code> keeps the text readable on light and dark pages.</li>
+                <li>Pass the plugin name when you initialize the chart: <code>InitializeAsync(chartData: chartData, chartOptions: doughnutChartOptions, plugins: new string[] { "ChartDataLabels" })</code>.</li>
             </ol>
         </div>
         Data labels make it easier for users to interpret the chart by showing relevant information directly on each doughnut segment.

@@ -50,11 +50,12 @@ public static partial class SampleCatalog
                 Slug = "dynamic-data",
                 Title = "Dynamic data",
                 Description = "The Scatter Chart component supports dynamic data updates, allowing you to add, remove, or modify data points and datasets at runtime.",
+                UseWhen = "points or whole series arrive while the page is open, for example each new delivery as it is completed.",
                 Category = SampleCategory.InstanceApi,
                 Tags = ["scatter", "updates"],
                 DemoTypes = [typeof(ScatterChart_Demo_02_Dynamic_Data)],
                 ChartJsSampleUrl = null,
-                ApiLinks = [Api("ScatterChartDataset", "scatterchart-dataset-properties"), Api("ScatterChartDatasetData", "scatterchart-dataset-data-properties"), Api("ScatterChartOptions", "scatterchart-options-properties"), Api("ScatterChart parameters", "parameters")],
+                ApiLinks = [Api("ScatterChartDataset", "scatterchart-dataset-properties"), Api("ScatterChartDatasetData", "scatterchart-dataset-data-properties"), Api("ScatterChartOptions", "scatterchart-options-properties"), Api("ScatterChartDataPoint", "scatterchart-data-point-properties"), Api("ChartData", "chart-data-properties"), Api("ChartAxesTitle", "chart-axes-title-properties"), Api("ScatterChart methods", "methods"), Api("ScatterChart parameters", "parameters")],
             },
             new()
             {
@@ -159,12 +160,13 @@ public static partial class SampleCatalog
                 Slug = "multiple-axes",
                 Title = "Multiple axes",
                 Description = "Add a second y-axis or x-axis with Scales.AdditionalAxes and point a dataset at it with YAxisID or XAxisID, so two series with different units share one chart.",
+                UseWhen = "two series measured in different units, such as temperature and units sold, should share one chart.",
                 Category = SampleCategory.Scales,
                 Tags = ["scatter", "axes"],
                 DemoTypes = [typeof(ScatterChart_Demo_10_Multiple_Axes)],
                 IsNewIn200 = true,
-                ChartJsSampleUrl = null,
-                ApiLinks = [Api("ScatterChartDataset", "scatterchart-dataset-properties"), Api("ScatterChartOptions", "scatterchart-options-properties"), Api("Scales", "scales-properties"), Api("ScatterChart parameters", "parameters")],
+                ChartJsSampleUrl = "https://www.chartjs.org/docs/latest/samples/other-charts/scatter-multi-axis.html",
+                ApiLinks = [Api("ScatterChartDataset", "scatterchart-dataset-properties"), Api("ScatterChartOptions", "scatterchart-options-properties"), Api("Scales", "scales-properties"), Api("ChartAxes", "chart-axes-properties"), Api("ChartAxesGrid", "chart-axes-grid-properties"), Api("ChartAxesTitle", "chart-axes-title-properties"), Api("ScatterChart parameters", "parameters")],
             },
             new()
             {
@@ -172,12 +174,13 @@ public static partial class SampleCatalog
                 Slug = "axis-position-and-reverse",
                 Title = "Axis position and reverse",
                 Description = "Move an axis to another edge with Position, flip its direction with Reverse, or hide it with Display = false.",
+                UseWhen = "an axis reads better on another edge, larger values should sit lower, or an axis adds nothing and can be hidden.",
                 Category = SampleCategory.ScaleOptions,
                 Tags = ["scatter", "axes"],
                 DemoTypes = [typeof(ScatterChart_Demo_11_Axis_Position_And_Reverse)],
                 IsNewIn200 = true,
                 ChartJsSampleUrl = null,
-                ApiLinks = [Api("ScatterChartDataset", "scatterchart-dataset-properties"), Api("ScatterChartOptions", "scatterchart-options-properties"), Api("Scales", "scales-properties"), Api("ScatterChart parameters", "parameters")],
+                ApiLinks = [Api("ScatterChartDataset", "scatterchart-dataset-properties"), Api("ScatterChartOptions", "scatterchart-options-properties"), Api("Scales", "scales-properties"), Api("ChartAxes", "chart-axes-properties"), Api("ScatterChart parameters", "parameters")],
             },
             new()
             {
@@ -185,12 +188,13 @@ public static partial class SampleCatalog
                 Slug = "tick-options",
                 Title = "Tick options",
                 Description = "Control how many tick labels a linear axis shows, how they are spaced and how they look with ChartAxesTicks.",
+                UseWhen = "the default tick labels are too many, too few, oddly spaced or hard to read.",
                 Category = SampleCategory.ScaleOptions,
                 Tags = ["scatter", "ticks"],
                 DemoTypes = [typeof(ScatterChart_Demo_12_Tick_Options)],
                 IsNewIn200 = true,
                 ChartJsSampleUrl = "https://www.chartjs.org/docs/latest/samples/scale-options/ticks.html",
-                ApiLinks = [Api("ScatterChartDataset", "scatterchart-dataset-properties"), Api("ScatterChartOptions", "scatterchart-options-properties"), Api("Scales", "scales-properties"), Api("ScatterChart parameters", "parameters")],
+                ApiLinks = [Api("ScatterChartDataset", "scatterchart-dataset-properties"), Api("ScatterChartOptions", "scatterchart-options-properties"), Api("Scales", "scales-properties"), Api("ChartAxes", "chart-axes-properties"), Api("ChartAxesTicks", "chart-axes-ticks-properties"), Api("ChartFont", "chart-font-properties"), Api("ScatterChart parameters", "parameters")],
             },
             new()
             {
@@ -198,12 +202,13 @@ public static partial class SampleCatalog
                 Slug = "axis-title",
                 Title = "Axis title",
                 Description = "Label each axis with ChartAxesTitle.",
+                UseWhen = "readers need to know what each axis measures and in which unit, such as height in centimetres.",
                 Category = SampleCategory.ScaleOptions,
                 Tags = ["scatter", "title", "axes"],
                 DemoTypes = [typeof(ScatterChart_Demo_13_Axis_Title)],
                 IsNewIn200 = true,
                 ChartJsSampleUrl = "https://www.chartjs.org/docs/latest/samples/scale-options/titles.html",
-                ApiLinks = [Api("ScatterChartDataset", "scatterchart-dataset-properties"), Api("ScatterChartOptions", "scatterchart-options-properties"), Api("Scales", "scales-properties"), Api("ScatterChart parameters", "parameters")],
+                ApiLinks = [Api("ScatterChartDataset", "scatterchart-dataset-properties"), Api("ScatterChartOptions", "scatterchart-options-properties"), Api("Scales", "scales-properties"), Api("ChartAxesTitle", "chart-axes-title-properties"), Api("ChartFont", "chart-font-properties"), Api("ChartPadding", "chart-padding-properties"), Api("ScatterChart parameters", "parameters")],
             },
             new()
             {
@@ -211,12 +216,13 @@ public static partial class SampleCatalog
                 Slug = "grace-and-bounds",
                 Title = "Grace and bounds",
                 Description = "Add room beyond the data with Grace, choose whether the axis ends at the data or at a whole tick with Bounds, and stack two axes on one edge with Stack.",
+                UseWhen = "points sit on the edge of the chart, or the axis range should end at the data or at a round number.",
                 Category = SampleCategory.ScaleOptions,
                 Tags = ["scatter", "axes"],
                 DemoTypes = [typeof(ScatterChart_Demo_14_Grace_And_Bounds)],
                 IsNewIn200 = true,
                 ChartJsSampleUrl = "https://www.chartjs.org/docs/latest/samples/scales/linear-min-max-suggested.html",
-                ApiLinks = [Api("ScatterChartDataset", "scatterchart-dataset-properties"), Api("ScatterChartOptions", "scatterchart-options-properties"), Api("Scales", "scales-properties"), Api("ScatterChart parameters", "parameters")],
+                ApiLinks = [Api("ScatterChartDataset", "scatterchart-dataset-properties"), Api("ScatterChartOptions", "scatterchart-options-properties"), Api("Scales", "scales-properties"), Api("ChartAxes", "chart-axes-properties"), Api("ChartAxesBorder", "chart-axes-border-properties"), Api("ScatterChart parameters", "parameters")],
             },
             new()
             {
@@ -308,12 +314,13 @@ public static partial class SampleCatalog
                 Slug = "time-sensor-readings",
                 Title = "Sensor readings over time",
                 Description = "A scatter chart can plot points against a time axis, each point at its own date and time, without any extra script.",
+                UseWhen = "each reading has its own timestamp, such as sensors that report at irregular moments.",
                 Category = SampleCategory.TimeAxis,
                 Tags = ["scatter", "time"],
                 DemoTypes = [typeof(ScatterChart_Demo_21_Time_Sensor_Readings)],
                 IsNewIn200 = true,
                 ChartJsSampleUrl = null,
-                ApiLinks = [Api("ScatterChartDataset", "scatterchart-dataset-properties"), Api("ScatterChartOptions", "scatterchart-options-properties"), Api("Scales", "scales-properties"), Api("ScatterChart parameters", "parameters")],
+                ApiLinks = [Api("ScatterChartDataset", "scatterchart-dataset-properties"), Api("ScatterChartOptions", "scatterchart-options-properties"), Api("Scales", "scales-properties"), Api("ChartTimePoint", "chart-time-point-properties"), Api("ChartAxes", "chart-axes-properties"), Api("ChartAxesTime", "chart-axes-time-properties"), Api("ChartAxesTimeDisplayFormats", "chart-axes-time-display-formats-properties"), Api("ChartAxesTitle", "chart-axes-title-properties"), Api("ScatterChart parameters", "parameters")],
             },
         ];
     }

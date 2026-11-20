@@ -1,4 +1,4 @@
-<LineChart role="img" aria-label="Line chart: Legend point style" @ref="lineChart" Width="600" />
+<LineChart role="img" aria-label="Line chart: monthly visitors from search, social media and email, January to June, each with its own point shape" @ref="lineChart" Width="600" />
 
 <div class="mt-3">
     <button type="button" class="button is-small mr-1 @(usePointStyle ? "is-primary" : null)" @onclick="() => SetUsePointStyleAsync(true)">UsePointStyle = true</button>
@@ -18,9 +18,9 @@
             Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
             Datasets =
             [
-                CreateDataset("Circle", "circle", [12, 19, 14, 22, 17, 25], "0, 114, 178"),      // Okabe–Ito blue
-                CreateDataset("Triangle", "triangle", [8, 11, 16, 13, 21, 18], "213, 94, 0"),    // Okabe–Ito vermillion
-                CreateDataset("Rotated square", "rectRot", [5, 9, 7, 12, 10, 15], "0, 158, 115"), // Okabe–Ito bluish green
+                CreateDataset("Search", "circle", [12, 19, 14, 22, 17, 25], "0, 114, 178"),      // Okabe–Ito blue
+                CreateDataset("Social media", "triangle", [8, 11, 16, 13, 21, 18], "213, 94, 0"), // Okabe–Ito vermillion
+                CreateDataset("Email", "rectRot", [5, 9, 7, 12, 10, 15], "0, 158, 115"),         // Okabe–Ito bluish green
             ]
         };
 

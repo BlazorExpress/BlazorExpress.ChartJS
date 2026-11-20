@@ -1,4 +1,4 @@
-﻿<PieChart role="img" aria-label="Pie chart: Change legend position" @ref="pieChart" Width="600" />
+﻿<PieChart role="img" aria-label="Pie chart: online store revenue by product category, with a legend that can move to any side" @ref="pieChart" Width="600" />
 
 <div class="mt-5">
     <button type="button" class="button is-primary is-small" @onclick="PositionTopAsync"> Position: top </button>
@@ -11,23 +11,28 @@
     private PieChart pieChart = default!;
     private PieChartOptions pieChartOptions = default!;
     private ChartData chartData = default!;
-    private string[]? backgroundColors;
-
-    private int datasetsCount = 0;
-    private int dataLabelsCount = 0;
-
-    private Random random = new();
 
     protected override void OnInitialized()
     {
-        backgroundColors = ColorUtility.CategoricalTwelveColors;
-        chartData = new ChartData { Labels = GetDefaultDataLabels(4), Datasets = GetDefaultDataSets(1) };
+        var labels = new List<string> { "Electronics", "Clothing", "Home and garden", "Sports" };
 
-        pieChartOptions = new();
-        pieChartOptions.Responsive = true;
-        pieChartOptions.Plugins.Title!.Text = "2022 - Sales";
-        pieChartOptions.Plugins.Title.Display = true;
+        chartData = new ChartData
+        {
+            Labels = labels,
+            Datasets = new List<IChartDataset>
+            {
+                new PieChartDataset
+                {
+                    Label = "Revenue ($k)",
+                    Data = new List<double?> { 420, 310, 180, 90 },
+                    BackgroundColor = ColorUtility.CategoricalTwelveColors.Take(labels.Count).ToList(),
+                },
+            },
+        };
 
+        pieChartOptions = new PieChartOptions { Responsive = true };
+        // null keeps Chart.js's theme-aware default text colour
+        pieChartOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Online store revenue by category", Color = null };
         pieChartOptions.Plugins.Legend.Position = "right";
     }
 
@@ -37,6 +42,7 @@
         {
             await pieChart.InitializeAsync(chartData, pieChartOptions);
         }
+
         await base.OnAfterRenderAsync(firstRender);
     }
 
@@ -50,64 +56,4 @@
         pieChartOptions.Plugins.Legend.Position = position;
         await pieChart.UpdateAsync(chartData, pieChartOptions);
     }
-
-    #region Data Preparation
-
-    private List<IChartDataset> GetDefaultDataSets(int numberOfDatasets)
-    {
-        var datasets = new List<IChartDataset>();
-
-        for (var index = 0; index < numberOfDatasets; index++)
-        {
-            datasets.Add(GetRandomPieChartDataset());
-        }
-
-        return datasets;
-    }
-
-    private PieChartDataset GetRandomPieChartDataset()
-    {
-        datasetsCount += 1;
-        return new() { Label = $"Team {datasetsCount}", Data = GetRandomData(), BackgroundColor = GetRandomBackgroundColors() };
-    }
-
-    private List<double?> GetRandomData()
-    {
-        var data = new List<double?>();
-        for (var index = 0; index < dataLabelsCount; index++)
-        {
-            data.Add(random.Next(0, 100));
-        }
-
-        return data;
-    }
-
-    private List<string> GetRandomBackgroundColors()
-    {
-        var colors = new List<string>();
-        for (var index = 0; index < dataLabelsCount; index++)
-        {
-            colors.Add(backgroundColors![index]);
-        }
-
-        return colors;
-    }
-
-    private List<string> GetDefaultDataLabels(int numberOfLabels)
-    {
-        var labels = new List<string>();
-        for (var index = 0; index < numberOfLabels; index++)
-        {
-            labels.Add(GetNextDataLabel());
-            dataLabelsCount += 1;
-        }
-
-        return labels;
-    }
-
-    private string GetNextDataLabel() => $"Product {dataLabelsCount + 1}";
-
-    private string GetNextDataBackgrounfColor() => backgroundColors![dataLabelsCount];
-
-    #endregion  Data Preparation
 }

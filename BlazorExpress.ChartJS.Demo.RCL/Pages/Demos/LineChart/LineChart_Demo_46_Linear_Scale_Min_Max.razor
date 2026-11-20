@@ -1,11 +1,11 @@
 <div class="columns is-multiline">
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">Fixed range: <code>Min = 10</code>, <code>Max = 50</code></p>
-        <LineChart role="img" aria-label="Line chart: Linear scale min and max, fixed range" @ref="fixedChart" />
+        <LineChart role="img" aria-label="Line chart: monthly profit margin in percent for laptops and accessories, January to July, on a fixed 10 to 50 axis" @ref="fixedChart" />
     </div>
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">Suggested range: <code>SuggestedMin = -30</code>, <code>SuggestedMax = 40</code></p>
-        <LineChart role="img" aria-label="Line chart: Linear scale min and max, suggested range" @ref="suggestedChart" />
+        <LineChart role="img" aria-label="Line chart: monthly profit margin in percent for laptops and accessories, January to July, on an axis widened to at least -30 to 40" @ref="suggestedChart" />
     </div>
 </div>
 
@@ -43,14 +43,14 @@
             [
                 new LineChartDataset
                 {
-                    Label = "Inside the range",
+                    Label = "Laptops margin (%)", // stays inside 10 to 50
                     Data = [18, 33, 22, 19, 11, 39, 30],
                     BorderColor = "rgb(0, 114, 178)", // Okabe–Ito blue
                     BackgroundColor = "rgb(0, 114, 178)",
                 },
                 new LineChartDataset
                 {
-                    Label = "Beyond the range",
+                    Label = "Accessories margin (%)", // goes beyond 10 to 50
                     Data = [10, 30, 50, 20, 25, 44, -10],
                     BorderColor = "rgb(213, 94, 0)", // Okabe–Ito vermillion
                     BackgroundColor = "rgb(213, 94, 0)",

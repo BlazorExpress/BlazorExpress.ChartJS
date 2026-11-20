@@ -106,18 +106,16 @@
 
 <SampleSection Slug="tick-configuration">
     <Block>
-        The <strong>Tick configuration</strong> demo shows how to customize the appearance and behavior of axis ticks in the Line Chart component.
+        The <strong>Tick configuration</strong> demo colours the tick labels of each axis and moves the x-axis labels to the start, centre or end of each month. For the number, spacing and size of ticks, see <strong>Tick options</strong>.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Use the <code>Options.Scales.X.Ticks</code> and <code>Options.Scales.Y.Ticks</code> properties to control tick display, such as step size, min/max values, and formatting.</li>
-                <li>You can format tick labels, hide or show specific ticks, and adjust their appearance to improve chart readability.</li>
-                <li>Apply custom logic for tick callbacks to display values in a specific format (e.g., currency, percentage).</li>
-                <li>Refer to the demo code below for practical examples of configuring axis ticks for your data visualization needs.</li>
+                <li>Set <code>Options.Scales.X.Ticks = new ChartAxesTicks { Color = ... }</code>, and the same on <code>Options.Scales.Y</code>, to colour the labels of each axis.</li>
+                <li>Set <code>TicksAlignment = TicksAlignment.Start</code> or <code>TicksAlignment.End</code> on the x-axis ticks to align each label with the start or end of its category; <code>TicksAlignment.Center</code> is the default.</li>
+                <li>Call <code>UpdateAsync</code> after changing the alignment of a chart that is already drawn.</li>
             </ol>
         </div>
-        Customizing tick configuration helps ensure your chart is clear and tailored to your application's requirements.
     </Block>
     <Demo Type="typeof(LineChart_Demo_03_Tick_Configuration)" Tabs="true" />
 </SampleSection>
@@ -129,7 +127,7 @@
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Set the <code>Locale</code> property on the <code>LineChart</code> component to your desired culture code (e.g., <code>"de-DE"</code> for German).</li>
+                <li>Set <code>Locale</code> on the <code>LineChartOptions</code> to your desired culture code (e.g., <code>"de-DE"</code> for German).</li>
                 <li>All number and date labels in the chart will automatically format according to the specified locale, ensuring correct separators, symbols, and date formats.</li>
                 <li>This is especially useful for applications targeting users in different regions, providing a familiar and accessible data presentation.</li>
                 <li>Refer to the demo code below for a working example and additional configuration options.</li>
@@ -325,7 +323,7 @@
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Set <code>Scales.Y.Title = new ChartAxesTitle { Display = true, Text = "Visitors (k)" }</code>.</li>
+                <li>Set <code>Scales.Y.Title = new ChartAxesTitle { Display = true, Text = "Visitors (k)", Color = null }</code>; <code>Color = null</code> uses the Chart.js default text colour instead of black, so the title stays readable on a dark background.</li>
                 <li>Set <code>Color</code> and <code>Font = new ChartFont { Size = 14, Style = "italic" }</code> to style it.</li>
                 <li>Set <code>Padding = 10</code> for the same space above and below, or <code>new ChartPadding { Top = 12, Bottom = 0 }</code>.</li>
                 <li>Set <code>TitleAlignment = TitleAlignment.Start</code> or <code>TitleAlignment.End</code> to move it along the axis.</li>
@@ -345,7 +343,6 @@
                 <li>Set <code>Scales.Y.Grace = "10%"</code> for a share of half the data range (Chart.js measures it from the middle to each end), or <code>Grace = 5</code> for data units.</li>
                 <li>Set <code>Scales.Y.Bounds = "data"</code> to end the axis at the lowest and highest values instead of the nearest ticks.</li>
                 <li>Set <code>SuggestedMax = 100</code> or <code>SuggestedMin</code> for a range the data can still go past; <code>Min</code> and <code>Max</code> fix it.</li>
-                <li>To stack two axes on one edge, give both the same <code>Stack</code> and <code>Position</code>, size them with <code>StackWeight</code>, and set <code>Offset = true</code> for space between them.</li>
             </ol>
         </div>
     </Block>

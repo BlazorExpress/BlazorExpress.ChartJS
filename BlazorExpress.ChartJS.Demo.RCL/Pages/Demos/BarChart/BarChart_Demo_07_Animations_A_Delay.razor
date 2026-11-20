@@ -1,4 +1,4 @@
-<BarChart role="img" aria-label="Bar chart: Animations - Delay" @ref="barChart" Width="600" />
+<BarChart role="img" aria-label="Stacked bar chart: website visitors by browser, split by operating system, drawn after a 1.5 second delay" @ref="barChart" Width="600" />
 
 @code {
     private BarChart barChart = default!;
@@ -46,16 +46,18 @@
 
         barChartOptions = new();
         barChartOptions.Responsive = true;
-        barChartOptions.Interaction = new Interaction { Mode = InteractionMode.Y };
+        barChartOptions.Interaction = new Interaction { Mode = InteractionMode.Index };
 
-        barChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Visitors", Display = true };
-        barChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Browser", Display = true };
+        // null keeps Chart.js's theme-aware default text colour
+        barChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Browser", Display = true, Color = null };
+        barChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Visitors", Display = true, Color = null };
 
         barChartOptions.Scales.X.Stacked = true;
         barChartOptions.Scales.Y.Stacked = true;
 
         barChartOptions.Plugins.Title!.Text = "Operating system";
         barChartOptions.Plugins.Title.Display = true;
+        barChartOptions.Plugins.Title.Color = null;
 
         barChartOptions.Animation = new ChartAnimation { Duration = 1000, Delay = 1500 };
     }

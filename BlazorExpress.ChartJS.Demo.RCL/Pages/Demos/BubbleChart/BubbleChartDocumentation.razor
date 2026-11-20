@@ -222,7 +222,7 @@
         <div class="content">
             <ol>
                 <li>Set <code>Scales.X.Title = new ChartAxesTitle { Display = true, Text = "Height (cm)" }</code>, and the same for <code>Scales.Y</code>.</li>
-                <li>Style it with <code>Color</code> and <code>Font = new ChartFont { Size = 16, Style = "italic" }</code>.</li>
+                <li>Set <code>Color = null</code> to use the Chart.js text color instead of black, so the title stays readable on a dark page, or style it with <code>Color</code> and <code>Font = new ChartFont { Size = 16, Style = "italic" }</code>.</li>
                 <li>Add space with <code>Padding = 10</code>, or on one side with <code>Padding = new() { Top = 8 }</code>.</li>
                 <li>Align it along the axis with <code>TitleAlignment = TitleAlignment.Start</code> or <code>TitleAlignment.End</code>.</li>
             </ol>
@@ -234,7 +234,8 @@
 <SampleSection Slug="grace-and-bounds">
     <Block>
         Add room beyond the data with <code>Grace</code>, so large bubbles at the edge are not cut off, choose whether the axis ends at the data or at a whole tick with <code>Bounds</code>, and stack two axes on one edge with <code>Stack</code>.
-        Chart.js uses <code>Bounds = "ticks"</code> for linear axes; <code>SuggestedMin</code> and <code>SuggestedMax</code> widen the range only when the data does not reach them. Axes in this library start at zero by default, so the demo sets <code>BeginAtZero = false</code> to show grace and bounds at both ends.        <br /><br />
+        Chart.js uses <code>Bounds = "ticks"</code> for linear axes; <code>SuggestedMin</code> and <code>SuggestedMax</code> widen the range only when the data does not reach them. Axes in this library start at zero by default, so the demo sets <code>BeginAtZero = false</code> to show grace and bounds at both ends.
+        <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>

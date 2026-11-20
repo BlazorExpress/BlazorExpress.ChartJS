@@ -1,19 +1,19 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
-        <p class="has-text-weight-semibold mb-2"><code>Propagate = true</code>: Store C fills past the hidden Store B down to Store A</p>
-        <LineChart role="img" aria-label="Line chart: Filler options (chart 1 of 3)" @ref="propagateChart" />
+        <p class="has-text-weight-semibold mb-2"><code>Propagate = true</code>: Airport fills past the hidden Riverside down to Downtown</p>
+        <LineChart role="img" aria-label="Filled line chart: monthly sales of the Downtown, Riverside and Airport stores, with Riverside hidden and Airport filled down to Downtown" @ref="propagateChart" />
     </div>
     <div class="column is-one-third">
-        <p class="has-text-weight-semibold mb-2"><code>Propagate = false</code>: Store C's fill target is hidden, so Store C is not filled</p>
-        <LineChart role="img" aria-label="Line chart: Filler options (chart 2 of 3)" @ref="noPropagateChart" />
+        <p class="has-text-weight-semibold mb-2"><code>Propagate = false</code>: Airport's fill target is hidden, so Airport is not filled</p>
+        <LineChart role="img" aria-label="Filled line chart: monthly sales of the Downtown, Riverside and Airport stores, with Riverside hidden and Airport not filled" @ref="noPropagateChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>DrawTime = "beforeDraw"</code>: the fills are drawn under the grid lines</p>
-        <LineChart role="img" aria-label="Line chart: Filler options (chart 3 of 3)" @ref="drawTimeChart" />
+        <LineChart role="img" aria-label="Filled line chart: monthly sales of the Downtown, Riverside and Airport stores, with the fills drawn under the grid lines" @ref="drawTimeChart" />
     </div>
 </div>
 
-<p class="mt-2">Click <strong>Store B</strong> in a legend to show or hide it.</p>
+<p class="mt-2">Click <strong>Riverside</strong> in a legend to show or hide it.</p>
 
 @code {
     private LineChart propagateChart = default!;
@@ -44,17 +44,17 @@
 
     private static ChartData GetChartData(double fillAlpha)
     {
-        var storeA = CreateDataset("Store A", 0, fillAlpha, [20, 25, 22, 30, 28, 33]);
-        storeA.Fill = "origin"; // fill down to zero
+        var downtown = CreateDataset("Downtown", 0, fillAlpha, [20, 25, 22, 30, 28, 33]);
+        downtown.Fill = "origin"; // fill down to zero
 
-        var storeB = CreateDataset("Store B", 1, fillAlpha, [35, 42, 38, 47, 45, 50]);
-        storeB.Fill = "-1"; // fill to the dataset before it (Store A)
-        storeB.Hidden = true;
+        var riverside = CreateDataset("Riverside", 1, fillAlpha, [35, 42, 38, 47, 45, 50]);
+        riverside.Fill = "-1"; // fill to the dataset before it (Downtown)
+        riverside.Hidden = true;
 
-        var storeC = CreateDataset("Store C", 2, fillAlpha, [50, 58, 55, 62, 60, 68]);
-        storeC.Fill = "-1"; // fill to Store B, which is hidden
+        var airport = CreateDataset("Airport", 2, fillAlpha, [50, 58, 55, 62, 60, 68]);
+        airport.Fill = "-1"; // fill to Riverside, which is hidden
 
-        return new ChartData { Labels = ["January", "February", "March", "April", "May", "June"], Datasets = [storeA, storeB, storeC] };
+        return new ChartData { Labels = ["January", "February", "March", "April", "May", "June"], Datasets = [downtown, riverside, airport] };
     }
 
     private static LineChartDataset CreateDataset(string label, int colorIndex, double fillAlpha, List<double?> data)

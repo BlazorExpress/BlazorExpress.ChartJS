@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Elements.Point</code>: <code>Radius = 5</code>, <code>PointStyle = "rectRot"</code>, <code>HoverRadius = 9</code>; <code>Elements.Line.BorderDash</code></p>
-        <LineChart role="img" aria-label="Line chart: Hover and elements (chart 1 of 3)" @ref="elementsChart" />
+        <LineChart role="img" aria-label="Line chart: Laptops and Tablets sales per month, diamond points and dashed lines" @ref="elementsChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Hover = new() { Mode = Index, Intersect = false }</code>: every point of the month grows, the tooltip still needs a point</p>
-        <LineChart role="img" aria-label="Line chart: Hover and elements (chart 2 of 3)" @ref="hoverChart" />
+        <LineChart role="img" aria-label="Line chart: Laptops and Tablets sales per month, hover highlights the whole month" @ref="hoverChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Events = ["click"]</code>: pointer moves do nothing; click a point to highlight it and open its tooltip</p>
-        <LineChart role="img" aria-label="Line chart: Hover and elements (chart 3 of 3)" @ref="eventsChart" />
+        <LineChart role="img" aria-label="Line chart: Laptops and Tablets sales per month, responds to clicks only" @ref="eventsChart" />
     </div>
 </div>
 

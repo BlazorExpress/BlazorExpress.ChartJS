@@ -147,12 +147,13 @@ public static partial class SampleCatalog
                 Slug = "radial-scale",
                 Title = "Radial scale",
                 Description = "The radar chart draws its values on one radial axis, Scales.R, sent to Chart.js as scales.r.",
+                UseWhen = "scores sit close together and the axis should start at a fixed value, run to a fixed maximum or run in reverse, for example survey scores that all fall between 60 and 100.",
                 Category = SampleCategory.ScaleOptions,
                 Tags = ["radar", "axes"],
                 DemoTypes = [typeof(RadarChart_Demo_09_Radial_Scale)],
                 IsNewIn200 = true,
                 ChartJsSampleUrl = null,
-                ApiLinks = [Api("RadarChartDataset", "radarchart-dataset-properties"), Api("RadarChartOptions", "radarchart-options-properties"), Api("RadialScales", "radial-scales-properties"), Api("RadarChart parameters", "parameters")],
+                ApiLinks = [Api("RadarChartDataset", "radarchart-dataset-properties"), Api("RadarChartOptions", "radarchart-options-properties"), Api("RadialScales", "radial-scales-properties"), Api("ChartRadialAxes", "chart-radial-axes-properties"), Api("ChartAxesTicks", "chart-axes-ticks-properties"), Api("ChartAxesGrid", "chart-axes-grid-properties"), Api("RadarChart parameters", "parameters")],
             },
             new()
             {
@@ -160,12 +161,13 @@ public static partial class SampleCatalog
                 Slug = "angle-lines-and-point-labels",
                 Title = "Angle lines and point labels",
                 Description = "Angle lines run from the center to each label, and point labels name each spoke of the radar.",
+                UseWhen = "the spokes and their labels should stand out, blend in, or be hidden to match your page design.",
                 Category = SampleCategory.ScaleOptions,
                 Tags = ["radar", "axes"],
                 DemoTypes = [typeof(RadarChart_Demo_10_Angle_Lines_And_Point_Labels)],
                 IsNewIn200 = true,
                 ChartJsSampleUrl = null,
-                ApiLinks = [Api("RadarChartDataset", "radarchart-dataset-properties"), Api("RadarChartOptions", "radarchart-options-properties"), Api("RadialScales", "radial-scales-properties"), Api("RadarChart parameters", "parameters")],
+                ApiLinks = [Api("RadarChartDataset", "radarchart-dataset-properties"), Api("RadarChartOptions", "radarchart-options-properties"), Api("RadialScales", "radial-scales-properties"), Api("ChartRadialAxes", "chart-radial-axes-properties"), Api("ChartAxesAngleLines", "chart-axes-angle-lines-properties"), Api("ChartAxesPointLabels", "chart-axes-point-labels-properties"), Api("ChartFont", "chart-font-properties"), Api("RadarChart parameters", "parameters")],
             },
             new()
             {
@@ -173,12 +175,13 @@ public static partial class SampleCatalog
                 Slug = "start-angle",
                 Title = "Start angle",
                 Description = "Scales.R.StartAngle rotates the whole radar, in degrees clockwise from the top.",
+                UseWhen = "a different topic should sit at the top, or the shape should be turned so its labels fit the space around it.",
                 Category = SampleCategory.ScaleOptions,
                 Tags = ["radar"],
                 DemoTypes = [typeof(RadarChart_Demo_11_Start_Angle)],
                 IsNewIn200 = true,
                 ChartJsSampleUrl = null,
-                ApiLinks = [Api("RadarChartDataset", "radarchart-dataset-properties"), Api("RadarChartOptions", "radarchart-options-properties"), Api("RadialScales", "radial-scales-properties"), Api("RadarChart parameters", "parameters")],
+                ApiLinks = [Api("RadarChartDataset", "radarchart-dataset-properties"), Api("RadarChartOptions", "radarchart-options-properties"), Api("RadialScales", "radial-scales-properties"), Api("ChartRadialAxes", "chart-radial-axes-properties"), Api("RadarChart parameters", "parameters")],
             },
             new()
             {
@@ -270,6 +273,7 @@ public static partial class SampleCatalog
                 Slug = "skip-points",
                 Title = "Skip points",
                 Description = "A null value skips a point on a radar chart, and SpanGaps decides whether the line bridges the gap.",
+                UseWhen = "some scores are missing, for example a test that was not run, and the chart should show the gap or join the line across it.",
                 Category = SampleCategory.OtherCharts,
                 Tags = ["radar", "gaps", "missing data"],
                 DemoTypes = [typeof(RadarChart_Demo_18_Skip_Points)],

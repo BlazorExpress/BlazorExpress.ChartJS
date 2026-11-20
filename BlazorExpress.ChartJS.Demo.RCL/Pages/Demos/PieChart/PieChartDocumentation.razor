@@ -58,11 +58,10 @@
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Enable data labels by passing the <code>ChartDataLabels</code> plugin when initializing the chart: <code>plugins: new[] { "ChartDataLabels" }</code>.</li>
-                <li>Customize the position of data labels for each dataset using the <code>Datalabels.Anchor</code> property (e.g., <code>Anchor.End</code> or <code>Anchor.Center</code>).</li>
-                <li>Prepare your chart data and datasets as usual, and bind them to the <code>PieChart</code> component.</li>
-                <li>Use the provided buttons to randomize data or add new data points dynamically, and observe how data labels update automatically.</li>
-                <li>Refer to the demo code below for practical examples of enabling and customizing data labels in your pie charts.</li>
+                <li>Create one <code>PieChartDataset</code> per ring with the same <code>Labels</code>; the first dataset is the outer ring.</li>
+                <li>Set <code>Datalabels = new() { Anchor = DataLabelAnchor.End }</code> on a dataset to place its labels at the outer edge of each slice, or use <code>DataLabelAnchor.Center</code> or <code>DataLabelAnchor.Start</code>.</li>
+                <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "...", Color = null }</code> to name the chart; <code>Color = null</code> keeps the text readable on light and dark pages.</li>
+                <li>Pass the plugin name when you initialize the chart: <code>InitializeAsync(chartData: chartData, chartOptions: pieChartOptions, plugins: new string[] { "ChartDataLabels" })</code>.</li>
             </ol>
         </div>
         Data labels make it easier for users to interpret the chart by showing relevant information directly on each pie slice.
@@ -77,10 +76,9 @@
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Set the legend position using <code>pieChartOptions.Plugins.Legend.Position</code> (e.g., <code>"top"</code>, <code>"right"</code>, <code>"bottom"</code>, or <code>"left"</code>).</li>
-                <li>Update the legend position dynamically by changing this property and calling <code>pieChart.UpdateAsync(chartData, pieChartOptions)</code>.</li>
-                <li>Use the demo's buttons to switch the legend position interactively and see the effect in real time.</li>
-                <li>Refer to the demo code below for practical examples of configuring and updating the legend position in your pie charts.</li>
+                <li>Set <code>pieChartOptions.Plugins.Legend.Position</code> to <code>"top"</code>, <code>"right"</code>, <code>"bottom"</code> or <code>"left"</code> before you call <code>InitializeAsync</code>.</li>
+                <li>To move the legend later, change the same property and call <code>pieChart.UpdateAsync(chartData, pieChartOptions)</code>.</li>
+                <li>Click the buttons below the chart to move the legend to each side.</li>
             </ol>
         </div>
         Adjusting the legend position helps ensure your chart is clear and fits well within your application's design.

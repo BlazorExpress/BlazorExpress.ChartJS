@@ -147,12 +147,13 @@ public static partial class SampleCatalog
                 Slug = "radial-scale",
                 Title = "Radial scale",
                 Description = "The polar area chart sizes each slice on one radial axis, Scales.R, sent to Chart.js as scales.r.",
+                UseWhen = "values sit close together and the slices should be measured on a fixed or reversed range, for example regional sales that all fall between 40 and 80.",
                 Category = SampleCategory.ScaleOptions,
                 Tags = ["polar area", "axes"],
                 DemoTypes = [typeof(PolarAreaChart_Demo_09_Radial_Scale)],
                 IsNewIn200 = true,
                 ChartJsSampleUrl = null,
-                ApiLinks = [Api("PolarAreaChartDataset", "polarareachart-dataset-properties"), Api("PolarAreaChartOptions", "polarareachart-options-properties"), Api("RadialScales", "radial-scales-properties"), Api("PolarAreaChart parameters", "parameters")],
+                ApiLinks = [Api("PolarAreaChartDataset", "polarareachart-dataset-properties"), Api("PolarAreaChartOptions", "polarareachart-options-properties"), Api("RadialScales", "radial-scales-properties"), Api("ChartRadialAxes", "chart-radial-axes-properties"), Api("ChartAxesTicks", "chart-axes-ticks-properties"), Api("ChartAxesGrid", "chart-axes-grid-properties"), Api("PolarAreaChart parameters", "parameters")],
             },
             new()
             {
@@ -160,12 +161,13 @@ public static partial class SampleCatalog
                 Slug = "angle-lines-and-point-labels",
                 Title = "Angle lines and point labels",
                 Description = "Angle lines run from the center outwards between the slices, and point labels name each slice at the edge of the chart.",
+                UseWhen = "readers should see each region's name on the chart itself instead of matching slice colors to the legend.",
                 Category = SampleCategory.ScaleOptions,
                 Tags = ["polar area", "axes"],
                 DemoTypes = [typeof(PolarAreaChart_Demo_10_Angle_Lines_And_Point_Labels)],
                 IsNewIn200 = true,
-                ChartJsSampleUrl = null,
-                ApiLinks = [Api("PolarAreaChartDataset", "polarareachart-dataset-properties"), Api("PolarAreaChartOptions", "polarareachart-options-properties"), Api("RadialScales", "radial-scales-properties"), Api("PolarAreaChart parameters", "parameters")],
+                ChartJsSampleUrl = "https://www.chartjs.org/docs/latest/samples/other-charts/polar-area-center-labels.html",
+                ApiLinks = [Api("PolarAreaChartDataset", "polarareachart-dataset-properties"), Api("PolarAreaChartOptions", "polarareachart-options-properties"), Api("RadialScales", "radial-scales-properties"), Api("ChartRadialAxes", "chart-radial-axes-properties"), Api("ChartAxesAngleLines", "chart-axes-angle-lines-properties"), Api("ChartAxesPointLabels", "chart-axes-point-labels-properties"), Api("ChartFont", "chart-font-properties"), Api("PolarAreaChart parameters", "parameters")],
             },
             new()
             {
@@ -173,12 +175,13 @@ public static partial class SampleCatalog
                 Slug = "start-angle",
                 Title = "Start angle",
                 Description = "Scales.R.StartAngle rotates the slices, in degrees clockwise from the top.",
+                UseWhen = "the first slice should start somewhere other than the top, for example to line the slices up with a map or a compass layout.",
                 Category = SampleCategory.ScaleOptions,
                 Tags = ["polar area"],
                 DemoTypes = [typeof(PolarAreaChart_Demo_11_Start_Angle)],
                 IsNewIn200 = true,
                 ChartJsSampleUrl = null,
-                ApiLinks = [Api("PolarAreaChartDataset", "polarareachart-dataset-properties"), Api("PolarAreaChartOptions", "polarareachart-options-properties"), Api("RadialScales", "radial-scales-properties"), Api("PolarAreaChart parameters", "parameters")],
+                ApiLinks = [Api("PolarAreaChartDataset", "polarareachart-dataset-properties"), Api("PolarAreaChartOptions", "polarareachart-options-properties"), Api("RadialScales", "radial-scales-properties"), Api("ChartRadialAxes", "chart-radial-axes-properties"), Api("ChartAxesPointLabels", "chart-axes-point-labels-properties"), Api("PolarAreaChart parameters", "parameters")],
             },
             new()
             {
@@ -186,6 +189,7 @@ public static partial class SampleCatalog
                 Slug = "spacing-mode",
                 Title = "Spacing mode",
                 Description = "SpacingMode sets how Chart.js measures the gap between slices: \"angular\" keeps an equal angle, \"proportional\" (the Chart.js default for polar area) scales the gap with each slice, and \"parallel\" keeps the edges of neighbouring slices parallel.",
+                UseWhen = "the slices should be separated by a visible gap and you want to choose how that gap is shaped.",
                 Category = SampleCategory.OtherCharts,
                 Tags = ["polar area", "styling"],
                 DemoTypes = [typeof(PolarAreaChart_Demo_12_Spacing_Mode)],

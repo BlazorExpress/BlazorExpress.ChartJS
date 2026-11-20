@@ -1,11 +1,11 @@
 <div class="columns is-multiline">
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">Second y-axis: <code>AdditionalAxes["y1"]</code> on the right, <code>YAxisID = "y1"</code></p>
-        <BarChart role="img" aria-label="Bar chart: Multiple axes, second y-axis" @ref="verticalChart" />
+        <BarChart role="img" aria-label="Bar chart: monthly revenue on the left y-axis and orders on a second y-axis on the right, January to June" @ref="verticalChart" />
     </div>
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">Horizontal bars: <code>AdditionalAxes["x1"]</code> on top, <code>XAxisID = "x1"</code></p>
-        <BarChart role="img" aria-label="Bar chart: Multiple axes, horizontal bars" @ref="horizontalChart" />
+        <BarChart role="img" aria-label="Horizontal bar chart: visitors by traffic source on the bottom x-axis and conversion rate on a second x-axis on top" @ref="horizontalChart" />
     </div>
 </div>
 
@@ -28,7 +28,7 @@
         var options = new BarChartOptions { Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false } };
 
         options.Scales.Y!.Position = "left";
-        options.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Revenue ($k)" };
+        options.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Revenue ($k)", Color = null }; // null keeps Chart.js's theme-aware default text colour
         options.Scales.AdditionalAxes = new()
         {
             ["y1"] = new ChartAxes
@@ -36,7 +36,7 @@
                 Type = ChartAxesType.Linear,
                 Position = "right",
                 Grid = new ChartAxesGrid { DrawOnChartArea = false }, // keep only the grid lines of the left axis
-                Title = new ChartAxesTitle { Display = true, Text = "Orders" }
+                Title = new ChartAxesTitle { Display = true, Text = "Orders", Color = null }
             }
         };
 

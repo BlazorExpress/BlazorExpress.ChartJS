@@ -1,4 +1,4 @@
-<BarChart role="img" aria-label="Bar chart: Locale" @ref="barChart" Width="600" />
+<BarChart role="img" aria-label="Horizontal stacked bar chart: website visitors by browser, split by operating system, with numbers formatted for German (de-DE)" @ref="barChart" Width="600" />
 
 @code {
     private BarChart barChart = default!;
@@ -50,14 +50,16 @@
         barChartOptions.Interaction = new Interaction { Mode = InteractionMode.Y };
         barChartOptions.IndexAxis = "y";
 
-        barChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Visitors", Display = true };
-        barChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Browser", Display = true };
+        // null keeps Chart.js's theme-aware default text colour
+        barChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Visitors", Display = true, Color = null };
+        barChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Browser", Display = true, Color = null };
 
         barChartOptions.Scales.X.Stacked = true;
         barChartOptions.Scales.Y.Stacked = true;
 
         barChartOptions.Plugins.Title!.Text = "Operating system";
         barChartOptions.Plugins.Title.Display = true;
+        barChartOptions.Plugins.Title.Color = null;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

@@ -1,4 +1,4 @@
-﻿<LineChart role="img" aria-label="Line chart: Data labels" @ref="lineChart" Width="800" />
+﻿<LineChart role="img" aria-label="Line chart: monthly visitors by operating system (Windows, macOS, other) in 2019, with each value shown on its point" @ref="lineChart" Width="800" />
 
 @code {
     private LineChart lineChart = default!;
@@ -13,73 +13,62 @@
         var datasets = new List<IChartDataset>();
 
         var dataset1 = new LineChartDataset
-            {
-                Label = "Windows",
-                Data = new List<double?> { 7265791, 5899643, 6317759, 6315641, 5338211, 8496306, 7568556, 8538933, 8274297, 8657298, 7548388, 7764845 },
-                BackgroundColor = colors[0],
-                BorderColor = colors[0],
-                BorderWidth = 2,
-                HoverBorderWidth = 4,
-                // PointBackgroundColor = colors[0],
-                // PointRadius = 3, // show points
-                // PointHoverRadius = 4,
-
-                // datalabels
+        {
+            Label = "Windows",
+            Data = new List<double?> { 7265791, 5899643, 6317759, 6315641, 5338211, 8496306, 7568556, 8538933, 8274297, 8657298, 7548388, 7764845 },
+            BackgroundColor = colors[0],
+            BorderColor = colors[0],
+            BorderWidth = 2,
+            HoverBorderWidth = 4,
+            // labels above the point, on a box in the line's colour
             Datalabels = new() { Alignment = DataLabelAlignment.End, Anchor = DataLabelAnchor.End, BackgroundColor = colors[0] }
-            };
+        };
         datasets.Add(dataset1);
 
         var dataset2 = new LineChartDataset
-            {
-                Label = "macOS",
-                Data = new List<double?> { 1809499, 1816642, 2122410, 1809499, 1850793, 1846743, 1954797, 2391313, 1983430, 2469918, 2633303, 2821149 },
-                BackgroundColor = colors[1],
-                BorderColor = colors[1],
-                BorderWidth = 2,
-                HoverBorderWidth = 4,
-                // PointBackgroundColor = colors[1],
-                // PointRadius = 3, // show points
-                // PointHoverRadius = 4,
-
-                // datalabels
+        {
+            Label = "macOS",
+            Data = new List<double?> { 1809499, 1816642, 2122410, 1809499, 1850793, 1846743, 1954797, 2391313, 1983430, 2469918, 2633303, 2821149 },
+            BackgroundColor = colors[1],
+            BorderColor = colors[1],
+            BorderWidth = 2,
+            HoverBorderWidth = 4,
             Datalabels = new() { Alignment = DataLabelAlignment.End, Anchor = DataLabelAnchor.End, BackgroundColor = colors[1] }
-            };
+        };
         datasets.Add(dataset2);
 
         var dataset3 = new LineChartDataset
-            {
-                Label = "Other",
-                Data = new List<double?> { 1081241, 1100363, 1118136, 1073255, 1120315, 1395736, 1488788, 1489466, 1489947, 1414739, 1735811, 1820171 },
-                BackgroundColor = colors[2],
-                BorderColor = colors[2],
-                BorderWidth = 2,
-                HoverBorderWidth = 4,
-                // PointBackgroundColor = colors[2],
-                // PointRadius = 3, // show points
-                // PointHoverRadius = 4,
-
-                // datalabels
+        {
+            Label = "Other",
+            Data = new List<double?> { 1081241, 1100363, 1118136, 1073255, 1120315, 1395736, 1488788, 1489466, 1489947, 1414739, 1735811, 1820171 },
+            BackgroundColor = colors[2],
+            BorderColor = colors[2],
+            BorderWidth = 2,
+            HoverBorderWidth = 4,
+            // labels below the point, so they don't overlap the macOS labels
             Datalabels = new() { Alignment = DataLabelAlignment.Start, Anchor = DataLabelAnchor.Start, BackgroundColor = colors[2] }
-            };
+        };
         datasets.Add(dataset3);
 
         chartData = new ChartData
-            {
-                Labels = labels,
-                Datasets = datasets
-            };
+        {
+            Labels = labels,
+            Datasets = datasets
+        };
 
         lineChartOptions = new();
         lineChartOptions.Responsive = true;
         lineChartOptions.Interaction = new Interaction { Mode = InteractionMode.Index };
 
-        lineChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "2019", Display = true };
-        lineChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Visitors", Display = true };
+        // null keeps Chart.js's theme-aware default text colour
+        lineChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "2019", Display = true, Color = null };
+        lineChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Visitors", Display = true, Color = null };
 
         lineChartOptions.Plugins.Title!.Text = "Operating system";
         lineChartOptions.Plugins.Title.Display = true;
+        lineChartOptions.Plugins.Title.Color = null;
 
-        // datalabels
+        // white text on the coloured label boxes
         lineChartOptions.Plugins.Datalabels.Color = "white";
     }
 

@@ -1,4 +1,4 @@
-<BarChart role="img" aria-label="Bar chart: Horizontal bar chart" @ref="barChart" Width="600" />
+<BarChart role="img" aria-label="Horizontal bar chart: website visitors by browser" @ref="barChart" Width="600" />
 
 @code {
     private BarChart barChart = default!;
@@ -26,8 +26,9 @@
         barChartOptions.Interaction = new Interaction { Mode = InteractionMode.Y };
         barChartOptions.IndexAxis = "y";
 
-        barChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Visitors", Display = true };
-        barChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Browser", Display = true };
+        // null keeps Chart.js's theme-aware default text colour
+        barChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Visitors", Display = true, Color = null };
+        barChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Browser", Display = true, Color = null };
 
         barChartOptions.Plugins.Legend.Display = false;
     }

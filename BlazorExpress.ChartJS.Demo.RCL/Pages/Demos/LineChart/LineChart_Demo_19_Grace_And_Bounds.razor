@@ -1,19 +1,15 @@
 <div class="columns is-multiline">
-    <div class="column is-half">
+    <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">y <code>Grace = "10%"</code>: 10% of half the data range added above and below</p>
-        <LineChart role="img" aria-label="Line chart: Grace and bounds (chart 1 of 4)" @ref="gracePercentChart" />
+        <LineChart role="img" aria-label="Line chart: monthly visitors, January to June, with 10% extra space above and below the line" @ref="gracePercentChart" />
     </div>
-    <div class="column is-half">
+    <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">y <code>Grace = 5</code>: 5 data units added above and below</p>
-        <LineChart role="img" aria-label="Line chart: Grace and bounds (chart 2 of 4)" @ref="graceUnitsChart" />
+        <LineChart role="img" aria-label="Line chart: monthly visitors, January to June, with 5 visitors of extra space above and below the line" @ref="graceUnitsChart" />
     </div>
-    <div class="column is-half">
+    <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">y <code>Bounds = "data"</code> (ends at the lowest point, not a tick), <code>SuggestedMax = 100</code></p>
-        <LineChart role="img" aria-label="Line chart: Grace and bounds (chart 3 of 4)" @ref="boundsChart" />
-    </div>
-    <div class="column is-half">
-        <p class="has-text-weight-semibold mb-2">Stacked axes: <code>Stack = "demo"</code>, <code>StackWeight</code> 2 and 1, <code>Offset = true</code></p>
-        <LineChart role="img" aria-label="Line chart: Grace and bounds, stacked axes" @ref="stackedAxesChart" />
+        <LineChart role="img" aria-label="Line chart: monthly visitors, January to June, with the y-axis from the lowest value up to 100" @ref="boundsChart" />
     </div>
 </div>
 
@@ -21,7 +17,6 @@
     private LineChart gracePercentChart = default!;
     private LineChart graceUnitsChart = default!;
     private LineChart boundsChart = default!;
-    private LineChart stackedAxesChart = default!;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -42,30 +37,9 @@
             boundsOptions.Scales.Y!.SuggestedMin = 30; // ignored: the data already goes lower (23)
             boundsOptions.Scales.Y!.SuggestedMax = 100; // extends the axis above the highest point (83)
 
-            // y and y2 share the left edge: y takes 2/3 of the height, y2 the other 1/3
-            var stackedAxesOptions = new LineChartOptions();
-            stackedAxesOptions.Scales.Y!.Position = "left";
-            stackedAxesOptions.Scales.Y!.Stack = "demo";
-            stackedAxesOptions.Scales.Y!.StackWeight = 2;
-            stackedAxesOptions.Scales.Y!.Offset = true;
-            stackedAxesOptions.Scales.Y!.Border = new ChartAxesBorder { Color = ColorUtility.CategoricalTwelveColors[0] };
-            stackedAxesOptions.Scales.AdditionalAxes = new()
-            {
-                ["y2"] = new ChartAxes
-                {
-                    Type = ChartAxesType.Linear,
-                    Position = "left",
-                    Stack = "demo",
-                    StackWeight = 1,
-                    Offset = true, // extra space between the two stacked axes
-                    Border = new ChartAxesBorder { Color = ColorUtility.CategoricalTwelveColors[1] }
-                }
-            };
-
             await gracePercentChart.InitializeAsync(GetChartData([23, 41, 37, 83, 52, 66]), gracePercentOptions);
             await graceUnitsChart.InitializeAsync(GetChartData([23, 41, 37, 83, 52, 66]), graceUnitsOptions);
             await boundsChart.InitializeAsync(GetChartData([23, 41, 37, 83, 52, 66]), boundsOptions);
-            await stackedAxesChart.InitializeAsync(GetStackedChartData(), stackedAxesOptions);
         }
         await base.OnAfterRenderAsync(firstRender);
     }
@@ -79,16 +53,6 @@
         Labels = labels.ToList(),
         Datasets = [CreateDataset("Visitors", 0, data)]
     };
-
-    private static ChartData GetStackedChartData()
-    {
-        var visitors = CreateDataset("Visitors (y)", 0, [23, 41, 37, 83, 52, 66]);
-
-        var signUps = CreateDataset("Sign-ups (y2)", 1, [4, 7, 5, 9, 6, 8]);
-        signUps.YAxisID = "y2";
-
-        return new ChartData { Labels = labels.ToList(), Datasets = [visitors, signUps] };
-    }
 
     private static LineChartDataset CreateDataset(string label, int colorIndex, List<double?> data)
     {

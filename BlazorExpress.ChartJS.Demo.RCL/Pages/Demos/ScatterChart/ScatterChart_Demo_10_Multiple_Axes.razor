@@ -1,11 +1,11 @@
 <div class="columns is-multiline">
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">Second y-axis on the right: <code>AdditionalAxes["y1"]</code> and <code>YAxisID = "y1"</code></p>
-        <ScatterChart role="img" aria-label="Scatter chart: Multiple axes, second y-axis on the right" @ref="rightAxisChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: daily temperature and ice creams sold over 16 days, with ice cream sales on a second y-axis on the right" @ref="rightAxisChart" />
     </div>
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">Second x-axis on top: <code>AdditionalAxes["x1"]</code> and <code>XAxisID = "x1"</code></p>
-        <ScatterChart role="img" aria-label="Scatter chart: Multiple axes, second x-axis on top" @ref="topAxisChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: elapsed time against distance for a run tracked in kilometres and a run tracked in miles, with miles on a second x-axis on top" @ref="topAxisChart" />
     </div>
 </div>
 
@@ -17,10 +17,11 @@
 
     protected override void OnInitialized()
     {
-        // left y-axis for temperature, right y1-axis for sales
+        // left y-axis for temperature, right y1-axis for ice cream sales
         rightAxisOptions = new ScatterChartOptions();
-        rightAxisOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Day" };
-        rightAxisOptions.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Temperature" };
+        // null keeps Chart.js's theme-aware default text colour
+        rightAxisOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Day of month", Color = null };
+        rightAxisOptions.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Temperature (°C)", Color = null };
         rightAxisOptions.Scales.AdditionalAxes = new()
         {
             ["y1"] = new ChartAxes
@@ -28,14 +29,14 @@
                 Type = ChartAxesType.Linear,
                 Position = "right",
                 Grid = new ChartAxesGrid { DrawOnChartArea = false }, // only the left axis draws grid lines
-                Title = new ChartAxesTitle { Display = true, Text = "Sales (units)" }
+                Title = new ChartAxesTitle { Display = true, Text = "Ice creams sold", Color = null }
             }
         };
 
         // bottom x-axis in kilometres, top x1-axis in miles
         topAxisOptions = new ScatterChartOptions();
-        topAxisOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Run A (km)" };
-        topAxisOptions.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Minutes" };
+        topAxisOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Distance (km)", Color = null };
+        topAxisOptions.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Elapsed time (minutes)", Color = null };
         topAxisOptions.Scales.AdditionalAxes = new()
         {
             ["x1"] = new ChartAxes
@@ -43,7 +44,7 @@
                 Type = ChartAxesType.Linear,
                 Position = "top",
                 Grid = new ChartAxesGrid { DrawOnChartArea = false },
-                Title = new ChartAxesTitle { Display = true, Text = "Run B (miles)" }
+                Title = new ChartAxesTitle { Display = true, Text = "Distance (miles)", Color = null }
             }
         };
     }
@@ -62,9 +63,9 @@
 
     private static ChartData GetRightAxisChartData()
     {
-        var temperature = CreateDataset("Temperature", 0, [new(1, 18), new(3, 21), new(5, 24), new(7, 27), new(9, 30), new(11, 26), new(13, 22), new(15, 19)]);
+        var temperature = CreateDataset("Temperature (°C)", 0, [new(1, 18), new(3, 21), new(5, 24), new(7, 27), new(9, 30), new(11, 26), new(13, 22), new(15, 19)]);
 
-        var sales = CreateDataset("Sales", 1, [new(2, 120), new(4, 180), new(6, 260), new(8, 340), new(10, 420), new(12, 300), new(14, 210), new(16, 150)]);
+        var sales = CreateDataset("Ice creams sold", 1, [new(2, 120), new(4, 180), new(6, 260), new(8, 340), new(10, 420), new(12, 300), new(14, 210), new(16, 150)]);
         sales.YAxisID = "y1";
 
         return new ChartData { Datasets = [temperature, sales] };
@@ -72,9 +73,9 @@
 
     private static ChartData GetTopAxisChartData()
     {
-        var runA = CreateDataset("Run A (km)", 2, [new(2, 10), new(4, 21), new(6, 33), new(8, 44), new(10, 57)]);
+        var runA = CreateDataset("Saturday run (km)", 2, [new(2, 10), new(4, 21), new(6, 33), new(8, 44), new(10, 57)]);
 
-        var runB = CreateDataset("Run B (miles)", 3, [new(1, 9), new(2, 18), new(3, 28), new(4, 39), new(5, 50)]);
+        var runB = CreateDataset("Sunday run (miles)", 3, [new(1, 9), new(2, 18), new(3, 28), new(4, 39), new(5, 50)]);
         runB.XAxisID = "x1";
 
         return new ChartData { Datasets = [runA, runB] };

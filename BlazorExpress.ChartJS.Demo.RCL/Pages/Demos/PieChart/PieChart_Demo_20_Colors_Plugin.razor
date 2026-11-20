@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="mb-2"><code>Colors = new() { Enabled = true }</code>, dataset sets no colors: Chart.js palette</p>
-        <PieChart role="img" aria-label="Pie chart: Colors plugin (chart 1 of 3)" @ref="pieChart1" />
+        <PieChart role="img" aria-label="Pie chart: browser share of visitors, in the Chart.js palette" @ref="pieChart1" />
     </div>
     <div class="column is-one-third">
         <p class="mb-2"><code>Colors = new() { Enabled = false }</code>, dataset sets no colors: Chart.js grey</p>
-        <PieChart role="img" aria-label="Pie chart: Colors plugin (chart 2 of 3)" @ref="pieChart2" />
+        <PieChart role="img" aria-label="Pie chart: browser share of visitors, all in default grey" @ref="pieChart2" />
     </div>
     <div class="column is-one-third">
         <p class="mb-2"><code>Colors = new() { ForceOverride = true }</code>: the palette replaces the dataset colors</p>
-        <PieChart role="img" aria-label="Pie chart: Colors plugin (chart 3 of 3)" @ref="pieChart3" />
+        <PieChart role="img" aria-label="Pie chart: browser share of visitors, palette replaces set colors" @ref="pieChart3" />
     </div>
 </div>
 

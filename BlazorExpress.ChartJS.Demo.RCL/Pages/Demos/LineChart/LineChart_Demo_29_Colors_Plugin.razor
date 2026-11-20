@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Colors = new() { Enabled = true }</code> only: line datasets send a default grey, so the palette does not apply</p>
-        <LineChart role="img" aria-label="Line chart: Colors plugin (chart 1 of 3)" @ref="enabledChart" />
+        <LineChart role="img" aria-label="Line chart: Laptops, Tablets and Monitors sales per month, all in default grey" @ref="enabledChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>ForceOverride = true</code>, datasets without colors: Chart.js palette</p>
-        <LineChart role="img" aria-label="Line chart: Colors plugin (chart 2 of 3)" @ref="forceOverrideChart" />
+        <LineChart role="img" aria-label="Line chart: Laptops, Tablets and Monitors sales per month, in the Chart.js palette" @ref="forceOverrideChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>ForceOverride = true</code>: the palette replaces colors set on the datasets</p>
-        <LineChart role="img" aria-label="Line chart: Colors plugin (chart 3 of 3)" @ref="replaceColorsChart" />
+        <LineChart role="img" aria-label="Line chart: Laptops, Tablets and Monitors sales per month, palette replaces set colors" @ref="replaceColorsChart" />
     </div>
 </div>
 

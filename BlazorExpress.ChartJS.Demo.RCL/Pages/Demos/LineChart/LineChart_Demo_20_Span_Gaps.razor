@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Default: the line breaks at each <code>null</code> value</p>
-        <LineChart role="img" aria-label="Line chart: Span gaps, default" @ref="defaultChart" />
+        <LineChart role="img" aria-label="Line chart: daily temperature, 1 to 9 March, with breaks in the line on the days without a reading" @ref="defaultChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>SpanGaps = true</code>: the line is drawn across the <code>null</code> values</p>
-        <LineChart role="img" aria-label="Line chart: Span gaps (chart 2 of 3)" @ref="spanGapsChart" />
+        <LineChart role="img" aria-label="Line chart: daily temperature, 1 to 9 March, with the line joined across the days without a reading" @ref="spanGapsChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>MaxSpanGap = 1</code> on a linear x-axis: breaks where days are missing</p>
-        <LineChart role="img" aria-label="Line chart: Span gaps (chart 3 of 3)" @ref="maxSpanGapChart" />
+        <LineChart role="img" aria-label="Line chart: daily temperature in March on a numeric day axis, with breaks where days are missing" @ref="maxSpanGapChart" />
     </div>
 </div>
 
@@ -22,20 +22,21 @@
     {
         if (firstRender)
         {
-            var defaultDataset = CreateDataset("Readings", 0, [12, 15, null, 18, 21, null, null, 17, 19]);
+            var defaultDataset = CreateDataset("Temperature (°C)", 0, [12, 15, null, 18, 21, null, null, 17, 19]);
 
-            var spanGapsDataset = CreateDataset("Readings", 1, [12, 15, null, 18, 21, null, null, 17, 19]);
+            var spanGapsDataset = CreateDataset("Temperature (°C)", 1, [12, 15, null, 18, 21, null, null, 17, 19]);
             spanGapsDataset.SpanGaps = true;
 
             // the x values come from the labels; days 4, 7 and 8 have no reading at all
-            var maxSpanGapDataset = CreateDataset("Readings", 2, [12, 15, 14, 18, 21, 17, 19]);
+            var maxSpanGapDataset = CreateDataset("Temperature (°C)", 2, [12, 15, 14, 18, 21, 17, 19]);
             maxSpanGapDataset.MaxSpanGap = 1; // join points at most 1 day apart; sent as spanGaps
 
             var maxSpanGapOptions = new LineChartOptions();
             maxSpanGapOptions.Scales.X!.Type = ChartAxesType.Linear;
             maxSpanGapOptions.Scales.X!.BeginAtZero = false;
             maxSpanGapOptions.Scales.X!.Ticks = new ChartAxesTicks { StepSize = 1 };
-            maxSpanGapOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Day" };
+            // null keeps Chart.js's theme-aware default text colour
+            maxSpanGapOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Day of March", Color = null };
 
             await defaultChart.InitializeAsync(new ChartData { Labels = GetDayLabels(), Datasets = [defaultDataset] }, new LineChartOptions());
             await spanGapsChart.InitializeAsync(new ChartData { Labels = GetDayLabels(), Datasets = [spanGapsDataset] }, new LineChartOptions());
@@ -46,7 +47,7 @@
 
     #region Data Preparation
 
-    private static List<string> GetDayLabels() => ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7", "Day 8", "Day 9"];
+    private static List<string> GetDayLabels() => ["1 Mar", "2 Mar", "3 Mar", "4 Mar", "5 Mar", "6 Mar", "7 Mar", "8 Mar", "9 Mar"];
 
     private static LineChartDataset CreateDataset(string label, int colorIndex, List<double?> data)
     {

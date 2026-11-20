@@ -1,4 +1,4 @@
-﻿<LineChart role="img" aria-label="Line chart: Locale" @ref="lineChart" Width="600" />
+﻿<LineChart role="img" aria-label="Line chart: monthly visitors by operating system (Windows, macOS, other) in 2019, with numbers in German format" @ref="lineChart" Width="600" />
 
 @code {
     private LineChart lineChart = default!;
@@ -20,9 +20,6 @@
             BorderColor = colors[0],
             BorderWidth = 2,
             HoverBorderWidth = 4,
-            // PointBackgroundColor = colors[0],
-            // PointRadius = 0, // hide points
-            // PointHoverRadius = 4,
         };
         datasets.Add(dataset1);
 
@@ -34,9 +31,6 @@
             BorderColor = colors[1],
             BorderWidth = 2,
             HoverBorderWidth = 4,
-            // PointBackgroundColor = colors[1],
-            // PointRadius = 0, // hide points
-            // PointHoverRadius = 4,
         };
         datasets.Add(dataset2);
 
@@ -48,24 +42,23 @@
             BorderColor = colors[2],
             BorderWidth = 2,
             HoverBorderWidth = 4,
-            // PointBackgroundColor = colors[2],
-            // PointRadius = 0, // hide points
-            // PointHoverRadius = 4,
         };
         datasets.Add(dataset3);
 
         chartData = new ChartData { Labels = labels, Datasets = datasets };
 
         lineChartOptions = new();
-        lineChartOptions.Locale = "de-DE";
+        lineChartOptions.Locale = "de-DE"; // ticks and tooltips show 7.265.791 instead of 7,265,791
         lineChartOptions.Responsive = true;
         lineChartOptions.Interaction = new Interaction { Mode = InteractionMode.Index };
 
-        lineChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "2019", Display = true };
-        lineChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Visitors", Display = true };
+        // null keeps Chart.js's theme-aware default text colour
+        lineChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "2019", Display = true, Color = null };
+        lineChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Visitors", Display = true, Color = null };
 
         lineChartOptions.Plugins.Title!.Text = "Operating system";
         lineChartOptions.Plugins.Title.Display = true;
+        lineChartOptions.Plugins.Title.Color = null;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

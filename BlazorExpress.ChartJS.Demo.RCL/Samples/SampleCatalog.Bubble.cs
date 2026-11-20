@@ -147,12 +147,13 @@ public static partial class SampleCatalog
                 Slug = "multiple-axes",
                 Title = "Multiple axes",
                 Description = "Add a second y-axis or x-axis with Scales.AdditionalAxes and point a dataset at it with YAxisID or XAxisID, so two series with different units share one chart.",
+                UseWhen = "two series measured in different units, such as temperature and units sold, should share one chart.",
                 Category = SampleCategory.Scales,
                 Tags = ["bubble", "axes"],
                 DemoTypes = [typeof(BubbleChart_Demo_09_Multiple_Axes)],
                 IsNewIn200 = true,
                 ChartJsSampleUrl = null,
-                ApiLinks = [Api("BubbleChartDataset", "bubblechart-dataset-properties"), Api("BubbleChartOptions", "bubblechart-options-properties"), Api("Scales", "scales-properties"), Api("BubbleChart parameters", "parameters")],
+                ApiLinks = [Api("BubbleChartDataset", "bubblechart-dataset-properties"), Api("BubbleChartOptions", "bubblechart-options-properties"), Api("Scales", "scales-properties"), Api("ChartAxes", "chart-axes-properties"), Api("ChartAxesGrid", "chart-axes-grid-properties"), Api("ChartAxesTitle", "chart-axes-title-properties"), Api("BubbleChart parameters", "parameters")],
             },
             new()
             {
@@ -160,12 +161,13 @@ public static partial class SampleCatalog
                 Slug = "axis-position-and-reverse",
                 Title = "Axis position and reverse",
                 Description = "Move an axis to another edge with Position, flip its direction with Reverse, or hide it with Display = false.",
+                UseWhen = "an axis reads better on another edge, larger values should sit lower, or an axis adds nothing and can be hidden.",
                 Category = SampleCategory.ScaleOptions,
                 Tags = ["bubble", "axes"],
                 DemoTypes = [typeof(BubbleChart_Demo_10_Axis_Position_And_Reverse)],
                 IsNewIn200 = true,
                 ChartJsSampleUrl = null,
-                ApiLinks = [Api("BubbleChartDataset", "bubblechart-dataset-properties"), Api("BubbleChartOptions", "bubblechart-options-properties"), Api("Scales", "scales-properties"), Api("BubbleChart parameters", "parameters")],
+                ApiLinks = [Api("BubbleChartDataset", "bubblechart-dataset-properties"), Api("BubbleChartOptions", "bubblechart-options-properties"), Api("Scales", "scales-properties"), Api("ChartAxes", "chart-axes-properties"), Api("BubbleChart parameters", "parameters")],
             },
             new()
             {
@@ -173,12 +175,13 @@ public static partial class SampleCatalog
                 Slug = "tick-options",
                 Title = "Tick options",
                 Description = "Control how many tick labels a linear axis shows, how they are spaced and how they look with ChartAxesTicks.",
+                UseWhen = "the default tick labels are too many, too few, oddly spaced or hard to read.",
                 Category = SampleCategory.ScaleOptions,
                 Tags = ["bubble", "ticks"],
                 DemoTypes = [typeof(BubbleChart_Demo_11_Tick_Options)],
                 IsNewIn200 = true,
                 ChartJsSampleUrl = "https://www.chartjs.org/docs/latest/samples/scale-options/ticks.html",
-                ApiLinks = [Api("BubbleChartDataset", "bubblechart-dataset-properties"), Api("BubbleChartOptions", "bubblechart-options-properties"), Api("Scales", "scales-properties"), Api("BubbleChart parameters", "parameters")],
+                ApiLinks = [Api("BubbleChartDataset", "bubblechart-dataset-properties"), Api("BubbleChartOptions", "bubblechart-options-properties"), Api("Scales", "scales-properties"), Api("ChartAxes", "chart-axes-properties"), Api("ChartAxesTicks", "chart-axes-ticks-properties"), Api("ChartFont", "chart-font-properties"), Api("BubbleChart parameters", "parameters")],
             },
             new()
             {
@@ -186,12 +189,13 @@ public static partial class SampleCatalog
                 Slug = "axis-title",
                 Title = "Axis title",
                 Description = "Label each axis with ChartAxesTitle.",
+                UseWhen = "readers need to know what each axis measures and in which unit, such as height in centimetres.",
                 Category = SampleCategory.ScaleOptions,
                 Tags = ["bubble", "title", "axes"],
                 DemoTypes = [typeof(BubbleChart_Demo_12_Axis_Title)],
                 IsNewIn200 = true,
                 ChartJsSampleUrl = "https://www.chartjs.org/docs/latest/samples/scale-options/titles.html",
-                ApiLinks = [Api("BubbleChartDataset", "bubblechart-dataset-properties"), Api("BubbleChartOptions", "bubblechart-options-properties"), Api("Scales", "scales-properties"), Api("BubbleChart parameters", "parameters")],
+                ApiLinks = [Api("BubbleChartDataset", "bubblechart-dataset-properties"), Api("BubbleChartOptions", "bubblechart-options-properties"), Api("Scales", "scales-properties"), Api("ChartAxesTitle", "chart-axes-title-properties"), Api("ChartFont", "chart-font-properties"), Api("ChartPadding", "chart-padding-properties"), Api("BubbleChart parameters", "parameters")],
             },
             new()
             {
@@ -199,12 +203,13 @@ public static partial class SampleCatalog
                 Slug = "grace-and-bounds",
                 Title = "Grace and bounds",
                 Description = "Add room beyond the data with Grace, so large bubbles at the edge are not cut off, choose whether the axis ends at the data or at a whole tick with Bounds, and stack two axes on one edge with Stack.",
+                UseWhen = "large bubbles at the edge are cut off, or the axis range should end at the data or at a round number.",
                 Category = SampleCategory.ScaleOptions,
                 Tags = ["bubble", "axes"],
                 DemoTypes = [typeof(BubbleChart_Demo_13_Grace_And_Bounds)],
                 IsNewIn200 = true,
                 ChartJsSampleUrl = "https://www.chartjs.org/docs/latest/samples/scales/linear-min-max-suggested.html",
-                ApiLinks = [Api("BubbleChartDataset", "bubblechart-dataset-properties"), Api("BubbleChartOptions", "bubblechart-options-properties"), Api("Scales", "scales-properties"), Api("BubbleChart parameters", "parameters")],
+                ApiLinks = [Api("BubbleChartDataset", "bubblechart-dataset-properties"), Api("BubbleChartOptions", "bubblechart-options-properties"), Api("Scales", "scales-properties"), Api("ChartAxes", "chart-axes-properties"), Api("ChartAxesBorder", "chart-axes-border-properties"), Api("BubbleChart parameters", "parameters")],
             },
             new()
             {

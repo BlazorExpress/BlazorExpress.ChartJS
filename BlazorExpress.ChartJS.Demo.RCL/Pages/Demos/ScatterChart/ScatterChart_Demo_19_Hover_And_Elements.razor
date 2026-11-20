@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Point defaults: <code>Elements.Point</code> with <code>Radius</code>, <code>PointStyle</code>, <code>HoverRadius</code>, <code>HoverBorderWidth</code></p>
-        <ScatterChart role="img" aria-label="Scatter chart: Hover and elements, point defaults" @ref="elementsChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: study hours against exam score, with custom point size and shape" @ref="elementsChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Hover a whole dataset: <code>Hover = new ChartHover { Mode = InteractionMode.Dataset }</code></p>
-        <ScatterChart role="img" aria-label="Scatter chart: Hover and elements, hover a whole dataset" @ref="hoverChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: study hours against exam score, hover highlights a whole class" @ref="hoverChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Click only: <code>Events = ["click"]</code> (pointer moves do nothing; click a point)</p>
-        <ScatterChart role="img" aria-label="Scatter chart: Hover and elements, click only" @ref="clickOnlyChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: study hours against exam score, responds to clicks only" @ref="clickOnlyChart" />
     </div>
 </div>
 

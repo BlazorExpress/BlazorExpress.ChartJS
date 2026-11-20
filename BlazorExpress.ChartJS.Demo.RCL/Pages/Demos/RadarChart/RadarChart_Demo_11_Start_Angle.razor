@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>StartAngle = 0</code> (Chart.js default)</p>
-        <RadarChart role="img" aria-label="Radar chart: Start angle (chart 1 of 3)" @ref="zeroDegreesChart" />
+        <RadarChart role="img" aria-label="Radar chart: staff engagement scores for two offices with the first topic at the top" @ref="zeroDegreesChart" />
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>StartAngle = 45</code></p>
-        <RadarChart role="img" aria-label="Radar chart: Start angle (chart 2 of 3)" @ref="fortyFiveDegreesChart" />
+        <RadarChart role="img" aria-label="Radar chart: staff engagement scores for two offices rotated 45 degrees clockwise" @ref="fortyFiveDegreesChart" />
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>StartAngle = 90</code></p>
-        <RadarChart role="img" aria-label="Radar chart: Start angle (chart 3 of 3)" @ref="ninetyDegreesChart" />
+        <RadarChart role="img" aria-label="Radar chart: staff engagement scores for two offices rotated 90 degrees clockwise" @ref="ninetyDegreesChart" />
     </div>
 </div>
 
@@ -37,14 +37,15 @@
 
     #region Data Preparation
 
+    // Staff engagement survey scores out of 100.
     private static ChartData GetChartData() =>
         new()
         {
-            Labels = ["Speed", "Power", "Defense", "Stamina", "Agility", "Skill"],
+            Labels = ["Communication", "Recognition", "Growth", "Workload", "Leadership", "Teamwork"],
             Datasets =
             [
-                CreateDataset("Team A", [65, 59, 90, 81, 56, 55], 0),
-                CreateDataset("Team B", [28, 48, 40, 19, 96, 27], 1)
+                CreateDataset("London office", [65, 59, 90, 81, 56, 55], 0),
+                CreateDataset("Berlin office", [48, 72, 60, 44, 86, 67], 1)
             ]
         };
 

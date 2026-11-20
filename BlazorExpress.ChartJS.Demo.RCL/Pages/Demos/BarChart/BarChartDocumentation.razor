@@ -84,7 +84,7 @@
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Use the <code>BarChart</code> component and set the <code>IndexAxis</code> option to <code>'y'</code> to render bars horizontally.</li>
+                <li>Use the <code>BarChart</code> component and set <code>IndexAxis = "y"</code> on <code>BarChartOptions</code> to render bars horizontally.</li>
                 <li>Provide your data and labels as you would for a standard bar chart.</li>
                 <li>Customize colors and appearance using the available palette utilities or your own color set.</li>
             </ol>
@@ -153,9 +153,9 @@
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Set the <code>Locale</code> property on the <code>BarChart</code> component to your desired culture code (e.g., <code>"fr-FR"</code> for French).</li>
-                <li>Number and date labels in the chart will automatically format according to the specified locale.</li>
-                <li>This is useful for displaying charts to users in different regions with appropriate formatting.</li>
+                <li>Set <code>Locale</code> on <code>BarChartOptions</code> to a culture code, for example <code>barChartOptions.Locale = "de-DE"</code> for German.</li>
+                <li>Call <code>InitializeAsync(chartData, barChartOptions)</code>. The axis labels and tooltip values use that locale's separators, so 28000 reads as <em>28.000</em>.</li>
+                <li>Leave <code>Locale</code> unset to use the browser's language.</li>
             </ol>
         </div>
         Refer to the demo code below for a working example and configuration options.
@@ -191,7 +191,7 @@
             <ol>
                 <li>Add the <code>BarChart</code> component to your page and define your <code>Labels</code> and <code>Datasets</code> as usual.</li>
                 <li>Configure the <code>Options.Animation</code> property by setting the <code>Duration</code> (in milliseconds) and <code>Delay</code> (in milliseconds) to control the timing of the animation.</li>
-                <li>Bind your <code>chartData</code> and <code>barChartOptions</code> to the <code>BarChart</code> component.</li>
+                <li>Call <code>InitializeAsync(chartData, barChartOptions)</code> on the first render; the bars start growing after <code>Delay</code>.</li>
                 <li>Refer to the demo code below for a working example of how to set up and customize animation delays.</li>
             </ol>
         </div>
@@ -209,7 +209,7 @@
             <ol>
                 <li>Add the <code>BarChart</code> component to your page and define your <code>Labels</code> and multiple <code>Datasets</code>.</li>
                 <li>For each dataset, set the <code>Animation</code> property with specific <code>Duration</code> and <code>Delay</code> values to control when each dataset animates.</li>
-                <li>Bind your <code>chartData</code> and <code>barChartOptions</code> to the <code>BarChart</code> component.</li>
+                <li>Call <code>InitializeAsync(chartData, barChartOptions)</code> on the first render; each dataset starts growing after its own <code>Delay</code>.</li>
                 <li>Refer to the demo code below for a practical example of dataset-level animation configuration.</li>
             </ol>
         </div>
@@ -372,7 +372,7 @@
 
 <SampleSection Slug="axis-title">
     <Block>
-        Label an axis with <code>ChartAxesTitle</code>. The title is hidden until <code>Display = true</code>, and in this library it defaults to <code>"black"</code> text in a bold 12 px font, where Chart.js uses grey.
+        Label an axis with <code>ChartAxesTitle</code>. The title is hidden until <code>Display = true</code>, and in this library it defaults to <code>"black"</code> text in a bold 12 px font, where Chart.js uses grey. The demo sets <code>Color = null</code> where it does not choose a color, so Chart.js uses its default text color, which stays readable on a dark page.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">

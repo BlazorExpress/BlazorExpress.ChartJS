@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Position: x <code>Position = "top"</code>, y <code>Position = "right"</code></p>
-        <LineChart role="img" aria-label="Line chart: Axis position and reverse, position" @ref="positionChart" />
+        <LineChart role="img" aria-label="Line chart: league position of two football clubs, January to June, with the x-axis on top and the y-axis on the right" @ref="positionChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Reverse: y <code>Reverse = true</code> (lower values at the top, as for a ranking)</p>
-        <LineChart role="img" aria-label="Line chart: Axis position and reverse, reverse" @ref="reverseChart" />
+        <LineChart role="img" aria-label="Line chart: league position of two football clubs, January to June, with position 1 at the top" @ref="reverseChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">x <code>Reverse = true</code>, y <code>Display = false</code></p>
-        <LineChart role="img" aria-label="Line chart: Axis position and reverse (chart 3 of 3)" @ref="hiddenAxisChart" />
+        <LineChart role="img" aria-label="Line chart: league position of two football clubs, June to January from left to right, with no y-axis" @ref="hiddenAxisChart" />
     </div>
 </div>
 
@@ -47,8 +47,8 @@
         Labels = ["January", "February", "March", "April", "May", "June"],
         Datasets =
         [
-            CreateDataset("Team A", 0, [8, 6, 5, 3, 2, 1]),
-            CreateDataset("Team B", 1, [3, 4, 2, 5, 6, 4])
+            CreateDataset("Northside FC", 0, [8, 6, 5, 3, 2, 1]),
+            CreateDataset("Riverside United", 1, [3, 4, 2, 5, 6, 4])
         ]
     };
 

@@ -1,4 +1,4 @@
-<LineChart role="img" aria-label="Line chart: Line styling" @ref="lineChart" Width="600" />
+<LineChart role="img" aria-label="Line chart: monthly orders as a plain line, a dashed forecast and filled returns, January to July" @ref="lineChart" Width="600" />
 
 @code {
     private LineChart lineChart = default!;
@@ -15,7 +15,7 @@
                     // A plain line: only a colour and a width.
                     new LineChartDataset
                     {
-                        Label = "Unfilled",
+                        Label = "Orders",
                         Data = [35, 48, 40, 59, 52, 66, 61],
                         BorderColor = "rgb(0, 114, 178)", // Okabe–Ito blue
                         BackgroundColor = "rgb(0, 114, 178)",
@@ -25,7 +25,7 @@
                     // to each end of a dash, so the gap is wider than the dash.
                     new LineChartDataset
                     {
-                        Label = "Dashed",
+                        Label = "Forecast",
                         Data = [22, 30, 27, 41, 36, 44, 49],
                         BorderColor = "rgb(213, 94, 0)", // Okabe–Ito vermillion
                         BackgroundColor = "rgb(213, 94, 0)",
@@ -36,7 +36,7 @@
                     // A filled, thicker line with rounded corners.
                     new LineChartDataset
                     {
-                        Label = "Filled",
+                        Label = "Returns",
                         Data = [10, 16, 13, 21, 18, 26, 23],
                         BorderColor = "rgb(0, 158, 115)", // Okabe–Ito bluish green
                         BackgroundColor = "rgba(0, 158, 115, 0.3)",

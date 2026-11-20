@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Grace: <code>Grace = "10%"</code> on y, <code>Grace = 5</code> on x</p>
-        <BubbleChart role="img" aria-label="Bubble chart: Grace and bounds, grace" @ref="graceChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: drinks sold against customers per hour at a coffee shop on weekdays and weekends, bubble size by average wait, with extra room beyond the data on both axes" @ref="graceChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Bounds: <code>Bounds = "data"</code> on x, <code>Bounds = "ticks"</code> with <code>SuggestedMin</code>/<code>SuggestedMax</code> on y</p>
-        <BubbleChart role="img" aria-label="Bubble chart: Grace and bounds, bounds" @ref="boundsChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: drinks sold against customers per hour at a coffee shop on weekdays and weekends, bubble size by average wait, x-axis ending at the data and y-axis from 0 to 100" @ref="boundsChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Stacked axes: <code>Stack = "demo"</code>, <code>StackWeight</code> 2 and 1, <code>Offset = true</code></p>
-        <BubbleChart role="img" aria-label="Bubble chart: Grace and bounds, stacked axes" @ref="stackedAxesChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: drinks sold and baristas on shift against customers per hour, on two y-axes stacked on the left edge" @ref="stackedAxesChart" />
     </div>
 </div>
 
@@ -72,23 +72,25 @@
 
     #region Data Preparation
 
+    // x: customers per hour, y: drinks sold per hour, r: average wait in minutes
     private static ChartData GetChartData() => new()
     {
         Datasets =
         [
-            CreateDataset("Group A", 0, [new(12, 22, 8), new(18, 31, 12), new(25, 27, 6), new(33, 44, 15), new(41, 39, 10), new(48, 58, 7)]),
-            CreateDataset("Group B", 1, [new(14, 40, 14), new(21, 36, 10), new(29, 52, 16), new(36, 47, 7), new(44, 33, 12), new(52, 46, 9)])
+            CreateDataset("Weekdays", 0, [new(12, 22, 8), new(18, 31, 12), new(25, 27, 6), new(33, 44, 15), new(41, 39, 10), new(48, 58, 7)]),
+            CreateDataset("Weekends", 1, [new(14, 40, 14), new(21, 36, 10), new(29, 52, 16), new(36, 47, 7), new(44, 33, 12), new(52, 46, 9)])
         ]
     };
 
+    // r: average wait in minutes
     private static ChartData GetStackedChartData()
     {
-        var groupA = CreateDataset("Group A (y)", 0, [new(10, 22, 8), new(20, 31, 12), new(30, 27, 6), new(40, 44, 15), new(50, 39, 10), new(60, 58, 7)]);
+        var drinks = CreateDataset("Drinks sold (y)", 0, [new(10, 22, 8), new(20, 31, 12), new(30, 27, 6), new(40, 44, 15), new(50, 39, 10), new(60, 58, 7)]);
 
-        var groupB = CreateDataset("Group B (y2)", 1, [new(15, 4, 7), new(25, 7, 10), new(35, 5, 6), new(45, 9, 12), new(55, 6, 8), new(65, 8, 9)]);
-        groupB.YAxisID = "y2";
+        var baristas = CreateDataset("Baristas on shift (y2)", 1, [new(15, 4, 7), new(25, 7, 10), new(35, 5, 6), new(45, 9, 12), new(55, 6, 8), new(65, 8, 9)]);
+        baristas.YAxisID = "y2";
 
-        return new ChartData { Datasets = [groupA, groupB] };
+        return new ChartData { Datasets = [drinks, baristas] };
     }
 
     private static BubbleChartDataset CreateDataset(string label, int colorIndex, List<BubbleChartDataPoint> data)

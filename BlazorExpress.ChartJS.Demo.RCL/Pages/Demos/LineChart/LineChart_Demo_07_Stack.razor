@@ -1,4 +1,4 @@
-<LineChart role="img" aria-label="Line chart: Stacked line chart" @ref="lineChart" Width="700" />
+<LineChart role="img" aria-label="Stacked line chart: website sessions by device type (desktop, mobile, tablet), January to June" @ref="lineChart" Width="700" />
 
 @code {
     private const string TrafficStack = "traffic";
@@ -63,12 +63,14 @@
             Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false },
         };
 
-        lineChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Month", Display = true };
-        lineChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Sessions", Display = true };
+        // null keeps Chart.js's theme-aware default text colour
+        lineChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Month", Display = true, Color = null };
+        lineChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Sessions (k)", Display = true, Color = null };
         lineChartOptions.Scales.Y.Stacked = true;
 
         lineChartOptions.Plugins.Title!.Text = "Website sessions by device type";
         lineChartOptions.Plugins.Title.Display = true;
+        lineChartOptions.Plugins.Title.Color = null;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
