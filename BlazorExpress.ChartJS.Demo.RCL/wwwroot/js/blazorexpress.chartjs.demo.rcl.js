@@ -1163,6 +1163,7 @@ window.samplesSelfCheck = (() => {
 
     const notRendered = 'the sample content did not render';
     const noChart = 'no chart was drawn';
+    const noChartShown = 'every chart is hidden, so none was checked';
 
     // Opens one sample page in the frame and reports its charts and its errors.
     const checkSample = async (frame, url) => {
@@ -1185,8 +1186,14 @@ window.samplesSelfCheck = (() => {
 
             const shown = await waitFor(() => win.location.pathname === url && content());
             const drawn = shown && await waitFor(() => canvases().length > 0 && canvases().every(c => win.Chart.getChart(c)));
-            const live = () => canvases().map(c => win.Chart.getChart(c)).filter(Boolean);
+            const all = () => canvases().map(c => win.Chart.getChart(c)).filter(Boolean);
             const hasSize = c => c.width > 0 && c.height > 0;
+
+            // A chart the sample keeps hidden on purpose (in an inactive tab panel marked hidden, or in a closed dialog)
+            // has no size until the visitor shows it, so it is not checked; the row notes it. A chart hidden any other
+            // way, or a visible chart with no size, is still checked and fails.
+            const hiddenBy = c => c.canvas.closest('dialog:not([open])') ? 'a closed dialog' : c.canvas.closest('[hidden]') ? 'a hidden element' : null;
+            const live = () => all().filter(c => !hiddenBy(c));
 
             // A chart can report no size for a moment while its container is laid out; a chart in a hidden container never gets one.
             await waitFor(() => live().every(hasSize), 3000);
@@ -1207,9 +1214,9 @@ window.samplesSelfCheck = (() => {
                 // drawing, and no drawing follows. The walk notes the state of such a chart, then completes the resize to
                 // learn whether the chart can draw at all. The sample is then reported as "resized", never as passed: its
                 // chart did not get a size without help. A chart whose container has no width is left alone and fails.
-                live().forEach((chart, index) => {
+                live().forEach(chart => {
                     if (!hasSize(chart) && chart.canvas.parentNode?.clientWidth > 0) {
-                        notes.push(`chart ${index + 1}: no size, ${chart._resizeBeforeDraw ? 'a resize waiting for a drawing' : 'no resize waiting'}, `
+                        notes.push(`chart ${all().indexOf(chart) + 1}: no size,${chart._resizeBeforeDraw ? 'a resize waiting for a drawing' : 'no resize waiting'}, `
                             + `${win.Chart.animator.running(chart) ? 'animation running' : 'no animation running'}`);
                         chart.resize();
                     }
@@ -1219,16 +1226,22 @@ window.samplesSelfCheck = (() => {
                     await waitFor(() => live().every(hasSize), 2000);
             }
 
-            const charts = live();
-            const zeroSize = charts.filter(c => !hasSize(c)).length;
+            const charts = all();
+            const visible = live();
+            const zeroSize = visible.filter(c => !hasSize(c)).length;
+            const skipped = charts.filter(c => hiddenBy(c)).map(c => `chart ${charts.indexOf(c) + 1}: in ${hiddenBy(c)}, not checked`);
 
             // Taken, not copied: an error raised after this point belongs to the next sample, so no error is dropped.
             const found = errors.splice(0);
             if (!shown) found.unshift(notRendered);
             else if (!drawn) found.unshift(noChart);
+            else if (visible.length === 0) found.unshift(noChartShown);
 
-            const failed = !shown || !drawn || zeroSize > 0 || found.length > 0;
-            return { url, charts: charts.length, zeroSize, resized: notes.length, notes, errors: found, status: failed ? 'fail' : notes.length > 0 ? 'resized' : 'pass' };
+            const failed = !shown || !drawn || visible.length === 0 || zeroSize > 0 || found.length > 0;
+            return {
+                url, charts: charts.length, zeroSize, resized: notes.length, notes: [...skipped, ...notes], errors: found,
+                status: failed ? 'fail' : notes.length > 0 ? 'resized' : 'pass'
+            };
         } catch (e) {
             return { url, charts: 0, zeroSize: 0, resized: 0, notes: [], errors: [String(e?.message ?? e)], status: 'fail' };
         }
@@ -1252,7 +1265,7 @@ window.samplesSelfCheck = (() => {
                 if (await framesRun())
                     break;
 
-                earlier.push(...outcome.errors.filter(error => error !== notRendered && error !== noChart));
+                earlier.push(...outcome.errors.filter(error => error !== notRendered && error !== noChart && error !== noChartShown));
             }
 
             if (earlier.length > 0) {

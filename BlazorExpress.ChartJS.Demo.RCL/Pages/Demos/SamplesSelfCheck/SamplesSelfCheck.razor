@@ -8,7 +8,7 @@
 
 <Block>
     Checks the sample catalog against the demo components and their embedded sources, then opens every sample page in the frame below
-    and records whether its charts drew with a non-zero size and whether the console stayed clean. A failing sample is recorded and the walk continues. The walk waits while this page is not drawn (a hidden pane or a background tab), because charts get their size on an animation frame. A chart created while its tab was still hidden can keep a resize that no later drawing applies. The walk completes it to learn whether the chart can draw, and reports the sample as "resized", not as passed.
+    and records whether its charts drew with a non-zero size and whether the console stayed clean. A failing sample is recorded and the walk continues. The walk waits while this page is not drawn (a hidden pane or a background tab), because charts get their size on an animation frame. A chart created while its tab was still hidden can keep a resize that no later drawing applies. The walk completes it to learn whether the chart can draw, and reports the sample as "resized", not as passed. A chart the sample keeps hidden on purpose, inside an element marked <code>hidden</code> (such as an inactive tab panel) or a closed <code>dialog</code>, gets no size until it is shown, so it is not checked and its row says so. A sample with no chart shown fails.
     Add <code>?chart=line-chart</code> to walk one chart page only.
 </Block>
 
