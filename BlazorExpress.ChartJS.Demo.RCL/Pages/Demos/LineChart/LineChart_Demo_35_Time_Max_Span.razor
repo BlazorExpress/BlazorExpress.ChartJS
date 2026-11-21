@@ -1,4 +1,4 @@
-<LineChart role="img" aria-label="Line chart: daily website visitors, January to March 2026, showing the last 14 days" @ref="lineChart" Width="600" />
+<LineChart role="img" aria-label="@AriaLabel" @ref="lineChart" Width="600" />
 
 <div class="mt-3">
     <button type="button" class="button is-primary is-small" @onclick="() => ShowRangeAsync(14)">Last 14 days</button>
@@ -13,6 +13,12 @@
 
     private readonly DateOnly firstDay = new(2026, 1, 1);
     private readonly DateOnly lastDay = new(2026, 3, 31);
+    private int? shownDays = 14;
+
+    // The accessible name follows the range the buttons choose.
+    private string AriaLabel => shownDays is int count
+        ? $"Line chart: daily website visitors, January to March 2026, showing the last {count} days"
+        : "Line chart: daily website visitors, January to March 2026, showing all days";
 
     protected override void OnInitialized()
     {
@@ -66,6 +72,7 @@
 
     private async Task ShowRangeAsync(int? days)
     {
+        shownDays = days;
         lineChartOptions.Scales.X!.MinTime = days is int count ? lastDay.AddDays(1 - count) : null;
         lineChartOptions.Scales.X.MaxTime = days is null ? null : lastDay;
         lineChartOptions.Scales.X.Time!.Unit = days is null ? ChartTimeUnit.Week : ChartTimeUnit.Day;

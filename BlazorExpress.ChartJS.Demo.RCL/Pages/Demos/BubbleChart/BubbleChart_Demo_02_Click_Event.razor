@@ -1,4 +1,4 @@
-<BubbleChart role="img" aria-label="Bubble chart: online store figures, January to March, sized by a third value" @ref="bubbleChart" Width="600" OnClick="HandleClickAsync" />
+<BubbleChart role="img" aria-label="Bubble chart: online store ad spend against revenue in thousands of dollars, January to March; bubble size shows orders" @ref="bubbleChart" Width="600" OnClick="HandleClickAsync" />
 
 @if (selectedChartItem is not null)
 {
@@ -17,6 +17,7 @@
     {
         chartData = new ChartData
         {
+            // x: ad spend and y: revenue, both in thousands of dollars; r: bubble radius in pixels, 1 per 100 orders
             Labels = new List<string> { "January", "February", "March" },
             Datasets = new List<IChartDataset>
             {

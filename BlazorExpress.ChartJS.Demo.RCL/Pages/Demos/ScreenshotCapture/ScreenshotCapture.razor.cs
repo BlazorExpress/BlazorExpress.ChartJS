@@ -63,43 +63,50 @@ public partial class ScreenshotCapture : ComponentBase
         results.Clear();
         var files = new List<(string Path, byte[] Bytes)>();
 
-        foreach (var entry in manifest)
+        try
         {
-            try
+            foreach (var entry in manifest)
             {
-                var image = await JS.InvokeAsync<CapturedImage>("screenshotCapture.capture", frame, entry.SampleUrl, entry.CanvasIndex, entry.CssWidth);
-                var bytes = Convert.FromBase64String(image.Base64);
-                files.Add((entry.Path, bytes));
-                results.Add(new CaptureResult(entry, true, $"{image.Width} x {image.Height}, {bytes.Length / 1024} KB"));
-            }
-            catch (JSException exception)
-            {
-                // A sample that does not draw is reported and left out of the zip, so a partial zip never replaces a good image silently.
-                results.Add(new CaptureResult(entry, false, exception.Message));
-            }
-
-            StateHasChanged();
-        }
-
-        if (files.Count > 0)
-        {
-            using var stream = new MemoryStream();
-            using (var zip = new ZipArchive(stream, ZipArchiveMode.Create, leaveOpen: true))
-            {
-                foreach (var (path, bytes) in files)
+                try
                 {
-                    var zipEntry = zip.CreateEntry(path, CompressionLevel.Optimal);
-                    await using var entryStream = zipEntry.Open();
-                    await entryStream.WriteAsync(bytes);
+                    var image = await JS.InvokeAsync<CapturedImage>("screenshotCapture.capture", frame, entry.SampleUrl, entry.CanvasIndex, entry.CssWidth);
+                    var bytes = Convert.FromBase64String(image.Base64);
+                    files.Add((entry.Path, bytes));
+                    results.Add(new CaptureResult(entry, true, $"{image.Width} x {image.Height}, {bytes.Length / 1024} KB"));
                 }
+                catch (Exception exception)
+                {
+                    // A sample that does not draw (or any other failure) is reported and left out of the zip, so a partial zip
+                    // never replaces a good image silently.
+                    results.Add(new CaptureResult(entry, false, exception.Message));
+                }
+
+                StateHasChanged();
             }
 
-            stream.Position = 0;
-            using var streamReference = new DotNetStreamReference(stream, leaveOpen: true);
-            await JS.InvokeVoidAsync("screenshotCapture.download", ZipFileName, streamReference);
-        }
+            if (files.Count > 0)
+            {
+                using var stream = new MemoryStream();
+                using (var zip = new ZipArchive(stream, ZipArchiveMode.Create, leaveOpen: true))
+                {
+                    foreach (var (path, bytes) in files)
+                    {
+                        var zipEntry = zip.CreateEntry(path, CompressionLevel.Optimal);
+                        await using var entryStream = zipEntry.Open();
+                        await entryStream.WriteAsync(bytes);
+                    }
+                }
 
-        running = false;
+                stream.Position = 0;
+                using var streamReference = new DotNetStreamReference(stream, leaveOpen: true);
+                await JS.InvokeVoidAsync("screenshotCapture.download", ZipFileName, streamReference);
+            }
+        }
+        finally
+        {
+            // The button is enabled again even when the zip could not be built or downloaded.
+            running = false;
+        }
     }
 
     #endregion

@@ -4,7 +4,7 @@
 
 <div class="buttons">
     <button type="button" class="button is-primary is-small" disabled="@isLoading" @onclick="@(() => LoadAsync(SalesUrl))">Load sales</button>
-    <button type="button" class="button is-small" disabled="@isLoading" @onclick="@(() => LoadAsync(EmptySalesUrl))">Load an empty month</button>
+    <button type="button" class="button is-small" disabled="@isLoading" @onclick="@(() => LoadAsync(EmptySalesUrl))">Load with no sales</button>
 </div>
 
 <div role="status">

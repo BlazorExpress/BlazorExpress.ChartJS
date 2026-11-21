@@ -10,7 +10,8 @@
     private ChartData chartData = default!;
     private readonly List<ChartTimePoint> readings = new();
     private readonly Random random = new();
-    private PeriodicTimer? timer;
+    // Created with the component, so Dispose always stops it, even when the page is left before the chart has initialized.
+    private readonly PeriodicTimer timer = new(TimeSpan.FromSeconds(2));
 
     protected override void OnInitialized()
     {
@@ -59,8 +60,6 @@
     // hubConnection.On<Reading>("reading", reading => InvokeAsync(() => AddReadingAsync(reading)));
     private async Task ReadSensorAsync()
     {
-        timer = new PeriodicTimer(TimeSpan.FromSeconds(2));
-
         // WaitForNextTickAsync returns false once the timer is disposed, which ends the loop.
         while (await timer.WaitForNextTickAsync())
             await InvokeAsync(() => AddReadingAsync(new Reading(DateTime.Now, NextTemperature())));
@@ -78,7 +77,7 @@
 
     private double NextTemperature() => Math.Round(21.5 + random.NextDouble() * 1.5, 1);
 
-    public void Dispose() => timer?.Dispose();
+    public void Dispose() => timer.Dispose();
 
     public record Reading(DateTime Time, double Value);
 }

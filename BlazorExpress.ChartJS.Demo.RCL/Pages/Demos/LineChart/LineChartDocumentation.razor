@@ -1006,8 +1006,8 @@ blazorexpress.chartjs.registerFunction('demo.greyOverGaps', ctx => touchesGap(ct
         <div class="content">
             <ol>
                 <li>Render every tab panel, and hide the inactive ones with the <code>hidden</code> attribute instead of leaving them out of the page, so each chart is created once and keeps its state.</li>
-                <li>Mark up the tabs with <code>role="tablist"</code>, <code>role="tab"</code> and <code>aria-selected</code> on the buttons, and <code>role="tabpanel"</code> on the panels; a click sets the active tab.</li>
-                <li>Put the other chart in a <code>&lt;dialog&gt;</code> and toggle its <code>open</code> attribute with <code>@@onclick</code>; no JavaScript is needed.</li>
+                <li>Make the tabs toggle buttons with <code>aria-pressed</code> and <code>aria-controls</code> in a <code>role="group"</code>; a click sets the active tab. (The ARIA tabs pattern, <code>role="tab"</code>, also needs arrow-key handling.)</li>
+                <li>Put the other chart in a <code>&lt;dialog&gt;</code> and toggle its <code>open</code> attribute with <code>@@onclick</code>. Move focus into the dialog with <code>ElementReference.FocusAsync</code> when it opens, close it on Escape with <code>@@onkeydown</code>, and return focus to the button that opened it; no JavaScript of your own is needed.</li>
                 <li>Call <code>InitializeAsync</code> for every chart in <code>OnAfterRenderAsync</code> when <code>firstRender</code> is <code>true</code>, hidden ones included. Nothing needs to run when a tab or the dialog opens.</li>
             </ol>
         </div>

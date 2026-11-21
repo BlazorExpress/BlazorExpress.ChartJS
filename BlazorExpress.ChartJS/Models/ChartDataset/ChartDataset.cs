@@ -174,12 +174,12 @@ public class ChartDataset<TData> : IChartDataset
     /// Gets the chart type of the dataset, for example <c>"bar"</c>.
     /// <para>
     /// Default value is <see langword="null"/>.
-    /// Each dataset class sets it to its own chart type.
+    /// Bar and line datasets set it to "bar" or "line", so they can be mixed in one chart; other datasets leave it null.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("Gets the chart type of the dataset, for example \"bar\". Each dataset class sets it to its own chart type.")]
+    [Description("Gets the chart type of the dataset, for example \"bar\". Bar and line datasets set it to \"bar\" or \"line\", so they can be mixed in one chart; other datasets leave it null.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Type { get; protected set; }
 

@@ -2621,9 +2621,13 @@ window.screenshotCapture = (() => {
     };
 
     const capture = async (frame, url, canvasIndex, cssWidth) => {
-        frame.src = `${url}${url.includes('?') ? '&' : '?'}capture=${Date.now()}`;
+        // The token tells the new page from the previous one: setting src does not replace the frame's document at once,
+        // so without it the checks below could pass on the previous sample's page.
+        const token = `capture=${Date.now()}`;
+        frame.src = `${url}${url.includes('?') ? '&' : '?'}${token}`;
         const canvases = () => [...frame.contentDocument.querySelectorAll('.be-bulma-doc-example-demo canvas, .be-playground-chart canvas')];
-        const loaded = await waitFor(() => frame.contentWindow.Chart && canvases().length > canvasIndex
+        const loaded = await waitFor(() => frame.contentWindow.location.search.includes(token)
+            && frame.contentWindow.Chart && canvases().length > canvasIndex
             && frame.contentWindow.Chart.getChart(canvases()[canvasIndex]));
         if (!loaded)
             throw new Error(`No chart ${canvasIndex} on ${url}`);
@@ -2642,6 +2646,9 @@ window.screenshotCapture = (() => {
         chart.options.devicePixelRatio = 2;
         chart.options.animation = false;
         for (let attempt = 0; attempt < 40; attempt++) {
+            // stop() ends any running animation (the first draw, or one started by the theme change); update('none') then
+            // puts every element at its final value, so the export never shows a half-drawn chart.
+            chart.stop();
             chart.resize();
             chart.update('none');
             await demoSleep(100);
