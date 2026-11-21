@@ -1,0 +1,239 @@
+@attribute [Route(pageUrl)]
+@layout BlogMainLayout
+
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<DemoPageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</DemoPageHero>
+
+<ReleaseMeta Version="2.0.0" ShowInstall="false" />
+
+@* One section per item in CHANGELOG.md ## 2.0.0 Breaking changes, in the same order and words, with 1.2.4 and 2.0.0 code. *@
+<div class="content be-release-notes">
+    <p>
+        Code compiled against 1.2.4 keeps working with 2.0.0, but some charts look or behave differently without any code change.
+        Each change below shows the 1.2.4 code and the 2.0.0 code, and how to keep the 1.2.4 behaviour where there is a way.
+        The full list of what's new is in the <a href="@DemoRouteConstants.Blog_Release_2_0_0">2.0.0 release notes</a>.
+    </p>
+</div>
+
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="1. Radar and bubble axes start at zero" PageUrl="@pageUrl" Link="radar-and-bubble-axes">
+    <Block>
+        Like the other charts, radar and bubble charts now start their axes at zero by default. To keep the previous look, turn <code>BeginAtZero</code> off.
+        <BeforeAfterCode Before="@axesBefore" After="@axesAfter" AfterLabel="2.0.0, keeping the 1.2.4 look" />
+    </Block>
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="2. Radar and bubble data labels match the other charts" PageUrl="@pageUrl" Link="radar-and-bubble-data-labels">
+    <Block>
+        Radar and bubble charts that register the <code>ChartDataLabels</code> plugin now get the library's label style: white, bold, 6 px padding and a 4 px corner radius (the new <code>RadarChartPlugins.Datalabels</code> and <code>BubbleChartPlugins.Datalabels</code> defaults). In 1.2.4 they used the plugin's own grey text. To restore it, set the four values back.
+        <BeforeAfterCode Before="@labelsBefore" After="@labelsAfter" AfterLabel="2.0.0, keeping the 1.2.4 look" />
+    </Block>
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="3. Bar chart data labels use the dataset colour from the first render" PageUrl="@pageUrl" Link="bar-data-labels">
+    <Block>
+        Bar charts that use <code>ChartDataLabels</code> show the dataset-coloured label background from the first render, not only after an update. The code stays the same, and there is no setting to bring back the 1.2.4 first render. Bubble charts keep the 1.2.4 behaviour.
+        <BeforeAfterCode Before="@barLabelsBefore" After="@barLabelsAfter" />
+    </Block>
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="4. Hidden datasets stay hidden after UpdateAsync" PageUrl="@pageUrl" Link="hidden-datasets">
+    <Block>
+        A dataset, slice, bar or point hidden at runtime (from C# or by a legend click) now stays hidden after <code>UpdateAsync</code>. In 1.2.4 a legend-hidden dataset reappeared on every update. Items are matched by <code>ChartDataset.Key</code> when set, otherwise by label. To show an item again, call <code>ShowAsync</code>. Setting <code>Hidden</code> in C# does not show an item that was hidden at runtime.
+        <BeforeAfterCode Before="@hiddenBefore" After="@hiddenAfter" />
+    </Block>
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="5. Animated updates move from the current values" PageUrl="@pageUrl" Link="animated-updates">
+    <Block>
+        With animation on, <code>UpdateAsync</code> animates each dataset still on the chart from its current values to the new ones, as native Chart.js does. New datasets grow in from their base, and removed datasets disappear. Updates with <code>ChartUpdateMode.None</code> or <code>Reset</code> apply the new data directly, as before. The final drawing is unchanged. To replay the 1.2.4 grow-in animation, call <code>ResetAsync()</code> first.
+        <BeforeAfterCode Before="@animationBefore" After="@animationAfter" AfterLabel="2.0.0, keeping the 1.2.4 animation" />
+    </Block>
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="6. The built-in date adapter replaces a third-party adapter" PageUrl="@pageUrl" Link="date-adapter">
+    <Block>
+        The library registers its own Chart.js date adapter, built on the browser's <code>Date</code> and <code>Intl</code>. On a page that also loads a third-party adapter (for example <code>chartjs-adapter-date-fns</code> or luxon), the library's adapter replaces it. Default tick formats change to the library defaults, and date-fns or luxon tokens in raw Chart.js options are read as .NET date format strings. Remove the third-party adapter script and write .NET date formats.
+        <BeforeAfterCode Before="@adapterBefore" After="@adapterAfter" />
+    </Block>
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="7. Single-value AddDataAsync on doughnut, pie, polar area and radar works like bar and line" PageUrl="@pageUrl" Link="add-data-arc-and-radar">
+    <Block>
+        <code>dataLabel</code> is now the new category label, added once to <code>ChartData.Labels</code>, and the value goes to the dataset named by the data's <code>DatasetLabel</code>; on doughnut, pie and polar area the data's <code>BackgroundColor</code> is also appended to that dataset's colours. In 1.2.4 the C# code used <code>dataLabel</code> as the dataset's name and added no label, while the drawn chart added the label, so <code>ChartData</code> and the chart could differ. If you passed a dataset's label as <code>dataLabel</code>, pass it as the data's <code>DatasetLabel</code> and pass the new slice's label as <code>dataLabel</code>.
+        <BeforeAfterCode Before="@addArcBefore" After="@addArcAfter" />
+    </Block>
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="8. Scatter and bubble AddDataAsync no longer use labels" PageUrl="@pageUrl" Link="add-data-scatter-and-bubble">
+    <Block>
+        Both overloads append each point to the dataset named by its data's <code>DatasetLabel</code>; <code>dataLabel</code> is not used and <code>ChartData.Labels</code> is never read or changed, so it can be null. The one exception is a time point (<code>ChartTimePoint</code>): it still goes to the dataset named by <code>dataLabel</code>, which must equal the data's <code>DatasetLabel</code>. The collection overload no longer needs one item per dataset or a new label. In 1.2.4 the single-value overload used <code>dataLabel</code> as the dataset's name: pass that name as the data's <code>DatasetLabel</code> instead.
+        <BeforeAfterCode Before="@addPointBefore" After="@addPointAfter" />
+    </Block>
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="9. Removed: the JavaScript function updateDataValues" PageUrl="@pageUrl" Link="update-data-values">
+    <Block>
+        The undocumented JavaScript function <code>updateDataValues</code> on <code>window.blazorexpress.chartjs</code>, <code>.radar</code> and <code>.scatter</code> is removed. No C# method called it. Use <code>UpdateAsync</code>.
+        <BeforeAfterCode Before="@updateValuesBefore" After="@updateValuesAfter" />
+    </Block>
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="10. blazorexpress.chartjs.js changed" PageUrl="@pageUrl" Link="script-changed">
+    <Block>
+        <code>initialize</code> and <code>update</code> take new optional trailing arguments. Apps that load the script from the package (<code>_content/BlazorExpress.ChartJS/blazorexpress.chartjs.js</code>) need nothing. Apps that copied the file into their own folder must copy the new one, or load it from the package.
+        <BeforeAfterCode Before="@scriptBefore" After="@scriptAfter" />
+    </Block>
+</DemoSection>
+
+@code {
+    private const string pageUrl = DemoRouteConstants.Blog_Release_2_0_0_Breaking_Changes;
+    private const string pageTitle = "Upgrading to 2.0.0: breaking changes";
+    private const string pageDescription = "The ten changes in 2.0.0 that can alter an app without a code change, each with the 1.2.4 code, the 2.0.0 code and how to keep the 1.2.4 behaviour.";
+    private const string metaTitle = "Upgrading to 2.0.0: Breaking Changes with Before and After Code";
+    private const string metaDescription = "Every BlazorExpress.ChartJS 2.0.0 breaking change with the 1.2.4 code, the 2.0.0 code and how to keep the 1.2.4 behaviour.";
+    private const string imageUrl = DemoImageSrcConstants.LineChart;
+
+    private const string axesBefore = """
+        var radarOptions = new RadarChartOptions();
+        // The radial axis started near the smallest value.
+
+        var bubbleOptions = new BubbleChartOptions();
+        // The x and y axes started near the smallest values.
+        """;
+
+    private const string axesAfter = """
+        var radarOptions = new RadarChartOptions();
+        radarOptions.Scales.R!.BeginAtZero = false;
+
+        var bubbleOptions = new BubbleChartOptions();
+        bubbleOptions.Scales.X!.BeginAtZero = false;
+        bubbleOptions.Scales.Y!.BeginAtZero = false;
+        """;
+
+    private const string labelsBefore = """
+        await radarChart.InitializeAsync(chartData, options,
+            plugins: new[] { "ChartDataLabels" });
+        // Labels used the plugin's grey text.
+        """;
+
+    private const string labelsAfter = """
+        options.Plugins.Datalabels.Color = "#666";
+        options.Plugins.Datalabels.Font.Weight = null;
+        options.Plugins.Datalabels.Padding = 4;
+        options.Plugins.Datalabels.BorderRadius = 0;
+
+        await radarChart.InitializeAsync(chartData, options,
+            plugins: new[] { "ChartDataLabels" });
+        """;
+
+    private const string barLabelsBefore = """
+        await barChart.InitializeAsync(chartData, options,
+            plugins: new[] { "ChartDataLabels" });
+        // First render: no dataset-coloured background.
+        // After UpdateAsync: dataset-coloured backgrounds.
+        """;
+
+    private const string barLabelsAfter = """
+        await barChart.InitializeAsync(chartData, options,
+            plugins: new[] { "ChartDataLabels" });
+        // Dataset-coloured backgrounds from the first render.
+        """;
+
+    private const string hiddenBefore = """
+        // The user hides "Tablets" with a legend click.
+        await barChart.UpdateAsync(chartData, options);
+        // "Tablets" is visible again.
+        """;
+
+    private const string hiddenAfter = """
+        // The user hides "Tablets" with a legend click.
+        await barChart.UpdateAsync(chartData, options);
+        // "Tablets" stays hidden. To show it again:
+        await barChart.ShowAsync(1);       // dataset 1
+        await pieChart.ShowAsync(0, 2);    // slice 2 of dataset 0
+        """;
+
+    private const string animationBefore = """
+        await lineChart.UpdateAsync(chartData, options);
+        // Every dataset grew in again from zero.
+        """;
+
+    private const string animationAfter = """
+        await lineChart.ResetAsync();
+        await lineChart.UpdateAsync(chartData, options);
+        // Without ResetAsync, the lines move from their current values.
+        """;
+
+    private const string adapterBefore = """
+        <!-- index.html or App.razor -->
+        <script src=".../chart.umd.min.js"></script>
+        <script src=".../chartjs-adapter-date-fns.bundle.min.js"></script>
+        <script src="_content/BlazorExpress.ChartJS/blazorexpress.chartjs.js"></script>
+        """;
+
+    private const string adapterAfter = """
+        <!-- No adapter script: the library brings its own. -->
+        <script src=".../chart.umd.min.js"></script>
+        <script src="_content/BlazorExpress.ChartJS/blazorexpress.chartjs.js"></script>
+
+        // C#: .NET date formats
+        options.Scales.X = new ChartAxes
+        {
+            Type = ChartAxesType.Time,
+            Time = new ChartAxesTime
+            {
+                Unit = ChartTimeUnit.Day,
+                DisplayFormats = new ChartAxesTimeDisplayFormats { Day = "dd MMM yyyy" },
+            },
+        };
+        """;
+
+    private const string addArcBefore = """
+        // dataLabel named the dataset; no label was added.
+        chartData = await pieChart.AddDataAsync(chartData, "Sales",
+            new PieChartDatasetData("Sales", 25, "#4BC0C0"));
+        """;
+
+    private const string addArcAfter = """
+        // dataLabel is the new slice's label;
+        // DatasetLabel names the dataset.
+        chartData = await pieChart.AddDataAsync(chartData, "Friday",
+            new PieChartDatasetData("Sales", 25, "#4BC0C0"));
+        """;
+
+    private const string addPointBefore = """
+        // dataLabel named the dataset.
+        chartData = await scatterChart.AddDataAsync(chartData, "Team A",
+            new ScatterChartDatasetData(null, new ScatterChartDataPoint(3, 7)));
+        """;
+
+    private const string addPointAfter = """
+        // DatasetLabel names the dataset; dataLabel is not used.
+        chartData = await scatterChart.AddDataAsync(chartData, "Team A",
+            new ScatterChartDatasetData("Team A", new ScatterChartDataPoint(3, 7)));
+        """;
+
+    private const string updateValuesBefore = """
+        await JS.InvokeVoidAsync(
+            "window.blazorexpress.chartjs.updateDataValues", chartId, chartData);
+        """;
+
+    private const string updateValuesAfter = """
+        await barChart.UpdateAsync(chartData, options);
+        """;
+
+    private const string scriptBefore = """
+        <!-- A copy of the 1.2.4 file in your own folder -->
+        <script src="js/blazorexpress.chartjs.js"></script>
+        """;
+
+    private const string scriptAfter = """
+        <!-- Load it from the package, or copy the 2.0.0 file -->
+        <script src="_content/BlazorExpress.ChartJS/blazorexpress.chartjs.js"></script>
+        """;
+}

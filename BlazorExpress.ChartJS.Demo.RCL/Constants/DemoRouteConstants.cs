@@ -20,6 +20,15 @@ public static class DemoRouteConstants
     public const string Blog_Releases_Prefix = Blog_Prefix + "/releases";
     public const string Blog_Releases = Blog_Releases_Prefix; // the release list page, linked from the top navbar
     public const string Blog_Release_2_0_0 = Blog_Releases_Prefix + "/2-0-0";
+    public const string Blog_Release_2_0_0_Breaking_Changes = Blog_Releases_Prefix + "/2-0-0-breaking-changes"; // before and after code
+    public const string Blog_Release_1_2_4 = Blog_Releases_Prefix + "/1-2-4";
+    public const string Blog_Release_1_2_3 = Blog_Releases_Prefix + "/1-2-3";
+    public const string Blog_Release_1_2_2 = Blog_Releases_Prefix + "/1-2-2";
+    public const string Blog_Release_1_2_1 = Blog_Releases_Prefix + "/1-2-1";
+    public const string Blog_Release_1_2_0 = Blog_Releases_Prefix + "/1-2-0";
+    public const string Blog_Release_1_1_0 = Blog_Releases_Prefix + "/1-1-0";
+    public const string Blog_Release_1_0_0 = Blog_Releases_Prefix + "/1-0-0";
+    public const string Blog_Release_1_0_0_Preview1 = Blog_Releases_Prefix + "/1-0-0-preview1";
 
     #endregion
 

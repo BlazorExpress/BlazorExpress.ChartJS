@@ -1,0 +1,72 @@
+@attribute [Route(pageUrl)]
+@layout BlogMainLayout
+@using BlazorExpress.ChartJS.Demo.RCL.Pages.Demos.BarChart
+@using BlazorExpress.ChartJS.Demo.RCL.Pages.Demos.LineChart
+
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<DemoPageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</DemoPageHero>
+
+<ReleaseMeta Version="@version" />
+
+@* From the GitHub release v1.2.0; keep the wording in step with CHANGELOG.md ## 1.2.0. *@
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="What's new" PageUrl="@pageUrl" Link="whats-new">
+    <Block>
+        <div class="content be-release-notes">
+            <ul>
+                <li><strong>Bar border radius.</strong> New docs and demos for rounding bar corners with <code>BorderRadius</code>, and a <code>BorderSkipped</code> property on <code>BarChartDataset</code>.</li>
+                <li><strong>Animation options.</strong> <code>ChartAnimation</code> (<code>Delay</code>, <code>Duration</code>, <code>Easing</code> and <code>Loop</code>) on the chart options and on each dataset, so bars can grow in one after another or one dataset after another.</li>
+                <li><strong>Line interpolation modes.</strong> Docs and a demo for linear interpolation (the default), cubic interpolation with <code>Tension</code>, and monotone cubic interpolation with <code>CubicInterpolationMode = "monotone"</code>.</li>
+                <li><strong>Line <code>Segment</code>.</strong> <code>LineChartDataset.Segment</code> passes custom line segment styles to Chart.js.</li>
+            </ul>
+        </div>
+    </Block>
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H5" Level="3" Name="Bar border radius" PageUrl="@pageUrl" Link="border-radius">
+    <Block>
+        Set <code>BorderRadius</code> on a bar dataset to round its corners. The samples on this page run on the current version of the library.
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_06_Border_Radius)" Tabs="true" />
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H5" Level="3" Name="Animation delay" PageUrl="@pageUrl" Link="animation-delay">
+    <Block>
+        A <code>Delay</code> in the chart's <code>Animation</code> makes the bars grow in one after another.
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_07_Animations_A_Delay)" Tabs="true" />
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H5" Level="3" Name="Interpolation modes" PageUrl="@pageUrl" Link="interpolation-modes">
+    <Block>
+        The same data drawn with each interpolation mode.
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_05_Interpolation_Modes)" Tabs="true" />
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="What's changed" PageUrl="@pageUrl" Link="whats-changed">
+    <Block>
+        <div class="content be-release-notes">
+            <ul>
+                <li><strong>Getting started.</strong> Clearer steps for WebAssembly and Server projects: installation is split into labelled snippets, the script references and service registration are explained, and the examples use a bar chart.</li>
+                <li><strong>Bubble chart.</strong> New dataset colours and border width for a cleaner look.</li>
+                <li><strong>Chart docs.</strong> Clearer "How to use" and "How it works" sections, with the same image references and formatting on every chart page.</li>
+                <li><strong>Chart options and parameters.</strong> Refined animation properties on <code>ChartDataset&lt;TData&gt;</code> and <code>ChartOptions</code>, and simpler parameter attributes and initialization.</li>
+            </ul>
+        </div>
+    </Block>
+</DemoSection>
+
+@code {
+    private const string version = "1.2.0";
+    private const string pageUrl = DemoRouteConstants.Blog_Release_1_2_0;
+    private const string pageTitle = "1.2.0 release notes";
+    private const string pageDescription = "Bar border radius and animation delays, line interpolation modes and the line <code>Segment</code> property, and clearer getting-started docs.";
+    private const string metaTitle = "1.2.0 Release Notes: Animations and Interpolation";
+    private const string metaDescription = "BlazorExpress.ChartJS 1.2.0 adds bar border radius demos, animation delays on charts and datasets, line interpolation modes and the line Segment property.";
+    private const string imageUrl = DemoImageSrcConstants.BarChart;
+}

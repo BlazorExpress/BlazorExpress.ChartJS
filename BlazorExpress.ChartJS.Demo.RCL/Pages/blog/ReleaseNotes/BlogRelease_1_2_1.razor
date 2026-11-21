@@ -1,0 +1,51 @@
+@attribute [Route(pageUrl)]
+@layout BlogMainLayout
+
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<DemoPageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</DemoPageHero>
+
+<ReleaseMeta Version="@version" />
+
+@* From the GitHub release v1.2.1 and the package's target frameworks; keep the wording in step with CHANGELOG.md ## 1.2.1. *@
+<div class="content be-release-notes">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="What's new" PageUrl="@pageUrl" Link="whats-new">
+        <Block>
+            <ul>
+                <li><strong>.NET 9 and .NET 10.</strong> The package targets <code>net9.0</code> and <code>net10.0</code> alongside <code>net8.0</code>, each built against the matching <code>Microsoft.AspNetCore.Components.Web</code>.</li>
+            </ul>
+        </Block>
+    </DemoSection>
+
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Fixed" PageUrl="@pageUrl" Link="fixed">
+        <Block>
+            <ul>
+                <li>The dashed vertical line that line charts draw at the hovered point is 2 px wide, as intended. A typo (<code>ctx.linewidth</code> for <code>ctx.lineWidth</code>) left it at 1 px, and the canvas state is now restored once, after both halves of the line are drawn. (<a href="@(pullUrl)24">#24</a>)</li>
+            </ul>
+        </Block>
+    </DemoSection>
+
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Docs and demos" PageUrl="@pageUrl" Link="docs-and-demos">
+        <Block>
+            <ul>
+                <li>Smoother animation delays in the bar chart demo, and chart images keep their own width. (<a href="@(pullUrl)20">#20</a>)</li>
+                <li>Demo site layout updates. (<a href="@(pullUrl)21">#21</a>)</li>
+            </ul>
+        </Block>
+    </DemoSection>
+</div>
+
+@code {
+    private const string version = "1.2.1";
+    private const string pageUrl = DemoRouteConstants.Blog_Release_1_2_1;
+    private const string pageTitle = "1.2.1 release notes";
+    private const string pageDescription = ".NET 9 and .NET 10 targets, and a fix for the dashed hover line on line charts.";
+    private const string metaTitle = "1.2.1 Release Notes: .NET 9 and .NET 10";
+    private const string metaDescription = "BlazorExpress.ChartJS 1.2.1 targets .NET 9 and .NET 10 alongside .NET 8 and fixes the width of the dashed hover line on line charts.";
+    private const string imageUrl = DemoImageSrcConstants.LineChart;
+    private const string pullUrl = ReleaseCatalog.GitHubRepositoryUrl + "/pull/";
+}

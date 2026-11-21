@@ -1,0 +1,31 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+@* The release date and links under a release page's title, and the install command for that version. *@
+<div class="be-release-meta">
+    <span class="tag is-success is-light is-medium"><time datetime="@Release.IsoDate">Released @Release.DisplayDate</time></span>
+    <a href="@($"{ReleaseCatalog.GitHubReleasesUrl}/tag/{Release.Tag}")" target="_blank" rel="noopener noreferrer">GitHub release<span class="is-sr-only"> (opens in a new tab)</span></a>
+    <a href="@($"{ReleaseCatalog.NuGetPackageUrl}/{Release.Version}")" target="_blank" rel="noopener noreferrer">NuGet package<span class="is-sr-only"> (opens in a new tab)</span></a>
+    @if (previous is not null)
+    {
+        <a href="@($"{ReleaseCatalog.GitHubRepositoryUrl}/compare/{previous.Tag}...{Release.Tag}")" target="_blank" rel="noopener noreferrer">All changes since @previous.Version<span class="is-sr-only"> (opens in a new tab)</span></a>
+    }
+</div>
+
+@if (ShowInstall)
+{
+    <pre class="be-release-install"><code>dotnet add package BlazorExpress.ChartJS --version @Release.Version</code></pre>
+}
+
+@code {
+    private ReleaseInfo? previous;
+
+    /// <summary>Gets or sets the release version, such as <c>1.2.4</c>.</summary>
+    [Parameter, EditorRequired] public string Version { get; set; } = default!;
+
+    /// <summary>Gets or sets whether to show the install command. Default value is true.</summary>
+    [Parameter] public bool ShowInstall { get; set; } = true;
+
+    private ReleaseInfo Release => ReleaseCatalog.Get(Version);
+
+    protected override void OnParametersSet() => previous = ReleaseCatalog.Previous(Version);
+}

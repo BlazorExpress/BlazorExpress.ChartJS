@@ -1,0 +1,81 @@
+@attribute [Route(pageUrl)]
+@layout BlogMainLayout
+@using BlazorExpress.ChartJS.Demo.RCL.Pages.Demos.BarChart
+@using BlazorExpress.ChartJS.Demo.RCL.Pages.Demos.DoughnutChart
+@using BlazorExpress.ChartJS.Demo.RCL.Pages.Demos.LineChart
+@using BlazorExpress.ChartJS.Demo.RCL.Pages.Demos.PieChart
+
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<DemoPageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</DemoPageHero>
+
+<ReleaseMeta Version="@version" />
+
+@* From the GitHub release v1.0.0 and the code changes since v1.0.0-preview1; keep the wording in step with CHANGELOG.md ## 1.0.0. *@
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Chart components" PageUrl="@pageUrl" Link="chart-components">
+    <Block>
+        <div class="content be-release-notes">
+            <p>The first stable release, for .NET 8, with four chart components:</p>
+            <ul>
+                <li><a href="@DemoRouteConstants.Docs_BarChart"><code>BarChart</code></a></li>
+                <li><a href="@DemoRouteConstants.Docs_DoughnutChart"><code>DoughnutChart</code></a></li>
+                <li><a href="@DemoRouteConstants.Docs_LineChart"><code>LineChart</code></a></li>
+                <li><a href="@DemoRouteConstants.Docs_PieChart"><code>PieChart</code></a></li>
+            </ul>
+        </div>
+    </Block>
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H5" Level="3" Name="Bar chart" PageUrl="@pageUrl" Link="bar-chart">
+    <Block>
+        Compares values across categories. The samples on this page run on the current version of the library.
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_01_How_It_Works)" Tabs="true" />
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H5" Level="3" Name="Doughnut chart" PageUrl="@pageUrl" Link="doughnut-chart">
+    <Block>
+        Shows each value as a share of the whole, with a hole in the middle.
+    </Block>
+    <Demo Type="typeof(DoughnutChart_Demo_01_How_It_Works)" Tabs="true" />
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H5" Level="3" Name="Line chart" PageUrl="@pageUrl" Link="line-chart">
+    <Block>
+        Shows how values change across categories or over time.
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_01_How_It_Works)" Tabs="true" />
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H5" Level="3" Name="Pie chart" PageUrl="@pageUrl" Link="pie-chart">
+    <Block>
+        Shows each value as a slice of the whole.
+    </Block>
+    <Demo Type="typeof(PieChart_Demo_01_How_It_Works)" Tabs="true" />
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Changed since 1.0.0-preview1" PageUrl="@pageUrl" Link="changed-since-preview1">
+    <Block>
+        <div class="content be-release-notes">
+            <ul>
+                <li>Bar data labels take the <code>Alignment</code> and <code>Anchor</code> enums in place of the <code>Align</code> and <code>Anchor</code> strings.</li>
+                <li>An <code>InteractionMode</code> enum sets how the tooltip and hover find items.</li>
+                <li>More dataset properties on bar, doughnut, line and pie datasets.</li>
+            </ul>
+        </div>
+    </Block>
+</DemoSection>
+
+@code {
+    private const string version = "1.0.0";
+    private const string pageUrl = DemoRouteConstants.Blog_Release_1_0_0;
+    private const string pageTitle = "1.0.0 release notes";
+    private const string pageDescription = "The first stable release: bar, doughnut, line and pie charts.";
+    private const string metaTitle = "1.0.0 Release Notes: First Stable Release";
+    private const string metaDescription = "BlazorExpress.ChartJS 1.0.0, the first stable release for .NET 8, with bar, doughnut, line and pie chart components.";
+    private const string imageUrl = DemoImageSrcConstants.PieChart;
+}

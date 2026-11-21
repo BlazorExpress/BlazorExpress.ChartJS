@@ -1,0 +1,37 @@
+@attribute [Route(pageUrl)]
+@layout BlogMainLayout
+
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<DemoPageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</DemoPageHero>
+
+<ReleaseMeta Version="@version" />
+
+@* From the GitHub release v1.0.0-preview1; keep the wording in step with CHANGELOG.md ## 1.0.0-preview1. *@
+<div class="content be-release-notes">
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Chart components" PageUrl="@pageUrl" Link="chart-components">
+        <Block>
+            <p>The first preview, for .NET 8, with four chart components. The links open each chart's current docs; the <a href="@DemoRouteConstants.Blog_Release_1_0_0">1.0.0 release notes</a> show each chart live.</p>
+            <ul>
+                <li><a href="@DemoRouteConstants.Docs_BarChart"><code>BarChart</code></a></li>
+                <li><a href="@DemoRouteConstants.Docs_DoughnutChart"><code>DoughnutChart</code></a></li>
+                <li><a href="@DemoRouteConstants.Docs_LineChart"><code>LineChart</code></a></li>
+                <li><a href="@DemoRouteConstants.Docs_PieChart"><code>PieChart</code></a></li>
+            </ul>
+        </Block>
+    </DemoSection>
+</div>
+
+@code {
+    private const string version = "1.0.0-preview1";
+    private const string pageUrl = DemoRouteConstants.Blog_Release_1_0_0_Preview1;
+    private const string pageTitle = "1.0.0-preview1 release notes";
+    private const string pageDescription = "The first preview: bar, doughnut, line and pie charts.";
+    private const string metaTitle = "1.0.0-preview1 Release Notes: First Preview";
+    private const string metaDescription = "BlazorExpress.ChartJS 1.0.0-preview1, the first preview for .NET 8, with bar, doughnut, line and pie chart components.";
+    private const string imageUrl = DemoImageSrcConstants.BarChart;
+}

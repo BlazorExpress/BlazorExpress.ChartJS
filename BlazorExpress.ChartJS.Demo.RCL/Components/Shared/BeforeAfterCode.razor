@@ -1,0 +1,27 @@
+@namespace BlazorExpress.ChartJS.Demo.RCL
+
+@* Two code blocks side by side (stacked on narrow screens): the code before a change and the code after it. *@
+<div class="be-before-after">
+    <div>
+        <span class="tag is-danger is-light">@BeforeLabel</span>
+        <pre><code>@Before</code></pre>
+    </div>
+    <div>
+        <span class="tag is-success is-light">@AfterLabel</span>
+        <pre><code>@After</code></pre>
+    </div>
+</div>
+
+@code {
+    /// <summary>Gets or sets the code before the change.</summary>
+    [Parameter, EditorRequired] public string Before { get; set; } = default!;
+
+    /// <summary>Gets or sets the label above the code before the change. Default value is "1.2.4".</summary>
+    [Parameter] public string BeforeLabel { get; set; } = "1.2.4";
+
+    /// <summary>Gets or sets the code after the change.</summary>
+    [Parameter, EditorRequired] public string After { get; set; } = default!;
+
+    /// <summary>Gets or sets the label above the code after the change. Default value is "2.0.0".</summary>
+    [Parameter] public string AfterLabel { get; set; } = "2.0.0";
+}

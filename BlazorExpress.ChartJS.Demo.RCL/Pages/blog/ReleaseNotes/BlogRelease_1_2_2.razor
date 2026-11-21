@@ -1,0 +1,53 @@
+@attribute [Route(pageUrl)]
+@layout BlogMainLayout
+@using BlazorExpress.ChartJS.Demo.RCL.Pages.Demos.BarChart
+
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<DemoPageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</DemoPageHero>
+
+<ReleaseMeta Version="@version" />
+
+@* From the GitHub release v1.2.2; keep the wording in step with CHANGELOG.md ## 1.2.2. *@
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="What's new" PageUrl="@pageUrl" Link="whats-new">
+    <Block>
+        <div class="content be-release-notes">
+            <ul>
+                <li><strong>Combo bar and line charts.</strong> <code>BarChart</code> and <code>LineChart</code> accept a mix of <code>BarChartDataset</code> and <code>LineChartDataset</code> in the same <code>ChartData.Datasets</code>, for example columns with a line on top. (<a href="@(pullUrl)28">#28</a>, by <a href="https://github.com/mu439">mu439</a> in their first contribution)</li>
+            </ul>
+        </div>
+    </Block>
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H5" Level="3" Name="Combo bar and line chart" PageUrl="@pageUrl" Link="combo-bar-line">
+    <Block>
+        A <code>BarChart</code> with bar datasets and a line dataset in one <code>ChartData</code>. The sample runs on the current version of the library.
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_09_Combo_Bar_Line)" Tabs="true" />
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Docs and demos" PageUrl="@pageUrl" Link="docs-and-demos">
+    <Block>
+        <div class="content be-release-notes">
+            <ul>
+                <li>The bar and line chart docs have a Combo bar/line section with a demo, and the README shows how to mix the datasets. (<a href="@(pullUrl)28">#28</a>)</li>
+                <li>The install snippets and package version say 1.2.2. (<a href="@(pullUrl)29">#29</a>, by <a href="https://github.com/mu439">mu439</a>)</li>
+            </ul>
+        </div>
+    </Block>
+</DemoSection>
+
+@code {
+    private const string version = "1.2.2";
+    private const string pageUrl = DemoRouteConstants.Blog_Release_1_2_2;
+    private const string pageTitle = "1.2.2 release notes";
+    private const string pageDescription = "Combo bar and line charts: bar and line datasets in one chart.";
+    private const string metaTitle = "1.2.2 Release Notes: Combo Bar and Line Charts";
+    private const string metaDescription = "BlazorExpress.ChartJS 1.2.2 lets BarChart and LineChart mix bar and line datasets in one chart.";
+    private const string imageUrl = DemoImageSrcConstants.BarChart;
+    private const string pullUrl = ReleaseCatalog.GitHubRepositoryUrl + "/pull/";
+}

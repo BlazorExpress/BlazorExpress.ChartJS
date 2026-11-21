@@ -9,33 +9,37 @@
     </SubTitleTemplate>
 </DemoPageHero>
 
-@* One entry per release, newest first. Add a release here, in the Blog menu (BlogMainLayout.razor.cs), on the Blog home page, in sitemap.xml and in llms.txt. *@
-<DemoSection Class="p-0" Size="HeadingSize.H4" Name="2.0.0" PageUrl="@pageUrl" Link="2-0-0">
-    <Block>
-        <p>
-            Time axes, JavaScript functions, chart methods and events, and wider Chart.js 4.6 options.
-            Code compiled against 1.2.4 keeps working, but some charts look or behave differently without any code change, so read the breaking changes before you upgrade from 1.x.
-        </p>
-        <div class="buttons mt-3">
-            <a class="button is-primary is-small" href="@DemoRouteConstants.Blog_Release_2_0_0">Read the 2.0.0 release notes</a>
-            <a class="button is-small" href="@(DemoRouteConstants.Blog_Release_2_0_0)#breaking-changes">Breaking changes</a>
-        </div>
-    </Block>
-</DemoSection>
+@* One entry per release, newest first, from ReleaseCatalog. To add a release, see ReleaseCatalog.cs. *@
+@foreach (var release in ReleaseCatalog.Releases)
+{
+    <DemoSection Class="p-0" Size="HeadingSize.H4" Name="@release.Version" PageUrl="@pageUrl" Link="@release.Version.Replace('.', '-')">
+        <Block>
+            <p class="mb-2"><span class="tag is-success is-light"><time datetime="@release.IsoDate">Released @release.DisplayDate</time></span></p>
+            <p>@release.Summary</p>
+            <div class="buttons mt-3">
+                <a class="button is-primary is-small" href="@release.PageUrl">Read the @release.Version release notes</a>
+                @if (release.Version == "2.0.0")
+                {
+                    <a class="button is-small" href="@DemoRouteConstants.Blog_Release_2_0_0_Breaking_Changes">Breaking changes, before and after</a>
+                }
+            </div>
+        </Block>
+    </DemoSection>
+}
 
-<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Earlier releases" PageUrl="@pageUrl" Link="earlier-releases">
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Changelog" PageUrl="@pageUrl" Link="changelog">
     <Block>
-        Releases before 2.0.0 are listed in <a href="@changelogUrl" target="_blank" rel="noopener noreferrer">CHANGELOG.md<span class="is-sr-only"> (opens in a new tab)</span></a> and on <a href="@nugetVersionsUrl" target="_blank" rel="noopener noreferrer">NuGet<span class="is-sr-only"> (opens in a new tab)</span></a>.
+        Every release is also in <a href="@changelogUrl" target="_blank" rel="noopener noreferrer">CHANGELOG.md<span class="is-sr-only"> (opens in a new tab)</span></a>, on <a href="@ReleaseCatalog.GitHubReleasesUrl" target="_blank" rel="noopener noreferrer">GitHub<span class="is-sr-only"> (opens in a new tab)</span></a> and on <a href="@nugetVersionsUrl" target="_blank" rel="noopener noreferrer">NuGet<span class="is-sr-only"> (opens in a new tab)</span></a>.
     </Block>
 </DemoSection>
 
 @code {
     private const string pageUrl = DemoRouteConstants.Blog_Releases;
     private const string pageTitle = "Releases";
-    private const string pageDescription = "Every BlazorExpress.ChartJS release, newest first, with a link to its release notes.";
+    private const string pageDescription = "Every BlazorExpress.ChartJS release, newest first, with its release date and a link to its release notes.";
     private const string metaTitle = "Releases and Release Notes";
-    private const string metaDescription = "Every BlazorExpress.ChartJS release, newest first: what's new, what's changed and breaking changes, with a link to each release's notes.";
+    private const string metaDescription = "Every BlazorExpress.ChartJS release, newest first, with its release date: what's new, what's changed and breaking changes, with a link to each release's notes.";
     private const string imageUrl = DemoImageSrcConstants.LineChart;
     private const string changelogUrl = "https://github.com/BlazorExpress/BlazorExpress.ChartJS/blob/main/CHANGELOG.md";
-    private const string nugetVersionsUrl = "https://www.nuget.org/packages/BlazorExpress.ChartJS#versions-body-tab";
+    private const string nugetVersionsUrl = ReleaseCatalog.NuGetPackageUrl + "#versions-body-tab";
 }

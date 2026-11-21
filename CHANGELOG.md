@@ -4,6 +4,8 @@ All notable changes to BlazorExpress.ChartJS are listed here, newest first.
 
 ## 2.0.0
 
+Released 2026-11-21.
+
 2.0.0 is a major release. Code compiled against 1.2.4 keeps working: package validation against 1.2.4 reports no binary break. Some charts look or behave differently without any code change, though, so read **Breaking changes** before you upgrade. Chart.js 4.6.1 is the documented version.
 
 ### Breaking changes
@@ -36,7 +38,7 @@ Each item says how to keep the 1.2.4 behaviour where there is a way.
 - **Options on every chart type.** All eight chart types have `Plugins`, `Interaction` and `Layout`, created by default, so `options.Plugins.Title.Text = "Sales"` works on all of them. Radar and polar area charts have a radial `Scales.R` axis, and bubble charts have `Scales.X` and `Scales.Y`.
 - **Axis options:** additional axes (`Scales.AdditionalAxes`, for example a right-hand `y1`), `Position`, `Reverse`, `Offset`, `Grace`, `Bounds`, `Weight`, `Stack`, `StackWeight`, `Display`, `BackgroundColor` and `Axis`. Tick options include `StepSize`, `Precision`, `Count`, `MaxTicksLimit`, `AutoSkip`, rotation and `Font`. Axis titles have `Padding`.
 - **Chart-level options:** `AspectRatio`, `ResizeDelay`, `DevicePixelRatio`, `Events`, `Hover`, `Elements`, per-side layout padding (`Layout.PaddingSides`), and `Interaction.Axis` and `IncludeInvisible`.
-- **Plugin options:** a subtitle plugin; title `FullSize`, `Padding` and `Position`; 14 tooltip options including `Mode`, `Position`, `Padding`, `CornerRadius` and `UsePointStyle`; legend label `TextAlign`; and the colors and filler plugins.
+- **Plugin options:** a subtitle plugin; title `FullSize`, `Padding` and `Position`; 14 tooltip options including `Mode`, `Position`, `Padding`, `CornerRadius` and `UsePointStyle`, plus the tooltip `Callbacks`, `External`, `Filter` and `ItemSort` functions; legend label `TextAlign`; and the colors and filler plugins.
 - **Line charts:** the dashed hover line can be styled or turned off with `options.Plugins.TooltipLine` (default unchanged).
 - **Doughnut and pie:** `Cutout`, `Radius`, `Rotation` and `Circumference` (for example a half-doughnut gauge), and `Animation.AnimateRotate` and `AnimateScale`.
 - **Datasets:** floating bars (`BarChartDataset.FloatingData`, also through `AddDataAsync` with `new BarChartDatasetData(label, start, end)`), bar `Base`, per-corner `BorderRadiusCorners` and `HoverBorderRadiusCorners`, `InflateAmount` and `PointStyle`; line `MaxSpanGap`; per-side `ClipSides`; `SpacingMode` on arc datasets; scatter `Segment`; radar `RAxisID`.
@@ -66,10 +68,123 @@ Each item says how to keep the 1.2.4 behaviour where there is a way.
 
 - A samples gallery with a page per sample, each with "How to use" steps and copyable source, covering the official Chart.js samples the library can express.
 - Each chart's docs page lists its Common Parameters, Events and Methods, so inherited members such as `ResizeAsync` and `OnClick` are documented too.
-- Getting started covers time axes and JavaScript functions, including the script order for WebAssembly, Server, Auto and MAUI.
+- A Scenarios sample category (loading data from an API, live updates, charts in tabs and dialogs, dark theme colours and large datasets), and a "Use it when" line on every sample.
+- Sample URLs of removed or merged samples open their replacement or the chart page instead of "sample not found".
+- An Accessibility docs page, and the demo site follows WCAG 2.2 AA.
+- Getting started covers time axes and JavaScript functions, including where to load your function script in WebAssembly, Server, Auto and MAUI apps. The step-by-step setup guides cover Blazor WebAssembly and Blazor Web App (Server); the Auto and MAUI guides were removed.
 - The Pie chart demo page links to the Pie chart docs, and the README's Getting Started link opens the getting-started page.
 
 ### For contributors
 
 - New test project `BlazorExpress.ChartJS.Tests` (xUnit v3 and bUnit). Run it with `dotnet test --solution BlazorExpress.ChartJS.slnx`. The root `global.json` opts in to Microsoft.Testing.Platform, which needs the .NET 10 SDK; older SDKs ignore the setting.
 - The demo site deploys to production only when the workflow is run by hand with "Do you want to release to production?" ticked. Pushes to `main` no longer deploy, and pull requests still get preview deploys.
+
+## 1.2.4
+
+Released 2026-07-14.
+
+### New
+
+- **Chart item click events.** Every chart type has an `OnClick` callback that runs when a user clicks a bar, point or slice. It receives `ChartClickEventArgs` with the dataset index and label, the data item index and label, and the value. The JavaScript interop passes the Chart.js click to .NET. (#37)
+
+### Docs and demos
+
+- Each chart's docs and demo pages show the click event. (#37)
+- The install snippets, README and package version say 1.2.4. (#39)
+
+## 1.2.3
+
+Released 2026-05-22.
+
+### New
+
+- **Dataset `Stack`.** `BarChartDataset` and `LineChartDataset` have a `Stack` property. Datasets with the same `Stack` value stack together, and datasets with different values form separate stacks side by side in the same category. The axis-level `Stacked` option still stacks every dataset into one. (#32, by @berndlueneburg in their first contribution)
+
+### Docs and demos
+
+- A "Stacked bar chart with groups" demo and a stacked line chart demo. (#32, #33)
+- A Supported Tech Stack table in the README and in Getting started lists the .NET, Chart.js and chartjs-plugin-datalabels versions for each release. (#30, by @mu439)
+- The bar and line chart docs show how to turn on data labels by passing the `ChartDataLabels` plugin to `InitializeAsync`, and the line chart docs have a stacked line chart section. (#33)
+- The install snippets, README and package version say 1.2.3. (#34)
+
+## 1.2.2
+
+Released 2026-04-18.
+
+### New
+
+- **Combo bar and line charts.** `BarChart` and `LineChart` accept a mix of `BarChartDataset` and `LineChartDataset` in the same `ChartData.Datasets`, for example columns with a line on top. (#28, by @mu439 in their first contribution)
+
+### Docs and demos
+
+- The bar and line chart docs have a Combo bar/line section with a demo, and the README shows how to mix the datasets. (#28)
+- The install snippets and package version say 1.2.2. (#29, by @mu439)
+
+## 1.2.1
+
+Released 2026-02-25.
+
+### New
+
+- **.NET 9 and .NET 10.** The package targets `net9.0` and `net10.0` alongside `net8.0`, each built against the matching `Microsoft.AspNetCore.Components.Web`.
+
+### Fixed
+
+- The dashed vertical line that line charts draw at the hovered point is 2 px wide, as intended. A typo (`ctx.linewidth` for `ctx.lineWidth`) left it at 1 px, and the canvas state is now restored once, after both halves of the line are drawn. (#24)
+
+### Docs and demos
+
+- Smoother animation delays in the bar chart demo, and chart images keep their own width. (#20)
+- Demo site layout updates. (#21)
+
+## 1.2.0
+
+Released 2025-08-13.
+
+### New
+
+- **Bar border radius.** New docs and demos for rounding bar corners with `BorderRadius`, and a `BorderSkipped` property on `BarChartDataset`.
+- **Animation options.** `ChartAnimation` (`Delay`, `Duration`, `Easing` and `Loop`) on the chart options and on each dataset, so bars can grow in one after another or one dataset after another.
+- **Line interpolation modes.** Docs and a demo for linear interpolation (the default), cubic interpolation with `Tension`, and monotone cubic interpolation with `CubicInterpolationMode = "monotone"`.
+- **Line `Segment`.** `LineChartDataset.Segment` passes custom line segment styles to Chart.js.
+
+### Changed
+
+- **Getting started.** Clearer steps for WebAssembly and Server projects: installation is split into labelled snippets, the script references and service registration are explained, and the examples use a bar chart.
+- **Bubble chart.** New dataset colours and border width for a cleaner look.
+- **Chart docs.** Clearer "How to use" and "How it works" sections, with the same image references and formatting on every chart page.
+- **Chart options and parameters.** Refined animation properties on `ChartDataset<TData>` and `ChartOptions`, and simpler parameter attributes and initialization.
+
+## 1.1.0
+
+Released 2025-08-09.
+
+### New
+
+- **Four new chart types:** `BubbleChart`, `PolarAreaChart`, `RadarChart` and `ScatterChart`, each with its own dataset, options and plugin types, docs and demos. (#15)
+
+### Docs and demos
+
+- Updated docs and demos for every chart. (#15)
+- A wider demo sidebar and updated links. (#12)
+- Site analytics on the demo site. (#14)
+- Chart images for each chart type, and README links to each chart's docs. (#17)
+- Code cleanup. (#16)
+
+## 1.0.0
+
+Released 2024-06-16.
+
+The first stable release, for .NET 8, with four chart components: `BarChart`, `DoughnutChart`, `LineChart` and `PieChart`.
+
+### Changed since 1.0.0-preview1
+
+- Bar data labels take the `Alignment` and `Anchor` enums in place of the `Align` and `Anchor` strings.
+- An `InteractionMode` enum sets how the tooltip and hover find items.
+- More dataset properties on bar, doughnut, line and pie datasets.
+
+## 1.0.0-preview1
+
+Released 2024-06-14.
+
+The first preview, for .NET 8, with four chart components: `BarChart`, `DoughnutChart`, `LineChart` and `PieChart`.
