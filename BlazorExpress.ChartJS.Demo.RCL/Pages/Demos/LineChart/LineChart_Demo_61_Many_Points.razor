@@ -14,7 +14,7 @@
             var options = new LineChartOptions
             {
                 Responsive = true,
-                // Duration = 0 draws the chart once, instead of animating 5,000 points frame by frame.
+                // animation: false draws the chart once, instead of animating 5,000 points frame by frame.
                 Animation = ChartAnimation.Disabled,
                 // Index mode finds the hovered label by its x position, without testing every point for a hit.
                 Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false },
