@@ -41,7 +41,7 @@ dotnet add package BlazorExpress.ChartJS --version 2.0.0
 ⭐ GitHub: https://github.com/BlazorExpress/BlazorExpress.ChartJS
 📦 NuGet: https://www.nuget.org/packages/BlazorExpress.ChartJS/2.0.0
 
-#Blazor #dotnet #csharp #chartjs #dataviz
+#Blazor #BlazorExpress #dotnet #csharp #chartjs #dataviz
 
 ## X
 
