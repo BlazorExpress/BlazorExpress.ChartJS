@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.0.0 release media</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; padding: 16px; background: #0e0b1f; color: #e9e6f7; font: 14px/1.5 Sora, system-ui, sans-serif; }
+  button { font: inherit; margin: 0 8px 8px 0; padding: 6px 12px; }
+  #stage { width: 960px; max-width: 100%; height: auto; display: block; border: 1px solid #2e2557; margin-top: 8px; }
+  #charts { position: absolute; left: -10000px; top: 0; }
+  #status { min-height: 1.5em; }
+</style>
+</head>
+<body>
+<!-- Release media for BlazorExpress.ChartJS 2.0.0. Every frame and image is drawn on #stage with real Chart.js charts. -->
+<div>
+  <button id="btn-video">Render video (MP4)</button>
+  <button id="btn-poster">Render poster</button>
+  <button id="btn-thumb">Render thumbnail</button>
+  <label>Preview time <input id="scrub" type="range" min="0" max="40" step="0.1" value="1"></label>
+</div>
+<div id="status">Loading fonts…</div>
+<canvas id="stage" width="1920" height="1080"></canvas>
+<div id="charts"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.6.1/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mp4-muxer@5.1.3/build/mp4-muxer.js"></script>
+<script>
+'use strict';
+// ---------- palette and type ----------
+const C = {
+  bg: '#0e0b1f', bg2: '#17122e', line: '#2e2557', purple: '#512BD4', violet: '#8b6cf6', lilac: '#c4b5fd',
+  teal: '#2ec4b6', amber: '#f4a259', pink: '#f25f8b', text: '#f4f2fc', muted: '#b7b0d6', dim: '#7d74a8',
+};
+const SANS = 'Sora', MONO = '"JetBrains Mono"';
+const stage = document.getElementById('stage');
+const ctx = stage.getContext('2d');
+const status = msg => document.getElementById('status').textContent = msg;
+
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const easeOut = t => 1 - Math.pow(1 - t, 3);
+const lerp = (a, b, t) => a + (b - a) * t;
+
+let logo = null;
+function loadImage(src) { return new Promise((ok, fail) => { const i = new Image(); i.onload = () => ok(i); i.onerror = fail; i.src = src; }); }
+
+// ---------- drawing helpers ----------
+function background(w, h, glowX = 0.15, glowY = 0.1) {
+  ctx.fillStyle = C.bg; ctx.fillRect(0, 0, w, h);
+  const g = ctx.createRadialGradient(w * glowX, h * glowY, 0, w * glowX, h * glowY, Math.max(w, h) * 0.75);
+  g.addColorStop(0, 'rgba(81,43,212,0.55)'); g.addColorStop(0.45, 'rgba(81,43,212,0.12)'); g.addColorStop(1, 'rgba(81,43,212,0)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+  const g2 = ctx.createRadialGradient(w * 0.95, h * 1.0, 0, w * 0.95, h * 1.0, Math.max(w, h) * 0.5);
+  g2.addColorStop(0, 'rgba(46,196,182,0.18)'); g2.addColorStop(1, 'rgba(46,196,182,0)');
+  ctx.fillStyle = g2; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = 'rgba(255,255,255,0.045)';
+  const step = Math.round(w / 48);
+  for (let x = step / 2; x < w; x += step) for (let y = step / 2; y < h; y += step) ctx.fillRect(x, y, 2, 2);
+}
+function font(size, weight = 600, family = SANS) { ctx.font = `${weight} ${size}px ${family}`; }
+function text(str, x, y, { size = 40, weight = 600, color = C.text, align = 'left', family = SANS, alpha = 1, base = 'alphabetic' } = {}) {
+  ctx.save(); ctx.globalAlpha *= alpha; font(size, weight, family); ctx.fillStyle = color; ctx.textAlign = align; ctx.textBaseline = base;
+  ctx.fillText(str, x, y); ctx.restore();
+}
+function wrap(str, x, y, maxW, lineH, opts = {}) {
+  font(opts.size || 40, opts.weight || 600, opts.family || SANS);
+  const words = str.split(' '); let line = '', yy = y;
+  for (const w of words) {
+    const test = line ? line + ' ' + w : w;
+    if (ctx.measureText(test).width > maxW && line) { text(line, x, yy, opts); line = w; yy += lineH; } else line = test;
+  }
+  if (line) text(line, x, yy, opts);
+  return yy + lineH;
+}
+function rrect(x, y, w, h, r) { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); }
+function panel(x, y, w, h, { r = 24, fill = 'rgba(23,18,46,0.92)', stroke = C.line, alpha = 1 } = {}) {
+  ctx.save(); ctx.globalAlpha *= alpha; rrect(x, y, w, h, r); ctx.fillStyle = fill; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = stroke; ctx.stroke(); ctx.restore();
+}
+function pill(label, x, y, { size = 26, fill = 'rgba(81,43,212,0.28)', stroke = 'rgba(139,108,246,0.7)', color = C.lilac, alpha = 1, padX = 22, h = null } = {}) {
+  font(size, 600); const w = ctx.measureText(label).width + padX * 2; const hh = h || size * 1.9;
+  ctx.save(); ctx.globalAlpha *= alpha; rrect(x, y, w, hh, hh / 2); ctx.fillStyle = fill; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = stroke; ctx.stroke(); ctx.restore();
+  text(label, x + padX, y + hh / 2 + 1, { size, weight: 600, color, alpha, base: 'middle' });
+  return w;
+}
+// Minimal C#/JS colouring: strings, keywords, comments, types.
+const KW = /^(new|await|var|value|const|return)$/;
+function codeLine(line, x, y, size, alpha) {
+  font(size, 400, MONO); ctx.save(); ctx.globalAlpha *= alpha; ctx.textBaseline = 'alphabetic';
+  const ci = line.indexOf('//');
+  const body = ci >= 0 ? line.slice(0, ci) : line, comment = ci >= 0 ? line.slice(ci) : '';
+  const tokens = body.match(/("[^"]*"|'[^']*'|\s+|[A-Za-z_][\w]*|.)/g) || [];
+  let xx = x;
+  for (const t of tokens) {
+    let col = C.text;
+    if (/^["']/.test(t)) col = '#9be7a4';
+    else if (KW.test(t)) col = '#c792ea';
+    else if (/^[A-Z]\w*/.test(t)) col = '#82cfff';
+    else if (/^\d/.test(t)) col = C.amber;
+    ctx.fillStyle = col; ctx.fillText(t, xx, y); xx += ctx.measureText(t).width;
+  }
+  if (comment) { ctx.fillStyle = C.dim; ctx.fillText(comment, xx, y); }
+  ctx.restore();
+}
+function codeBox(lines, x, y, w, { size = 26, title = 'C#', alpha = 1, typed = 1 } = {}) {
+  const lh = size * 1.55, h = 70 + lines.length * lh + 26;
+  panel(x, y, w, h, { r: 20, fill: 'rgba(10,8,24,0.92)', alpha });
+  for (let i = 0; i < 3; i++) { ctx.save(); ctx.globalAlpha *= alpha; ctx.beginPath(); ctx.arc(x + 32 + i * 26, y + 32, 8, 0, Math.PI * 2); ctx.fillStyle = ['#f25f8b', '#f4a259', '#2ec4b6'][i]; ctx.fill(); ctx.restore(); }
+  text(title, x + w - 28, y + 40, { size: size * 0.75, weight: 600, color: C.dim, align: 'right', alpha });
+  const total = lines.join('').length; let budget = Math.floor(total * clamp(typed));
+  lines.forEach((l, i) => { const shown = l.slice(0, Math.max(0, budget)); budget -= l.length; if (shown) codeLine(shown, x + 32, y + 70 + (i + 0.8) * lh, size, alpha); });
+  return h;
+}
+function logoRow(x, y, size, alpha = 1, nameSize = null) {
+  ctx.save(); ctx.globalAlpha *= alpha; if (logo) ctx.drawImage(logo, x, y, size, size); ctx.restore();
+  text('BlazorExpress.ChartJS', x + size + size * 0.32, y + size * 0.66, { size: nameSize || size * 0.46, weight: 700, alpha });
+}
+function fade(t, start, end, d = 0.45) { return clamp((t - start) / d) * clamp((end - t) / d); }
+
+// ---------- charts ----------
+Chart.defaults.font.family = 'Sora';
+Chart.defaults.color = C.muted;
+Chart.defaults.borderColor = 'rgba(255,255,255,0.08)';
+const holder = document.getElementById('charts');
+function makeChart(w, h, config) {
+  const c = document.createElement('canvas'); c.width = w; c.height = h; holder.appendChild(c);
+  config.options = Object.assign({ responsive: false, animation: false, devicePixelRatio: 1, events: [] }, config.options || {});
+  config.options.plugins = Object.assign({ legend: { display: false }, tooltip: { enabled: false } }, config.options.plugins || {});
+  return new Chart(c, config);
+}
+function vGradient(chart, top, bottom) {
+  const a = chart.chartArea; if (!a) return top;
+  const g = chart.ctx.createLinearGradient(0, a.top, 0, a.bottom); g.addColorStop(0, top); g.addColorStop(1, bottom); return g;
+}
+const days = Array.from({ length: 30 }, (_, i) => `${i + 1} Nov`);
+const visits = days.map((_, i) => Math.round(820 + 260 * Math.sin(i / 3.2) + i * 38 + (i % 7 === 5 ? -180 : 0)));
+const signups = visits.map((v, i) => Math.round(v * 0.32 + 40 * Math.cos(i / 2.5)));
+function timeChart(w, h, fs = 22) {
+  return makeChart(w, h, { type: 'line', data: { labels: days, datasets: [
+    { data: visits.slice(), borderColor: C.violet, borderWidth: 4, pointRadius: 0, tension: 0.35, fill: true, backgroundColor: c => vGradient(c.chart, 'rgba(139,108,246,0.45)', 'rgba(139,108,246,0)') },
+    { data: signups.slice(), borderColor: C.teal, borderWidth: 4, pointRadius: 0, tension: 0.35, fill: true, backgroundColor: c => vGradient(c.chart, 'rgba(46,196,182,0.35)', 'rgba(46,196,182,0)') },
+  ] }, options: { scales: { x: { ticks: { font: { size: fs }, maxTicksLimit: 6, maxRotation: 0 }, grid: { display: false } }, y: { beginAtZero: true, ticks: { font: { size: fs }, maxTicksLimit: 5 } } } } });
+}
+const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+function currencyChart(w, h, fs = 22) {
+  return makeChart(w, h, { type: 'bar', data: { labels: quarters, datasets: [
+    { data: [42000, 58000, 51000, 76000], backgroundColor: C.purple, borderRadius: 12 },
+    { data: [31000, 37000, 46000, 52000], backgroundColor: C.teal, borderRadius: 12 },
+  ] }, options: { scales: { x: { ticks: { font: { size: fs } }, grid: { display: false } }, y: { beginAtZero: true, ticks: { font: { size: fs }, maxTicksLimit: 5, callback: v => '$' + v / 1000 + 'k' } } } } });
+}
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+const setA = [[12, 19, 7, 15, 10, 17], [8, 11, 14, 9, 16, 12]], setB = [[18, 9, 16, 8, 19, 11], [14, 17, 6, 15, 9, 18]];
+function updateChart(w, h, fs = 22) {
+  return makeChart(w, h, { type: 'bar', data: { labels: months, datasets: [
+    { data: setA[0].slice(), backgroundColor: C.violet, borderRadius: 10 }, { data: setA[1].slice(), backgroundColor: C.amber, borderRadius: 10 },
+  ] }, options: { scales: { x: { ticks: { font: { size: fs } }, grid: { display: false } }, y: { min: 0, max: 20, ticks: { font: { size: fs }, stepSize: 5 } } } } });
+}
+function doughnutChart(w, h) {
+  return makeChart(w, h, { type: 'doughnut', data: { labels: ['Laptops', 'Tablets', 'Phones', 'Watches'], datasets: [
+    { data: [38, 24, 52, 14], backgroundColor: [C.purple, C.teal, C.violet, C.amber], borderColor: C.bg2, borderWidth: 6, hoverOffset: 0 },
+  ] }, options: { cutout: '58%' } });
+}
+function floatingChart(w, h, fs = 20) {
+  return makeChart(w, h, { type: 'bar', data: { labels: ['Plan', 'Build', 'Test', 'Ship'], datasets: [
+    { data: [[1, 4], [3, 9], [8, 11], [10, 12]], backgroundColor: [C.violet, C.purple, C.teal, C.amber], borderRadius: 10, barThickness: Math.round(h / 10) },
+  ] }, options: { indexAxis: 'y', scales: { x: { min: 0, max: 12, ticks: { font: { size: fs }, stepSize: 3 } }, y: { ticks: { font: { size: fs } }, grid: { display: false } } } } });
+}
+function gaugeChart(w, h) {
+  return makeChart(w, h, { type: 'doughnut', data: { datasets: [
+    { data: [72, 28], backgroundColor: [C.teal, 'rgba(255,255,255,0.08)'], borderWidth: 0 },
+  ] }, options: { rotation: -90, circumference: 180, cutout: '72%' } });
+}
+function axesChart(w, h, fs = 20) {
+  return makeChart(w, h, { type: 'line', data: { labels: months, datasets: [
+    { data: [21, 24, 27, 31, 29, 33], borderColor: C.amber, borderWidth: 4, pointRadius: 5, pointBackgroundColor: C.amber, yAxisID: 'y' },
+    { data: [120, 180, 150, 240, 260, 310], borderColor: C.violet, borderWidth: 4, pointRadius: 5, pointBackgroundColor: C.violet, yAxisID: 'y1' },
+  ] }, options: { scales: { x: { ticks: { font: { size: fs } }, grid: { display: false } }, y: { position: 'left', ticks: { font: { size: fs }, maxTicksLimit: 4 } }, y1: { position: 'right', grid: { display: false }, ticks: { font: { size: fs }, maxTicksLimit: 4 } } } } });
+}
+
+let V = null; // video charts, created once
+function videoCharts() {
+  if (V) return V;
+  V = { time: timeChart(1040, 560), currency: currencyChart(980, 560), update: updateChart(980, 560), doughnut: doughnutChart(520, 520),
+        floating: floatingChart(780, 330), gauge: gaugeChart(780, 330), axes: axesChart(780, 330), gradient: timeChart(780, 330, 18) };
+  return V;
+}
+function drawChart(chart, x, y, alpha = 1) { ctx.save(); ctx.globalAlpha *= alpha; ctx.drawImage(chart.canvas, x, y); ctx.restore(); }
+
+// ---------- video scenes (1920 × 1080, seconds) ----------
+const SCENES = [
+  { start: 0, end: 4.6, draw: sceneIntro },
+  { start: 4.6, end: 11, draw: sceneTime },
+  { start: 11, end: 17.4, draw: sceneFunctions },
+  { start: 17.4, end: 23.6, draw: sceneUpdates },
+  { start: 23.6, end: 29.8, draw: sceneEvents },
+  { start: 29.8, end: 35.4, draw: sceneOptions },
+  { start: 35.4, end: 42, draw: sceneOutro },
+];
+const DURATION = 42;
+function heading(kicker, title, sub, t0, t, x = 120, y = 210) {
+  const a = easeOut(clamp((t - t0) / 0.6));
+  text(kicker.toUpperCase(), x, y - 70, { size: 26, weight: 700, color: C.teal, alpha: a });
+  text(title, x - 20 * (1 - a), y, { size: 68, weight: 800, alpha: a });
+  if (sub) wrap(sub, x, y + 62, 640, 46, { size: 30, weight: 400, color: C.muted, alpha: a });
+}
+function sceneIntro(t) {
+  t += 2.2; // the first frame already shows the title, so a platform preview of frame 0 is not blank
+  const a = easeOut(clamp(t / 0.8));
+  logoRow(120, 120, 96, a);
+  text('2.0.0', 112, 520, { size: 300, weight: 800, alpha: easeOut(clamp((t - 0.3) / 0.8)) });
+  const b = easeOut(clamp((t - 0.9) / 0.7));
+  text('Chart.js charts for Blazor, in C#.', 120, 630, { size: 52, weight: 700, alpha: b });
+  wrap('Time axes, JavaScript functions, chart methods and events, and wider Chart.js 4.6 options.', 120, 700, 1100, 54, { size: 38, weight: 400, color: C.muted, alpha: b });
+  pill('Released 21 November 2026', 120, 830, { size: 30, alpha: easeOut(clamp((t - 1.4) / 0.6)) });
+  const c = videoCharts().time; const p = ease(clamp((t - 0.6) / 2.6));
+  syncReveal(c, p);
+  panel(1160, 170, 680, 440, { alpha: b });
+  ctx.save(); ctx.globalAlpha *= b; ctx.drawImage(c.canvas, 1185, 195, 630, 340); ctx.restore();
+  legend([['Visitors', C.violet], ['Sign-ups', C.teal]], 1195, 580, b);
+}
+function syncReveal(c, p) {
+  const n = Math.max(2, Math.round(p * days.length));
+  c.data.datasets[0].data = visits.map((v, i) => i < n ? v : null);
+  c.data.datasets[1].data = signups.map((v, i) => i < n ? v : null);
+  c.update('none');
+}
+function sceneTime(t) {
+  const s = t - 4.6;
+  heading('New in 2.0.0', 'Time axes', 'Dates on the x axis with only Chart.js and the library script. No date-adapter script.', 0, s);
+  codeBox(['chartData.TimeLabels = [ new DateOnly(2026, 11, 1), ... ];', 'options.Scales.X = new ChartAxes', '{', '    Type = ChartAxesType.Time,', '    Time = new ChartAxesTime { Unit = ChartTimeUnit.Day },', '};'],
+    120, 520, 840, { size: 22, typed: clamp((s - 0.6) / 2.2), alpha: easeOut(clamp((s - 0.4) / 0.5)) });
+  const c = videoCharts().time; syncReveal(c, ease(clamp((s - 0.5) / 3)));
+  panel(1000, 200, 820, 600, { alpha: easeOut(clamp((s - 0.2) / 0.5)) });
+  ctx.save(); ctx.globalAlpha *= easeOut(clamp((s - 0.2) / 0.5)); ctx.drawImage(c.canvas, 0, 0, 1040, 560, 1030, 240, 760, 410); ctx.restore();
+  legend([['Visitors', C.violet], ['Sign-ups', C.teal]], 1040, 720, easeOut(clamp((s - 0.4) / 0.5)));
+}
+function legend(items, x, y, alpha) {
+  let xx = x;
+  for (const [label, col] of items) { ctx.save(); ctx.globalAlpha *= alpha; rrect(xx, y - 18, 22, 22, 6); ctx.fillStyle = col; ctx.fill(); ctx.restore(); text(label, xx + 34, y, { size: 26, weight: 400, color: C.muted, alpha }); font(26, 400); xx += ctx.measureText(label).width + 80; }
+}
+function sceneFunctions(t) {
+  const s = t - 11;
+  heading('New in 2.0.0', 'JavaScript functions', 'Tick labels, tooltips and legend filters, set from C#. Registered by name, never evaluated.', 0, s);
+  const a = easeOut(clamp((s - 0.4) / 0.5));
+  const h1 = codeBox(["// your script, after blazorexpress.chartjs.js", "blazorexpress.chartjs.registerFunction(", "    'formatCurrency', value => '$' + value / 1000 + 'k');"], 120, 500, 820, { size: 22, title: 'JS', typed: clamp((s - 0.6) / 1.6), alpha: a });
+  codeBox(['options.Scales.Y!.Ticks = new ChartAxesTicks', '{', '    Callback = new ChartFunction("formatCurrency"),', '};'], 120, 500 + h1 + 24, 820, { size: 22, typed: clamp((s - 2.0) / 1.4), alpha: easeOut(clamp((s - 1.8) / 0.5)) });
+  const c = videoCharts().currency; const p = ease(clamp((s - 0.4) / 1.6));
+  const base = [[42000, 58000, 51000, 76000], [31000, 37000, 46000, 52000]];
+  c.data.datasets.forEach((d, i) => d.data = base[i].map(v => v * p)); c.options.scales.y.max = 80000; c.update('none');
+  panel(1000, 200, 820, 640, { alpha: a });
+  ctx.save(); ctx.globalAlpha *= a; ctx.drawImage(c.canvas, 0, 0, 980, 560, 1030, 240, 760, 434); ctx.restore();
+  legend([['2025', C.purple], ['2026', C.teal]], 1040, 770, a);
+  // highlight the formatted ticks
+  const h = easeOut(clamp((s - 3.4) / 0.4)) * clamp((6.2 - s) / 0.4);
+  if (h > 0) { ctx.save(); ctx.globalAlpha = h; rrect(1028, 236, 76, 400, 14); ctx.lineWidth = 4; ctx.strokeStyle = C.amber; ctx.stroke(); ctx.restore(); text('$76k, not 76000', 1120, 230, { size: 26, weight: 600, color: C.amber, alpha: h }); }
+}
+function sceneUpdates(t) {
+  const s = t - 17.4;
+  heading('Changed in 2.0.0', 'Animated updates', 'UpdateAsync moves each dataset from its current values to the new ones, as native Chart.js does.', 0, s);
+  const a = easeOut(clamp((s - 0.4) / 0.5));
+  codeBox(['chartData = NextMonthData();', 'await barChart.UpdateAsync(chartData, options);'], 120, 540, 820, { size: 24, typed: clamp((s - 0.6) / 1.2), alpha: a });
+  const c = videoCharts().update;
+  const cycle = s < 1.6 ? 0 : (s - 1.6) / 1.5; const k = Math.floor(cycle), f = ease(clamp((cycle - k) / 0.8));
+  const from = k % 2 === 0 ? setA : setB, to = k % 2 === 0 ? setB : setA;
+  c.data.datasets.forEach((d, i) => d.data = from[i].map((v, j) => s < 1.6 ? v : lerp(v, to[i][j], f))); c.update('none');
+  panel(1000, 200, 820, 640, { alpha: a });
+  ctx.save(); ctx.globalAlpha *= a; ctx.drawImage(c.canvas, 0, 0, 980, 560, 1030, 240, 760, 434); ctx.restore();
+  legend([['Online', C.violet], ['In store', C.amber]], 1040, 770, a);
+  if (s > 1.6) pill('UpdateAsync', 1560, 250, { size: 24, alpha: clamp((f < 0.95 ? 1 : 0.4)) * a });
+}
+function sceneEvents(t) {
+  const s = t - 23.6;
+  heading('New in 2.0.0', 'Methods and events', null, 0, s);
+  const a = easeOut(clamp((s - 0.3) / 0.5));
+  const chips = ['OnClick', 'OnHover', 'OnLegendClick', 'ShowAsync', 'HideAsync', 'ToggleDataVisibilityAsync', 'SetActiveElementsAsync', 'ToBase64ImageAsync', 'DownloadImageAsync', 'ResetAsync', 'StopAsync', 'UpdateAsync(…, mode)'];
+  let x = 120, y = 250;
+  chips.forEach((label, i) => { const al = easeOut(clamp((s - 0.4 - i * 0.12) / 0.4)); font(25, 600); const w = ctx.measureText(label).width + 44; if (x + w > 1010) { x = 120; y += 70; } pill(label, x, y, { size: 25, alpha: al }); x += w + 14; });
+  const c = videoCharts().doughnut;
+  const hidden = s > 2.6 && s < 4.6; if (c.getDataVisibility(1) === hidden) { c.toggleDataVisibility(1); } c.update('none');
+  panel(1080, 170, 740, 760, { alpha: a });
+  ctx.save(); ctx.globalAlpha *= a; ctx.drawImage(c.canvas, 1190, 220); ctx.restore();
+  legend([['Laptops', C.purple], ['Tablets', C.teal]], 1150, 800, a); legend([['Phones', C.violet], ['Watches', C.amber]], 1150, 850, a);
+  // click marker and the event args
+  const k = easeOut(clamp((s - 1.4) / 0.4));
+  if (k > 0 && s < 2.6) { ctx.save(); ctx.globalAlpha = k; ctx.beginPath(); ctx.arc(1579, 633, 18 + 14 * (1 - k), 0, Math.PI * 2); ctx.lineWidth = 4; ctx.strokeStyle = '#fff'; ctx.stroke(); ctx.restore(); }
+  const e = easeOut(clamp((s - 1.6) / 0.4)) * clamp((6 - s) / 0.4);
+  codeBox(['// OnClick="HandleClickAsync"', 'args.Label   // "Tablets"', 'args.Value   // 24', 'await chart.HideAsync(0, args.Index);'], 120, 600, 860, { size: 24, typed: clamp((s - 1.7) / 1.4), alpha: e });
+}
+function sceneOptions(t) {
+  const s = t - 29.8;
+  heading('Wider Chart.js 4.6 options', 'More of Chart.js, typed', null, 0, s, 120, 170);
+  const V2 = videoCharts();
+  const g = V2.gradient; syncReveal(g, 1);
+  const tiles = [['Floating bars', V2.floating], ['Half-doughnut gauge', V2.gauge], ['Multiple axes', V2.axes], ['Gradient fill', g]];
+  tiles.forEach(([label, chart], i) => {
+    const x = 120 + (i % 2) * 860, y = 240 + Math.floor(i / 2) * 400, al = easeOut(clamp((s - 0.3 - i * 0.2) / 0.5));
+    panel(x, y, 820, 370, { alpha: al }); text(label, x + 30, y + 52, { size: 30, weight: 700, alpha: al });
+    ctx.save(); ctx.globalAlpha *= al; ctx.drawImage(chart.canvas, 0, 0, 780, 330, x + 20, y + 70, 780, 280); ctx.restore();
+    if (label.startsWith('Half')) text('72%', x + 410, y + 330, { size: 54, weight: 800, align: 'center', alpha: al });
+  });
+}
+function sceneOutro(t) {
+  const s = t - 35.4; const a = easeOut(clamp(s / 0.6));
+  logoRow(120, 140, 110, a);
+  text('2.0.0 is out.', 120, 400, { size: 110, weight: 800, alpha: a });
+  pill('.NET 8', 120, 450, { size: 30, alpha: a }); pill('.NET 9', 280, 450, { size: 30, alpha: a }); pill('.NET 10', 440, 450, { size: 30, alpha: a }); pill('.NET 11', 620, 450, { size: 30, alpha: a });
+  codeBox(['dotnet add package BlazorExpress.ChartJS --version 2.0.0'], 120, 560, 1140, { size: 30, title: 'Terminal', typed: clamp((s - 0.4) / 1.4), alpha: easeOut(clamp((s - 0.3) / 0.5)) });
+  const b = easeOut(clamp((s - 1.6) / 0.6));
+  text('chartjs.blazorexpress.com', 120, 860, { size: 52, weight: 700, color: C.lilac, alpha: b });
+  text('Upgrading from 1.x? Read the breaking changes first.', 120, 930, { size: 32, weight: 400, color: C.muted, alpha: b });
+  const c = videoCharts().doughnut; if (!c.getDataVisibility(1)) c.toggleDataVisibility(1); c.update('none');
+  ctx.save(); ctx.globalAlpha *= a; ctx.drawImage(c.canvas, 1320, 260); ctx.restore();
+}
+function drawFrame(t) {
+  background(1920, 1080);
+  for (const sc of SCENES) {
+    const al = sc.start === 0 ? clamp((sc.end - t) / 0.45) : (sc.end === DURATION ? clamp((t - sc.start) / 0.45) : fade(t, sc.start, sc.end));
+    if (t >= sc.start - 0.01 && t <= sc.end + 0.01 && al > 0) { ctx.save(); ctx.globalAlpha = al; sc.draw(t); ctx.restore(); }
+  }
+  // progress bar
+  ctx.fillStyle = 'rgba(255,255,255,0.08)'; ctx.fillRect(0, 1072, 1920, 8); ctx.fillStyle = C.purple; ctx.fillRect(0, 1072, 1920 * t / DURATION, 8);
+}
+
+// ---------- poster 1080 × 1350 ----------
+function drawPoster() {
+  stage.width = 1080; stage.height = 1350;
+  background(1080, 1350, 0.1, 0.05);
+  logoRow(72, 60, 72);
+  text('2.0.0', 62, 336, { size: 210, weight: 800 });
+  pill('Released 21 November 2026', 72, 366, { size: 26 });
+  wrap('Chart.js charts for Blazor, in C#. Now with time axes, JavaScript functions, chart methods and events.', 72, 482, 940, 46, { size: 33, weight: 600 });
+  const time = timeChart(440, 196, 15), fl = floatingChart(440, 196, 15), gauge = gaugeChart(440, 196), cur = currencyChart(440, 196, 15);
+  syncReveal(time, 1);
+  const tiles = [['Time axes', time], ['Floating bars', fl], ['Half-doughnut gauge', gauge], ['JavaScript functions', cur]];
+  tiles.forEach(([label, chart], i) => {
+    const x = 72 + (i % 2) * 476, y = 598 + Math.floor(i / 2) * 290;
+    panel(x, y, 460, 270, { r: 22 }); text(label, x + 24, y + 42, { size: 24, weight: 700 });
+    ctx.drawImage(chart.canvas, x + 10, y + 60);
+    if (label.startsWith('Half')) text('72%', x + 230, y + 244, { size: 38, weight: 800, align: 'center' });
+  });
+  panel(72, 1184, 936, 72, { r: 16, fill: 'rgba(10,8,24,0.92)' });
+  codeLine('dotnet add package BlazorExpress.ChartJS --version 2.0.0', 102, 1230, 25, 1);
+  text('.NET 8 · 9 · 10 · 11', 72, 1310, { size: 28, weight: 600, color: C.muted });
+  text('chartjs.blazorexpress.com', 1008, 1310, { size: 28, weight: 700, color: C.lilac, align: 'right' });
+}
+
+// ---------- thumbnail 1280 × 720 ----------
+function drawThumbnail() {
+  stage.width = 1280; stage.height = 720;
+  background(1280, 720, 0.12, 0.1);
+  logoRow(64, 60, 64);
+  text("What's new in", 64, 270, { size: 58, weight: 700, color: C.muted });
+  text('2.0.0', 56, 450, { size: 200, weight: 800 });
+  pill('Time axes', 64, 510, { size: 26 }); pill('JS functions', 254, 510, { size: 26 }); pill('Events', 482, 510, { size: 26 });
+  text('Chart.js for Blazor · .NET 8–11', 64, 640, { size: 32, weight: 600, color: C.lilac });
+  const time = timeChart(560, 360, 18); syncReveal(time, 1);
+  panel(680, 150, 540, 420, { r: 26 }); ctx.drawImage(time.canvas, 0, 0, 560, 360, 700, 180, 500, 330);
+  legend([['Visitors', C.violet], ['Sign-ups', C.teal]], 710, 545, 1);
+}
+
+// ---------- output ----------
+async function save(name, blob) {
+  try {
+    const r = await fetch('/save?name=' + encodeURIComponent(name), { method: 'POST', body: blob });
+    if (r.ok) return status(await r.text());
+  } catch { /* no save server: fall back to a download */ }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); status('Downloaded ' + name);
+}
+const toPng = () => new Promise(ok => stage.toBlob(ok, 'image/png'));
+async function renderVideo() {
+  stage.width = 1920; stage.height = 1080;
+  const fps = 30, frames = Math.round(DURATION * fps);
+  const muxer = new Mp4Muxer.Muxer({ target: new Mp4Muxer.ArrayBufferTarget(), video: { codec: 'avc', width: 1920, height: 1080, frameRate: fps }, fastStart: 'in-memory' });
+  const encoder = new VideoEncoder({ output: (chunk, meta) => muxer.addVideoChunk(chunk, meta), error: e => status('Encoder error: ' + e.message) });
+  encoder.configure({ codec: 'avc1.640028', width: 1920, height: 1080, bitrate: 8_000_000, framerate: fps, avc: { format: 'avc' } });
+  for (let i = 0; i < frames; i++) {
+    drawFrame(i / fps);
+    const frame = new VideoFrame(stage, { timestamp: Math.round(i * 1e6 / fps), duration: Math.round(1e6 / fps) });
+    encoder.encode(frame, { keyFrame: i % (fps * 2) === 0 }); frame.close();
+    while (encoder.encodeQueueSize > 8) await new Promise(r => setTimeout(r, 5));
+    if (i % 30 === 0) status(`Encoding frame ${i} of ${frames}`);
+  }
+  await encoder.flush(); muxer.finalize();
+  await save('release-video.mp4', new Blob([muxer.target.buffer], { type: 'video/mp4' }));
+}
+function preview(t) { stage.width = 1920; stage.height = 1080; drawFrame(t); }
+
+document.getElementById('btn-video').onclick = () => renderVideo();
+document.getElementById('btn-poster').onclick = async () => { drawPoster(); await save('poster.png', await toPng()); };
+document.getElementById('btn-thumb').onclick = async () => { drawThumbnail(); await save('thumbnail.png', await toPng()); };
+document.getElementById('scrub').oninput = e => preview(+e.target.value);
+
+(async () => {
+  await Promise.all(['400 20px Sora', '600 20px Sora', '700 20px Sora', '800 20px Sora', '400 20px "JetBrains Mono"'].map(f => document.fonts.load(f)));
+  logo = await loadImage('../../exports/chartjs/logo.svg');
+  preview(1);
+  status('Ready');
+})();
+</script>
+</body>
+</html>
