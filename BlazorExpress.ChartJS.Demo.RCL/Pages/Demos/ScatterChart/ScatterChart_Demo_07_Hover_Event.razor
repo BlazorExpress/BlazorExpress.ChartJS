@@ -1,4 +1,4 @@
-<ScatterChart role="img" aria-label="Scatter chart: Hover event" @ref="scatterChart" Width="600" OnHover="HandleHoverAsync" />
+<ScatterChart role="img" aria-label="Scatter chart: temperature against humidity in the north and south greenhouses" @ref="scatterChart" Width="600" OnHover="HandleHoverAsync" />
 
 <p class="mt-3 mb-0">@hoverText</p>
 <p class="mb-0">Hover events received: @hoverEventCount</p>
@@ -14,11 +14,12 @@
     {
         chartData = new ChartData
         {
-            Labels = new List<string> { "First", "Second", "Third", "Fourth" },
+            // x = temperature (°C), y = relative humidity (%), one reading at each time of day
+            Labels = new List<string> { "06:00", "10:00", "14:00", "18:00" },
             Datasets = new List<IChartDataset>
             {
-                new ScatterChartDataset { Label = "Sensor A", Data = new List<ScatterChartDataPoint> { new(10, 25), new(25, 15), new(35, 40), new(50, 30) }, BackgroundColor = "rgba(54, 162, 235, 0.6)", BorderColor = "rgb(54, 162, 235)", BorderWidth = 2 },
-                new ScatterChartDataset { Label = "Sensor B", Data = new List<ScatterChartDataPoint> { new(15, 45), new(30, 35), new(45, 20), new(60, 50) }, BackgroundColor = "rgba(255, 159, 64, 0.6)", BorderColor = "rgb(255, 159, 64)", BorderWidth = 2 },
+                new ScatterChartDataset { Label = "North greenhouse", Data = new List<ScatterChartDataPoint> { new(16, 78), new(22, 66), new(27, 52), new(21, 61) }, BackgroundColor = "rgba(54, 162, 235, 0.6)", BorderColor = "rgb(54, 162, 235)", BorderWidth = 2 },
+                new ScatterChartDataset { Label = "South greenhouse", Data = new List<ScatterChartDataPoint> { new(18, 74), new(25, 60), new(31, 45), new(24, 55) }, BackgroundColor = "rgba(255, 159, 64, 0.6)", BorderColor = "rgb(255, 159, 64)", BorderWidth = 2 },
             },
         };
         scatterChartOptions = new ScatterChartOptions { Responsive = true };

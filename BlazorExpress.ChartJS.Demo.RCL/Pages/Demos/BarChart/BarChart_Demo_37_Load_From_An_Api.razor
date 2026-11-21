@@ -1,0 +1,124 @@
+@using System.Net.Http.Json
+@implements IDisposable
+@inject HttpClient Http
+
+<div class="buttons">
+    <button type="button" class="button is-primary is-small" disabled="@isLoading" @onclick="@(() => LoadAsync(SalesUrl))">Load sales</button>
+    <button type="button" class="button is-small" disabled="@isLoading" @onclick="@(() => LoadAsync(EmptySalesUrl))">Load an empty month</button>
+</div>
+
+<div role="status">
+    @if (isLoading)
+    {
+        <p>Loading sales…</p>
+    }
+    else if (errorMessage is not null)
+    {
+        <p>@errorMessage</p>
+    }
+    else if (sales is { Length: 0 })
+    {
+        <p>No sales yet.</p>
+    }
+</div>
+
+@if (!isLoading && errorMessage is null && sales is { Length: > 0 })
+{
+    <BarChart role="img" aria-label="Bar chart: monthly sales in US dollars as bars, with the sales target as a line" @ref="barChart" Width="600" />
+}
+
+@code {
+    // A real app calls its own API endpoint here instead, for example "api/sales/monthly".
+    private const string SalesUrl = "_content/BlazorExpress.ChartJS.Demo.RCL/sample-data/monthly-sales.json";
+    private const string EmptySalesUrl = "_content/BlazorExpress.ChartJS.Demo.RCL/sample-data/monthly-sales-empty.json";
+
+    private readonly CancellationTokenSource cancellation = new();
+    private BarChart barChart = default!;
+    private MonthlySales[]? sales;
+    private string? errorMessage;
+    private bool isLoading;
+    private bool initializeChart;
+
+    protected override Task OnInitializedAsync() => LoadAsync(SalesUrl);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // The chart is rendered anew after each load, so initialize it once its canvas is on the page.
+        if (initializeChart)
+        {
+            initializeChart = false;
+
+            var options = new BarChartOptions { Responsive = true, Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false } };
+            // null keeps Chart.js's theme-aware default text colour
+            options.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Sales (USD)", Color = null };
+
+            await barChart.InitializeAsync(GetChartData(sales!), options);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    public void Dispose()
+    {
+        cancellation.Cancel();
+        cancellation.Dispose();
+    }
+
+    private async Task LoadAsync(string url)
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        try
+        {
+            await Task.Delay(600, cancellation.Token); // only makes the loading state visible in the demo
+            sales = await Http.GetFromJsonAsync<MonthlySales[]>(url, cancellation.Token) ?? [];
+            initializeChart = sales.Length > 0;
+        }
+        catch (HttpRequestException)
+        {
+            sales = null;
+            errorMessage = "The sales could not be loaded. Try again in a moment.";
+        }
+        catch (OperationCanceledException)
+        {
+            // The component was disposed while loading.
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private static ChartData GetChartData(MonthlySales[] rows)
+    {
+        var salesColor = ColorUtility.CategoricalTwelveColors[0].ToColor();
+        var targetColor = ColorUtility.CategoricalTwelveColors[1].ToColor();
+
+        return new ChartData
+        {
+            Labels = rows.Select(row => row.Month).ToList(),
+            Datasets =
+            [
+                new BarChartDataset
+                {
+                    Label = "Sales",
+                    Data = rows.Select(row => (double?)row.Sales).ToList(),
+                    BackgroundColor = [salesColor.ToRgbaString(0.5)],
+                    BorderColor = [salesColor.ToRgbString()],
+                    BorderWidth = [2],
+                },
+                new LineChartDataset
+                {
+                    Label = "Target",
+                    Data = rows.Select(row => (double?)row.Target).ToList(),
+                    BackgroundColor = targetColor.ToRgbaString(),
+                    BorderColor = targetColor.ToRgbString(),
+                },
+            ],
+        };
+    }
+
+    // The shape of one item in the JSON array: { "month": "January", "sales": 18400, "target": 20000 }.
+    private sealed record MonthlySales(string Month, double Sales, double Target);
+}

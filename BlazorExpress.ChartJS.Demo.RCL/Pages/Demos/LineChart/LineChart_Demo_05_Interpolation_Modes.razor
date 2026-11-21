@@ -1,20 +1,22 @@
-﻿<LineChart role="img" aria-label="Line chart: Interpolation modes" @ref="lineChart" Width="600" />
+﻿<LineChart role="img" aria-label="Line chart: the same online orders per hour, 08:00 to 19:00, drawn with monotone cubic, cubic and linear interpolation" @ref="lineChart" Width="600" />
 
 @code {
     private LineChart lineChart = default!;
     private LineChartOptions lineChartOptions = default!;
     private ChartData chartData = default!;
 
-    private int dataCount = 12;
-    private List<double?> datapoints = [0, 20, 20, 60, 60, 120, null, 180, 120, 125, 105, 110, 170];
-    private Random random = new();
+    // online orders per hour; the flat stretches show where a cubic curve overshoots and a monotone one does not
+    private List<double?> datapoints = [0, 20, 20, 60, 60, 120, 150, 180, 120, 125, 105, 110];
 
     protected override void OnInitialized()
     {
-        chartData = new ChartData { Labels = GetDefaultDataLabels(), Datasets = GetDefaultDataSets() };
+        chartData = new ChartData
+        {
+            Labels = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"],
+            Datasets = GetDefaultDataSets()
+        };
         lineChartOptions = new()
         {
-            IndexAxis = "x",
             Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false },
             Responsive = true,
         };
@@ -30,16 +32,6 @@
     }
 
     #region Data Preparation
-
-    private List<string> GetDefaultDataLabels()
-    {
-        var labels = new List<string>();
-
-        for (var index = 0; index < dataCount; index++)
-            labels.Add(index.ToString());
-
-        return labels;
-    }
 
     private List<IChartDataset> GetDefaultDataSets()
     {

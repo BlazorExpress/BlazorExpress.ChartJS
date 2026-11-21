@@ -119,15 +119,14 @@ public abstract class ChartComponentBase : BlazorExpressComponentCore, IDisposab
     public virtual async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IChartDatasetData data) => await Task.FromResult(chartData);
 
     /// <summary>
-    /// Asynchronously adds a new dataset to the specified chart data.
+    /// Asynchronously adds a new data label to the specified chart data, with one value for each dataset.
     /// </summary>
-    /// <param name="chartData">The chart data to which the dataset will be added.</param>
-    /// <param name="dataLabel">The label for the new dataset.</param>
-    /// <param name="data">A read-only collection of data points to be included in the new dataset.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains the updated chart data with the new
-    /// dataset added.</returns>
+    /// <param name="chartData">The chart data to which the label and values will be added.</param>
+    /// <param name="dataLabel">The new data label.</param>
+    /// <param name="data">One value per dataset, each naming the label of its dataset.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the updated chart data.</returns>
     [AddedVersion("1.0.0")]
-    [Description("Asynchronously adds a new dataset to the specified chart data.")]
+    [Description("Asynchronously adds a new data label to the specified chart data, with one value for each dataset.")]
     public virtual async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data) => await Task.FromResult(chartData);
 
     /// <summary>

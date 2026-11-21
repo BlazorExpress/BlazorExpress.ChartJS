@@ -21,20 +21,19 @@
 <CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.BarChart, Sample)">
 <SampleSection Slug="how-it-works">
     <Block>
-        The <strong>Bar Chart</strong> component visualizes data as vertical bars, making it easy to compare values across categories or track changes over time.
+        A <strong>Bar Chart</strong> compares values across categories. This one shows the units a shop sold each month, January to June, for laptops, tablets and phones, with one colored bar per product in every month.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Add the <code>BarChart</code> component to your page.</li>
-                <li>Provide <code>Labels</code> for the X-axis categories and one or more <code>Datasets</code> for the Y-axis values.</li>
-                <li>Customize appearance and behavior using the <code>Options</code> property (e.g., colors, tooltips, axis settings).</li>
-                <li>Refer to the demo code for examples of basic and advanced usage, including multiple datasets and custom styling.</li>
+                <li>Add the <code>BarChart</code> component with <code>@@ref</code>, <code>role="img"</code> and an <code>aria-label</code> that says what the chart shows.</li>
+                <li>Create a <code>ChartData</code> with the months as <code>Labels</code> and one <code>BarChartDataset</code> per product in <code>Datasets</code>, each with a <code>Label</code>, one <code>Data</code> value per month and a <code>BackgroundColor</code>.</li>
+                <li>Create <code>BarChartOptions</code> with <code>Responsive = true</code> so the chart resizes with its container.</li>
+                <li>Call <code>InitializeAsync(chartData, barChartOptions)</code> in <code>OnAfterRenderAsync</code> when <code>firstRender</code> is <code>true</code>.</li>
             </ol>
         </div>
-        This demo showcases the essential setup for a bar chart and demonstrates how to bind your data for quick visualization.
     </Block>
-    <Demo Type="typeof(BarChart_Demo_01_Examples)" Tabs="true" />
+    <Demo Type="typeof(BarChart_Demo_01_How_It_Works)" Tabs="true" />
 </SampleSection>
 
 <SampleSection Slug="playground">
@@ -85,7 +84,7 @@
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Use the <code>BarChart</code> component and set the <code>IndexAxis</code> option to <code>'y'</code> to render bars horizontally.</li>
+                <li>Use the <code>BarChart</code> component and set <code>IndexAxis = "y"</code> on <code>BarChartOptions</code> to render bars horizontally.</li>
                 <li>Provide your data and labels as you would for a standard bar chart.</li>
                 <li>Customize colors and appearance using the available palette utilities or your own color set.</li>
             </ol>
@@ -154,9 +153,9 @@
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Set the <code>Locale</code> property on the <code>BarChart</code> component to your desired culture code (e.g., <code>"fr-FR"</code> for French).</li>
-                <li>Number and date labels in the chart will automatically format according to the specified locale.</li>
-                <li>This is useful for displaying charts to users in different regions with appropriate formatting.</li>
+                <li>Set <code>Locale</code> on <code>BarChartOptions</code> to a culture code, for example <code>barChartOptions.Locale = "de-DE"</code> for German.</li>
+                <li>Call <code>InitializeAsync(chartData, barChartOptions)</code>. The axis labels and tooltip values use that locale's separators, so 28000 reads as <em>28.000</em>.</li>
+                <li>Leave <code>Locale</code> unset to use the browser's language.</li>
             </ol>
         </div>
         Refer to the demo code below for a working example and configuration options.
@@ -192,7 +191,7 @@
             <ol>
                 <li>Add the <code>BarChart</code> component to your page and define your <code>Labels</code> and <code>Datasets</code> as usual.</li>
                 <li>Configure the <code>Options.Animation</code> property by setting the <code>Duration</code> (in milliseconds) and <code>Delay</code> (in milliseconds) to control the timing of the animation.</li>
-                <li>Bind your <code>chartData</code> and <code>barChartOptions</code> to the <code>BarChart</code> component.</li>
+                <li>Call <code>InitializeAsync(chartData, barChartOptions)</code> on the first render; the bars start growing after <code>Delay</code>.</li>
                 <li>Refer to the demo code below for a working example of how to set up and customize animation delays.</li>
             </ol>
         </div>
@@ -210,7 +209,7 @@
             <ol>
                 <li>Add the <code>BarChart</code> component to your page and define your <code>Labels</code> and multiple <code>Datasets</code>.</li>
                 <li>For each dataset, set the <code>Animation</code> property with specific <code>Duration</code> and <code>Delay</code> values to control when each dataset animates.</li>
-                <li>Bind your <code>chartData</code> and <code>barChartOptions</code> to the <code>BarChart</code> component.</li>
+                <li>Call <code>InitializeAsync(chartData, barChartOptions)</code> on the first render; each dataset starts growing after its own <code>Delay</code>.</li>
                 <li>Refer to the demo code below for a practical example of dataset-level animation configuration.</li>
             </ol>
         </div>
@@ -373,7 +372,7 @@
 
 <SampleSection Slug="axis-title">
     <Block>
-        Label an axis with <code>ChartAxesTitle</code>. The title is hidden until <code>Display = true</code>, and in this library it defaults to <code>"black"</code> text in a bold 12 px font, where Chart.js uses grey.
+        Label an axis with <code>ChartAxesTitle</code>. The title is hidden until <code>Display = true</code>, and in this library it defaults to <code>"black"</code> text in a bold 12 px font, where Chart.js uses grey. The demo sets <code>Color = null</code> where it does not choose a color, so Chart.js uses its default text color, which stays readable on a dark page.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
@@ -458,7 +457,7 @@
 
 <SampleSection Slug="title-and-subtitle">
     <Block>
-        <code>Plugins.Title</code> and <code>Plugins.Subtitle</code> draw text outside the chart area; Chart.js places the subtitle between the title and the chart. Both are hidden until <code>Display = true</code>, and in this library their text defaults to <code>"black"</code>.
+        <code>Plugins.Title</code> and <code>Plugins.Subtitle</code> draw text outside the chart area; Chart.js places the subtitle between the title and the chart. Both are hidden until <code>Display = true</code>, and in this library their text defaults to <code>"black"</code>; the demo sets <code>Color = null</code> so Chart.js uses its default text color, which stays readable on a dark page when your app sets <code>Chart.defaults.color</code> for its theme.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
@@ -642,6 +641,75 @@
     </Block>
     <CodeChunk Class="mb-3" LanguageCode="LanguageCode.JavaScript" FilePath="~\Pages\Demos\BarChart\BarChart_Demo_36_Datalabels_Formatter_Snippet.js" ProjectRootClassType="DemoAppConstants.ProjectRootClassType" />
     <Demo Type="typeof(BarChart_Demo_36_Datalabels_Formatter)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="load-from-an-api">
+    <Block>
+        A chart whose data comes from an API has three more states than the chart itself: loading, no data and a failed request. This demo reads monthly sales from a JSON file with <code>HttpClient</code>, shows each state in place of the chart, and draws the sales as bars with the target as a line.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Inject <code>HttpClient</code>, and read the data with <code>GetFromJsonAsync&lt;T[]&gt;</code> into a record that matches one JSON item. Use your own API endpoint in place of the demo's JSON file.</li>
+                <li>Show a loading message while the request runs, a "No sales yet." message when the array is empty, and a short message when <code>HttpRequestException</code> is thrown, instead of the chart.</li>
+                <li>Render the <code>BarChart</code> only when there is data. It is rendered anew after each load, so set a flag when the data arrives and call <code>InitializeAsync</code> in <code>OnAfterRenderAsync</code> when the flag is set.</li>
+                <li>Add a <code>LineChartDataset</code> next to the <code>BarChartDataset</code> in <code>Datasets</code> to draw the target as a line.</li>
+                <li>Cancel the request in <code>Dispose</code> with a <code>CancellationTokenSource</code>, so a page the user left does not keep loading.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_37_Load_From_An_Api)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="charts-from-a-list">
+    <Block>
+        A dashboard often shows one chart per item of a list. This demo draws one small bar chart per sales region, and the <strong>Add a region</strong> button adds a region and initializes only its new chart.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Render one <code>BarChart</code> per item with <code>@@foreach</code>, and give its container <code>@@key</code> set to a value that names the item, so Blazor keeps each chart with its item.</li>
+                <li>Capture each chart with <code>@@ref="charts[region.Name]"</code> into a <code>Dictionary&lt;string, BarChart&gt;</code>.</li>
+                <li>In <code>OnAfterRenderAsync</code>, call <code>InitializeAsync</code> for each item whose chart is not initialized yet, and remember it. On the first render that is every chart; after an item is added, only the new one.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_38_Charts_From_A_List)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="drill-down-on-click">
+    <Block>
+        A drill-down chart shows totals first and the detail behind a total on a click. Here a click on a category's bar, or its button, shows that category's sales by month, and <strong>Back to all categories</strong> shows the totals again.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Set <code>OnClick</code> on the <code>BarChart</code>. Its <code>ChartClickEventArgs.Label</code> is the label of the clicked bar, here the category.</li>
+                <li>In the handler, remember the category and call <code>UpdateAsync</code> with a <code>ChartData</code> that has the months as <code>Labels</code> and that category's monthly values.</li>
+                <li>Add a button for each category that calls the same method, so keyboard users can drill down too: a click on a bar in the canvas cannot be reached with the keyboard.</li>
+                <li>Show a heading that names what the chart shows, and change the chart's <code>aria-label</code> to match.</li>
+                <li>Add a button that clears the category and calls <code>UpdateAsync</code> with the totals again.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_39_Drill_Down_On_Click)" Tabs="true" />
+</SampleSection>
+
+<SampleSection Slug="colour-bars-by-value">
+    <Block>
+        <code>BackgroundColor</code> takes one colour per bar, so each bar's colour can be worked out from its value. This demo colours profit months green and loss months red. Colour is not the only cue: loss bars go below zero, and the sentence under the chart says what the colours mean.
+        <br /><br />
+        <strong>How to use:</strong>
+        <div class="content">
+            <ol>
+                <li>Build the colour list from the values, for example <code>profit.Select(value =&gt; value &lt; 0 ? LossColor : ProfitColor).ToList()</code>.</li>
+                <li>Set it as the dataset's <code>BackgroundColor</code> and <code>BorderColor</code>: the first colour is used for the first bar, the second for the second, and so on.</li>
+                <li>Pick colours with at least 3:1 contrast against both light and dark backgrounds, such as <code>rgb(29, 158, 117)</code> and <code>rgb(216, 90, 48)</code>.</li>
+                <li>Explain the colours in text, in the dataset <code>Label</code> or in a sentence under the chart, so the chart does not rely on colour alone.</li>
+            </ol>
+        </div>
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_40_Colour_Bars_By_Value)" Tabs="true" />
 </SampleSection>
 </CascadingValue>
 

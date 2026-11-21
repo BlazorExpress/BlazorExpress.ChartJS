@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Title and subtitle on top: <code>Position = "top"</code></p>
-        <ScatterChart role="img" aria-label="Scatter chart: Title and subtitle, title and subtitle on top" @ref="topChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: study hours against exam score, title and subtitle on top" @ref="topChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Title on the left, subtitle at the bottom: <code>Position = "left"</code>, <code>Position = "bottom"</code></p>
-        <ScatterChart role="img" aria-label="Scatter chart: Title and subtitle, title on the left, subtitle at the bottom" @ref="sideChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: study hours against exam score, title on the left, subtitle below" @ref="sideChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Start-aligned with padding: <code>Align = "start"</code>, <code>Padding</code>, <code>FullSize = false</code></p>
-        <ScatterChart role="img" aria-label="Scatter chart: Title and subtitle, start-aligned with padding" @ref="alignedChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: study hours against exam score, with a start-aligned title" @ref="alignedChart" />
     </div>
 </div>
 
@@ -23,14 +23,14 @@
 
     protected override void OnInitialized()
     {
-        // title and subtitle Color default to "black"
+        // null keeps Chart.js's theme-aware default text colour
         topOptions = new ScatterChartOptions();
-        topOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Study time vs score", Position = "top" };
-        topOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Two classes, eight students each" };
+        topOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Study time vs score", Position = "top", Color = null };
+        topOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Two classes, eight students each", Color = null };
 
         sideOptions = new ScatterChartOptions();
-        sideOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Study time vs score", Position = "left" };
-        sideOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Two classes, eight students each", Position = "bottom" };
+        sideOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Study time vs score", Position = "left", Color = null };
+        sideOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Two classes, eight students each", Position = "bottom", Color = null };
 
         alignedOptions = new ScatterChartOptions();
         alignedOptions.Plugins.Title = new ChartPluginsTitle
@@ -40,9 +40,10 @@
             Align = "start",
             Padding = new() { Top = 10, Bottom = 20 },
             FullSize = false, // the title spans the chart area only, not the full canvas width
-            Font = new ChartFont { Size = 16 }
+            Font = new ChartFont { Size = 16 },
+            Color = null
         };
-        alignedOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Two classes, eight students each", Align = "start" };
+        alignedOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Two classes, eight students each", Align = "start", Color = null };
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

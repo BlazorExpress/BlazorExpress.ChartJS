@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Index mode: <code>Mode = InteractionMode.Index</code>, <code>Intersect = false</code>, <code>Position = "average"</code></p>
-        <ScatterChart role="img" aria-label="Scatter chart: Tooltip options, index mode" @ref="indexChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: study hours against exam score, tooltip lists both classes" @ref="indexChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Nearest point: <code>Mode = InteractionMode.Nearest</code>, <code>Intersect = true</code>, <code>Position = "nearest"</code>, <code>UsePointStyle = true</code></p>
-        <ScatterChart role="img" aria-label="Scatter chart: Tooltip options, nearest point" @ref="nearestChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: study hours against exam score, tooltip for the point under the pointer" @ref="nearestChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Styled: <code>Padding</code>, <code>CornerRadius</code>, <code>BorderColor</code>/<code>BorderWidth</code>, <code>BoxWidth</code>/<code>BoxHeight</code>/<code>BoxPadding</code>, <code>MultiKeyBackground</code></p>
-        <ScatterChart role="img" aria-label="Scatter chart: Tooltip options, styled" @ref="styledChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: study hours against exam score, with a styled tooltip" @ref="styledChart" />
     </div>
 </div>
 
@@ -73,10 +73,11 @@
 
     private static ChartData GetChartData() => new()
     {
+        // x = hours of study, y = exam score (%), one point per student
         Datasets =
         [
-            CreateDataset("Group A", 0, "circle", [new(5, 12), new(15, 28), new(25, 20), new(35, 42), new(45, 38), new(55, 60), new(65, 52), new(75, 70)]),
-            CreateDataset("Group B", 1, "triangle", [new(10, 40), new(20, 35), new(30, 55), new(40, 48), new(50, 30), new(60, 45), new(70, 25), new(80, 35)])
+            CreateDataset("Class A", 0, "circle", [new(1, 52), new(2, 58), new(3, 61), new(4, 70), new(5, 68), new(6, 77), new(7, 84), new(8, 88)]),
+            CreateDataset("Class B", 1, "triangle", [new(1, 45), new(2, 55), new(3, 50), new(4, 63), new(5, 72), new(6, 70), new(7, 79), new(8, 92)])
         ]
     };
 

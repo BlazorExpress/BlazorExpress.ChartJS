@@ -1,4 +1,4 @@
-<BarChart role="img" aria-label="Bar chart: Stacked bar chart with groups" @ref="barChart" Width="600" />
+<BarChart role="img" aria-label="Stacked bar chart: monthly revenue, January to June, with a domestic stack and an international stack side by side, each split into direct and partner sales" @ref="barChart" Width="600" />
 
 @code {
     private const string DomesticStack = "domestic";
@@ -65,11 +65,13 @@
         barChartOptions.Scales.X!.Stacked = true;
         barChartOptions.Scales.Y!.Stacked = true;
 
-        barChartOptions.Scales.X.Title = new ChartAxesTitle { Text = "Month", Display = true };
-        barChartOptions.Scales.Y.Title = new ChartAxesTitle { Text = "Revenue", Display = true };
+        // null keeps Chart.js's theme-aware default text colour
+        barChartOptions.Scales.X.Title = new ChartAxesTitle { Text = "Month", Display = true, Color = null };
+        barChartOptions.Scales.Y.Title = new ChartAxesTitle { Text = "Revenue ($k)", Display = true, Color = null };
 
         barChartOptions.Plugins.Title!.Text = "Revenue by market and channel";
         barChartOptions.Plugins.Title.Display = true;
+        barChartOptions.Plugins.Title.Color = null;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

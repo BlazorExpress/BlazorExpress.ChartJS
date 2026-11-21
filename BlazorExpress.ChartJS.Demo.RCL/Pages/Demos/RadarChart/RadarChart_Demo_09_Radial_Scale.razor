@@ -1,19 +1,19 @@
 <div class="columns is-multiline">
     <div class="column is-half">
         <p class="is-size-7 has-text-weight-semibold mb-2">Default: <code>BeginAtZero = true</code></p>
-        <RadarChart role="img" aria-label="Radar chart: Radial scale, default" @ref="defaultChart" />
+        <RadarChart role="img" aria-label="Radar chart: staff engagement scores for two offices on a radial scale that starts at zero" @ref="defaultChart" />
     </div>
     <div class="column is-half">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>BeginAtZero = false</code> (starts from the data minimum)</p>
-        <RadarChart role="img" aria-label="Radar chart: Radial scale (chart 2 of 4)" @ref="dataMinimumChart" />
+        <RadarChart role="img" aria-label="Radar chart: staff engagement scores for two offices on a radial scale that starts from the lowest score" @ref="dataMinimumChart" />
     </div>
     <div class="column is-half">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Min = 60</code>, <code>Max = 100</code>, <code>StepSize = 10</code>, <code>ShowLabelBackdrop = false</code>, <code>Circular = true</code></p>
-        <RadarChart role="img" aria-label="Radar chart: Radial scale (chart 3 of 4)" @ref="fixedRangeChart" />
+        <RadarChart role="img" aria-label="Radar chart: staff engagement scores for two offices on a radial scale fixed from 60 to 100 with round rings" @ref="fixedRangeChart" />
     </div>
     <div class="column is-half">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Reverse = true</code>, <code>BeginAtZero = false</code></p>
-        <RadarChart role="img" aria-label="Radar chart: Radial scale (chart 4 of 4)" @ref="reverseChart" />
+        <RadarChart role="img" aria-label="Radar chart: staff engagement scores for two offices on a reversed radial scale, highest score at the center" @ref="reverseChart" />
     </div>
 </div>
 
@@ -62,14 +62,15 @@
 
     #region Data Preparation
 
+    // Staff engagement survey scores out of 100.
     private static ChartData GetChartData() =>
         new()
         {
-            Labels = ["Speed", "Power", "Defense", "Stamina", "Agility", "Skill"],
+            Labels = ["Communication", "Recognition", "Growth", "Workload", "Leadership", "Teamwork"],
             Datasets =
             [
-                CreateDataset("Team A", [72, 85, 78, 90, 80, 76], 0),
-                CreateDataset("Team B", [80, 74, 88, 82, 70, 84], 1)
+                CreateDataset("London office", [72, 85, 78, 90, 80, 76], 0),
+                CreateDataset("Berlin office", [80, 74, 88, 82, 70, 84], 1)
             ]
         };
 

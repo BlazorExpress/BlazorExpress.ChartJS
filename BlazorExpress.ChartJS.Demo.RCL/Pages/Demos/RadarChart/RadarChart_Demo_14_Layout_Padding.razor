@@ -2,19 +2,19 @@
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2">No padding (default)</p>
         <div style="border: 1px dashed #b5b5b5;">
-            <RadarChart role="img" aria-label="Radar chart: Layout padding (chart 1 of 3)" @ref="noPaddingChart" />
+            <RadarChart role="img" aria-label="Radar chart: Northside FC and Riverside FC skills, with no padding" @ref="noPaddingChart" />
         </div>
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Layout.Padding = 20</code> (all sides)</p>
         <div style="border: 1px dashed #b5b5b5;">
-            <RadarChart role="img" aria-label="Radar chart: Layout padding (chart 2 of 3)" @ref="allSidesChart" />
+            <RadarChart role="img" aria-label="Radar chart: Northside FC and Riverside FC skills, with padding on every side" @ref="allSidesChart" />
         </div>
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code></p>
         <div style="border: 1px dashed #b5b5b5;">
-            <RadarChart role="img" aria-label="Radar chart: Layout padding (chart 3 of 3)" @ref="perSideChart" />
+            <RadarChart role="img" aria-label="Radar chart: Northside FC and Riverside FC skills, with padding on the left and top" @ref="perSideChart" />
         </div>
     </div>
 </div>
@@ -49,8 +49,8 @@
             Labels = ["Speed", "Power", "Defense", "Stamina", "Agility", "Skill"],
             Datasets =
             [
-                CreateDataset("Team A", [65, 59, 90, 81, 56, 55], 0),
-                CreateDataset("Team B", [28, 48, 40, 19, 96, 27], 1)
+                CreateDataset("Northside FC", [65, 59, 90, 81, 56, 55], 0),
+                CreateDataset("Riverside FC", [28, 48, 40, 19, 96, 27], 1)
             ]
         };
 

@@ -163,7 +163,7 @@ public class PolarAreaChartDataset : ChartDataset<double?>
     /// Gets or sets the data labels configuration for the polar area chart dataset.
     /// <para>
     /// Use this property to customize the display of data labels, such as their position, format, or
-    /// visibility, in the pie chart dataset. If not set, a default configuration is applied.
+    /// visibility, in the polar area chart dataset. If not set, a default configuration is applied.
     /// </para>
     /// <see href="https://chartjs-plugin-datalabels.netlify.app/guide/getting-started.html#configuration" />
     /// </summary>

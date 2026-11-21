@@ -10,6 +10,10 @@ public static class EnumExtensions
             DataLabelAlignment.Start => "start",
             DataLabelAlignment.Center => "center", // default
             DataLabelAlignment.End => "end",
+            DataLabelAlignment.Left => "left",
+            DataLabelAlignment.Top => "top",
+            DataLabelAlignment.Right => "right",
+            DataLabelAlignment.Bottom => "bottom",
             _ => null
         };
 

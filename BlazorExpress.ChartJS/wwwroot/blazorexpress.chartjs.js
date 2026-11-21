@@ -981,7 +981,11 @@ if (!window.blazorexpress.chartjs) {
                 if (chartDatasets.length > 0) {
                     let datasetIndex = chartDatasets.findIndex(dataset => dataset.label === chartDatasetData.datasetLabel);
                     if (datasetIndex > -1) {
-                        chartDatasets[datasetIndex].data.push(chartDatasetData.data);
+                        const dataset = chartDatasets[datasetIndex];
+                        dataset.data.push(chartDatasetData.data);
+                        // A slice colour (doughnut, pie, polar area) is appended when the dataset keeps one colour per slice.
+                        if (chartDatasetData.backgroundColor && Array.isArray(dataset.backgroundColor))
+                            dataset.backgroundColor.push(chartDatasetData.backgroundColor);
                         chart.update();
                     }
                 }

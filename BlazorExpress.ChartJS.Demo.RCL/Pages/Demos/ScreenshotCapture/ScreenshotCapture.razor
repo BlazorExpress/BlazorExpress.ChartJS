@@ -1,0 +1,42 @@
+@attribute [Route(pageUrl)]
+@layout DemosMainLayout
+
+@* Unlisted page: not linked from the navigation. It captures the README and docs chart images (work item 26112001, AC-04). *@
+<SiteMetaTags PageUrl="@pageUrl" Title="Screenshot Capture" Description="Internal page that captures the README and docs chart images." Robots="noindex, nofollow" />
+
+<DemoPageHero Title="Screenshot capture" />
+
+<Block>
+    Opens each image's sample in the frame below, exports its chart at device pixel ratio 2 on a white background in the light theme,
+    and downloads <code>@ZipFileName</code> with every image at its path in the code repository. Unzip it over the repository root,
+    review the image changes, and commit them. A sample that does not draw is listed as failed and left out of the zip.
+</Block>
+
+<div class="buttons">
+    <button type="button" class="button is-primary" disabled="@running" @onclick="CaptureAllAsync">Capture all @manifest.Count images</button>
+</div>
+
+<div class="table-container">
+    <table class="table is-fullwidth is-narrow is-striped">
+        <thead>
+            <tr><th>Image</th><th>Sample</th><th>Alt text</th><th>Result</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in manifest)
+            {
+                var result = results.FirstOrDefault(r => r.Entry == entry);
+                <tr class="@(result is { Captured: false } ? "has-background-danger-light" : null)">
+                    <td><code>@entry.Path</code></td>
+                    <td><a href="@entry.SampleUrl">@entry.SampleUrl</a></td>
+                    <td>@entry.AltText</td>
+                    <td>@(result is null ? "not captured" : result.Captured ? $"captured, {result.Detail}" : $"failed: {result.Detail}")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@* The frame is laid out at a desktop width so every chart can reach its capture width. *@
+<div style="overflow-x: auto;">
+    <iframe @ref="frame" title="Sample being captured" style="width: 1400px; height: 900px; border: 0;" aria-hidden="true" tabindex="-1"></iframe>
+</div>

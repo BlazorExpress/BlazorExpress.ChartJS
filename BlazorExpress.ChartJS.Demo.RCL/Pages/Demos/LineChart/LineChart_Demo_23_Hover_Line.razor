@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Default: grey, 2 px, dashed</p>
-        <LineChart role="img" aria-label="Line chart: Hover line, default" @ref="defaultChart" />
+        <LineChart role="img" aria-label="Line chart: monthly online and in-store orders, January to June, with the default dashed hover line" @ref="defaultChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>TooltipLine = new() { Color = "red", Width = 1, Dash = [] }</code>: solid red</p>
-        <LineChart role="img" aria-label="Line chart: Hover line (chart 2 of 3)" @ref="styledChart" />
+        <LineChart role="img" aria-label="Line chart: monthly online and in-store orders, January to June, with a solid red hover line" @ref="styledChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>TooltipLine = new() { Display = false }</code>: no line</p>
-        <LineChart role="img" aria-label="Line chart: Hover line (chart 3 of 3)" @ref="hiddenChart" />
+        <LineChart role="img" aria-label="Line chart: monthly online and in-store orders, January to June, with no hover line" @ref="hiddenChart" />
     </div>
 </div>
 
@@ -48,8 +48,8 @@
         Labels = ["January", "February", "March", "April", "May", "June"],
         Datasets =
         [
-            CreateDataset("Product A", 0, [35, 48, 42, 61, 55, 70]),
-            CreateDataset("Product B", 1, [22, 30, 38, 33, 46, 41])
+            CreateDataset("Online orders", 0, [35, 48, 42, 61, 55, 70]),
+            CreateDataset("In-store orders", 1, [22, 30, 38, 33, 46, 41])
         ]
     };
 

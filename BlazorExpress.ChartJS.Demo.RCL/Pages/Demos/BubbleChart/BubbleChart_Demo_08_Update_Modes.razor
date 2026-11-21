@@ -1,4 +1,4 @@
-<BubbleChart role="img" aria-label="Bubble chart: Update modes and animation control" @ref="bubbleChart" Width="600" />
+<BubbleChart role="img" aria-label="Bubble chart: online and retail store figures, January to April, sized by a third value" @ref="bubbleChart" Width="600" />
 
 <div class="mt-3">
     <button type="button" class="button is-primary is-small" @onclick="RefreshAsync">Refresh (animated)</button>
@@ -16,7 +16,7 @@
     private BubbleChartOptions bubbleChartOptions = default!;
     private ChartData chartData = default!;
     private readonly List<string> labels = new() { "January", "February", "March", "April" };
-    private readonly Dictionary<string, string> colors = new() { ["Projects"] = "54, 162, 235", ["Products"] = "255, 159, 64" };
+    private readonly Dictionary<string, string> colors = new() { ["Online store"] = "54, 162, 235", ["Retail stores"] = "255, 159, 64" };
     private string status = "Animations take 2 seconds here, so there is time to click Stop.";
 
     protected override void OnInitialized()

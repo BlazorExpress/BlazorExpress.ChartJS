@@ -1,12 +1,9 @@
-﻿﻿<ScatterChart role="img" aria-label="Scatter chart: Dynamic data" @ref="scatterChart" />
-
+﻿<ScatterChart role="img" aria-label="Scatter chart: delivery time against distance for each delivery zone, updated as deliveries and zones are added" @ref="scatterChart" />
 
 <div class="mt-5">
     <button type="button" class="button is-primary is-small" @onclick="RandomizeAsync"> Randomize </button>
-    <button type="button" class="button is-link is-small" @onclick="AddDatasetAsync"> Add Dataset </button>
-    <button type="button" class="button is-info is-small" @onclick="AddDataAsync"> Add Data </button>
-    <button type="button" class="button is-success is-small" @onclick="ShowHorizontalLineChartAsync"> Horizontal Line Chart </button>
-    <button type="button" class="button is-warning is-small" @onclick="ShowVerticalLineChartAsync"> Vertical Line Chart </button>
+    <button type="button" class="button is-link is-small" @onclick="AddZoneAsync"> Add zone </button>
+    <button type="button" class="button is-info is-small" @onclick="AddDeliveryAsync"> Add delivery </button>
 </div>
 
 @code {
@@ -14,159 +11,88 @@
     private ScatterChartOptions scatterChartOptions = default!;
     private ChartData chartData = default!;
 
-    private int datasetsCount;
-    private int dataLabelsCount;
-
-    private Random random = new();
+    private static readonly string[] zoneNames = ["North zone", "South zone", "East zone", "West zone", "City centre", "Airport"];
+    private readonly Random random = new();
+    private int zonesCount;
+    private int deliveriesCount;
 
     protected override void OnInitialized()
     {
-        chartData = new ChartData { Labels = GetDefaultDataLabels(6), Datasets = GetDefaultDataSets(3) };
-        scatterChartOptions = new()
-        {
-            Responsive = true,
-            Interaction = new Interaction { Mode = InteractionMode.Index },
-        };
+        // each zone starts with six deliveries; a scatter chart needs no labels
+        deliveriesCount = 6;
+        var datasets = Enumerable.Range(0, 3).Select(_ => (IChartDataset)CreateZoneDataset()).ToList();
+        chartData = new ChartData { Datasets = datasets };
+
+        scatterChartOptions = new ScatterChartOptions { Responsive = true };
+        // null keeps Chart.js's theme-aware default text colour
+        scatterChartOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Distance (km)", Color = null };
+        scatterChartOptions.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Delivery time (minutes)", Color = null };
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-        {
             await scatterChart.InitializeAsync(chartData, scatterChartOptions);
-        }
+
         await base.OnAfterRenderAsync(firstRender);
     }
 
+    // replace every point with a new delivery, then redraw
     private async Task RandomizeAsync()
     {
-        if (chartData is null || chartData.Datasets is null || !chartData.Datasets.Any()) return;
-
-        var newDatasets = new List<IChartDataset>();
-
-        foreach (var dataset in chartData.Datasets)
-        {
-            if (dataset is ScatterChartDataset scatterChartDataset
-                && scatterChartDataset is not null
-                && scatterChartDataset.Data is not null)
-            {
-                var count = scatterChartDataset.Data.Count;
-
-                var newData = new List<ScatterChartDataPoint?>();
-                for (var i = 0; i < count; i++)
-                {
-                    newData.Add(new(random.Next(200), random.Next(200)));
-                }
-
-                scatterChartDataset.Data = newData;
-                newDatasets.Add(scatterChartDataset);
-            }
-        }
-
-        chartData.Datasets = newDatasets;
+        foreach (var dataset in chartData.Datasets!.OfType<ScatterChartDataset>())
+            dataset.Data = Enumerable.Range(0, dataset.Data!.Count).Select(_ => GetRandomDelivery()).ToList();
 
         await scatterChart.UpdateAsync(chartData, scatterChartOptions);
     }
 
-    private async Task AddDatasetAsync()
+    // add a whole dataset: one more delivery zone
+    private async Task AddZoneAsync()
     {
-        if (datasetsCount >= 12)
+        if (zonesCount >= zoneNames.Length)
             return;
 
-        if (chartData is null || chartData.Datasets is null) return;
-
-        var chartDataset = GetRandomScatterChartDataset();
-        chartData = await scatterChart.AddDatasetAsync(chartData, chartDataset, scatterChartOptions);
+        chartData = await scatterChart.AddDatasetAsync(chartData, CreateZoneDataset(), scatterChartOptions);
     }
 
-    private async Task AddDataAsync()
+    // add one point to every zone
+    private async Task AddDeliveryAsync()
     {
-        if (chartData is null || chartData.Datasets is null)
-            return;
+        var data = chartData.Datasets!
+            .OfType<ScatterChartDataset>()
+            .Select(dataset => (IChartDatasetData)new ScatterChartDatasetData(dataset.Label, GetRandomDelivery()))
+            .ToList();
 
-        var data = new List<IChartDatasetData>();
-        foreach (var dataset in chartData.Datasets)
-        {
-            if (dataset is ScatterChartDataset scatterChartDataset)
-                data.Add(new ScatterChartDatasetData(scatterChartDataset.Label, new ScatterChartDataPoint(random.Next(200), random.Next(200))));
-        }
-
-        chartData = await scatterChart.AddDataAsync(chartData, GetNextDataLabel(), data);
-    }
-
-    private async Task ShowHorizontalLineChartAsync()
-    {
-        scatterChartOptions.IndexAxis = "y";
-        await scatterChart.UpdateAsync(chartData, scatterChartOptions);
-    }
-
-    private async Task ShowVerticalLineChartAsync()
-    {
-        scatterChartOptions.IndexAxis = "x";
-        await scatterChart.UpdateAsync(chartData, scatterChartOptions);
+        deliveriesCount += 1;
+        // each point goes to the zone its data names; a scatter chart does not use the label argument
+        chartData = await scatterChart.AddDataAsync(chartData, string.Empty, data);
     }
 
     #region Data Preparation
 
-    private List<IChartDataset> GetDefaultDataSets(int numberOfDatasets)
+    private ScatterChartDataset CreateZoneDataset()
     {
-        var datasets = new List<IChartDataset>();
-
-        for (var index = 0; index < numberOfDatasets; index++)
-        {
-            datasets.Add(GetRandomScatterChartDataset());
-        }
-
-        return datasets;
-    }
-
-    private ScatterChartDataset GetRandomScatterChartDataset()
-    {
-        var c = ColorUtility.CategoricalTwelveColors[datasetsCount].ToColor();
-
-        datasetsCount += 1;
+        var c = ColorUtility.CategoricalTwelveColors[zonesCount].ToColor();
+        var label = zoneNames[zonesCount];
+        zonesCount += 1;
 
         return new ScatterChartDataset
         {
-            Label = $"Team {datasetsCount}",
-            Data = GetRandomData(),
-            BackgroundColor = c.ToRgbaString(), // RGBA
-            BorderColor = c.ToRgbString(), // RGB
+            Label = label,
+            Data = Enumerable.Range(0, deliveriesCount).Select(_ => GetRandomDelivery()).ToList(),
+            BackgroundColor = c.ToRgbaString(0.5),
+            BorderColor = c.ToRgbString(),
             BorderWidth = 2,
-            Fill = true,
-            HoverBorderWidth = 4,
-            PointHoverRadius = new List<double> { 6 },
         };
     }
 
-    private List<ScatterChartDataPoint?> GetRandomData()
+    // a delivery 1 to 20 km away takes about 10 minutes plus 3 minutes per km, give or take traffic
+    private ScatterChartDataPoint GetRandomDelivery()
     {
-        var data = new List<ScatterChartDataPoint?>();
-        for (var index = 0; index < dataLabelsCount; index++)
-        {
-            data.Add(new ScatterChartDataPoint(random.Next(200), random.Next(200)));
-        }
-
-        return data;
-    }
-
-    private List<string> GetDefaultDataLabels(int numberOfLabels)
-    {
-        var labels = new List<string>();
-        for (var index = 0; index < numberOfLabels; index++)
-        {
-            labels.Add(GetNextDataLabel());
-        }
-
-        return labels;
-    }
-
-    private string GetNextDataLabel()
-    {
-        dataLabelsCount += 1;
-        return $"Day {dataLabelsCount}";
+        var distance = Math.Round(1 + random.NextDouble() * 19, 1);
+        var minutes = Math.Round(10 + distance * 3 + random.Next(-6, 12));
+        return new ScatterChartDataPoint(distance, minutes);
     }
 
     #endregion Data Preparation
-
 }

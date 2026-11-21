@@ -1,43 +1,36 @@
-<LineChart role="img" aria-label="Line chart: Live streaming (chart 1 of 2)" @ref="lineChart" Width="600" />
+@implements IDisposable
 
-<div class="mt-3">
-    <button type="button" class="button is-primary is-small" @onclick="AddReadingAsync">Add reading</button>
-    <button type="button" class="button is-info is-small" @onclick="AddDayAsync">Add day</button>
-</div>
-
-<div class="mt-4">
-    <LineChart role="img" aria-label="Line chart: Live streaming (chart 2 of 2)" @ref="dailyChart" Width="600" />
-</div>
+<LineChart role="img" aria-label="Line chart: server room temperature in °C, the last 30 readings, one every 2 seconds, updating live" @ref="lineChart" Width="600" />
 
 @code {
-    private LineChart lineChart = default!;
-    private LineChart dailyChart = default!;
-    private LineChartOptions lineChartOptions = default!;
-    private LineChartOptions dailyChartOptions = default!;
-    private ChartData chartData = default!;
-    private ChartData dailyChartData = default!;
+    private const int MaxReadings = 30;
 
-    private DateTime lastReading = new(2026, 1, 5, 9, 0, 0);
-    private DateOnly lastDay = new(2026, 1, 5);
-    private Random random = new();
+    private LineChart lineChart = default!;
+    private LineChartOptions lineChartOptions = default!;
+    private ChartData chartData = default!;
+    private readonly List<ChartTimePoint> readings = new();
+    private readonly Random random = new();
+    private PeriodicTimer? timer;
 
     protected override void OnInitialized()
     {
-        var sensorColor = ColorUtility.CategoricalTwelveColors[6].ToColor();
-        var salesColor = ColorUtility.CategoricalTwelveColors[7].ToColor();
+        // Start with the last minute of readings, so the chart is full from the first frame.
+        var start = DateTime.Now.AddSeconds(-2 * MaxReadings);
+        for (var i = 1; i <= MaxReadings; i++)
+            readings.Add(new ChartTimePoint(start.AddSeconds(2 * i), NextTemperature()));
 
-        // Readings: each one is a time point appended to the dataset's TimeData.
+        var color = ColorUtility.CategoricalTwelveColors[6].ToColor();
+
         chartData = new ChartData
         {
             Datasets = new List<IChartDataset>
             {
                 new LineChartDataset
                 {
-                    Label = "Sensor",
-                    TimeData = new List<ChartTimePoint> { new(lastReading, 21.5) },
-                    BackgroundColor = sensorColor.ToRgbaString(),
-                    BorderColor = sensorColor.ToRgbString(),
-                    PointRadius = new List<double> { 4 },
+                    Label = "Server room (°C)",
+                    TimeData = readings,
+                    BackgroundColor = color.ToRgbaString(),
+                    BorderColor = color.ToRgbString(),
                 },
             },
         };
@@ -46,33 +39,9 @@
         lineChartOptions.Scales.X = new ChartAxes
         {
             Type = ChartAxesType.Time,
-            Time = new ChartAxesTime { Unit = ChartTimeUnit.Minute, DisplayFormats = new ChartAxesTimeDisplayFormats { Minute = "HH:mm" }, TooltipFormat = "HH:mm" },
+            Time = new ChartAxesTime { Unit = ChartTimeUnit.Second, DisplayFormats = new ChartAxesTimeDisplayFormats { Second = "HH:mm:ss" }, TooltipFormat = "HH:mm:ss" },
         };
-        lineChartOptions.Scales.Y = new ChartAxes { BeginAtZero = false };
-
-        // Daily totals: each new day is a date label with one value for the dataset.
-        dailyChartData = new ChartData
-        {
-            TimeLabels = new List<ChartTimeValue> { lastDay },
-            Datasets = new List<IChartDataset>
-            {
-                new LineChartDataset
-                {
-                    Label = "Daily sales",
-                    Data = new List<double?> { 18 },
-                    BackgroundColor = salesColor.ToRgbaString(),
-                    BorderColor = salesColor.ToRgbString(),
-                    PointRadius = new List<double> { 4 },
-                },
-            },
-        };
-
-        dailyChartOptions = new LineChartOptions { Responsive = true };
-        dailyChartOptions.Scales.X = new ChartAxes
-        {
-            Type = ChartAxesType.Time,
-            Time = new ChartAxesTime { Unit = ChartTimeUnit.Day, DisplayFormats = new ChartAxesTimeDisplayFormats { Day = "dd MMM" }, TooltipFormat = "dddd, dd MMM" },
-        };
+        lineChartOptions.Scales.Y = new ChartAxes { BeginAtZero = false, SuggestedMin = 20, SuggestedMax = 24 };
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -80,25 +49,36 @@
         if (firstRender)
         {
             await lineChart.InitializeAsync(chartData, lineChartOptions);
-            await dailyChart.InitializeAsync(dailyChartData, dailyChartOptions);
+            _ = ReadSensorAsync();
         }
 
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private async Task AddReadingAsync()
+    // The timer stands in for a real feed. With SignalR, the hub handler calls the same update method instead:
+    // hubConnection.On<Reading>("reading", reading => InvokeAsync(() => AddReadingAsync(reading)));
+    private async Task ReadSensorAsync()
     {
-        lastReading = lastReading.AddMinutes(random.Next(2, 9));
-        var value = Math.Round(20 + random.NextDouble() * 4, 1);
+        timer = new PeriodicTimer(TimeSpan.FromSeconds(2));
 
-        // For a time point, the label argument is the dataset's label.
-        await lineChart.AddDataAsync(chartData, "Sensor", new LineChartDatasetData("Sensor", lastReading, value));
+        // WaitForNextTickAsync returns false once the timer is disposed, which ends the loop.
+        while (await timer.WaitForNextTickAsync())
+            await InvokeAsync(() => AddReadingAsync(new Reading(DateTime.Now, NextTemperature())));
     }
 
-    private async Task AddDayAsync()
+    private async Task AddReadingAsync(Reading reading)
     {
-        lastDay = lastDay.AddDays(1);
+        // Append the new reading and drop the oldest, so the chart shows a moving window of MaxReadings points.
+        readings.Add(new ChartTimePoint(reading.Time, reading.Value));
+        if (readings.Count > MaxReadings)
+            readings.RemoveAt(0);
 
-        await dailyChart.AddTimeDataAsync(dailyChartData, lastDay, new LineChartDatasetData("Daily sales", random.Next(10, 35)));
+        await lineChart.UpdateAsync(chartData, lineChartOptions);
     }
+
+    private double NextTemperature() => Math.Round(21.5 + random.NextDouble() * 1.5, 1);
+
+    public void Dispose() => timer?.Dispose();
+
+    public record Reading(DateTime Time, double Value);
 }

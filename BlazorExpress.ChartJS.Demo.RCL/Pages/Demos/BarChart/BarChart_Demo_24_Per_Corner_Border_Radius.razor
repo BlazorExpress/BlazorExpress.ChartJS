@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>BorderRadiusCorners</code> top-left and bottom-right 20, <code>BorderSkipped = false</code></p>
-        <BarChart role="img" aria-label="Bar chart: Per corner border radius (chart 1 of 3)" @ref="leafChart" />
+        <BarChart role="img" aria-label="Bar chart: units sold per month for laptops and tablets, bars rounded at the top-left and bottom-right corners" @ref="leafChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">All four corners 12 with the default <code>BorderSkipped</code> (<code>"start"</code>): the base stays square</p>
-        <BarChart role="img" aria-label="Bar chart: Per corner border radius (chart 2 of 3)" @ref="skippedChart" />
+        <BarChart role="img" aria-label="Bar chart: units sold per month for laptops and tablets, bars rounded at the top corners only" @ref="skippedChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>HoverBorderRadiusCorners</code>: square bars that round on hover</p>
-        <BarChart role="img" aria-label="Bar chart: Per corner border radius, hoverBorderRadiusCorners" @ref="hoverChart" />
+        <BarChart role="img" aria-label="Bar chart: units sold per month for laptops and tablets, square bars that round when hovered" @ref="hoverChart" />
     </div>
 </div>
 
@@ -60,7 +60,7 @@
 
             var dataset = new BarChartDataset
             {
-                Label = $"Product {index + 1}",
+                Label = index == 0 ? "Laptops" : "Tablets",
                 Data = index == 0 ? new List<double?> { 35, 48, 42, 61, 55 } : new List<double?> { 22, 30, 38, 33, 46 },
                 BackgroundColor = [c.ToRgbaString(0.5)],
                 BorderColor = [c.ToRgbString()],

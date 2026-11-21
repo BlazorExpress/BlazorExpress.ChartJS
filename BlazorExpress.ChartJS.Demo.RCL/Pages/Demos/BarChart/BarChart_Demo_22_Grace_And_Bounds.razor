@@ -1,19 +1,19 @@
 <div class="columns is-multiline">
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">y <code>Grace = "10%"</code>: 10% of half the data range added above the highest bar</p>
-        <BarChart role="img" aria-label="Bar chart: Grace and bounds (chart 1 of 4)" @ref="gracePercentChart" />
+        <BarChart role="img" aria-label="Bar chart: monthly sales, January to June, with 10 percent extra space above the highest bar" @ref="gracePercentChart" />
     </div>
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">y <code>Grace = 5</code>: 5 data units added above the highest bar</p>
-        <BarChart role="img" aria-label="Bar chart: Grace and bounds (chart 2 of 4)" @ref="graceUnitsChart" />
+        <BarChart role="img" aria-label="Bar chart: monthly sales, January to June, with 5 units of extra space above the highest bar" @ref="graceUnitsChart" />
     </div>
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">y <code>Bounds = "data"</code> (ends at the highest bar, not the next tick), <code>SuggestedMin = -50</code></p>
-        <BarChart role="img" aria-label="Bar chart: Grace and bounds (chart 3 of 4)" @ref="boundsChart" />
+        <BarChart role="img" aria-label="Bar chart: monthly profit, January to June, with gains and losses and an axis that ends at the highest bar" @ref="boundsChart" />
     </div>
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">Stacked axes: <code>Stack = "demo"</code>, <code>StackWeight</code> 2 and 1, <code>Offset = true</code></p>
-        <BarChart role="img" aria-label="Bar chart: Grace and bounds, stacked axes" @ref="stackedAxesChart" />
+        <BarChart role="img" aria-label="Bar chart: monthly sales and returns, January to June, on two value axes stacked on the left edge" @ref="stackedAxesChart" />
     </div>
 </div>
 
@@ -60,7 +60,7 @@
 
             await gracePercentChart.InitializeAsync(GetChartData([42, 65, 98, 71, 54, 80]), gracePercentOptions);
             await graceUnitsChart.InitializeAsync(GetChartData([42, 65, 98, 71, 54, 80]), graceUnitsOptions);
-            await boundsChart.InitializeAsync(GetChartData([-12, 35, 83, -37, 20, 64]), boundsOptions);
+            await boundsChart.InitializeAsync(GetChartData([-12, 35, 83, -37, 20, 64], "Profit ($k)"), boundsOptions);
             await stackedAxesChart.InitializeAsync(GetStackedChartData(), stackedAxesOptions);
         }
         await base.OnAfterRenderAsync(firstRender);
@@ -70,10 +70,10 @@
 
     private static readonly List<string> labels = ["January", "February", "March", "April", "May", "June"];
 
-    private static ChartData GetChartData(List<double?> data) => new()
+    private static ChartData GetChartData(List<double?> data, string label = "Sales") => new()
     {
         Labels = labels.ToList(),
-        Datasets = [CreateDataset("Sales", 0, data)]
+        Datasets = [CreateDataset(label, 0, data)]
     };
 
     private static ChartData GetStackedChartData()

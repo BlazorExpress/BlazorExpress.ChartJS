@@ -1,4 +1,4 @@
-<LineChart role="img" aria-label="Line chart: Time max span" @ref="lineChart" Width="600" />
+<LineChart role="img" aria-label="Line chart: daily website visitors, January to March 2026, showing the last 14 days" @ref="lineChart" Width="600" />
 
 <div class="mt-3">
     <button type="button" class="button is-primary is-small" @onclick="() => ShowRangeAsync(14)">Last 14 days</button>
@@ -17,14 +17,16 @@
     protected override void OnInitialized()
     {
         var color = ColorUtility.CategoricalTwelveColors[8].ToColor();
-        var random = new Random(7);
         var days = new List<ChartTimeValue>();
         var values = new List<double?>();
 
+        // a slow rise over the quarter, with fewer visitors at weekends
         for (var day = firstDay; day <= lastDay; day = day.AddDays(1))
         {
+            var daysIn = day.DayNumber - firstDay.DayNumber;
+            var isWeekend = day.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday;
             days.Add(day);
-            values.Add(random.Next(20, 60));
+            values.Add(420 + 2 * daysIn + (isWeekend ? -150 : day.Day % 5 * 12));
         }
 
         chartData = new ChartData

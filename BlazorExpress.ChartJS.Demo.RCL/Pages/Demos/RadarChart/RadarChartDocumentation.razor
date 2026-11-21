@@ -20,22 +20,19 @@
 <CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.RadarChart, Sample)">
 <SampleSection Slug="how-it-works">
     <Block>
-        The <strong>Radar Chart</strong> component visualizes multivariate data with each variable represented on axes starting from the same point, making it ideal for comparing multiple groups across several categories.
+        A radar chart draws one spoke per category from a shared center and joins each item's values into an outline, so you can compare a few items across several measures at a glance. This one compares two laptops rated from 1 to 10 on battery, performance, display, weight, price and build quality.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
-        <ol>
-            <li>Add the <code>RadarChart</code> component to your page and set its dimensions (e.g., <code>Width="600"</code>).</li>
-            <li>Prepare your chart data by specifying <code>Labels</code> for each axis and one or more <code>Datasets</code> with values and styling options.</li>
-            <li>Configure chart options such as <code>Responsive</code> using the <code>RadarChartOptions</code> object.</li>
-            <li>Initialize the chart in <code>OnAfterRenderAsync</code> by calling <code>radarChart.InitializeAsync(chartData, radarChartOptions)</code>.</li>
-            <li>Use the demo's interactive buttons to randomize data, add datasets, or add new data points dynamically and see the chart update in real time.</li>
-            <li>Refer to the demo code below for practical examples of data preparation, dynamic updates, and chart customization.</li>
-        </ol>
+            <ol>
+                <li>Add the <code>RadarChart</code> component with <code>@@ref</code>, <code>role="img"</code> and an <code>aria-label</code> that says what the chart shows.</li>
+                <li>Create a <code>ChartData</code> with one label per spoke in <code>Labels</code> and one <code>RadarChartDataset</code> per item, each with a value in <code>Data</code> for every label, a <code>BorderColor</code> and a <code>BackgroundColor</code>, and <code>Fill = true</code> to shade its outline.</li>
+                <li>Create a <code>RadarChartOptions</code> with <code>Responsive = true</code> so the chart fits its container.</li>
+                <li>Call <code>InitializeAsync(chartData, radarChartOptions)</code> in <code>OnAfterRenderAsync</code> when <code>firstRender</code> is <code>true</code>.</li>
+            </ol>
         </div>
-        This demo demonstrates how to set up a Radar Chart, bind your data, and interactively update the chart to fit your application's needs.
     </Block>
-    <Demo Type="typeof(RadarChart_Demo_01_Examples)" Tabs="true" />
+    <Demo Type="typeof(RadarChart_Demo_01_How_It_Works)" Tabs="true" />
 </SampleSection>
 
 <SampleSection Slug="playground">
@@ -214,7 +211,7 @@
 
 <SampleSection Slug="title-and-subtitle">
     <Block>
-        The title and subtitle plugins draw text around the chart area. Chart.js hides both by default; in this library the title and subtitle color defaults to <code>"black"</code>.
+        The title and subtitle plugins draw text around the chart area. Chart.js hides both by default; in this library the title and subtitle color defaults to <code>"black"</code>, so the demo sets <code>Color = null</code> to keep the Chart.js default text color, which follows your app's <code>Chart.defaults.color</code> and stays readable on a dark theme.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">

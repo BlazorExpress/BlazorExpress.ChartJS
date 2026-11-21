@@ -20,23 +20,20 @@
 <CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.BubbleChart, Sample)">
 <SampleSection Slug="how-it-works">
     <Block>
-        The <strong>Bubble Chart</strong> component visualizes three dimensions of data by displaying each data point as a bubble, where the X and Y coordinates determine the position and the bubble size represents a third value. This makes it ideal for comparing and analyzing relationships between multiple variables.
-        <br />
-        <br />
+        A <strong>Bubble Chart</strong> shows three values for each item: the x and y position and the bubble size. Here each bubble is a US city, placed by its average household income and its population growth from 2020 to 2023, and sized by its population.
+        <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Add the <code>BubbleChart</code> component to your page and set its desired <code>Width</code> (e.g., <code>Width="600"</code>).</li>
-                <li>Prepare your <code>ChartData</code> with <code>Labels</code> for the X-axis and one or more <code>BubbleChartDataset</code> objects, each containing a list of <code>BubbleChartDataPoint</code> (with <code>X</code>, <code>Y</code>, and <code>R</code> values).</li>
-                <li>Configure chart appearance and behavior using <code>BubbleChartOptions</code> (e.g., responsiveness, tooltips, axis settings).</li>
-                <li>Initialize the chart by calling <code>InitializeAsync</code> with your data and options.</li>
-                <li>Use built-in methods such as <code>AddDatasetAsync</code>, <code>AddDataAsync</code>, and <code>UpdateAsync</code> to dynamically update the chart as shown in the demo.</li>
-                <li>Refer to the demo code below for practical examples, including adding datasets, randomizing data, and customizing chart styles.</li>
+                <li>Add the <code>BubbleChart</code> component with <code>@@ref</code>, <code>role="img"</code> and an <code>aria-label</code> that says what the chart shows.</li>
+                <li>Create a <code>ChartData</code> with one <code>BubbleChartDataset</code> whose <code>Data</code> is a list of <code>BubbleChartDataPoint(X, Y, R)</code>. <code>R</code> is the radius in pixels, not an axis value, so scale your third value to a readable size (here 5 to 25 pixels from the population).</li>
+                <li>Put a name for each bubble in <code>Labels</code>, in the same order as the data points; the tooltip shows it as its title.</li>
+                <li>Create <code>BubbleChartOptions { Responsive = true }</code> and name each axis and its unit with <code>Scales.X.Title</code> and <code>Scales.Y.Title</code>. Set the title <code>Color = null</code> to use the Chart.js default text color, which a dark theme can change, instead of the library's black.</li>
+                <li>Call <code>InitializeAsync</code> with the data and options in <code>OnAfterRenderAsync</code> on the first render.</li>
             </ol>
         </div>
-        This demo provides a hands-on example of setting up a Bubble Chart in Blazor, demonstrating how to bind and update your data for interactive visualizations.
     </Block>
-    <Demo Type="typeof(BubbleChart_Demo_01_Examples)" Tabs="true" />
+    <Demo Type="typeof(BubbleChart_Demo_01_How_It_Works)" Tabs="true" />
 </SampleSection>
 
 <SampleSection Slug="playground">
@@ -225,7 +222,7 @@
         <div class="content">
             <ol>
                 <li>Set <code>Scales.X.Title = new ChartAxesTitle { Display = true, Text = "Height (cm)" }</code>, and the same for <code>Scales.Y</code>.</li>
-                <li>Style it with <code>Color</code> and <code>Font = new ChartFont { Size = 16, Style = "italic" }</code>.</li>
+                <li>Set <code>Color = null</code> to use the Chart.js text color instead of black, so the title stays readable on a dark page, or style it with <code>Color</code> and <code>Font = new ChartFont { Size = 16, Style = "italic" }</code>.</li>
                 <li>Add space with <code>Padding = 10</code>, or on one side with <code>Padding = new() { Top = 8 }</code>.</li>
                 <li>Align it along the axis with <code>TitleAlignment = TitleAlignment.Start</code> or <code>TitleAlignment.End</code>.</li>
             </ol>
@@ -237,7 +234,8 @@
 <SampleSection Slug="grace-and-bounds">
     <Block>
         Add room beyond the data with <code>Grace</code>, so large bubbles at the edge are not cut off, choose whether the axis ends at the data or at a whole tick with <code>Bounds</code>, and stack two axes on one edge with <code>Stack</code>.
-        Chart.js uses <code>Bounds = "ticks"</code> for linear axes; <code>SuggestedMin</code> and <code>SuggestedMax</code> widen the range only when the data does not reach them. Axes in this library start at zero by default, so the demo sets <code>BeginAtZero = false</code> to show grace and bounds at both ends.        <br /><br />
+        Chart.js uses <code>Bounds = "ticks"</code> for linear axes; <code>SuggestedMin</code> and <code>SuggestedMax</code> widen the range only when the data does not reach them. Axes in this library start at zero by default, so the demo sets <code>BeginAtZero = false</code> to show grace and bounds at both ends.
+        <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>
@@ -253,14 +251,14 @@
 
 <SampleSection Slug="title-and-subtitle">
     <Block>
-        Show a chart title with <code>Plugins.Title</code> and a second line with <code>Plugins.Subtitle</code>. Both are hidden until <code>Display = true</code>, and in this library their <code>Color</code> defaults to <code>"black"</code>.
+        Show a chart title with <code>Plugins.Title</code> and a second line with <code>Plugins.Subtitle</code>. Both are hidden until <code>Display = true</code>, and in this library their <code>Color</code> defaults to <code>"black"</code>; the demo sets <code>Color = null</code> so they use the Chart.js default text color, which a dark theme can change.
         Chart.js draws the subtitle just below the title and places both at the top, centered, unless <code>Position</code> or <code>Align</code> says otherwise.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "..." }</code>.</li>
-                <li>Set <code>Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "..." }</code>.</li>
+                <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "...", Color = null }</code>.</li>
+                <li>Set <code>Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "...", Color = null }</code>.</li>
                 <li>Move them with <code>Position</code> (<code>"top"</code>, <code>"left"</code>, <code>"bottom"</code>, <code>"right"</code>) and <code>Align</code> (<code>"start"</code>, <code>"center"</code>, <code>"end"</code>).</li>
                 <li>Add space with <code>Padding</code>, and set <code>FullSize = false</code> to keep the title within the chart area.</li>
             </ol>

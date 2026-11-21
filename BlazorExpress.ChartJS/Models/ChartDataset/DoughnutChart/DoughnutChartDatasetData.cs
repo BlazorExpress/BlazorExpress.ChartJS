@@ -14,11 +14,11 @@ public record DoughnutChartDatasetData : ChartDatasetData
     #region Properties, Indexers
 
     /// <summary>
-    /// Gets or initializes the background color as a string.
+    /// Gets or initializes the background color of the slice that is added, for example <c>"rgb(54, 162, 235)"</c>.
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("")]
+    [Description("Gets or initializes the background color of the slice that is added.")]
     [ParameterTypeName("string?")]
     public string? BackgroundColor { get; init; }
 

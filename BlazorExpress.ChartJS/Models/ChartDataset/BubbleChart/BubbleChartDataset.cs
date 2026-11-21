@@ -13,7 +13,7 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     #region Properties, Indexers
 
     /// <summary>
-    /// The line fill color.
+    /// The bubble background color.
     /// Use <see cref="BackgroundColorFunction" /> for a registered JavaScript function; when set, it is sent instead of this value.
     /// <para>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
@@ -21,7 +21,7 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     /// </summary>
     [AddedVersion("1.1.0")]
     [DefaultValue("rgba(0, 0, 0, 0.1)")]
-    [Description("The line fill color.")]
+    [Description("The bubble background color.")]
     [ParameterTypeName("List<string>?")]
     [JsonIgnore]
     public List<string>? BackgroundColor { get; set; }
@@ -52,7 +52,7 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     internal object? BackgroundColorValue => (object?)BackgroundColorFunction ?? BackgroundColor;
 
     /// <summary>
-    /// The line color.
+    /// The bubble border color.
     /// Use <see cref="BorderColorFunction" /> for a registered JavaScript function; when set, it is sent instead of this value.
     /// <para>
     /// Default value is 'rgba(0, 0, 0, 0.1)'.
@@ -60,7 +60,7 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     /// </summary>
     [AddedVersion("1.1.0")]
     [DefaultValue("rgba(0, 0, 0, 0.1)")]
-    [Description("The line color.")]
+    [Description("The bubble border color.")]
     [ParameterTypeName("List<string>?")]
     [JsonIgnore]
     public List<string>? BorderColor { get; set; }
@@ -91,14 +91,14 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     internal object? BorderColorValue => (object?)BorderColorFunction ?? BorderColor;
 
     /// <summary>
-    /// The line width (in pixels).
+    /// The bubble border width (in pixels).
     /// <para>
     /// Default value is 3.
     /// </para>
     /// </summary>
     [AddedVersion("1.1.0")]
     [DefaultValue(3)]
-    [Description("The line width (in pixels).")]
+    [Description("The bubble border width (in pixels).")]
     public double BorderWidth { get; set; } = 3;
 
     //clip
@@ -133,7 +133,7 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     public List<bool>? DrawActiveElementsOnTop { get; set; }
 
     /// <summary>
-    /// The line fill color when hovered.
+    /// The bubble background color when hovered.
     /// Use <see cref="HoverBackgroundColorFunction" /> for a registered JavaScript function; when set, it is sent instead of this value.
     /// <para>
     /// Default value is <see langword="null"/>.
@@ -141,7 +141,7 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     /// </summary>
     [AddedVersion("1.1.0")]
     [DefaultValue(null)]
-    [Description("The line fill color when hovered.")]
+    [Description("The bubble background color when hovered.")]
     [ParameterTypeName("List<string>?")]
     [JsonIgnore]
     public List<string>? HoverBackgroundColor { get; set; }
@@ -172,7 +172,7 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     internal object? HoverBackgroundColorValue => (object?)HoverBackgroundColorFunction ?? HoverBackgroundColor;
 
     /// <summary>
-    /// The line color when hovered.
+    /// The bubble border color when hovered.
     /// Use <see cref="HoverBorderColorFunction" /> for a registered JavaScript function; when set, it is sent instead of this value.
     /// <para>
     /// Default value is <see langword="null"/>.
@@ -180,7 +180,7 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     /// </summary>
     [AddedVersion("1.1.0")]
     [DefaultValue(null)]
-    [Description("The line color when hovered.")]
+    [Description("The bubble border color when hovered.")]
     [ParameterTypeName("List<string>?")]
     [JsonIgnore]
     public List<string>? HoverBorderColor { get; set; }
@@ -211,40 +211,40 @@ public class BubbleChartDataset : ChartDataset<BubbleChartDataPoint>
     internal object? HoverBorderColorValue => (object?)HoverBorderColorFunction ?? HoverBorderColor;
 
     /// <summary>
-    /// The line width (in pixels) when hovered.
+    /// The bubble border width (in pixels) when hovered.
     /// <para>
     /// Default value is 1.
     /// </para>
     /// </summary>
     [AddedVersion("1.1.0")]
     [DefaultValue(1)]
-    [Description("The line width (in pixels) when hovered.")]
+    [Description("The bubble border width (in pixels) when hovered.")]
     [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? HoverBorderWidth { get; set; }
 
     /// <summary>
-    /// The pixel size of the non-displayed point that reacts to mouse events.
+    /// The additional radius of the bubble, in pixels, used for hit detection.
     /// <para>
     /// Default value is 1.
     /// </para>
     /// </summary>
     [AddedVersion("1.1.0")]
     [DefaultValue(1)]
-    [Description("The pixel size of the non-displayed point that reacts to mouse events.")]
+    [Description("The additional radius of the bubble, in pixels, used for hit detection.")]
     [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? HitRadius { get; set; }
 
     /// <summary>
-    /// The pixel size of the non-displayed point that reacts to mouse events.
+    /// The additional radius of the bubble, in pixels, when hovered.
     /// <para>
     /// Default value is 4.
     /// </para>
     /// </summary>
     [AddedVersion("1.1.0")]
     [DefaultValue(4)]
-    [Description("The pixel size of the non-displayed point that reacts to mouse events.")]
+    [Description("The additional radius of the bubble, in pixels, when hovered.")]
     [ParameterTypeName("List<double>?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<double>? HoverRadius { get; set; }

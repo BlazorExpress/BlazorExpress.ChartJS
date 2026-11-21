@@ -1,0 +1,29 @@
+@using BlazorExpress.ChartJS
+
+<BarChart @ref="barChart" role="img" aria-label="Bar chart: units sold per month" Width="600" />
+
+@code {
+    private BarChart barChart = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+
+        var data = new ChartData
+        {
+            Labels = new List<string> { "January", "February", "March", "April" },
+            Datasets = new List<IChartDataset>
+            {
+                new BarChartDataset
+                {
+                    Label = "Units sold",
+                    Data = new List<double?> { 120, 150, 180, 140 },
+                    BackgroundColor = new List<string> { "rgb(81, 43, 212)" },
+                },
+            },
+        };
+
+        await barChart.InitializeAsync(data, new BarChartOptions { Responsive = true });
+    }
+}

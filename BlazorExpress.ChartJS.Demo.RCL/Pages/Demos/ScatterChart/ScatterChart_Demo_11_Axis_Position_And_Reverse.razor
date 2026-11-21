@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">x on top, y on the right: <code>Position = "top"</code>, <code>Position = "right"</code></p>
-        <ScatterChart role="img" aria-label="Scatter chart: Axis position and reverse, x on top, y on the right" @ref="positionChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: sign-ups against budget for email and social media campaigns, x-axis on top and y-axis on the right" @ref="positionChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Reversed y-axis: <code>Reverse = true</code></p>
-        <ScatterChart role="img" aria-label="Scatter chart: Axis position and reverse, reversed y-axis" @ref="reverseChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: sign-ups against budget for email and social media campaigns, y-axis reversed so the most sign-ups are at the bottom" @ref="reverseChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Hidden x-axis: <code>Display = false</code></p>
-        <ScatterChart role="img" aria-label="Scatter chart: Axis position and reverse, hidden x-axis" @ref="hiddenAxisChart" />
+        <ScatterChart role="img" aria-label="Scatter chart: sign-ups against budget for email and social media campaigns, x-axis hidden" @ref="hiddenAxisChart" />
     </div>
 </div>
 
@@ -47,12 +47,13 @@
 
     #region Data Preparation
 
+    // x: campaign budget in hundreds of dollars, y: sign-ups
     private static ChartData GetChartData() => new()
     {
         Datasets =
         [
-            CreateDataset("Group A", 0, [new(5, 12), new(15, 28), new(25, 20), new(35, 42), new(45, 38), new(55, 60), new(65, 52), new(75, 70)]),
-            CreateDataset("Group B", 1, [new(10, 40), new(20, 35), new(30, 55), new(40, 48), new(50, 30), new(60, 45), new(70, 25), new(80, 35)])
+            CreateDataset("Email campaigns", 0, [new(5, 12), new(15, 28), new(25, 20), new(35, 42), new(45, 38), new(55, 60), new(65, 52), new(75, 70)]),
+            CreateDataset("Social media campaigns", 1, [new(10, 40), new(20, 35), new(30, 55), new(40, 48), new(50, 30), new(60, 45), new(70, 25), new(80, 35)])
         ]
     };
 

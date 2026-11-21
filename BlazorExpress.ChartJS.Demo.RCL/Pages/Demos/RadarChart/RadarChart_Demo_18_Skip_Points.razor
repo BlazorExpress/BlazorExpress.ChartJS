@@ -1,11 +1,11 @@
 <div class="columns is-multiline">
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">Missing values break the line: <code>SpanGaps = false</code></p>
-        <RadarChart role="img" aria-label="Radar chart: Skip points, missing values break the line" @ref="gapsChart" />
+        <RadarChart role="img" aria-label="Radar chart: road-test scores for three cars, each line broken at its missing score" @ref="gapsChart" />
     </div>
     <div class="column is-half">
         <p class="has-text-weight-semibold mb-2">Missing values are bridged: <code>SpanGaps = true</code></p>
-        <RadarChart role="img" aria-label="Radar chart: Skip points, missing values are bridged" @ref="spannedChart" />
+        <RadarChart role="img" aria-label="Radar chart: road-test scores for three cars, each line joined across its missing score" @ref="spannedChart" />
     </div>
 </div>
 
@@ -26,7 +26,8 @@
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    // A null value is a skipped point. Each dataset skips a point in a different place: first, middle and last.
+    // Road-test scores out of 100. A null value is a score that was not tested, so its point is skipped.
+    // Each car misses a score in a different place: first, middle and last.
     private static ChartData GetChartData(bool spanGaps) =>
         new()
         {
@@ -35,7 +36,7 @@
             [
                 new RadarChartDataset
                 {
-                    Label = "Skip first",
+                    Label = "Compact SUV",
                     Data = [null, 72, 64, 81, 58, 69],
                     BorderColor = "rgb(0, 114, 178)", // Okabe–Ito blue
                     BackgroundColor = "rgba(0, 114, 178, 0.2)",
@@ -43,7 +44,7 @@
                 },
                 new RadarChartDataset
                 {
-                    Label = "Skip middle",
+                    Label = "Family sedan",
                     Data = [48, 55, null, 62, 44, 51],
                     BorderColor = "rgb(213, 94, 0)", // Okabe–Ito vermillion
                     BackgroundColor = "rgba(213, 94, 0, 0.2)",
@@ -51,7 +52,7 @@
                 },
                 new RadarChartDataset
                 {
-                    Label = "Skip last",
+                    Label = "City hatchback",
                     Data = [28, 35, 31, 40, 26, null],
                     BorderColor = "rgb(0, 158, 115)", // Okabe–Ito bluish green
                     BackgroundColor = "rgba(0, 158, 115, 0.2)",

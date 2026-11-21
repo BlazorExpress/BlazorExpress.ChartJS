@@ -1,0 +1,50 @@
+<LineChart role="img" aria-label="Line chart: website visitors and sign-ups per month, January to June" @ref="lineChart" Width="600" />
+
+@code {
+    private LineChart lineChart = default!;
+    private LineChartOptions lineChartOptions = default!;
+    private ChartData chartData = default!;
+
+    protected override void OnInitialized()
+    {
+        var visitorsColor = ColorUtility.CategoricalTwelveColors[0].ToColor();
+        var signUpsColor = ColorUtility.CategoricalTwelveColors[1].ToColor();
+
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "January", "February", "March", "April", "May", "June" },
+            Datasets = new List<IChartDataset>
+            {
+                new LineChartDataset
+                {
+                    Label = "Visitors",
+                    Data = new List<double?> { 12400, 13900, 15200, 17600, 19300, 21800 },
+                    BackgroundColor = visitorsColor.ToRgbaString(0.5),
+                    BorderColor = visitorsColor.ToRgbString(),
+                },
+                new LineChartDataset
+                {
+                    Label = "Sign-ups",
+                    Data = new List<double?> { 310, 365, 340, 455, 520, 610 },
+                    BackgroundColor = signUpsColor.ToRgbaString(0.5),
+                    BorderColor = signUpsColor.ToRgbString(),
+                    YAxisID = "y1", // sign-ups are far smaller than visitors, so they get their own axis
+                },
+            },
+        };
+
+        lineChartOptions = new LineChartOptions { Responsive = true };
+        lineChartOptions.Scales.AdditionalAxes = new()
+        {
+            ["y1"] = new ChartAxes { Position = "right", Grid = new ChartAxesGrid { DrawOnChartArea = false } },
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await lineChart.InitializeAsync(chartData, lineChartOptions);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

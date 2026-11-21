@@ -1,19 +1,19 @@
 <div class="columns is-multiline">
     <div class="column is-half">
         <p class="is-size-7 has-text-weight-semibold mb-2">Default: <code>BeginAtZero = true</code></p>
-        <PolarAreaChart role="img" aria-label="Polar area chart: Radial scale, default" @ref="defaultChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: sales by region on a radial scale that starts at zero" @ref="defaultChart" />
     </div>
     <div class="column is-half">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>BeginAtZero = false</code> (starts from the data minimum)</p>
-        <PolarAreaChart role="img" aria-label="Polar area chart: Radial scale (chart 2 of 4)" @ref="dataMinimumChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: sales by region on a radial scale that starts from the lowest value" @ref="dataMinimumChart" />
     </div>
     <div class="column is-half">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Min = 40</code>, <code>Max = 80</code>, <code>StepSize = 10</code>, <code>ShowLabelBackdrop = false</code>, <code>Circular = false</code></p>
-        <PolarAreaChart role="img" aria-label="Polar area chart: Radial scale (chart 3 of 4)" @ref="fixedRangeChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: sales by region on a radial scale fixed from 40 to 80 with polygon rings" @ref="fixedRangeChart" />
     </div>
     <div class="column is-half">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Reverse = true</code></p>
-        <PolarAreaChart role="img" aria-label="Polar area chart: Radial scale (chart 4 of 4)" @ref="reverseChart" />
+        <PolarAreaChart role="img" aria-label="Polar area chart: sales by region on a reversed radial scale, largest value at the center" @ref="reverseChart" />
     </div>
 </div>
 

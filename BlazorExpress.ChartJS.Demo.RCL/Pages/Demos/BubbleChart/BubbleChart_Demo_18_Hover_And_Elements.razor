@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Point defaults: <code>Elements.Point</code> with <code>PointStyle</code>, <code>HoverRadius</code>, <code>HoverBorderWidth</code></p>
-        <BubbleChart role="img" aria-label="Bubble chart: Hover and elements, point defaults" @ref="elementsChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: email and social campaign results, with custom bubble shape and hover size" @ref="elementsChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Hover a whole dataset: <code>Hover = new ChartHover { Mode = InteractionMode.Dataset }</code></p>
-        <BubbleChart role="img" aria-label="Bubble chart: Hover and elements, hover a whole dataset" @ref="hoverChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: email and social campaign results, hover highlights a whole campaign" @ref="hoverChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Click only: <code>Events = ["click"]</code> (pointer moves do nothing; click a bubble)</p>
-        <BubbleChart role="img" aria-label="Bubble chart: Hover and elements, click only" @ref="clickOnlyChart" />
+        <BubbleChart role="img" aria-label="Bubble chart: email and social campaign results, responds to clicks only" @ref="clickOnlyChart" />
     </div>
 </div>
 
@@ -65,8 +65,8 @@
     {
         Datasets =
         [
-            CreateDataset("Group A", 0, [new(5, 12, 8), new(15, 28, 12), new(25, 20, 6), new(35, 42, 15), new(45, 38, 10), new(55, 60, 7), new(65, 52, 14), new(75, 70, 9)]),
-            CreateDataset("Group B", 1, [new(10, 40, 14), new(20, 35, 10), new(30, 55, 16), new(40, 48, 7), new(50, 30, 12), new(60, 45, 15), new(70, 25, 8), new(80, 35, 13)])
+            CreateDataset("Email campaigns", 0, [new(5, 12, 8), new(15, 28, 12), new(25, 20, 6), new(35, 42, 15), new(45, 38, 10), new(55, 60, 7), new(65, 52, 14), new(75, 70, 9)]),
+            CreateDataset("Social campaigns", 1, [new(10, 40, 14), new(20, 35, 10), new(30, 55, 16), new(40, 48, 7), new(50, 30, 12), new(60, 45, 15), new(70, 25, 8), new(80, 35, 13)])
         ]
     };
 

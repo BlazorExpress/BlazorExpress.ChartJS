@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="mb-2"><code>Rotation = -90</code> and <code>Circumference = 180</code></p>
-        <DoughnutChart role="img" aria-label="Doughnut chart: Half gauge (chart 1 of 3)" @ref="doughnutChart1" />
+        <DoughnutChart role="img" aria-label="Doughnut chart: visitors by browser, drawn as a half doughnut" @ref="doughnutChart1" />
     </div>
     <div class="column is-one-third">
         <p class="mb-2"><code>Rotation = -135</code>, <code>Circumference = 270</code> and <code>Cutout = "70%"</code></p>
-        <DoughnutChart role="img" aria-label="Doughnut chart: Half gauge (chart 2 of 3)" @ref="doughnutChart2" />
+        <DoughnutChart role="img" aria-label="Doughnut chart: visitors by browser, drawn as a three-quarter dial" @ref="doughnutChart2" />
     </div>
     <div class="column is-one-third">
         <p class="mb-2">Gauge: one value and a grey remainder, <code>Cutout = "75%"</code>, legend hidden</p>
-        <DoughnutChart role="img" aria-label="Doughnut chart: Half gauge, 72% of target" @ref="doughnutChart3" />
+        <DoughnutChart role="img" aria-label="Doughnut chart: half gauge showing progress at 72% of target" @ref="doughnutChart3" />
     </div>
 </div>
 
@@ -27,7 +27,8 @@
 
             var gaugeOptions = new DoughnutChartOptions { Rotation = -90, Circumference = 180, Cutout = "75%" };
             gaugeOptions.Plugins.Legend.Display = false;
-            gaugeOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "72% of target", Position = "bottom" };
+            // null keeps Chart.js's theme-aware default text colour
+            gaugeOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "72% of target", Color = null, Position = "bottom" };
             await doughnutChart3.InitializeAsync(CreateGaugeData(), gaugeOptions);
         }
 

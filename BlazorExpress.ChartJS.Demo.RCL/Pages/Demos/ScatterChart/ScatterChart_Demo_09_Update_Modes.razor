@@ -1,4 +1,4 @@
-<ScatterChart role="img" aria-label="Scatter chart: Update modes and animation control" @ref="scatterChart" Width="600" />
+<ScatterChart role="img" aria-label="Scatter chart: temperature against humidity in the north and south greenhouses" @ref="scatterChart" Width="600" />
 
 <div class="mt-3">
     <button type="button" class="button is-primary is-small" @onclick="RefreshAsync">Refresh (animated)</button>
@@ -15,8 +15,8 @@
     private ScatterChart scatterChart = default!;
     private ScatterChartOptions scatterChartOptions = default!;
     private ChartData chartData = default!;
-    private readonly List<string> labels = new() { "First", "Second", "Third", "Fourth" };
-    private readonly Dictionary<string, string> colors = new() { ["Sensor A"] = "54, 162, 235", ["Sensor B"] = "255, 159, 64" };
+    private readonly List<string> labels = new() { "06:00", "10:00", "14:00", "18:00" };
+    private readonly Dictionary<string, string> colors = new() { ["North greenhouse"] = "54, 162, 235", ["South greenhouse"] = "255, 159, 64" };
     private string status = "Animations take 2 seconds here, so there is time to click Stop.";
 
     protected override void OnInitialized()
@@ -47,7 +47,8 @@
                 .Select(label => (IChartDataset)new ScatterChartDataset
                 {
                     Label = label,
-                    Data = labels.Select(_ => new ScatterChartDataPoint(Random.Shared.Next(0, 100), Random.Shared.Next(0, 100))).ToList(),
+                    // x = temperature (°C), y = relative humidity (%), one reading at each time of day
+                    Data = labels.Select(_ => new ScatterChartDataPoint(Random.Shared.Next(15, 32), Random.Shared.Next(45, 81))).ToList(),
                     BackgroundColor = $"rgba({colors[label]}, 0.6)",
                     BorderColor = $"rgb({colors[label]})",
                     BorderWidth = 2,

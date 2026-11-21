@@ -7,7 +7,7 @@
         <PlaygroundCommonControls Settings="settings" OnChanged="ApplyAsync" />
     </Controls>
     <Chart>
-        <ScatterChart role="img" aria-label="Scatter chart: Playground" @ref="chart" />
+        <ScatterChart role="img" aria-label="Scatter chart: monthly ad spend against new customers, for online and print ads" @ref="chart" />
     </Chart>
 </PlaygroundPanel>
 
@@ -83,12 +83,13 @@
             text.Dataset("PointHoverRadius", PlaygroundCode.List(pointRadius + HoverRadiusIncrease));
         }
 
+        // x = monthly ad spend ($), y = new customers that month
         var chartData = new ChartData
         {
             Datasets =
             [
-                CreateDataset("Group A", [(1200, 34), (1850, 41), (2400, 39), (3100, 52), (3900, 58), (4600, 71), (5200, 66)], 0),
-                CreateDataset("Group B", [(1500, 62), (2100, 55), (2800, 49), (3300, 44), (4100, 37), (4800, 30), (5500, 26)], 1),
+                CreateDataset("Online ads", [(1200, 34), (1850, 41), (2400, 39), (3100, 52), (3900, 58), (4600, 71), (5200, 66)], 0),
+                CreateDataset("Print ads", [(1500, 22), (2100, 25), (2800, 31), (3300, 30), (4100, 36), (4800, 41), (5500, 43)], 1),
             ]
         };
 

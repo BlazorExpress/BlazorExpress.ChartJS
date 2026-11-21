@@ -1,0 +1,89 @@
+<div role="tablist" aria-label="Store traffic this week" class="buttons mb-3">
+    @foreach (var tab in tabs)
+    {
+        <button type="button" role="tab" id="@($"store-tab-{tab.Id}")" aria-controls="@($"store-panel-{tab.Id}")" aria-selected="@(tab == activeTab ? "true" : "false")"
+                class="button is-small @(tab == activeTab ? "is-primary" : "")" @onclick="() => activeTab = tab">@tab.Title</button>
+    }
+</div>
+
+@* Every panel stays in the page; hidden only hides it, so each chart is created once and redraws at full size when shown. *@
+@foreach (var tab in tabs)
+{
+    <div role="tabpanel" id="@($"store-panel-{tab.Id}")" aria-labelledby="@($"store-tab-{tab.Id}")" hidden="@(tab != activeTab)">
+        <LineChart role="img" aria-label="@($"Line chart: {tab.Description}, Monday to Sunday")" @ref="tab.Chart" />
+    </div>
+}
+
+<button type="button" class="button is-small mt-3" @onclick="() => isDialogOpen = true">Open monthly revenue</button>
+
+@* The dialog keeps the browser's own display rule (hidden until open); a display class such as "box" on it would show it while closed, so the styling sits on an inner element. *@
+<dialog open="@isDialogOpen" aria-labelledby="revenue-dialog-title" style="border: none; padding: 0; background: transparent; width: min(40rem, 90vw);">
+    <div class="box">
+        <p id="revenue-dialog-title" class="has-text-weight-semibold mb-2">Monthly revenue</p>
+        <LineChart role="img" aria-label="Line chart: revenue in thousands of dollars per month, January to June" @ref="revenueChart" />
+        <button type="button" class="button is-small mt-3" @onclick="() => isDialogOpen = false">Close</button>
+    </div>
+</dialog>
+
+@code {
+    private static readonly string[] Days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+    private readonly List<StoreTab> tabs =
+    [
+        new("visitors", "Visitors", "visitors per day", [1240, 1310, 1185, 1420, 1655, 2110, 1980]),
+        new("orders", "Orders", "orders per day", [86, 92, 79, 101, 124, 168, 152]),
+        new("returns", "Returns", "returned orders per day", [7, 5, 9, 6, 8, 12, 10]),
+    ];
+
+    private StoreTab activeTab = default!;
+    private LineChart revenueChart = default!;
+    private bool isDialogOpen;
+
+    protected override void OnInitialized() => activeTab = tabs[0];
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Initialize every chart once, hidden ones too. Chart.js watches each container and redraws a chart at full size
+            // when its tab or the dialog is shown, so no code is needed on a tab change.
+            var color = ColorUtility.CategoricalTwelveColors[0];
+            foreach (var tab in tabs)
+                await tab.Chart.InitializeAsync(CreateChartData(tab.Title, [.. Days], tab.Values, color), new LineChartOptions { Responsive = true });
+
+            var revenueColor = ColorUtility.CategoricalTwelveColors[2];
+            await revenueChart.InitializeAsync(CreateChartData("Revenue ($k)", ["Jan", "Feb", "Mar", "Apr", "May", "Jun"], [182, 175, 204, 219, 236, 251], revenueColor), new LineChartOptions { Responsive = true });
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static ChartData CreateChartData(string label, List<string> labels, List<double?> values, string hexColor)
+    {
+        var color = hexColor.ToColor();
+
+        return new ChartData
+        {
+            Labels = labels,
+            Datasets =
+            [
+                new LineChartDataset
+                {
+                    Label = label,
+                    Data = values,
+                    BackgroundColor = color.ToRgbaString(),
+                    BorderColor = color.ToRgbString(),
+                },
+            ],
+        };
+    }
+
+    private sealed class StoreTab(string id, string title, string description, List<double?> values)
+    {
+        public string Id { get; } = id;
+        public string Title { get; } = title;
+        public string Description { get; } = description;
+        public List<double?> Values { get; } = values;
+        public LineChart Chart { get; set; } = default!;
+    }
+}

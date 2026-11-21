@@ -25,6 +25,7 @@ public class ChartOptions : IChartOptions
     [Description("Chart.js animates charts out of the box. A number of options are provided to configure how the animation looks and how long it takes.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [ParameterTypeName("ChartAnimation?")]
+    [JsonConverter(typeof(ChartAnimationJsonConverter))]
     public ChartAnimation? Animation { get; set; }
 
     /// <summary>
@@ -98,15 +99,15 @@ public class ChartOptions : IChartOptions
     public ChartHover? Hover { get; set; }
 
     /// <summary>
-    /// Gets or sets the locale for the chart.
+    /// Gets or sets the locale for the chart, for example <c>"de-DE"</c>. It is used to format numbers, and the month and weekday names of dates.
     /// <para>
-    /// By default, the chart is using the default locale of the platform which is running on.
+    /// When it is not set, the chart uses the browser's locale.
     /// </para>
     /// <see href="https://www.chartjs.org/docs/latest/configuration/locale.html" />
     /// </summary>
     [AddedVersion("1.0.0")]
-    [DefaultValue("By default, the chart is using the default locale of the platform which is running on.")]
-    [Description("Gets or sets the locale for the chart.")]
+    [DefaultValue(null)]
+    [Description("Gets or sets the locale for the chart, used to format numbers and dates. When it is not set, the chart uses the browser's locale.")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [ParameterTypeName("string?")]
     public string? Locale { get; set; }
@@ -2128,6 +2129,17 @@ public class ChartAnimation
     public double? Delay { get; set; } = null;
 
     /// <summary>
+    /// Gets a value that turns animation off: it is sent to Chart.js as <c>animation: false</c>, so the chart or dataset
+    /// draws and updates without animating. Assign it to <see cref="ChartOptions.Animation" /> or to a dataset's
+    /// <c>Animation</c>. Each call returns a new value.
+    /// <see href="https://www.chartjs.org/docs/latest/configuration/animations.html#disabling-animation" />
+    /// </summary>
+    [AddedVersion("2.0.0")]
+    [Description("Gets a value that turns animation off; it is sent to Chart.js as animation: false.")]
+    [ParameterTypeName("ChartAnimation")]
+    public static ChartAnimation Disabled => new() { IsDisabled = true };
+
+    /// <summary>
     /// Gets or sets the number of milliseconds an animation takes.
     /// <para>
     /// Default value is 1000.
@@ -2194,6 +2206,9 @@ public class ChartAnimation
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [ParameterTypeName("ChartFunction?")]
     public ChartFunction? OnProgress { get; set; }
+
+    /// <summary>Whether this value is <see cref="Disabled" />, which is written to JSON as <c>false</c>.</summary>
+    internal bool IsDisabled { get; private init; }
 
     #endregion
 }

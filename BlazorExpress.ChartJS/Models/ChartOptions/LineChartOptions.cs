@@ -9,14 +9,14 @@ public class LineChartOptions : ChartOptions
     //plugins -> title -> display, text
 
     /// <summary>
-    /// The base axis of the dataset. 'x' for horizontal lines and 'y' for vertical lines.
+    /// The base axis of the chart. 'x' for horizontal lines and 'y' for vertical lines.
     /// </summary>
     /// <remarks>
     /// Default value is <see langword="null"/>.
     /// </remarks>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("The base axis of the dataset. 'x' for horizontal lines and 'y' for vertical lines.")]
+    [Description("The base axis of the chart. 'x' for horizontal lines and 'y' for vertical lines.")]
     [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? IndexAxis { get; set; }
@@ -48,26 +48,26 @@ public class LineChartOptions : ChartOptions
     public ChartLayout Layout { get; set; } = new();
 
     /// <summary>
-    /// Gets or sets the collection of plugins associated with the line chart.
+    /// Gets or sets the plugin options of the line chart.
     /// <para>
     /// Default value is a new instance of <see cref="LineChartPlugins"/>.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("new()")]
-    [Description("Gets or sets the collection of plugins associated with the line chart.")]
+    [Description("Gets or sets the plugin options of the line chart.")]
     [ParameterTypeName(nameof(LineChartPlugins))]
     public LineChartPlugins Plugins { get; set; } = new();
 
     /// <summary>
-    /// Gets or sets the collection of scales used for measurement or calibration.
+    /// Gets or sets the x and y scales of the line chart, and any additional axes.
     /// <para>
     /// Default value is a new instance of <see cref="Scales"/>.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("new()")]
-    [Description("Gets or sets the collection of scales used for measurement or calibration.")]
+    [Description("Gets or sets the x and y scales of the line chart, and any additional axes.")]
     public Scales Scales { get; set; } = new();
 
     #endregion

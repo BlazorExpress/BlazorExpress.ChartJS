@@ -148,7 +148,7 @@ public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
     //https://www.chartjs.org/docs/latest/charts/line.html#general
 
     /// <summary>
-    /// Supported values are 'default', and 'monotone'.
+    /// The cubic interpolation mode of the line. Supported values are 'default' and 'monotone'.
     /// <para>
     /// Default value is 'default'.
     /// </para>
@@ -156,14 +156,14 @@ public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("default")]
-    [Description("Supported values are 'default', and 'monotone'.")]
+    [Description("The cubic interpolation mode of the line. Supported values are 'default' and 'monotone'.")]
     public string CubicInterpolationMode { get; set; } = "default";
 
     /// <summary>
     /// Gets or sets the data labels configuration for the scatter chart dataset.
     /// <para>
     /// Use this property to customize the display of data labels, such as their position, format, or
-    /// visibility, in the pie chart dataset. If not set, a default configuration is applied.
+    /// visibility, in the scatter chart dataset. If not set, a default configuration is applied.
     /// </para>
     /// <see href="https://chartjs-plugin-datalabels.netlify.app/guide/getting-started.html#configuration" />
     /// </summary>
@@ -324,7 +324,7 @@ public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue("miter")]
-    [Description("Line joint style. There are three possible values for this property: 'round', 'bevel', and 'miter'.")]
+    [Description("Line joint style when hovered. There are three possible values for this property: 'round', 'bevel', and 'miter'.")]
     public string HoverBorderJoinStyle { get; set; } = "miter";
 
     /// <summary>
@@ -517,28 +517,26 @@ public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
     public object? Segment { get; set; }
 
     /// <summary>
-    /// If <see langword="false" />, the line is not drawn for this dataset.
+    /// Gets whether a line is drawn between the points of this dataset. It is always <see langword="false" />: a scatter chart draws points only.
     /// <para>
-    /// Default value is <see langword="true"/>.
+    /// Default value is <see langword="false"/>.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
-    [DefaultValue(true)]
-    [Description("If <b>false</b>, the line is not drawn for this dataset.")]
+    [DefaultValue(false)]
+    [Description("Gets whether a line is drawn between the points of this dataset. It is always <b>false</b>: a scatter chart draws points only.")]
     public bool ShowLine { get; } = false;
 
     /// <summary>
     /// If <see langword="true" />, lines will be drawn between points with no or null data.
     /// If <see langword="false" />, points with null data will create a break in the line.
-    /// Can also be a number specifying the maximum gap length to span.
-    /// The unit of the value depends on the scale used.
     /// <para>
     /// Default value is <see langword="null"/>.
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(null)]
-    [Description("If true, lines will be drawn between points with no or null data. If false, points with null data will create a break in the line. Can also be a number specifying the maximum gap length to span. The unit of the value depends on the scale used.")]
+    [Description("If true, lines will be drawn between points with no or null data. If false, points with null data will create a break in the line.")]
     [ParameterTypeName("bool?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? SpanGaps { get; set; }
@@ -573,7 +571,7 @@ public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
     /// </summary>
     [AddedVersion("1.0.0")]
     [DefaultValue(0)]
-    [Description("Bezier curve tension of the line. Set to 0 to draw straightlines. This option is ignored if monotone cubic interpolation is used.")]
+    [Description("Bezier curve tension of the line. Set to 0 to draw straight lines. This option is ignored if monotone cubic interpolation is used.")]
     public double Tension { get; set; }
 
     /// <summary>
@@ -604,7 +602,7 @@ public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
-    [DefaultValue("Default value is 'first x axis'.")]
+    [DefaultValue(null)]
     [Description("The ID of the x-axis to plot this dataset on. Default value is 'first x axis'.")]
     [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -617,7 +615,7 @@ public class ScatterChartDataset : ChartDataset<ScatterChartDataPoint>
     /// </para>
     /// </summary>
     [AddedVersion("1.0.0")]
-    [DefaultValue("Default value is 'first y axis'.")]
+    [DefaultValue(null)]
     [Description("The ID of the y-axis to plot this dataset on. Default value is 'first y axis'.")]
     [ParameterTypeName("string?")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

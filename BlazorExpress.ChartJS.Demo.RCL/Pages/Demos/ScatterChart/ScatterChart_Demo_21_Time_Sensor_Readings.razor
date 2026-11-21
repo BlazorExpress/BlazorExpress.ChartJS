@@ -1,4 +1,4 @@
-<ScatterChart role="img" aria-label="Scatter chart: Sensor readings over time" @ref="scatterChart" Width="560" Height="400" />
+<ScatterChart role="img" aria-label="Scatter chart: temperature readings from a meeting room sensor and an open-plan office sensor over one morning, each reading at its own time" @ref="scatterChart" Width="560" Height="400" />
 
 @code {
     private ScatterChart scatterChart = default!;
@@ -7,8 +7,8 @@
 
     protected override void OnInitialized()
     {
-        var sensorAColor = ColorUtility.CategoricalTwelveColors[4].ToColor();
-        var sensorBColor = ColorUtility.CategoricalTwelveColors[5].ToColor();
+        var meetingRoomColor = ColorUtility.CategoricalTwelveColors[4].ToColor();
+        var officeColor = ColorUtility.CategoricalTwelveColors[5].ToColor();
 
         chartData = new ChartData
         {
@@ -16,7 +16,7 @@
             {
                 new ScatterChartDataset
                 {
-                    Label = "Sensor A",
+                    Label = "Meeting room sensor",
                     // Instants in UTC: each browser shows them in its own local time.
                     TimeData = new List<ChartTimePoint>
                     {
@@ -24,21 +24,21 @@
                         new(new DateTimeOffset(2026, 1, 5, 9, 7, 0, TimeSpan.Zero), 22.1),
                         new(new DateTimeOffset(2026, 1, 5, 9, 31, 0, TimeSpan.Zero), 23.4),
                     },
-                    BackgroundColor = sensorAColor.ToRgbaString(),
-                    BorderColor = sensorAColor.ToRgbString(),
+                    BackgroundColor = meetingRoomColor.ToRgbaString(),
+                    BorderColor = meetingRoomColor.ToRgbString(),
                     BorderWidth = 2,
                 },
                 new ScatterChartDataset
                 {
-                    Label = "Sensor B",
+                    Label = "Open-plan office sensor",
                     TimeData = new List<ChartTimePoint>
                     {
                         new(new DateTimeOffset(2026, 1, 5, 9, 3, 0, TimeSpan.Zero), 19.8),
                         new(new DateTimeOffset(2026, 1, 5, 9, 18, 0, TimeSpan.Zero), 20.6),
                         new(new DateTimeOffset(2026, 1, 5, 9, 45, 0, TimeSpan.Zero), 21.0),
                     },
-                    BackgroundColor = sensorBColor.ToRgbaString(),
-                    BorderColor = sensorBColor.ToRgbString(),
+                    BackgroundColor = officeColor.ToRgbaString(),
+                    BorderColor = officeColor.ToRgbString(),
                     BorderWidth = 2,
                 },
             },
@@ -50,7 +50,12 @@
             Type = ChartAxesType.Time,
             Time = new ChartAxesTime { Unit = ChartTimeUnit.Minute, DisplayFormats = new ChartAxesTimeDisplayFormats { Minute = "HH:mm" }, TooltipFormat = "HH:mm 'local'" },
         };
-        scatterChartOptions.Scales.Y = new ChartAxes { BeginAtZero = false };
+        scatterChartOptions.Scales.Y = new ChartAxes
+        {
+            BeginAtZero = false,
+            // null keeps Chart.js's theme-aware default text colour
+            Title = new ChartAxesTitle { Display = true, Text = "Temperature (°C)", Color = null },
+        };
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

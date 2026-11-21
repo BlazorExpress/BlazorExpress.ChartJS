@@ -8,7 +8,7 @@
         <PlaygroundCommonControls Settings="settings" OnChanged="ApplyAsync" />
     </Controls>
     <Chart>
-        <RadarChart role="img" aria-label="Radar chart: Playground" @ref="chart" />
+        <RadarChart role="img" aria-label="Radar chart: sedan and SUV scores on six qualities, from speed to design" @ref="chart" />
     </Chart>
 </PlaygroundPanel>
 
@@ -75,8 +75,8 @@
             Datasets =
             [
                 // Values in the thousands, so the locale picker changes how the ticks are written.
-                CreateDataset("Model A", [8200, 7400, 6600, 9100, 5800, 7700], 0),
-                CreateDataset("Model B", [6400, 8800, 7900, 7200, 8500, 6100], 1),
+                CreateDataset("Sedan", [8200, 7400, 6600, 9100, 5800, 7700], 0),
+                CreateDataset("SUV", [6400, 8800, 7900, 7200, 8500, 6100], 1),
             ]
         };
 

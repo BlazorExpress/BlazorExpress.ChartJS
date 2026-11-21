@@ -1,7 +1,7 @@
-<RadarChart role="img" aria-label="Radar chart: Programmatic highlight" @ref="radarChart" Width="600" />
+<RadarChart role="img" aria-label="Radar chart: sedan and SUV rated on speed, reliability, comfort, safety and efficiency" @ref="radarChart" Width="600" />
 
 <div class="mt-3">
-    <button type="button" class="button is-primary is-small" @onclick="HighlightOneAsync">Highlight Comfort Vehicle A</button>
+    <button type="button" class="button is-primary is-small" @onclick="HighlightOneAsync">Highlight Sedan Comfort</button>
     <button type="button" class="button is-info is-small" @onclick="HighlightAllAsync">Highlight all of Comfort</button>
     <button type="button" class="button is-warning is-small" @onclick="ClearHighlightAsync">Clear</button>
 </div>
@@ -18,8 +18,8 @@
             Labels = new List<string> { "Speed", "Reliability", "Comfort", "Safety", "Efficiency" },
             Datasets = new List<IChartDataset>
             {
-                new RadarChartDataset { Label = "Vehicle A", Data = new List<double?> { 80, 72, 65, 90, 78 }, BackgroundColor = "rgba(54, 162, 235, 0.2)", BorderColor = "rgb(54, 162, 235)", BorderWidth = 2, Fill = true },
-                new RadarChartDataset { Label = "Vehicle B", Data = new List<double?> { 68, 85, 80, 74, 88 }, BackgroundColor = "rgba(255, 159, 64, 0.2)", BorderColor = "rgb(255, 159, 64)", BorderWidth = 2, Fill = true },
+                new RadarChartDataset { Label = "Sedan", Data = new List<double?> { 80, 72, 65, 90, 78 }, BackgroundColor = "rgba(54, 162, 235, 0.2)", BorderColor = "rgb(54, 162, 235)", BorderWidth = 2, Fill = true },
+                new RadarChartDataset { Label = "SUV", Data = new List<double?> { 68, 85, 80, 74, 88 }, BackgroundColor = "rgba(255, 159, 64, 0.2)", BorderColor = "rgb(255, 159, 64)", BorderWidth = 2, Fill = true },
             },
         };
         radarChartOptions = new RadarChartOptions { Responsive = true };

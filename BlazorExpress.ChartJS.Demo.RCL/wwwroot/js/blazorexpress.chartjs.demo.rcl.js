@@ -2602,3 +2602,119 @@ window.accessibilitySelfCheck = (() => {
 function removeSiteDefaultHeadTags() {
     document.head.querySelectorAll('[data-site-default]').forEach(tag => tag.remove());
 }
+
+// Unlisted screenshot capture page (work item 26112001, rules.md TOOL-001): opens a sample in a frame, exports one of its charts
+// at device pixel ratio 2 on a white background in the light theme, and returns the PNG as base64. download() saves the zip
+// the page builds. No tool outside the demo site is needed.
+window.screenshotCapture = (() => {
+    const waitFor = async (condition, timeoutMs = 20000, stepMs = 100) => {
+        const end = Date.now() + timeoutMs;
+        while (Date.now() < end) {
+            try {
+                if (condition()) return true;
+            } catch {
+                // The frame is between two pages; try again.
+            }
+            await demoSleep(stepMs);
+        }
+        return false;
+    };
+
+    const capture = async (frame, url, canvasIndex, cssWidth) => {
+        frame.src = `${url}${url.includes('?') ? '&' : '?'}capture=${Date.now()}`;
+        const canvases = () => [...frame.contentDocument.querySelectorAll('.be-bulma-doc-example-demo canvas, .be-playground-chart canvas')];
+        const loaded = await waitFor(() => frame.contentWindow.Chart && canvases().length > canvasIndex
+            && frame.contentWindow.Chart.getChart(canvases()[canvasIndex]));
+        if (!loaded)
+            throw new Error(`No chart ${canvasIndex} on ${url}`);
+
+        const win = frame.contentWindow;
+        win.setTheme?.('light', false);
+        await demoSleep(800);
+
+        const canvas = canvases()[canvasIndex];
+        const chart = win.Chart.getChart(canvas);
+        const wrapper = canvas.parentElement;
+        // Widen the chart's own container and redraw at device pixel ratio 2, repeating until Chart.js reports the size:
+        // the page's own resize handling can run on a later frame and would size the chart back to its column.
+        wrapper.style.maxWidth = 'none';
+        wrapper.style.width = `${cssWidth}px`;
+        chart.options.devicePixelRatio = 2;
+        chart.options.animation = false;
+        for (let attempt = 0; attempt < 40; attempt++) {
+            chart.resize();
+            chart.update('none');
+            await demoSleep(100);
+            if (Math.round(chart.width) === cssWidth && canvas.width === cssWidth * 2)
+                break;
+        }
+
+        const output = document.createElement('canvas');
+        output.width = canvas.width;
+        output.height = canvas.height;
+        const context = output.getContext('2d');
+        context.fillStyle = '#ffffff';
+        context.fillRect(0, 0, output.width, output.height);
+        context.drawImage(canvas, 0, 0);
+        return { base64: output.toDataURL('image/png').split(',')[1], width: output.width, height: output.height };
+    };
+
+    const download = async (fileName, streamReference) => {
+        const buffer = await streamReference.arrayBuffer();
+        const url = URL.createObjectURL(new Blob([buffer], { type: 'application/zip' }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+    };
+
+    return { capture, download };
+})();
+
+// Theme observer for the line chart sample "Dark theme colours" (work item 26112001). It tells a component when the page
+// switches between light and dark: observe() returns whether the page is dark now, then calls the component's
+// OnThemeChanged(isDark) on each change until disconnect() is called with the same id.
+window.demoThemeObserver = (() => {
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const stops = new Map(); // id -> stops that observer
+
+    // The data-theme attribute on <html> wins; with no attribute, the system setting decides.
+    const isDark = () => {
+        const theme = document.documentElement.getAttribute('data-theme');
+        return theme ? theme === 'dark' : media.matches;
+    };
+
+    const disconnect = id => {
+        stops.get(id)?.();
+        stops.delete(id);
+    };
+
+    const observe = (id, dotNetRef) => {
+        disconnect(id);
+        let last = isDark();
+
+        const notify = () => {
+            const dark = isDark();
+            if (dark === last)
+                return;
+
+            last = dark;
+            dotNetRef.invokeMethodAsync('OnThemeChanged', dark);
+        };
+
+        const observer = new MutationObserver(notify);
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+        media.addEventListener('change', notify);
+        stops.set(id, () => {
+            observer.disconnect();
+            media.removeEventListener('change', notify);
+        });
+
+        return last;
+    };
+
+    return { observe, disconnect };
+})();

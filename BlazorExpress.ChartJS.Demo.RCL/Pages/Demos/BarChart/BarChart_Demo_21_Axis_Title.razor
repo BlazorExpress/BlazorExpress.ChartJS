@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
-        <p class="has-text-weight-semibold mb-2"><code>Display = true</code>, <code>Text</code> (default black, size 12, bold)</p>
-        <BarChart role="img" aria-label="Bar chart: Axis title (chart 1 of 3)" @ref="defaultTitleChart" />
+        <p class="has-text-weight-semibold mb-2"><code>Display = true</code>, <code>Text</code>, <code>Color = null</code> (size 12, bold)</p>
+        <BarChart role="img" aria-label="Bar chart: units sold per month, January to June, with the axis titles Month and Units sold" @ref="defaultTitleChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Color</code>, <code>Font</code> (size 14, italic), <code>Padding = 10</code></p>
-        <BarChart role="img" aria-label="Bar chart: Axis title (chart 2 of 3)" @ref="styledTitleChart" />
+        <BarChart role="img" aria-label="Bar chart: units sold per month, January to June, with coloured italic axis titles" @ref="styledTitleChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">x <code>TitleAlignment.Start</code>, y <code>TitleAlignment.End</code>, <code>Padding</code> per side</p>
-        <BarChart role="img" aria-label="Bar chart: Axis title (chart 3 of 3)" @ref="alignedTitleChart" />
+        <BarChart role="img" aria-label="Bar chart: units sold per month, January to June, with the x title at the start and the y title at the end of its axis" @ref="alignedTitleChart" />
     </div>
 </div>
 
@@ -23,8 +23,9 @@
         if (firstRender)
         {
             var defaultTitleOptions = new BarChartOptions();
-            defaultTitleOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Month" };
-            defaultTitleOptions.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Units sold" };
+            // null keeps Chart.js's theme-aware default text colour
+            defaultTitleOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Month", Color = null };
+            defaultTitleOptions.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Units sold", Color = null };
 
             var styledTitleOptions = new BarChartOptions();
             styledTitleOptions.Scales.X!.Title = new ChartAxesTitle
@@ -50,14 +51,16 @@
                 Display = true,
                 Text = "Month",
                 TitleAlignment = TitleAlignment.Start,
-                Padding = new ChartPadding { Top = 12, Bottom = 0 }
+                Padding = new ChartPadding { Top = 12, Bottom = 0 },
+                Color = null
             };
             alignedTitleOptions.Scales.Y!.Title = new ChartAxesTitle
             {
                 Display = true,
                 Text = "Units sold",
                 TitleAlignment = TitleAlignment.End,
-                Padding = new ChartPadding { Top = 0, Bottom = 12 }
+                Padding = new ChartPadding { Top = 0, Bottom = 12 },
+                Color = null
             };
 
             await defaultTitleChart.InitializeAsync(GetChartData(), defaultTitleOptions);

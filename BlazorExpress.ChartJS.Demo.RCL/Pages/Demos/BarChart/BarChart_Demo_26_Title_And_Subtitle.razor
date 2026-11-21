@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Title and subtitle on top (<code>Position = "top"</code>)</p>
-        <BarChart role="img" aria-label="Bar chart: Title and subtitle (chart 1 of 3)" @ref="topChart" />
+        <BarChart role="img" aria-label="Bar chart: Laptops and Tablets sales per month, title and subtitle on top" @ref="topChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Title <code>Position = "left"</code>, subtitle <code>Position = "bottom"</code></p>
-        <BarChart role="img" aria-label="Bar chart: Title and subtitle (chart 2 of 3)" @ref="sidesChart" />
+        <BarChart role="img" aria-label="Bar chart: Laptops and Tablets sales per month, title on the left, subtitle below" @ref="sidesChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Align = "start"</code>, <code>Padding</code> 10 / 20, <code>FullSize = false</code></p>
-        <BarChart role="img" aria-label="Bar chart: Title and subtitle (chart 3 of 3)" @ref="alignedChart" />
+        <BarChart role="img" aria-label="Bar chart: Laptops and Tablets sales per month, with a start-aligned title" @ref="alignedChart" />
     </div>
 </div>
 
@@ -22,13 +22,14 @@
     {
         if (firstRender)
         {
+            // Color = null: Chart.js uses its default text color instead of the library's "black", so the text stays readable on a dark theme
             var topOptions = new BarChartOptions();
-            topOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Monthly sales", Position = "top" };
-            topOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "January to June", Position = "top" };
+            topOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Monthly sales", Position = "top", Color = null };
+            topOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "January to June", Position = "top", Color = null };
 
             var sidesOptions = new BarChartOptions();
-            sidesOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Monthly sales", Position = "left" };
-            sidesOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Source: sales team", Position = "bottom" };
+            sidesOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Monthly sales", Position = "left", Color = null };
+            sidesOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Source: sales team", Position = "bottom", Color = null };
 
             var alignedOptions = new BarChartOptions();
             alignedOptions.Plugins.Title = new ChartPluginsTitle
@@ -38,9 +39,10 @@
                 Align = "start",
                 Padding = new ChartPadding { Top = 10, Bottom = 20 }, // more space between the title and the legend
                 FullSize = false, // sized to the chart area, so "start" lines up with the y-axis instead of the canvas edge
-                Font = new ChartFont { Size = 18, Weight = "bold" }
+                Font = new ChartFont { Size = 18, Weight = "bold" },
+                Color = null
             };
-            alignedOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "January to June", Align = "start" };
+            alignedOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "January to June", Align = "start", Color = null };
 
             await topChart.InitializeAsync(GetChartData(), topOptions);
             await sidesChart.InitializeAsync(GetChartData(), sidesOptions);
@@ -56,8 +58,8 @@
         Labels = ["January", "February", "March", "April", "May", "June"],
         Datasets =
         [
-            CreateDataset("Product A", 0, [35, 48, 42, 61, 55, 70]),
-            CreateDataset("Product B", 1, [22, 30, 38, 33, 46, 41])
+            CreateDataset("Laptops", 0, [35, 48, 42, 61, 55, 70]),
+            CreateDataset("Tablets", 1, [22, 30, 38, 33, 46, 41])
         ]
     };
 

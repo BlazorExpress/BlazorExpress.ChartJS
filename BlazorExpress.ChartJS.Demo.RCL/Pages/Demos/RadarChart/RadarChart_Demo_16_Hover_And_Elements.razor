@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Elements.Point</code> radius, style and hover radius; <code>Elements.Line</code> dash</p>
-        <RadarChart role="img" aria-label="Radar chart: Hover and elements (chart 1 of 3)" @ref="elementsChart" />
+        <RadarChart role="img" aria-label="Radar chart: Northside FC and Riverside FC skills, custom points and dashed lines" @ref="elementsChart" />
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Hover = new() { Mode = InteractionMode.Index, Intersect = false }</code></p>
-        <RadarChart role="img" aria-label="Radar chart: Hover and elements (chart 2 of 3)" @ref="hoverChart" />
+        <RadarChart role="img" aria-label="Radar chart: Northside FC and Riverside FC skills, hover highlights a skill for both" @ref="hoverChart" />
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Events = ["click"]</code> (pointer moves do nothing; click a point)</p>
-        <RadarChart role="img" aria-label="Radar chart: Hover and elements (chart 3 of 3)" @ref="clickOnlyChart" />
+        <RadarChart role="img" aria-label="Radar chart: Northside FC and Riverside FC skills, responds to clicks only" @ref="clickOnlyChart" />
     </div>
 </div>
 
@@ -59,8 +59,8 @@
             Labels = ["Speed", "Power", "Defense", "Stamina", "Agility", "Skill"],
             Datasets =
             [
-                CreateDataset("Team A", [65, 59, 90, 81, 56, 55], 0),
-                CreateDataset("Team B", [28, 48, 40, 19, 96, 27], 1)
+                CreateDataset("Northside FC", [65, 59, 90, 81, 56, 55], 0),
+                CreateDataset("Riverside FC", [28, 48, 40, 19, 96, 27], 1)
             ]
         };
 

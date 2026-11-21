@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
-        <p class="has-text-weight-semibold mb-2"><code>Display = true</code>, <code>Text</code> (default black, size 12, bold)</p>
-        <LineChart role="img" aria-label="Line chart: Axis title (chart 1 of 3)" @ref="defaultTitleChart" />
+        <p class="has-text-weight-semibold mb-2"><code>Display = true</code>, <code>Text</code>, <code>Color = null</code> (theme-aware grey, size 12, bold)</p>
+        <LineChart role="img" aria-label="Line chart: monthly visitors in thousands, January to June, with titles on both axes" @ref="defaultTitleChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2"><code>Color</code>, <code>Font</code> (size 14, italic), <code>Padding = 10</code></p>
-        <LineChart role="img" aria-label="Line chart: Axis title (chart 2 of 3)" @ref="styledTitleChart" />
+        <LineChart role="img" aria-label="Line chart: monthly visitors in thousands, January to June, with coloured italic axis titles" @ref="styledTitleChart" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">x <code>TitleAlignment.Start</code>, y <code>TitleAlignment.End</code>, <code>Padding</code> per side</p>
-        <LineChart role="img" aria-label="Line chart: Axis title (chart 3 of 3)" @ref="alignedTitleChart" />
+        <LineChart role="img" aria-label="Line chart: monthly visitors in thousands, January to June, with axis titles at the start and end of their axes" @ref="alignedTitleChart" />
     </div>
 </div>
 
@@ -23,8 +23,9 @@
         if (firstRender)
         {
             var defaultTitleOptions = new LineChartOptions();
-            defaultTitleOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Month" };
-            defaultTitleOptions.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Visitors (k)" };
+            // null keeps Chart.js's theme-aware default text colour; the library default is "black"
+            defaultTitleOptions.Scales.X!.Title = new ChartAxesTitle { Display = true, Text = "Month", Color = null };
+            defaultTitleOptions.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "Visitors (k)", Color = null };
 
             var styledTitleOptions = new LineChartOptions();
             styledTitleOptions.Scales.X!.Title = new ChartAxesTitle
@@ -49,6 +50,7 @@
             {
                 Display = true,
                 Text = "Month",
+                Color = null,
                 TitleAlignment = TitleAlignment.Start,
                 Padding = new ChartPadding { Top = 12, Bottom = 0 }
             };
@@ -56,6 +58,7 @@
             {
                 Display = true,
                 Text = "Visitors (k)",
+                Color = null,
                 TitleAlignment = TitleAlignment.End,
                 Padding = new ChartPadding { Top = 0, Bottom = 12 }
             };

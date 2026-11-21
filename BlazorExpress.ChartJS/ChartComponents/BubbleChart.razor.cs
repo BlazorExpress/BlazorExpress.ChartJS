@@ -16,14 +16,16 @@ public partial class BubbleChart : ChartComponentBase
     #region Public Methods
 
     /// <summary>
-    /// Asynchronously adds a new data entry to the specified chart data.
+    /// Asynchronously appends one bubble to the dataset named by the data's <see cref="ChartDatasetData.DatasetLabel" />.
+    /// A bubble chart has no category labels, so <paramref name="dataLabel" /> is not used and <see cref="ChartData.Labels" />
+    /// is never read or changed. A time point (<see cref="ChartTimePoint" />) is appended the same way.
     /// </summary>
-    /// <param name="chartData">The chart data to which the new entry will be added.</param>
-    /// <param name="dataLabel">The label associated with the new data entry.</param>
-    /// <param name="data">The dataset containing the data to be added.</param>
-    /// <returns>A task representing the asynchronous operation, with a result of the updated <see cref="ChartData"/>.</returns>
+    /// <param name="chartData">The chart data to which the point will be added.</param>
+    /// <param name="dataLabel">Not used on a bubble chart, except as the dataset label of a time point.</param>
+    /// <param name="data">The point to add, with the label of the dataset it belongs to.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the updated chart data.</returns>
     [AddedVersion("1.0.0")]
-    [Description("Asynchronously adds a new data entry to the specified chart data.")]
+    [Description("Asynchronously appends one bubble to the dataset named by the data's DatasetLabel; labels are not used.")]
     [MethodReturnTypeName($"Task<{nameof(ChartData)}>")]
     public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IChartDatasetData data)
     {
@@ -39,26 +41,22 @@ public partial class BubbleChart : ChartComponentBase
         if (TimeDataSupport.IsTimePoint(data))
             return await AddTimePointAsync(chartData, dataLabel, data, dataset => dataset is BubbleChartDataset, BubbleChartInterop.AddDatasetPoint);
 
-        foreach (var dataset in chartData.Datasets)
-            if (dataset is BubbleChartDataset bubbleChartDataset && bubbleChartDataset.Label == dataLabel)
-                if (data is BubbleChartDatasetData bubbleChartDatasetData && bubbleChartDatasetData.Data is BubbleChartDataPoint bubbleChartDataPoint)
-                    bubbleChartDataset.Data?.Add(bubbleChartDataPoint);
-
-        await SafeInvokeVoidAsync(BubbleChartInterop.AddDatasetData, Id, dataLabel, data);
+        await AppendPointAsync(chartData, data);
 
         return chartData;
     }
 
     /// <summary>
-    /// Asynchronously adds a new dataset to the specified chart data.
+    /// Asynchronously appends one bubble to each dataset the data names, through each item's <see cref="ChartDatasetData.DatasetLabel" />.
+    /// A bubble chart has no category labels, so <paramref name="dataLabel" /> is not used and <see cref="ChartData.Labels" />
+    /// is never read or changed; the items do not need to cover every dataset.
     /// </summary>
-    /// <param name="chartData">The chart data to which the dataset will be added.</param>
-    /// <param name="dataLabel">The label for the new dataset.</param>
-    /// <param name="data">A read-only collection of data points to be included in the new dataset.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains the updated chart data with the new
-    /// dataset added.</returns>
+    /// <param name="chartData">The chart data to which the points will be added.</param>
+    /// <param name="dataLabel">Not used on a bubble chart.</param>
+    /// <param name="data">The points to add, each with the label of the dataset it belongs to.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the updated chart data.</returns>
     [AddedVersion("1.0.0")]
-    [Description("Asynchronously adds a new dataset to the specified chart data.")]
+    [Description("Asynchronously appends one bubble to each dataset the data names; labels are not used.")]
     [MethodReturnTypeName($"Task<{nameof(ChartData)}>")]
     public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data)
     {
@@ -66,16 +64,7 @@ public partial class BubbleChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
-
-        if (chartData.Labels is null)
-            throw new ArgumentException("chartData.Labels must not be null", nameof(chartData));
-
-        if (dataLabel is null)
-            throw new ArgumentNullException(nameof(dataLabel));
-
-        if (string.IsNullOrWhiteSpace(dataLabel))
-            throw new Exception($"{nameof(dataLabel)} cannot be empty.");
+            throw new ArgumentNullException(nameof(chartData.Datasets));
 
         if (data is null)
             throw new ArgumentNullException(nameof(data));
@@ -83,24 +72,8 @@ public partial class BubbleChart : ChartComponentBase
         if (!data.Any())
             throw new ArgumentException($"{nameof(data)} cannot be empty.", nameof(data));
 
-        if (chartData.Datasets.Count != data.Count)
-            throw new InvalidDataException("The chart dataset count and the new data points count do not match.");
-
-        if (chartData.Labels.Contains(dataLabel))
-            throw new Exception($"{dataLabel} already exists.");
-
-        chartData.Labels.Add(dataLabel);
-
-        foreach (var dataset in chartData.Datasets)
-            if (dataset is BubbleChartDataset bubbleChartDataset)
-            {
-                var chartDatasetData = data.FirstOrDefault(x => x is BubbleChartDatasetData bubbleChartDatasetData && bubbleChartDatasetData.DatasetLabel == bubbleChartDataset.Label);
-
-                if (chartDatasetData is BubbleChartDatasetData bubbleChartDatasetData && bubbleChartDatasetData.Data is BubbleChartDataPoint bubbleChartDataPoint)
-                    bubbleChartDataset.Data?.Add(bubbleChartDataPoint);
-            }
-
-        await SafeInvokeVoidAsync(BubbleChartInterop.AddDatasetsData, Id, dataLabel, data?.Select(x => (BubbleChartDatasetData)x));
+        foreach (var item in data)
+            await AppendPointAsync(chartData, item);
 
         return chartData;
     }
@@ -175,7 +148,7 @@ public partial class BubbleChart : ChartComponentBase
     /// options. Ensure that <paramref name="chartData"/> contains valid datasets to avoid no operation.</remarks>
     /// <param name="chartData">The data to be displayed on the chart. Must not be null and must contain at least one dataset.</param>
     /// <param name="chartOptions">The options to configure the chart's appearance and behavior.</param>
-    /// <returns></returns>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     [AddedVersion("1.0.0")]
     [Description("Asynchronously updates the chart with the specified data and options.")]
     [MethodReturnTypeName(nameof(Task))]
@@ -211,6 +184,21 @@ public partial class BubbleChart : ChartComponentBase
         var datasets = chartData.Datasets.OfType<BubbleChartDataset>();
         var data = new { Labels = chartData.LabelsValue, Datasets = datasets };
         await SafeInvokeVoidAsync(BubbleChartInterop.Update, [Id, GetChartType(), data, (BubbleChartOptions)chartOptions, .. GetUpdateModeArguments(mode)]);
+    }
+
+    #endregion
+
+    #region Private Methods
+    // Appends a bubble to the named dataset in C# and in the browser; the browser function never touches the labels (work item 26112101).
+    private async Task AppendPointAsync(ChartData chartData, IChartDatasetData data)
+    {
+        if (data is not BubbleChartDatasetData { Data: BubbleChartDataPoint point } bubbleChartDatasetData)
+            return;
+
+        foreach (var dataset in chartData.Datasets!.OfType<BubbleChartDataset>().Where(dataset => dataset.Label == bubbleChartDatasetData.DatasetLabel))
+            (dataset.Data ??= new List<BubbleChartDataPoint>()).Add(point);
+
+        await SafeInvokeVoidAsync(BubbleChartInterop.AddDatasetPoint, Id, bubbleChartDatasetData.DatasetLabel, point);
     }
 
     #endregion

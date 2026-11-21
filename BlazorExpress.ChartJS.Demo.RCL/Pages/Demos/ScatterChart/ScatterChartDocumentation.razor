@@ -20,22 +20,21 @@
 <CascadingValue Value="@SampleCatalog.Find(SampleChartKeys.ScatterChart, Sample)">
 <SampleSection Slug="how-it-works">
     <Block>
-        The <strong>Scatter Chart</strong> component visualizes individual data points as (X, Y) coordinates, making it ideal for displaying relationships or distributions between two numeric variables.
+        The <strong>Scatter Chart</strong> component draws one point per item at its (x, y) position, so you can see how two numbers relate.
+        Here each point is a marketing campaign, with its ad spend on the x-axis and the revenue it brought in on the y-axis, both in thousands of dollars: revenue rises with spend, with some spread between campaigns.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Add the <code>ScatterChart</code> component to your page and set its dimensions (e.g., <code>Width="560"</code>, <code>Height="480"</code>).</li>
-                <li>Prepare your chart data by creating one or more <code>ScatterChartDataset</code> objects, each containing a list of <code>ScatterChartDataPoint</code> instances with X and Y values.</li>
-                <li>Customize the appearance of each dataset using properties like <code>BackgroundColor</code>, <code>BorderColor</code>, and <code>BorderWidth</code>.</li>
-                <li>Configure chart options using the <code>ScatterChartOptions</code> object as needed.</li>
-                <li>Initialize the chart in <code>OnAfterRenderAsync</code> by calling <code>scatterChart.InitializeAsync(chartData, scatterChartOptions)</code>.</li>
-                <li>Refer to the demo code below for practical examples of data preparation, dataset customization, and chart initialization.</li>
+                <li>Add <code>&lt;ScatterChart @@ref="scatterChart" Width="560" Height="480" /&gt;</code> to the page, with <code>role="img"</code> and an <code>aria-label</code> that says what the chart shows.</li>
+                <li>Create a <code>ScatterChartDataset</code> with a <code>Label</code>, a <code>BackgroundColor</code> and <code>BorderColor</code>, and a <code>Data</code> list with one <code>ScatterChartDataPoint(x, y)</code> per campaign.</li>
+                <li>Add the dataset to the <code>Datasets</code> of a <code>ChartData</code> object.</li>
+                <li>Create <code>new ScatterChartOptions { Responsive = true }</code> and name each axis with its unit: <code>Scales.X.Title = new ChartAxesTitle { Display = true, Text = "Ad spend (thousands of $)" }</code>, and the same for <code>Scales.Y</code>. Axis titles are black by default in this library; <code>Color = null</code> uses the Chart.js text color instead.</li>
+                <li>Call <code>scatterChart.InitializeAsync(chartData, scatterChartOptions)</code> in <code>OnAfterRenderAsync</code> when <code>firstRender</code> is <code>true</code>.</li>
             </ol>
         </div>
-        This demo shows how to set up a scatter chart, bind your data, and customize the chart's appearance to fit your application's needs.
     </Block>
-    <Demo Type="typeof(ScatterChart_Demo_01_Examples)" Tabs="true" />
+    <Demo Type="typeof(ScatterChart_Demo_01_How_It_Works)" Tabs="true" />
 </SampleSection>
 
 <SampleSection Slug="playground">
@@ -56,19 +55,18 @@
 
 <SampleSection Slug="dynamic-data">
     <Block>
-        The <strong>Scatter Chart</strong> component supports dynamic data updates, allowing you to add, remove, or modify data points and datasets at runtime. This is useful for visualizing real-time data or enabling interactive data exploration.
+        The <strong>Scatter Chart</strong> component supports dynamic data updates, allowing you to add, remove, or modify data points and datasets at runtime.
+        Here each point is a delivery, with its distance on the x-axis and how long it took on the y-axis, and each dataset is a delivery zone: <strong>Randomize</strong> replaces the deliveries, <strong>Add zone</strong> adds a dataset and <strong>Add delivery</strong> adds one point to every zone.
         <br /><br />
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Add the <code>ScatterChart</code> component to your page and set its <code>Width</code> and <code>Height</code> as needed.</li>
-                <li>Prepare your chart data using one or more <code>ScatterChartDataset</code> objects, each containing a list of <code>ScatterChartDataPoint</code> (with X and Y values).</li>
-                <li>Implement methods to update your data dynamically, such as adding new points, randomizing values, or modifying existing datasets.</li>
-                <li>After updating the data, call <code>scatterChart.UpdateAsync(chartData, scatterChartOptions)</code> to refresh the chart and reflect the changes.</li>
-                <li>Refer to the demo code below for practical examples of dynamic data manipulation and chart updates in a Blazor application.</li>
+                <li>Create a <code>ChartData</code> with one <code>ScatterChartDataset</code> per zone, each with a <code>Data</code> list of <code>ScatterChartDataPoint(x, y)</code>. A scatter chart needs no <code>Labels</code>.</li>
+                <li>To change existing points, replace each dataset's <code>Data</code> and call <code>scatterChart.UpdateAsync(chartData, scatterChartOptions)</code>.</li>
+                <li>To add a dataset, call <code>scatterChart.AddDatasetAsync(chartData, dataset, scatterChartOptions)</code> and keep the <code>ChartData</code> it returns.</li>
+                <li>To add points, pass one <code>ScatterChartDatasetData(datasetLabel, point)</code> per point to <code>scatterChart.AddDataAsync</code>; each point goes to the dataset it names, and the label argument is not used on a scatter chart. Keep the <code>ChartData</code> it returns.</li>
             </ol>
         </div>
-        This demo demonstrates how to work with dynamic data in a scatter chart, enabling interactive and real-time data visualizations in your Blazor projects.
     </Block>
     <Demo Type="typeof(ScatterChart_Demo_02_Dynamic_Data)" Tabs="true" />
 </SampleSection>
@@ -243,7 +241,7 @@
         <div class="content">
             <ol>
                 <li>Set <code>Scales.X.Title = new ChartAxesTitle { Display = true, Text = "Height (cm)" }</code>, and the same for <code>Scales.Y</code>.</li>
-                <li>Style it with <code>Color</code> and <code>Font = new ChartFont { Size = 16, Style = "italic" }</code>.</li>
+                <li>Set <code>Color = null</code> to use the Chart.js text color instead of black, so the title stays readable on a dark page, or style it with <code>Color</code> and <code>Font = new ChartFont { Size = 16, Style = "italic" }</code>.</li>
                 <li>Add space with <code>Padding = 10</code>, or on one side with <code>Padding = new() { Top = 8 }</code>.</li>
                 <li>Align it along the axis with <code>TitleAlignment = TitleAlignment.Start</code> or <code>TitleAlignment.End</code>.</li>
             </ol>
@@ -280,6 +278,7 @@
             <ol>
                 <li>Set <code>Plugins.Title = new ChartPluginsTitle { Display = true, Text = "..." }</code>.</li>
                 <li>Set <code>Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "..." }</code>.</li>
+                <li>Set <code>Color = null</code> on both to use the Chart.js text color instead of black, so they stay readable on a dark page.</li>
                 <li>Move them with <code>Position</code> (<code>"top"</code>, <code>"left"</code>, <code>"bottom"</code>, <code>"right"</code>) and <code>Align</code> (<code>"start"</code>, <code>"center"</code>, <code>"end"</code>).</li>
                 <li>Add space with <code>Padding</code>, and set <code>FullSize = false</code> to keep the title within the chart area.</li>
             </ol>
@@ -399,8 +398,8 @@
 
     private const string pageUrl = DemoRouteConstants.Demos_ScatterChart;
     private const string pageTitle = "Scatter Chart";
-    private const string pageDescription = "The <code>Blazor Scatter Chart</code> component displays data values as vertical bars, making it easy to compare multiple data sets or visualize trends over time.";
+    private const string pageDescription = "The <code>Blazor Scatter Chart</code> component places each data point by its x and y values, making it easy to see how two measures relate, spot clusters and find outliers.";
     private const string metaTitle = "Blazor Scatter Chart Examples";
-    private const string metaDescription = "The Blazor Scatter Chart component displays data values as vertical bars, making it easy to compare multiple data sets or visualize trends over time.";
+    private const string metaDescription = "The Blazor Scatter Chart component places each data point by its x and y values, making it easy to see how two measures relate, spot clusters and find outliers.";
     private const string imageUrl = DemoImageSrcConstants.ScatterChart;
 }

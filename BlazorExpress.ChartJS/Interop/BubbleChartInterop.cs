@@ -9,10 +9,10 @@ public class BubbleChartInterop
     public const string AddDatasetData = Prefix + "addDatasetData";
 
     /// <summary>
-    /// JavaScript function that appends a time point to the dataset with a given label.
+    /// JavaScript function that appends a point (a bubble or a time point) to the dataset with a given label.
     /// </summary>
     [AddedVersion("2.0.0")]
-    [Description("JavaScript function that appends a time point to the dataset with a given label.")]
+    [Description("JavaScript function that appends a point (a bubble or a time point) to the dataset with a given label.")]
     public const string AddDatasetPoint = Prefix + "addDatasetPoint";
 
     public const string AddDatasetsData = Prefix + "addDatasetsData";

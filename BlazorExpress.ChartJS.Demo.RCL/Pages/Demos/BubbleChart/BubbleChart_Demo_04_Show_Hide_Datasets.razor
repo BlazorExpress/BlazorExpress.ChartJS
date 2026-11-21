@@ -1,26 +1,26 @@
-<BubbleChart role="img" aria-label="Bubble chart: Show and hide datasets" @ref="bubbleChart" Width="600" OnLegendClick="UpdateVisibleDatasetCountAsync" />
+<BubbleChart role="img" aria-label="Bubble chart: online store, retail and wholesale figures, sized by a third value" @ref="bubbleChart" Width="600" OnLegendClick="UpdateVisibleDatasetCountAsync" />
 
 <div class="mt-3">
     @foreach (var label in datasetLabels)
     {
         <button type="button" class="button is-primary is-small mr-1" @onclick="() => ToggleDatasetAsync(label)">Toggle @label</button>
     }
-    <button type="button" class="button is-warning is-small" @onclick="() => bubbleChart.HideAsync(datasetLabels.IndexOf(FirstDataset), PointIndex)">Hide March Projects</button>
-    <button type="button" class="button is-info is-small" @onclick="() => bubbleChart.ShowAsync(datasetLabels.IndexOf(FirstDataset), PointIndex)">Show March Projects</button>
+    <button type="button" class="button is-warning is-small" @onclick="() => bubbleChart.HideAsync(datasetLabels.IndexOf(FirstDataset), PointIndex)">Hide March online store</button>
+    <button type="button" class="button is-info is-small" @onclick="() => bubbleChart.ShowAsync(datasetLabels.IndexOf(FirstDataset), PointIndex)">Show March online store</button>
     <button type="button" class="button is-success is-small" @onclick="RefreshWithoutAnimationAsync">Refresh data without animation</button>
 </div>
 
 <p class="mt-3 mb-0">Visible datasets: @visibleDatasetCount of @datasetLabels.Count</p>
 
 @code {
-    private const string FirstDataset = "Projects";
+    private const string FirstDataset = "Online store";
     private const int PointIndex = 2;
     private BubbleChart bubbleChart = default!;
     private BubbleChartOptions bubbleChartOptions = default!;
     private ChartData chartData = default!;
     private readonly List<string> labels = new() { "January", "February", "March", "April" };
-    private readonly List<string> datasetLabels = new() { "Projects", "Products", "Campaigns" };
-    private readonly Dictionary<string, string> colors = new() { ["Projects"] = "54, 162, 235", ["Products"] = "255, 159, 64", ["Campaigns"] = "75, 192, 192" };
+    private readonly List<string> datasetLabels = new() { "Online store", "Retail stores", "Wholesale" };
+    private readonly Dictionary<string, string> colors = new() { ["Online store"] = "54, 162, 235", ["Retail stores"] = "255, 159, 64", ["Wholesale"] = "75, 192, 192" };
     private int visibleDatasetCount = 3;
 
     protected override void OnInitialized()

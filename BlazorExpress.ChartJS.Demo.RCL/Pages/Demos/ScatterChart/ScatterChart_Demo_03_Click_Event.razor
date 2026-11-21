@@ -1,4 +1,4 @@
-<ScatterChart role="img" aria-label="Scatter chart: Click event" @ref="scatterChart" Width="600" Height="480" OnClick="HandleClickAsync" />
+<ScatterChart role="img" aria-label="Scatter chart: temperature against humidity in the north greenhouse, four readings" @ref="scatterChart" Width="600" Height="480" OnClick="HandleClickAsync" />
 
 @if (selectedChartItem is not null)
 {
@@ -17,18 +17,19 @@
     {
         chartData = new ChartData
         {
-            Labels = new List<string> { "First", "Second", "Third", "Fourth" },
+            // x = temperature (°C), y = relative humidity (%), one reading at each time of day
+            Labels = new List<string> { "06:00", "10:00", "14:00", "18:00" },
             Datasets = new List<IChartDataset>
             {
                 new ScatterChartDataset
                 {
-                    Label = "Measurements",
+                    Label = "North greenhouse",
                     Data = new List<ScatterChartDataPoint>
                     {
-                        new(10, 25),
-                        new(25, 15),
-                        new(35, 40),
-                        new(50, 30),
+                        new(16, 78),
+                        new(22, 66),
+                        new(27, 52),
+                        new(21, 61),
                     },
                     BackgroundColor = "rgba(255, 159, 64, 0.6)",
                     BorderColor = "rgb(255, 159, 64)",

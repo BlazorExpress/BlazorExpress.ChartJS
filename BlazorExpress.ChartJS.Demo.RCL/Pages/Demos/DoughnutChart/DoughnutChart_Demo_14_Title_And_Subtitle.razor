@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="mb-2">Title and subtitle on top (<code>Position = "top"</code>)</p>
-        <DoughnutChart role="img" aria-label="Doughnut chart: Title and subtitle (chart 1 of 3)" @ref="doughnutChart1" />
+        <DoughnutChart role="img" aria-label="Doughnut chart: browser share of visitors in October, title and subtitle on top" @ref="doughnutChart1" />
     </div>
     <div class="column is-one-third">
         <p class="mb-2">Title <code>Position = "left"</code>, subtitle <code>Position = "bottom"</code></p>
-        <DoughnutChart role="img" aria-label="Doughnut chart: Title and subtitle (chart 2 of 3)" @ref="doughnutChart2" />
+        <DoughnutChart role="img" aria-label="Doughnut chart: browser share of visitors in October, title on the left, subtitle below" @ref="doughnutChart2" />
     </div>
     <div class="column is-one-third">
         <p class="mb-2"><code>Align = "start"</code>, extra <code>Padding</code>, <code>FullSize = false</code> beside a left legend</p>
-        <DoughnutChart role="img" aria-label="Doughnut chart: Title and subtitle (chart 3 of 3)" @ref="doughnutChart3" />
+        <DoughnutChart role="img" aria-label="Doughnut chart: browser share of visitors in October, start-aligned title, left legend" @ref="doughnutChart3" />
     </div>
 </div>
 
@@ -23,13 +23,14 @@
         if (firstRender)
         {
             var topOptions = new DoughnutChartOptions();
-            topOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Browser share", Position = "top", Font = new ChartFont { Size = 16 } };
-            topOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October" };
+            // null keeps Chart.js's theme-aware default text colour
+            topOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Browser share", Position = "top", Font = new ChartFont { Size = 16 }, Color = null };
+            topOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October", Color = null };
             await doughnutChart1.InitializeAsync(CreateChartData(), topOptions);
 
             var sideOptions = new DoughnutChartOptions();
-            sideOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Browser share", Position = "left" };
-            sideOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October", Position = "bottom" };
+            sideOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "Browser share", Position = "left", Color = null };
+            sideOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October", Position = "bottom", Color = null };
             await doughnutChart2.InitializeAsync(CreateChartData(), sideOptions);
 
             var startOptions = new DoughnutChartOptions();
@@ -41,8 +42,9 @@
                 Align = "start",
                 Padding = new() { Top = 10, Bottom = 30 },
                 FullSize = false,
+                Color = null,
             };
-            startOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October", Align = "start" };
+            startOptions.Plugins.Subtitle = new ChartPluginsSubtitle { Display = true, Text = "Visitors in October", Align = "start", Color = null };
             await doughnutChart3.InitializeAsync(CreateChartData(), startOptions);
         }
 

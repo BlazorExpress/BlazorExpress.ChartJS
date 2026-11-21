@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>AspectRatio = 1</code> (Chart.js default for radar)</p>
-        <RadarChart role="img" aria-label="Radar chart: Aspect ratio and resize delay (chart 1 of 3)" @ref="squareChart" />
+        <RadarChart role="img" aria-label="Radar chart: Northside FC and Riverside FC skills, drawn square" @ref="squareChart" />
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>AspectRatio = 2</code>, <code>ResizeDelay = 250</code></p>
-        <RadarChart role="img" aria-label="Radar chart: Aspect ratio and resize delay (chart 2 of 3)" @ref="wideChart" />
+        <RadarChart role="img" aria-label="Radar chart: Northside FC and Riverside FC skills, twice as wide as tall" @ref="wideChart" />
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>AspectRatio = 3</code></p>
-        <RadarChart role="img" aria-label="Radar chart: Aspect ratio and resize delay (chart 3 of 3)" @ref="extraWideChart" />
+        <RadarChart role="img" aria-label="Radar chart: Northside FC and Riverside FC skills, three times as wide as tall" @ref="extraWideChart" />
     </div>
 </div>
 
@@ -40,8 +40,8 @@
             Labels = ["Speed", "Power", "Defense", "Stamina", "Agility", "Skill"],
             Datasets =
             [
-                CreateDataset("Team A", [65, 59, 90, 81, 56, 55], 0),
-                CreateDataset("Team B", [28, 48, 40, 19, 96, 27], 1)
+                CreateDataset("Northside FC", [65, 59, 90, 81, 56, 55], 0),
+                CreateDataset("Riverside FC", [28, 48, 40, 19, 96, 27], 1)
             ]
         };
 

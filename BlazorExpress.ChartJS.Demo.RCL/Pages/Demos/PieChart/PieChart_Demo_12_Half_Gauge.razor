@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="mb-2"><code>Rotation = -90</code> and <code>Circumference = 180</code> (top half)</p>
-        <PieChart role="img" aria-label="Pie chart: Half gauge (chart 1 of 3)" @ref="pieChart1" />
+        <PieChart role="img" aria-label="Pie chart: visitors by browser, drawn as the top half of a pie" @ref="pieChart1" />
     </div>
     <div class="column is-one-third">
         <p class="mb-2"><code>Rotation = -135</code> and <code>Circumference = 270</code></p>
-        <PieChart role="img" aria-label="Pie chart: Half gauge (chart 2 of 3)" @ref="pieChart2" />
+        <PieChart role="img" aria-label="Pie chart: visitors by browser, drawn as a three-quarter pie" @ref="pieChart2" />
     </div>
     <div class="column is-one-third">
         <p class="mb-2">Gauge: one value and a grey remainder, <code>Rotation = -90</code>, <code>Circumference = 180</code>, legend hidden</p>
-        <PieChart role="img" aria-label="Pie chart: Half gauge, 72% of target" @ref="pieChart3" />
+        <PieChart role="img" aria-label="Pie chart: half gauge showing progress at 72% of target" @ref="pieChart3" />
     </div>
 </div>
 
@@ -27,7 +27,8 @@
 
             var gaugeOptions = new PieChartOptions { Rotation = -90, Circumference = 180 };
             gaugeOptions.Plugins.Legend.Display = false;
-            gaugeOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "72% of target", Position = "bottom" };
+            // null keeps Chart.js's theme-aware default text colour
+            gaugeOptions.Plugins.Title = new ChartPluginsTitle { Display = true, Text = "72% of target", Color = null, Position = "bottom" };
             await pieChart3.InitializeAsync(CreateGaugeData(), gaugeOptions);
         }
 

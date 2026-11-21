@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">No padding (default): <code>Layout.Padding = 0</code></p>
-        <ScatterChart role="img" aria-label="Scatter chart: Layout padding (chart 1 of 3)" @ref="noPaddingChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
+        <ScatterChart role="img" aria-label="Scatter chart: study hours against exam score, with no padding" @ref="noPaddingChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">All sides: <code>Layout.Padding = 20</code></p>
-        <ScatterChart role="img" aria-label="Scatter chart: Layout padding, all sides" @ref="allSidesChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
+        <ScatterChart role="img" aria-label="Scatter chart: study hours against exam score, with padding on every side" @ref="allSidesChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
     </div>
     <div class="column is-one-third">
         <p class="has-text-weight-semibold mb-2">Per side: <code>Layout.PaddingSides = new() { Left = 60, Top = 10 }</code></p>
-        <ScatterChart role="img" aria-label="Scatter chart: Layout padding, per side" @ref="perSideChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
+        <ScatterChart role="img" aria-label="Scatter chart: study hours against exam score, with padding on the left and top" @ref="perSideChart" ContainerStyle="border: 1px dashed #b5b5b5;" />
     </div>
 </div>
 
@@ -47,10 +47,11 @@
 
     private static ChartData GetChartData() => new()
     {
+        // x = hours of study, y = exam score (%), one point per student
         Datasets =
         [
-            CreateDataset("Group A", 0, [new(5, 12), new(15, 28), new(25, 20), new(35, 42), new(45, 38), new(55, 60), new(65, 52), new(75, 70)]),
-            CreateDataset("Group B", 1, [new(10, 40), new(20, 35), new(30, 55), new(40, 48), new(50, 30), new(60, 45), new(70, 25), new(80, 35)])
+            CreateDataset("Class A", 0, [new(1, 52), new(2, 58), new(3, 61), new(4, 70), new(5, 68), new(6, 77), new(7, 84), new(8, 88)]),
+            CreateDataset("Class B", 1, [new(1, 45), new(2, 55), new(3, 50), new(4, 63), new(5, 72), new(6, 70), new(7, 79), new(8, 92)])
         ]
     };
 

@@ -1,4 +1,4 @@
-<LineChart role="img" aria-label="Line chart: Stacked scales" @ref="lineChart" Width="600" />
+<LineChart role="img" aria-label="Line chart: daily temperature with the heating on or off below it, Monday to Sunday, on two stacked y-axes" @ref="lineChart" Width="600" />
 
 @code {
     private LineChart lineChart = default!;
@@ -37,22 +37,23 @@
             // Axes with the same Stack value share one side of the chart, one above the other.
             // StackWeight sets how much of the height each one gets: here two thirds for "y".
             options.Scales.Y!.Position = "left";
-            options.Scales.Y!.Stack = "demo";
+            options.Scales.Y!.Stack = "left";
             options.Scales.Y!.StackWeight = 2;
-            options.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "°C" };
+            // null keeps Chart.js's theme-aware default text colour
+            options.Scales.Y!.Title = new ChartAxesTitle { Display = true, Text = "°C", Color = null };
 
             options.Scales.AdditionalAxes = new()
             {
                 ["y2"] = new ChartAxes
                 {
                     Position = "left",
-                    Stack = "demo",
+                    Stack = "left",
                     StackWeight = 1,
                     Offset = true, // keeps a gap between the two axes
                     Min = 0,
                     Max = 1,
                     Ticks = new ChartAxesTicks { StepSize = 1 },
-                    Title = new ChartAxesTitle { Display = true, Text = "On/off" },
+                    Title = new ChartAxesTitle { Display = true, Text = "On/off", Color = null },
                 },
             };
 

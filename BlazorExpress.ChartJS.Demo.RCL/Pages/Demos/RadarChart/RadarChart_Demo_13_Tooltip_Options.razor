@@ -1,15 +1,15 @@
 <div class="columns is-multiline">
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Mode = InteractionMode.Index</code>, <code>Intersect = false</code>, <code>Position = "average"</code></p>
-        <RadarChart role="img" aria-label="Radar chart: Tooltip options (chart 1 of 3)" @ref="indexChart" />
+        <RadarChart role="img" aria-label="Radar chart: Northside FC and Riverside FC skills, tooltip lists both teams" @ref="indexChart" />
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2"><code>Mode = InteractionMode.Nearest</code>, <code>Intersect = false</code>, <code>Position = "nearest"</code></p>
-        <RadarChart role="img" aria-label="Radar chart: Tooltip options (chart 2 of 3)" @ref="nearestChart" />
+        <RadarChart role="img" aria-label="Radar chart: Northside FC and Riverside FC skills, tooltip for the nearest point" @ref="nearestChart" />
     </div>
     <div class="column is-one-third">
         <p class="is-size-7 has-text-weight-semibold mb-2">Styled: padding, corner radius, border, color boxes, <code>UsePointStyle</code>, <code>MultiKeyBackground</code></p>
-        <RadarChart role="img" aria-label="Radar chart: Tooltip options, styled" @ref="styledChart" />
+        <RadarChart role="img" aria-label="Radar chart: Northside FC and Riverside FC skills, with a styled tooltip" @ref="styledChart" />
     </div>
 </div>
 
@@ -68,8 +68,8 @@
             Labels = ["Speed", "Power", "Defense", "Stamina", "Agility", "Skill"],
             Datasets =
             [
-                CreateDataset("Team A", [65, 59, 90, 81, 56, 55], 0),
-                CreateDataset("Team B", [28, 48, 40, 19, 96, 27], 1)
+                CreateDataset("Northside FC", [65, 59, 90, 81, 56, 55], 0),
+                CreateDataset("Riverside FC", [28, 48, 40, 19, 96, 27], 1)
             ]
         };
 

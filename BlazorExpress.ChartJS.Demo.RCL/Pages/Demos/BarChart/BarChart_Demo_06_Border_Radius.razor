@@ -1,125 +1,46 @@
-<BarChart role="img" aria-label="Bar chart: Border radius" @ref="barChart" Width="600" />
-
-<div class="mt-5">
-    <button type="button" class="button is-primary is-small" @onclick="RandomizeAsync"> Randomize </button>
-</div>
+<BarChart role="img" aria-label="Bar chart with rounded bars: units sold per month, January to June, for laptops, tablets and phones" @ref="barChart" Width="600" />
 
 @code {
     private BarChart barChart = default!;
     private BarChartOptions barChartOptions = default!;
     private ChartData chartData = default!;
 
-    private int datasetsCount = 0;
-    private int labelsCount = 0;
-    private string[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-    private Random random = new();
-
     protected override void OnInitialized()
     {
-        chartData = new ChartData { Labels = GetDefaultDataLabels(6), Datasets = GetDefaultDataSets(3) };
+        chartData = new ChartData
+        {
+            Labels = new List<string> { "January", "February", "March", "April", "May", "June" },
+            Datasets = new List<IChartDataset>
+            {
+                CreateDataset("Laptops", 0, new List<double?> { 120, 95, 140, 132, 158, 176 }),
+                CreateDataset("Tablets", 1, new List<double?> { 64, 58, 72, 80, 77, 91 }),
+                CreateDataset("Phones", 2, new List<double?> { 185, 162, 170, 194, 188, 200 }),
+            },
+        };
         barChartOptions = new BarChartOptions { Responsive = true, Interaction = new Interaction { Mode = InteractionMode.Index } };
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-        {
             await barChart.InitializeAsync(chartData, barChartOptions);
-        }
+
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private async Task RandomizeAsync()
+    private static BarChartDataset CreateDataset(string label, int colorIndex, List<double?> data)
     {
-        if (chartData is null || chartData.Datasets is null || !chartData.Datasets.Any()) return;
+        var c = ColorUtility.CategoricalTwelveColors[colorIndex].ToColor();
 
-        var newDatasets = new List<IChartDataset>();
-
-        foreach (var dataset in chartData.Datasets)
+        return new BarChartDataset
         {
-            if (dataset is BarChartDataset barChartDataset
-                && barChartDataset is not null
-                && barChartDataset.Data is not null)
-            {
-                var count = barChartDataset.Data.Count;
-
-                var newData = new List<double?>();
-                for (var i = 0; i < count; i++)
-                {
-                    newData.Add(NewRandom());
-                }
-
-                barChartDataset.Data = newData;
-                newDatasets.Add(barChartDataset);
-            }
-        }
-
-        chartData.Datasets = newDatasets;
-
-        await barChart.UpdateAsync(chartData, barChartOptions);
-    }
-
-    #region Data Preparation
-
-    private List<IChartDataset> GetDefaultDataSets(int numberOfDatasets)
-    {
-        var datasets = new List<IChartDataset>();
-
-        for (var index = 0; index < numberOfDatasets; index++)
-        {
-            datasets.Add(GetRandomBarChartDataset());
-        }
-
-        return datasets;
-    }
-
-    private BarChartDataset GetRandomBarChartDataset()
-    {
-        var c = ColorUtility.CategoricalTwelveColors[datasetsCount].ToColor();
-
-        datasetsCount += 1;
-
-        return new BarChartDataset()
-        {
-            Label = $"Product {datasetsCount}",
-            Data = GetRandomData(),
+            Label = label,
+            Data = data,
             BorderColor = new List<string> { c.ToRgbString() },
             BackgroundColor = new List<string> { c.ToRgbaString(0.5) },
             BorderWidth = new List<double> { 2 },
-            BorderRadius = new List<double> { 10 },
-            BorderSkipped = false
+            BorderRadius = new List<double> { 10 }, // 10 px on every corner
+            BorderSkipped = false, // round the corners at the base of the bar too
         };
     }
-
-    private List<double?> GetRandomData()
-    {
-        var data = new List<double?>();
-        for (var index = 0; index < labelsCount; index++)
-        {
-            data.Add(NewRandom());
-        }
-
-        return data;
-    }
-
-    private List<string> GetDefaultDataLabels(int numberOfLabels)
-    {
-        var labels = new List<string>();
-        for (var index = 0; index < numberOfLabels; index++)
-        {
-            labels.Add(GetNextDataLabel());
-        }
-
-        return labels;
-    }
-
-    private string GetNextDataLabel()
-    {
-        labelsCount += 1;
-        return months[labelsCount - 1];
-    }
-
-    private double NewRandom() => random.Next(-100, 100);
-
-    #endregion Data Preparation
 }

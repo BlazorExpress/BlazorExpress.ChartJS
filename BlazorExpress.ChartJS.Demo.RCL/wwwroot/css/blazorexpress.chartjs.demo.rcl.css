@@ -48,6 +48,12 @@ h1:focus-visible {
     padding: 1rem;
 }
 
+    /* A demo chart with a fixed Width (for example Width="600") never grows past the demo box, so it fits a phone
+       (rules.md DEMO-001, item 5). The chart is responsive, so Chart.js redraws it at the narrower width. */
+    .be-bulma-doc-example-demo div:has(> canvas) {
+        max-width: 100%;
+    }
+
 .be-bulma-doc-example-toolbar {
     background-color: var(--be-bulma-pre-bg);
     border-top: 1px solid var(--be-bulma-border-color);

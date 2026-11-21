@@ -48,7 +48,11 @@ public enum SampleCategory
     JsFunctions,
 
     [Description("Playground")]
-    Playground
+    Playground,
+
+    /// <summary>Real-world tasks developers asked about: real data, dashboards, colour and theme, sizing and performance (work item 26112001).</summary>
+    [Description("Scenarios")]
+    Scenarios
 }
 
 public static class SampleCategoryExtensions

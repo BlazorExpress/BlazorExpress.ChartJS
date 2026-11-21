@@ -1,0 +1,90 @@
+@using Microsoft.JSInterop
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+<LineChart role="img" aria-label="Line chart: support tickets opened per month, January to June, in colours that follow the page's light or dark theme" @ref="lineChart" Width="600" />
+
+<p class="mt-2 mb-0">Palette in use: <strong>@(isDark ? "dark" : "light")</strong></p>
+
+@code {
+    // Text is at least 4.5:1 and lines at least 3:1 against #ffffff (light palette) and #0d1117 (dark palette).
+    private static readonly ChartPalette LightPalette = new(Text: "#4b5563", Grid: "#8c8c8c", Border: "#6b7280", Line: "#0072b2");
+    private static readonly ChartPalette DarkPalette = new(Text: "#d0d7de", Grid: "#6e7681", Border: "#8b949e", Line: "#56b4e9");
+
+    private readonly string observerId = Guid.NewGuid().ToString("N");
+    private readonly LineChartOptions options = new() { Responsive = true };
+    private readonly LineChartDataset dataset = new() { Label = "Tickets opened", Data = [312, 287, 345, 298, 376, 341] };
+    private LineChart lineChart = default!;
+    private ChartData chartData = default!;
+    private IDisposable? dotNetRef;
+    private bool isDark;
+
+    protected override void OnInitialized() =>
+        chartData = new ChartData { Labels = ["January", "February", "March", "April", "May", "June"], Datasets = [dataset] };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var reference = DotNetObjectReference.Create(this);
+            dotNetRef = reference;
+
+            // observe returns whether the page is dark now, then calls OnThemeChanged each time the theme changes.
+            isDark = await JS.InvokeAsync<bool>("demoThemeObserver.observe", observerId, reference);
+            ApplyPalette();
+            await lineChart.InitializeAsync(chartData, options);
+            StateHasChanged();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    // Call this method from your own app's theme event too, if it has one.
+    [JSInvokable]
+    public async Task OnThemeChanged(bool isDark)
+    {
+        this.isDark = isDark;
+        ApplyPalette();
+        await lineChart.UpdateAsync(chartData, options);
+        StateHasChanged();
+    }
+
+    private void ApplyPalette()
+    {
+        var palette = isDark ? DarkPalette : LightPalette;
+
+        StyleAxis(options.Scales.X!, "Month", palette);
+        StyleAxis(options.Scales.Y!, "Tickets", palette);
+        options.Plugins.Legend.Labels = new ChartPluginsLegendLabels { Color = palette.Text };
+        dataset.BorderColor = palette.Line;
+        dataset.BackgroundColor = palette.Line;
+    }
+
+    private static void StyleAxis(ChartAxes axis, string title, ChartPalette palette)
+    {
+        axis.Ticks = new ChartAxesTicks { Color = palette.Text };
+        axis.Grid = new ChartAxesGrid { Color = palette.Grid, TickColor = palette.Grid };
+        axis.Border = new ChartAxesBorder { Color = palette.Border };
+        axis.Title = new ChartAxesTitle { Display = true, Text = title, Color = palette.Text };
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        // No reference means observe was never called, for example while the page was prerendered.
+        if (dotNetRef is null)
+            return;
+
+        try
+        {
+            await JS.InvokeVoidAsync("demoThemeObserver.disconnect", observerId);
+        }
+        catch (JSDisconnectedException)
+        {
+            // The browser is gone, and its observer with it.
+        }
+
+        dotNetRef.Dispose();
+    }
+
+    private sealed record ChartPalette(string Text, string Grid, string Border, string Line);
+}
