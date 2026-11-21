@@ -1,0 +1,62 @@
+@attribute [Route(pageUrl)]
+@layout BlogMainLayout
+@using BlazorExpress.ChartJS.Demo.RCL.Pages.Demos.BarChart
+@using BlazorExpress.ChartJS.Demo.RCL.Pages.Demos.LineChart
+
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<DemoPageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</DemoPageHero>
+
+<ReleaseMeta Version="@version" />
+
+@* From the GitHub release v1.2.3; keep the wording in step with CHANGELOG.md ## 1.2.3. *@
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="What's new" PageUrl="@pageUrl" Link="whats-new">
+    <Block>
+        <div class="content be-release-notes">
+            <ul>
+                <li><strong>Dataset <code>Stack</code>.</strong> <code>BarChartDataset</code> and <code>LineChartDataset</code> have a <code>Stack</code> property. Datasets with the same <code>Stack</code> value stack together, and datasets with different values form separate stacks side by side in the same category. The axis-level <code>Stacked</code> option still stacks every dataset into one. (<a href="@(pullUrl)32">#32</a>, by <a href="https://github.com/berndlueneburg">berndlueneburg</a> in their first contribution)</li>
+            </ul>
+        </div>
+    </Block>
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H5" Level="3" Name="Stacked bar chart with groups" PageUrl="@pageUrl" Link="stacked-bar-chart-with-groups">
+    <Block>
+        Two stacks per month: datasets that share a <code>Stack</code> value are stacked, and each <code>Stack</code> value gets its own column. The sample runs on the current version of the library.
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_10_Stacked_BarChart_With_Groups)" Tabs="true" />
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H5" Level="3" Name="Stacked line chart" PageUrl="@pageUrl" Link="stacked-line-chart">
+    <Block>
+        A new line chart demo stacks its datasets on one <code>Stack</code>, so each line sits on top of the one below it. (<a href="@(pullUrl)33">#33</a>)
+    </Block>
+    <Demo Type="typeof(LineChart_Demo_07_Stack)" Tabs="true" />
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Docs and demos" PageUrl="@pageUrl" Link="docs-and-demos">
+    <Block>
+        <div class="content be-release-notes">
+            <ul>
+                <li>A Supported Tech Stack table in the README and in Getting started lists the .NET, Chart.js and chartjs-plugin-datalabels versions for each release. (<a href="@(pullUrl)30">#30</a>, by <a href="https://github.com/mu439">mu439</a>)</li>
+                <li>The bar and line chart docs show how to turn on data labels by passing the <code>ChartDataLabels</code> plugin to <code>InitializeAsync</code>, and the line chart docs have a stacked line chart section. (<a href="@(pullUrl)33">#33</a>)</li>
+                <li>The install snippets, README and package version say 1.2.3. (<a href="@(pullUrl)34">#34</a>)</li>
+            </ul>
+        </div>
+    </Block>
+</DemoSection>
+
+@code {
+    private const string version = "1.2.3";
+    private const string pageUrl = DemoRouteConstants.Blog_Release_1_2_3;
+    private const string pageTitle = "1.2.3 release notes";
+    private const string pageDescription = "Grouped stacked bars with the dataset <code>Stack</code> property, a stacked line chart demo and a Chart.js version support table.";
+    private const string metaTitle = "1.2.3 Release Notes: Grouped Stacks";
+    private const string metaDescription = "BlazorExpress.ChartJS 1.2.3 adds the dataset Stack property for grouped stacked bars, a stacked line chart demo and a version support table.";
+    private const string imageUrl = DemoImageSrcConstants.BarChart;
+    private const string pullUrl = ReleaseCatalog.GitHubRepositoryUrl + "/pull/";
+}

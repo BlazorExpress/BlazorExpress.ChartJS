@@ -334,6 +334,38 @@ h1:focus-visible {
     gap: 0.5rem;
 }
 
+/* Release pages: the date and links under the title, the install command, and before/after code pairs. */
+.be-release-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    margin: 0 0 1rem 0;
+}
+
+.be-release-install {
+    margin: 0 0 1.5rem 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.be-before-after {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: 1rem;
+    margin: 0.75rem 0 0.5rem 0;
+}
+
+.be-before-after > div {
+    min-width: 0;
+}
+
+.be-before-after pre {
+    margin: 0.4rem 0 0 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
 @keyframes be-loader-spin {
     to {
         transform: rotate(360deg);

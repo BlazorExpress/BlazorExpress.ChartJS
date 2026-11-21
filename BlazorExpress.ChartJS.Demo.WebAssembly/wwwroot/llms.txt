@@ -13,7 +13,7 @@ Key facts:
 - Options that Chart.js takes as a JavaScript function: register the function in your own script loaded after `blazorexpress.chartjs.js` with `blazorexpress.chartjs.registerFunction('name', fn)`, then reference it from C# with `new ChartFunction("name")`. Names are looked up only in that registry, never evaluated as code.
 - Chart titles, subtitles and axis titles (`ChartPluginsTitle`, `ChartPluginsSubtitle`, `ChartAxesTitle`) send black text by default. On a page with a dark theme, set `Color = null` so Chart.js uses its theme-aware default text colour.
 - Every chart should have `role="img"` and an `aria-label` that says what it shows; the component passes extra attributes to the canvas.
-- 2.0.0 changes some defaults compared with 1.x (radar and bubble axes start at zero, data-label styles, hidden datasets stay hidden after `UpdateAsync`, animated updates). Read the breaking changes before upgrading.
+- 2.0.0 changes some defaults compared with 1.x (radar and bubble axes start at zero, data-label styles, hidden datasets stay hidden after `UpdateAsync`, animated updates, the built-in date adapter replaces third-party adapters, `AddDataAsync` label handling on doughnut, pie, polar area, radar, scatter and bubble, and the removed JavaScript `updateDataValues`). Read the breaking changes before upgrading.
 
 ## Quick start
 
@@ -91,6 +91,15 @@ The same code as the README quick start:
 
 - [All releases](https://chartjs.blazorexpress.com/blog/releases): every release, newest first, each linking to its release notes
 - [2.0.0 release notes](https://chartjs.blazorexpress.com/blog/releases/2-0-0): breaking changes, what's new, what's changed and fixes
+- [Upgrading to 2.0.0](https://chartjs.blazorexpress.com/blog/releases/2-0-0-breaking-changes): each 2.0.0 breaking change with the 1.2.4 code and the 2.0.0 code
+- [1.2.4 release notes](https://chartjs.blazorexpress.com/blog/releases/1-2-4): chart item click events (`OnClick`)
+- [1.2.3 release notes](https://chartjs.blazorexpress.com/blog/releases/1-2-3): dataset `Stack` for grouped stacked bars
+- [1.2.2 release notes](https://chartjs.blazorexpress.com/blog/releases/1-2-2): combo bar and line charts
+- [1.2.1 release notes](https://chartjs.blazorexpress.com/blog/releases/1-2-1): .NET 9 and .NET 10 targets
+- [1.2.0 release notes](https://chartjs.blazorexpress.com/blog/releases/1-2-0): bar border radius, animation delays, line interpolation modes
+- [1.1.0 release notes](https://chartjs.blazorexpress.com/blog/releases/1-1-0): bubble, polar area, radar and scatter charts
+- [1.0.0 release notes](https://chartjs.blazorexpress.com/blog/releases/1-0-0): first stable release: bar, doughnut, line and pie charts
+- [1.0.0-preview1 release notes](https://chartjs.blazorexpress.com/blog/releases/1-0-0-preview1): first preview
 - [CHANGELOG.md (plain text)](https://raw.githubusercontent.com/BlazorExpress/BlazorExpress.ChartJS/main/CHANGELOG.md): the canonical release notes, newest first
 
 ## Optional

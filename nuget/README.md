@@ -74,7 +74,7 @@ Then draw your first chart:
 ```
 <!-- quick-start:end -->
 
-The [getting started guide](https://chartjs.blazorexpress.com/docs/getting-started/introduction) covers each hosting model, and the [samples](https://chartjs.blazorexpress.com/demos/samples) show every chart type and option.
+The [getting started guide](https://chartjs.blazorexpress.com/docs/getting-started/introduction) covers installation for Blazor WebAssembly and Blazor Web App (Server), and the [samples](https://chartjs.blazorexpress.com/demos/samples) show every chart type and option.
 
 ## Online Demos
 

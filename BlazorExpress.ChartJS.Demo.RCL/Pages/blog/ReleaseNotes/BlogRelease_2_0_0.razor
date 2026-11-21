@@ -9,9 +9,12 @@
     </SubTitleTemplate>
 </DemoPageHero>
 
+<ReleaseMeta Version="2.0.0" ShowInstall="false" />
+
 <div class="notification is-warning is-light">
     <strong>Upgrading from 1.x?</strong> 2.0.0 changes some defaults and behaviour without any code change.
     Read <a href="@(pageUrl)#breaking-changes">Breaking changes</a> first: each item says how to keep the 1.2.4 behaviour where there is a way.
+    <a href="@DemoRouteConstants.Blog_Release_2_0_0_Breaking_Changes">Upgrading to 2.0.0</a> shows the 1.2.4 and 2.0.0 code for each one.
 </div>
 
 <nav class="be-release-toc mb-5" aria-label="Release notes sections">
@@ -40,7 +43,7 @@
 
     <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Breaking changes" PageUrl="@pageUrl" Link="breaking-changes">
         <Block>
-            <p>Each item says how to keep the 1.2.4 behaviour where there is a way.</p>
+            <p>Each item says how to keep the 1.2.4 behaviour where there is a way. <a href="@DemoRouteConstants.Blog_Release_2_0_0_Breaking_Changes">Upgrading to 2.0.0</a> shows the code before and after each change.</p>
             <ul>
                 <li><strong>Radar and bubble axes start at zero.</strong> Like the other charts, radar and bubble charts now start their axes at zero by default. To keep the previous look, set <code>options.Scales.R.BeginAtZero = false</code> (radar) or <code>options.Scales.X.BeginAtZero = false</code> and <code>options.Scales.Y.BeginAtZero = false</code> (bubble).</li>
                 <li><strong>Radar and bubble data labels match the other charts.</strong> Radar and bubble charts that register the <code>ChartDataLabels</code> plugin now get the library's label style: white, bold, 6 px padding and a 4 px corner radius (the new <code>RadarChartPlugins.Datalabels</code> and <code>BubbleChartPlugins.Datalabels</code> defaults). In 1.2.4 they used the plugin's own grey text. To restore it, set <code>options.Plugins.Datalabels.Color = "#666"</code> (the Chart.js default text colour), <code>options.Plugins.Datalabels.Font.Weight = null</code>, <code>options.Plugins.Datalabels.Padding = 4</code> and <code>options.Plugins.Datalabels.BorderRadius = 0</code>.</li>
@@ -72,7 +75,7 @@
                 <li><strong>Options on every chart type.</strong> All eight chart types have <code>Plugins</code>, <code>Interaction</code> and <code>Layout</code>, created by default, so <code>options.Plugins.Title.Text = "Sales"</code> works on all of them. Radar and polar area charts have a radial <code>Scales.R</code> axis, and bubble charts have <code>Scales.X</code> and <code>Scales.Y</code>.</li>
                 <li><strong>Axis options:</strong> additional axes (<code>Scales.AdditionalAxes</code>, for example a right-hand <code>y1</code>), <code>Position</code>, <code>Reverse</code>, <code>Offset</code>, <code>Grace</code>, <code>Bounds</code>, <code>Weight</code>, <code>Stack</code>, <code>StackWeight</code>, <code>Display</code>, <code>BackgroundColor</code> and <code>Axis</code>. Tick options include <code>StepSize</code>, <code>Precision</code>, <code>Count</code>, <code>MaxTicksLimit</code>, <code>AutoSkip</code>, rotation and <code>Font</code>. Axis titles have <code>Padding</code>.</li>
                 <li><strong>Chart-level options:</strong> <code>AspectRatio</code>, <code>ResizeDelay</code>, <code>DevicePixelRatio</code>, <code>Events</code>, <code>Hover</code>, <code>Elements</code>, per-side layout padding (<code>Layout.PaddingSides</code>), and <code>Interaction.Axis</code> and <code>IncludeInvisible</code>.</li>
-                <li><strong>Plugin options:</strong> a subtitle plugin; title <code>FullSize</code>, <code>Padding</code> and <code>Position</code>; 14 tooltip options including <code>Mode</code>, <code>Position</code>, <code>Padding</code>, <code>CornerRadius</code> and <code>UsePointStyle</code>; legend label <code>TextAlign</code>; and the colors and filler plugins.</li>
+                <li><strong>Plugin options:</strong> a subtitle plugin; title <code>FullSize</code>, <code>Padding</code> and <code>Position</code>; 14 tooltip options including <code>Mode</code>, <code>Position</code>, <code>Padding</code>, <code>CornerRadius</code> and <code>UsePointStyle</code>, plus the tooltip <code>Callbacks</code>, <code>External</code>, <code>Filter</code> and <code>ItemSort</code> functions; legend label <code>TextAlign</code>; and the colors and filler plugins.</li>
                 <li><strong>Line charts:</strong> the dashed hover line can be styled or turned off with <code>options.Plugins.TooltipLine</code> (default unchanged).</li>
                 <li><strong>Doughnut and pie:</strong> <code>Cutout</code>, <code>Radius</code>, <code>Rotation</code> and <code>Circumference</code> (for example a half-doughnut gauge), and <code>Animation.AnimateRotate</code> and <code>AnimateScale</code>.</li>
                 <li><strong>Datasets:</strong> floating bars (<code>BarChartDataset.FloatingData</code>, also through <code>AddDataAsync</code> with <code>new BarChartDatasetData(label, start, end)</code>), bar <code>Base</code>, per-corner <code>BorderRadiusCorners</code> and <code>HoverBorderRadiusCorners</code>, <code>InflateAmount</code> and <code>PointStyle</code>; line <code>MaxSpanGap</code>; per-side <code>ClipSides</code>; <code>SpacingMode</code> on arc datasets; scatter <code>Segment</code>; radar <code>RAxisID</code>.</li>
@@ -118,7 +121,10 @@
             <ul>
                 <li>A samples gallery with a page per sample, each with "How to use" steps and copyable source, covering the official Chart.js samples the library can express.</li>
                 <li>Each chart's docs page lists its Common Parameters, Events and Methods, so inherited members such as <code>ResizeAsync</code> and <code>OnClick</code> are documented too.</li>
-                <li>Getting started covers time axes and JavaScript functions, including the script order for WebAssembly, Server, Auto and MAUI.</li>
+                <li>A Scenarios sample category (loading data from an API, live updates, charts in tabs and dialogs, dark theme colours and large datasets), and a "Use it when" line on every sample.</li>
+                <li>Sample URLs of removed or merged samples open their replacement or the chart page instead of "sample not found".</li>
+                <li>An Accessibility docs page, and the demo site follows WCAG 2.2 AA.</li>
+                <li>Getting started covers time axes and JavaScript functions, including where to load your function script in WebAssembly, Server, Auto and MAUI apps. The step-by-step setup guides cover Blazor WebAssembly and Blazor Web App (Server); the Auto and MAUI guides were removed.</li>
                 <li>The Pie chart demo page links to the Pie chart docs, and the README's Getting Started link opens the getting-started page.</li>
             </ul>
         </Block>
@@ -137,6 +143,7 @@
 <DemoSection Class="p-0" Size="HeadingSize.H4" Name="Links" PageUrl="@pageUrl" Link="links">
     <Block>
         <ul>
+            <li><a href="@DemoRouteConstants.Blog_Release_2_0_0_Breaking_Changes">Upgrading to 2.0.0: breaking changes with before and after code</a></li>
             <li><a href="@changelogUrl" target="_blank" rel="noopener">Full changelog on GitHub<span class="is-sr-only"> (opens in a new tab)</span></a></li>
             <li><a href="@nugetUrl" target="_blank" rel="noopener">BlazorExpress.ChartJS 2.0.0 on NuGet<span class="is-sr-only"> (opens in a new tab)</span></a></li>
             <li><a href="@DemoRouteConstants.Docs_Getting_Started_Introduction">Getting started</a> and the <a href="@DemoRouteConstants.Demos_Samples">samples gallery</a></li>

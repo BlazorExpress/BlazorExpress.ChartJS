@@ -1,0 +1,80 @@
+@attribute [Route(pageUrl)]
+@layout BlogMainLayout
+@using BlazorExpress.ChartJS.Demo.RCL.Pages.Demos.BubbleChart
+@using BlazorExpress.ChartJS.Demo.RCL.Pages.Demos.PolarAreaChart
+@using BlazorExpress.ChartJS.Demo.RCL.Pages.Demos.RadarChart
+@using BlazorExpress.ChartJS.Demo.RCL.Pages.Demos.ScatterChart
+
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<DemoPageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</DemoPageHero>
+
+<ReleaseMeta Version="@version" />
+
+@* From the GitHub release v1.1.0 and the chart components it added; keep the wording in step with CHANGELOG.md ## 1.1.0. *@
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="What's new" PageUrl="@pageUrl" Link="whats-new">
+    <Block>
+        <div class="content be-release-notes">
+            <ul>
+                <li><strong>Four new chart types:</strong> <a href="@DemoRouteConstants.Docs_BubbleChart"><code>BubbleChart</code></a>, <a href="@DemoRouteConstants.Docs_PolarAreaChart"><code>PolarAreaChart</code></a>, <a href="@DemoRouteConstants.Docs_RadarChart"><code>RadarChart</code></a> and <a href="@DemoRouteConstants.Docs_ScatterChart"><code>ScatterChart</code></a>, each with its own dataset, options and plugin types, docs and demos. (<a href="@(pullUrl)15">#15</a>)</li>
+            </ul>
+        </div>
+    </Block>
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H5" Level="3" Name="Bubble chart" PageUrl="@pageUrl" Link="bubble-chart">
+    <Block>
+        Each point has an x value, a y value and a radius. The samples on this page run on the current version of the library.
+    </Block>
+    <Demo Type="typeof(BubbleChart_Demo_01_How_It_Works)" Tabs="true" />
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H5" Level="3" Name="Polar area chart" PageUrl="@pageUrl" Link="polar-area-chart">
+    <Block>
+        Like a pie chart, but every slice has the same angle and its radius shows the value.
+    </Block>
+    <Demo Type="typeof(PolarAreaChart_Demo_01_How_It_Works)" Tabs="true" />
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H5" Level="3" Name="Radar chart" PageUrl="@pageUrl" Link="radar-chart">
+    <Block>
+        Several values per dataset on axes that start at the centre.
+    </Block>
+    <Demo Type="typeof(RadarChart_Demo_01_How_It_Works)" Tabs="true" />
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H5" Level="3" Name="Scatter chart" PageUrl="@pageUrl" Link="scatter-chart">
+    <Block>
+        Points placed by their x and y values.
+    </Block>
+    <Demo Type="typeof(ScatterChart_Demo_01_How_It_Works)" Tabs="true" />
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Docs and demos" PageUrl="@pageUrl" Link="docs-and-demos">
+    <Block>
+        <div class="content be-release-notes">
+            <ul>
+                <li>Updated docs and demos for every chart. (<a href="@(pullUrl)15">#15</a>)</li>
+                <li>A wider demo sidebar and updated links. (<a href="@(pullUrl)12">#12</a>)</li>
+                <li>Site analytics on the demo site. (<a href="@(pullUrl)14">#14</a>)</li>
+                <li>Chart images for each chart type, and README links to each chart's docs. (<a href="@(pullUrl)17">#17</a>)</li>
+                <li>Code cleanup. (<a href="@(pullUrl)16">#16</a>)</li>
+            </ul>
+        </div>
+    </Block>
+</DemoSection>
+
+@code {
+    private const string version = "1.1.0";
+    private const string pageUrl = DemoRouteConstants.Blog_Release_1_1_0;
+    private const string pageTitle = "1.1.0 release notes";
+    private const string pageDescription = "Bubble, polar area, radar and scatter charts.";
+    private const string metaTitle = "1.1.0 Release Notes: Four New Chart Types";
+    private const string metaDescription = "BlazorExpress.ChartJS 1.1.0 adds bubble, polar area, radar and scatter chart components.";
+    private const string imageUrl = DemoImageSrcConstants.RadarChart;
+    private const string pullUrl = ReleaseCatalog.GitHubRepositoryUrl + "/pull/";
+}

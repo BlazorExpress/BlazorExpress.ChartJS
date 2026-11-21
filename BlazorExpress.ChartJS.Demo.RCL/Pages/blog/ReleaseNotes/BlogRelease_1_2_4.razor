@@ -1,0 +1,53 @@
+@attribute [Route(pageUrl)]
+@layout BlogMainLayout
+@using BlazorExpress.ChartJS.Demo.RCL.Pages.Demos.BarChart
+
+<SiteMetaTags PageUrl="@pageUrl" Title="@metaTitle" Description="@metaDescription" ImageUrl="@imageUrl" />
+
+<DemoPageHero Title="@pageTitle">
+    <SubTitleTemplate>
+        @((MarkupString)pageDescription)
+    </SubTitleTemplate>
+</DemoPageHero>
+
+<ReleaseMeta Version="@version" />
+
+@* From the GitHub release v1.2.4; keep the wording in step with CHANGELOG.md ## 1.2.4. *@
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="What's new" PageUrl="@pageUrl" Link="whats-new">
+    <Block>
+        <div class="content be-release-notes">
+            <ul>
+                <li><strong>Chart item click events.</strong> Every chart type has an <code>OnClick</code> callback that runs when a user clicks a bar, point or slice. It receives <code>ChartClickEventArgs</code> with the dataset index and label, the data item index and label, and the value. The JavaScript interop passes the Chart.js click to .NET. (<a href="@(pullUrl)37">#37</a>)</li>
+            </ul>
+        </div>
+    </Block>
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H5" Level="3" Name="Click a bar" PageUrl="@pageUrl" Link="click-event">
+    <Block>
+        Click a bar to see what <code>OnClick</code> receives. Set <code>OnClick</code> on the chart component and read the item from <code>ChartClickEventArgs</code>. The sample runs on the current version of the library.
+    </Block>
+    <Demo Type="typeof(BarChart_Demo_11_Click_Event)" Tabs="true" />
+</DemoSection>
+
+<DemoSection Class="p-0" Size="HeadingSize.H4" Name="Docs and demos" PageUrl="@pageUrl" Link="docs-and-demos">
+    <Block>
+        <div class="content be-release-notes">
+            <ul>
+                <li>Each chart's docs and demo pages show the click event. (<a href="@(pullUrl)37">#37</a>)</li>
+                <li>The install snippets, README and package version say 1.2.4. (<a href="@(pullUrl)39">#39</a>)</li>
+            </ul>
+        </div>
+    </Block>
+</DemoSection>
+
+@code {
+    private const string version = "1.2.4";
+    private const string pageUrl = DemoRouteConstants.Blog_Release_1_2_4;
+    private const string pageTitle = "1.2.4 release notes";
+    private const string pageDescription = "Chart item click events: an <code>OnClick</code> callback on every chart type.";
+    private const string metaTitle = "1.2.4 Release Notes: Chart Click Events";
+    private const string metaDescription = "BlazorExpress.ChartJS 1.2.4 adds an OnClick callback to every chart type, with the clicked dataset, data item and value.";
+    private const string imageUrl = DemoImageSrcConstants.BarChart;
+    private const string pullUrl = ReleaseCatalog.GitHubRepositoryUrl + "/pull/";
+}
