@@ -26,7 +26,7 @@
         <div class="content">
             <ol>
                 <li>Add the <code>BubbleChart</code> component with <code>@@ref</code>, <code>role="img"</code> and an <code>aria-label</code> that says what the chart shows.</li>
-                <li>Create a <code>ChartData</code> with one <code>BubbleChartDataset</code> whose <code>Data</code> is a list of <code>BubbleChartDataPoint(X, Y, R)</code>. <code>R</code> is the radius in pixels, not an axis value, so scale your third value to a readable size (here 5 to 25 pixels from the population).</li>
+                <li>Create a <code>ChartData</code> with one <code>BubbleChartDataset</code> whose <code>Data</code> is a list of <code>BubbleChartDataPoint(X, Y, R)</code>. <code>R</code> is the radius in pixels, not an axis value, so scale your third value to a readable size (here 7 to 25 pixels from the population).</li>
                 <li>Put a name for each bubble in <code>Labels</code>, in the same order as the data points; the tooltip shows it as its title.</li>
                 <li>Create <code>BubbleChartOptions { Responsive = true }</code> and name each axis and its unit with <code>Scales.X.Title</code> and <code>Scales.Y.Title</code>. Set the title <code>Color = null</code> to use the Chart.js default text color, which a dark theme can change, instead of the library's black.</li>
                 <li>Call <code>InitializeAsync</code> with the data and options in <code>OnAfterRenderAsync</code> on the first render.</li>

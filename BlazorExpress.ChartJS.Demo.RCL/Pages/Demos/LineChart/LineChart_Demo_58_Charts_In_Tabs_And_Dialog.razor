@@ -1,7 +1,8 @@
-<div role="tablist" aria-label="Store traffic this week" class="buttons mb-3">
+@* Toggle buttons with aria-pressed: they need no arrow-key handling, which the ARIA tabs pattern (role="tab") would require. *@
+<div role="group" aria-label="Store traffic this week" class="buttons mb-3">
     @foreach (var tab in tabs)
     {
-        <button type="button" role="tab" id="@($"store-tab-{tab.Id}")" aria-controls="@($"store-panel-{tab.Id}")" aria-selected="@(tab == activeTab ? "true" : "false")"
+        <button type="button" aria-controls="@($"store-panel-{tab.Id}")" aria-pressed="@(tab == activeTab ? "true" : "false")"
                 class="button is-small @(tab == activeTab ? "is-primary" : "")" @onclick="() => activeTab = tab">@tab.Title</button>
     }
 </div>
@@ -9,19 +10,20 @@
 @* Every panel stays in the page; hidden only hides it, so each chart is created once and redraws at full size when shown. *@
 @foreach (var tab in tabs)
 {
-    <div role="tabpanel" id="@($"store-panel-{tab.Id}")" aria-labelledby="@($"store-tab-{tab.Id}")" hidden="@(tab != activeTab)">
+    <div id="@($"store-panel-{tab.Id}")" hidden="@(tab != activeTab)">
         <LineChart role="img" aria-label="@($"Line chart: {tab.Description}, Monday to Sunday")" @ref="tab.Chart" />
     </div>
 }
 
-<button type="button" class="button is-small mt-3" @onclick="() => isDialogOpen = true">Open monthly revenue</button>
+<button type="button" class="button is-small mt-3" @ref="openButton" @onclick="OpenDialog">Open monthly revenue</button>
 
 @* The dialog keeps the browser's own display rule (hidden until open); a display class such as "box" on it would show it while closed, so the styling sits on an inner element. *@
-<dialog open="@isDialogOpen" aria-labelledby="revenue-dialog-title" style="border: none; padding: 0; background: transparent; width: min(40rem, 90vw);">
+@* Opening moves focus into the dialog and Escape closes it; closing returns focus to the button that opened it. *@
+<dialog open="@isDialogOpen" aria-labelledby="revenue-dialog-title" tabindex="-1" @ref="dialog" @onkeydown="OnDialogKeyDown" style="border: none; padding: 0; background: transparent; width: min(40rem, 90vw);">
     <div class="box">
         <p id="revenue-dialog-title" class="has-text-weight-semibold mb-2">Monthly revenue</p>
         <LineChart role="img" aria-label="Line chart: revenue in thousands of dollars per month, January to June" @ref="revenueChart" />
-        <button type="button" class="button is-small mt-3" @onclick="() => isDialogOpen = false">Close</button>
+        <button type="button" class="button is-small mt-3" @onclick="CloseDialog">Close</button>
     </div>
 </dialog>
 
@@ -38,6 +40,9 @@
     private StoreTab activeTab = default!;
     private LineChart revenueChart = default!;
     private bool isDialogOpen;
+    private ElementReference dialog;
+    private ElementReference openButton;
+    private ElementReference? focusAfterRender;
 
     protected override void OnInitialized() => activeTab = tabs[0];
 
@@ -55,7 +60,31 @@
             await revenueChart.InitializeAsync(CreateChartData("Revenue ($k)", ["Jan", "Feb", "Mar", "Apr", "May", "Jun"], [182, 175, 204, 219, 236, 251], revenueColor), new LineChartOptions { Responsive = true });
         }
 
+        if (focusAfterRender is ElementReference target)
+        {
+            focusAfterRender = null;
+            await target.FocusAsync();
+        }
+
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void OpenDialog()
+    {
+        isDialogOpen = true;
+        focusAfterRender = dialog;
+    }
+
+    private void CloseDialog()
+    {
+        isDialogOpen = false;
+        focusAfterRender = openButton;
+    }
+
+    private void OnDialogKeyDown(KeyboardEventArgs args)
+    {
+        if (args.Key == "Escape")
+            CloseDialog();
     }
 
     private static ChartData CreateChartData(string label, List<string> labels, List<double?> values, string hexColor)

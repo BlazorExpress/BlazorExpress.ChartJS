@@ -8,7 +8,7 @@
         <PlaygroundCommonControls Settings="settings" OnChanged="ApplyAsync" />
     </Controls>
     <Chart>
-        <RadarChart role="img" aria-label="Radar chart: sedan and SUV scores on six qualities, from speed to design" @ref="chart" />
+        <RadarChart role="img" aria-label="Radar chart: number of owners in a survey who rated each of six qualities excellent, from speed to design, for a sedan and an SUV" @ref="chart" />
     </Chart>
 </PlaygroundPanel>
 
@@ -74,7 +74,7 @@
             Labels = ["Speed", "Reliability", "Comfort", "Safety", "Efficiency", "Design"],
             Datasets =
             [
-                // Values in the thousands, so the locale picker changes how the ticks are written.
+                // Owners in a survey who rated each quality excellent. Values in the thousands, so the locale picker changes how the ticks are written.
                 CreateDataset("Sedan", [8200, 7400, 6600, 9100, 5800, 7700], 0),
                 CreateDataset("SUV", [6400, 8800, 7900, 7200, 8500, 6100], 1),
             ]

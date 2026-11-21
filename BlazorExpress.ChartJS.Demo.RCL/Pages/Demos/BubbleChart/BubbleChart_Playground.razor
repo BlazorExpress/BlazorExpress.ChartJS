@@ -7,7 +7,7 @@
         <PlaygroundCommonControls Settings="settings" OnChanged="ApplyAsync" />
     </Controls>
     <Chart>
-        <BubbleChart role="img" aria-label="Bubble chart: Europe and Asia data points, sized by a third value" @ref="chart" />
+        <BubbleChart role="img" aria-label="Bubble chart: monthly shipments against average delivery time in hours for Europe and Asia; bubble size shows the number of depots" @ref="chart" />
     </Chart>
 </PlaygroundPanel>
 
@@ -76,6 +76,7 @@
         {
             Datasets =
             [
+                // x: shipments per month, y: average delivery time in hours, r: bubble radius from the number of depots
                 CreateDataset("Europe", [(1200, 34, 9), (2400, 39, 14), (3900, 58, 7), (5200, 66, 18)], 0),
                 CreateDataset("Asia", [(1500, 62, 12), (2800, 49, 20), (4100, 37, 10), (5500, 26, 15)], 1),
             ]

@@ -38,7 +38,7 @@ Get started any way you want
 
 Then draw your first chart:
 
-1. Add the scripts to `wwwroot/index.html` (Blazor WebAssembly) or `Components/App.razor` (Blazor Web App), before Blazor's own script:
+1. Add the scripts to `wwwroot/index.html` (Blazor WebAssembly) or `Components/App.razor` (Blazor Web App), after Blazor's own script (`_framework/blazor.webassembly.js` or `_framework/blazor.web.js`):
 
     ```html
     <!-- Add a reference to Chart.js. -->
@@ -55,7 +55,7 @@ Then draw your first chart:
     @using BlazorExpress.ChartJS
     ```
 
-3. Add a chart to a page:
+3. Add a chart to a page. In a Blazor Web App, the page needs an interactive render mode, for example `@rendermode InteractiveServer` at the top of the page; without one the page renders as static HTML and the chart is not drawn.
 
 <!-- quick-start:begin -->
 ```razor

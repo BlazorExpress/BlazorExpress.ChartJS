@@ -1,4 +1,4 @@
-<BubbleChart role="img" aria-label="Bubble chart: online store, retail and wholesale figures, sized by a third value" @ref="bubbleChart" Width="600" OnLegendClick="UpdateVisibleDatasetCountAsync" />
+<BubbleChart role="img" aria-label="Bubble chart: ad spend against revenue in thousands of dollars for the online store, retail stores and wholesale, January to April; bubble size shows orders" @ref="bubbleChart" Width="600" OnLegendClick="UpdateVisibleDatasetCountAsync" />
 
 <div class="mt-3">
     @foreach (var label in datasetLabels)
@@ -20,6 +20,13 @@
     private ChartData chartData = default!;
     private readonly List<string> labels = new() { "January", "February", "March", "April" };
     private readonly List<string> datasetLabels = new() { "Online store", "Retail stores", "Wholesale" };
+    // one point per month, January to April
+    private readonly Dictionary<string, List<BubbleChartDataPoint>> points = new()
+    {
+        ["Online store"] = new() { new(10, 20, 8), new(15, 12, 12), new(25, 28, 6), new(35, 18, 10) },
+        ["Retail stores"] = new() { new(12, 30, 10), new(22, 22, 7), new(30, 10, 14), new(40, 26, 9) },
+        ["Wholesale"] = new() { new(6, 34, 5), new(8, 38, 6), new(9, 31, 5), new(11, 42, 7) },
+    };
     private readonly Dictionary<string, string> colors = new() { ["Online store"] = "54, 162, 235", ["Retail stores"] = "255, 159, 64", ["Wholesale"] = "75, 192, 192" };
     private int visibleDatasetCount = 3;
 
@@ -40,12 +47,13 @@
     private ChartData CreateChartData() =>
         new()
         {
+            // x: ad spend and y: revenue, both in thousands of dollars; r: bubble radius in pixels, 1 per 100 orders
             Labels = labels,
             Datasets = datasetLabels
                 .Select(label => (IChartDataset)new BubbleChartDataset
                 {
                     Label = label,
-                    Data = labels.Select(_ => new BubbleChartDataPoint(Random.Shared.Next(0, 100), Random.Shared.Next(0, 100), Random.Shared.Next(5, 20))).ToList(),
+                    Data = points[label],
                     BackgroundColor = new List<string> { $"rgba({colors[label]}, 0.5)" },
                     BorderColor = new List<string> { $"rgb({colors[label]})" },
                     BorderWidth = 1,
