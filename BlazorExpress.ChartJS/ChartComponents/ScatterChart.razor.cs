@@ -16,16 +16,18 @@ public partial class ScatterChart : ChartComponentBase
     #region Public Methods
 
     /// <summary>
-    /// Asynchronously adds a new data entry to the specified chart data.
+    /// Asynchronously appends one point to the dataset named by the data's <see cref="ChartDatasetData.DatasetLabel" />.
+    /// A scatter chart has no category labels, so <paramref name="dataLabel" /> is not used and <see cref="ChartData.Labels" />
+    /// is never read or changed. A time point (<see cref="ChartTimePoint" />) is appended the same way.
     /// </summary>
-    /// <param name="chartData">The chart data to which the new entry will be added.</param>
-    /// <param name="dataLabel">The label associated with the new data entry.</param>
-    /// <param name="data">The dataset containing the data to be added.</param>
-    /// <returns>A task representing the asynchronous operation, with a result of the updated <see cref="ChartData"/>.</returns>
+    /// <param name="chartData">The chart data to which the point will be added.</param>
+    /// <param name="dataLabel">Not used on a scatter chart, except as the dataset label of a time point.</param>
+    /// <param name="data">The point to add, with the label of the dataset it belongs to.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the updated chart data.</returns>
     [AddedVersion("1.0.0")]
-    [Description("Asynchronously adds a new data entry to the specified chart data.")]
+    [Description("Asynchronously appends one point to the dataset named by the data's DatasetLabel; labels are not used.")]
     [MethodReturnTypeName($"Task<{nameof(ChartData)}>")]
-    public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IChartDatasetData data) // TODO: May be this method is not required
+    public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IChartDatasetData data)
     {
         if (chartData is null)
             throw new ArgumentNullException(nameof(chartData));
@@ -39,25 +41,22 @@ public partial class ScatterChart : ChartComponentBase
         if (TimeDataSupport.IsTimePoint(data))
             return await AddTimePointAsync(chartData, dataLabel, data, dataset => dataset is ScatterChartDataset, ScatterChartInterop.AddDatasetPoint);
 
-        foreach (var dataset in chartData.Datasets)
-            if (dataset is ScatterChartDataset scatterChartDataset && scatterChartDataset.Label == dataLabel)
-                if (data is ScatterChartDatasetData scatterChartDatasetData && scatterChartDatasetData.Data is ScatterChartDataPoint scatterChartDataPoint)
-                    scatterChartDataset.Data?.Add(scatterChartDataPoint);
-
-        await SafeInvokeVoidAsync(ScatterChartInterop.AddDatasetData, Id, dataLabel, data);
+        await AppendPointAsync(chartData, data);
 
         return chartData;
     }
 
     /// <summary>
-    /// Asynchronously adds a new data label to the specified chart data, with one value for each dataset.
+    /// Asynchronously appends one point to each dataset the data names, through each item's <see cref="ChartDatasetData.DatasetLabel" />.
+    /// A scatter chart has no category labels, so <paramref name="dataLabel" /> is not used and <see cref="ChartData.Labels" />
+    /// is never read or changed; the items do not need to cover every dataset.
     /// </summary>
-    /// <param name="chartData">The chart data to which the label and values will be added.</param>
-    /// <param name="dataLabel">The new data label.</param>
-    /// <param name="data">One value per dataset, each naming the label of its dataset.</param>
+    /// <param name="chartData">The chart data to which the points will be added.</param>
+    /// <param name="dataLabel">Not used on a scatter chart.</param>
+    /// <param name="data">The points to add, each with the label of the dataset it belongs to.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the updated chart data.</returns>
     [AddedVersion("1.0.0")]
-    [Description("Asynchronously adds a new data label to the specified chart data, with one value for each dataset.")]
+    [Description("Asynchronously appends one point to each dataset the data names; labels are not used.")]
     [MethodReturnTypeName($"Task<{nameof(ChartData)}>")]
     public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IReadOnlyCollection<IChartDatasetData> data)
     {
@@ -65,16 +64,7 @@ public partial class ScatterChart : ChartComponentBase
             throw new ArgumentNullException(nameof(chartData));
 
         if (chartData.Datasets is null)
-            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
-
-        if (chartData.Labels is null)
-            throw new ArgumentException("chartData.Labels must not be null", nameof(chartData));
-
-        if (dataLabel is null)
-            throw new ArgumentNullException(nameof(dataLabel));
-
-        if (string.IsNullOrWhiteSpace(dataLabel))
-            throw new Exception($"{nameof(dataLabel)} cannot be empty.");
+            throw new ArgumentNullException(nameof(chartData.Datasets));
 
         if (data is null)
             throw new ArgumentNullException(nameof(data));
@@ -82,24 +72,8 @@ public partial class ScatterChart : ChartComponentBase
         if (!data.Any())
             throw new ArgumentException($"{nameof(data)} cannot be empty.", nameof(data));
 
-        if (chartData.Datasets.Count != data.Count)
-            throw new InvalidDataException("The chart dataset count and the new data points count do not match.");
-
-        if (chartData.Labels.Contains(dataLabel))
-            throw new Exception($"{dataLabel} already exists.");
-
-        chartData.Labels.Add(dataLabel);
-
-        foreach (var dataset in chartData.Datasets)
-            if (dataset is ScatterChartDataset scatterChartDataset)
-            {
-                var chartDatasetData = data.FirstOrDefault(x => x is ScatterChartDatasetData scatterChartDatasetData && scatterChartDatasetData.DatasetLabel == scatterChartDataset.Label);
-
-                if (chartDatasetData is ScatterChartDatasetData scatterChartDatasetData && scatterChartDatasetData.Data is ScatterChartDataPoint scatterChartDataPoint)
-                    scatterChartDataset.Data?.Add(scatterChartDataPoint);
-            }
-
-        await SafeInvokeVoidAsync(ScatterChartInterop.AddDatasetsData, Id, dataLabel, data?.Select(x => (ScatterChartDatasetData)x));
+        foreach (var item in data)
+            await AppendPointAsync(chartData, item);
 
         return chartData;
     }
@@ -210,6 +184,21 @@ public partial class ScatterChart : ChartComponentBase
         var datasets = chartData.Datasets.OfType<ScatterChartDataset>();
         var data = new { Labels = chartData.LabelsValue, Datasets = datasets };
         await SafeInvokeVoidAsync(ScatterChartInterop.Update, [Id, GetChartType(), data, (ScatterChartOptions)chartOptions, .. GetUpdateModeArguments(mode)]);
+    }
+
+    #endregion
+
+    #region Private Methods
+    // Appends a point to the named dataset in C# and in the browser; the browser function never touches the labels (work item 26112101).
+    private async Task AppendPointAsync(ChartData chartData, IChartDatasetData data)
+    {
+        if (data is not ScatterChartDatasetData { Data: ScatterChartDataPoint point } scatterChartDatasetData)
+            return;
+
+        foreach (var dataset in chartData.Datasets!.OfType<ScatterChartDataset>().Where(dataset => dataset.Label == scatterChartDatasetData.DatasetLabel))
+            (dataset.Data ??= new List<ScatterChartDataPoint>()).Add(point);
+
+        await SafeInvokeVoidAsync(ScatterChartInterop.AddDatasetPoint, Id, scatterChartDatasetData.DatasetLabel, point);
     }
 
     #endregion

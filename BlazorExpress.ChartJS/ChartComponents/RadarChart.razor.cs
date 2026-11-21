@@ -16,30 +16,30 @@ public partial class RadarChart : ChartComponentBase
     #region Public Methods
 
     /// <summary>
-    /// Asynchronously adds a new data entry to the specified chart data.
+    /// Asynchronously adds a category label to the chart data and appends one value to the dataset named by the data's
+    /// <see cref="ChartDatasetData.DatasetLabel" />, as the bar and line charts and Chart.js do. The label is added once; other
+    /// datasets are left unchanged.
     /// </summary>
-    /// <param name="chartData">The chart data to which the new entry will be added.</param>
-    /// <param name="dataLabel">The label associated with the new data entry.</param>
-    /// <param name="data">The dataset containing the data to be added.</param>
-    /// <returns>A task representing the asynchronous operation, with a result of the updated <see cref="ChartData"/>.</returns>
+    /// <param name="chartData">The chart data to which the label and the value will be added.</param>
+    /// <param name="dataLabel">The new category label, for example the name of the new point.</param>
+    /// <param name="data">The value to add, with the label of the dataset it belongs to.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the updated chart data.</returns>
     [AddedVersion("1.0.0")]
-    [Description("Asynchronously adds a new data entry to the specified chart data.")]
+    [Description("Asynchronously adds a category label to the chart data and appends one value to the dataset named by the data's DatasetLabel.")]
     [MethodReturnTypeName($"Task<{nameof(ChartData)}>")]
-    public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IChartDatasetData data) // TODO: May be this method is not required
+    public override async Task<ChartData> AddDataAsync(ChartData chartData, string dataLabel, IChartDatasetData data)
     {
-        if (chartData is null)
-            throw new ArgumentNullException(nameof(chartData));
+        CategoryChartSupport.Validate(chartData, dataLabel, data);
 
-        if (chartData.Datasets is null)
-            throw new ArgumentException("chartData.Datasets must not be null", nameof(chartData));
+        if (data is not RadarChartDatasetData radarChartDatasetData)
+            return chartData;
 
-        if (data is null)
-            throw new ArgumentNullException(nameof(data));
+        CategoryChartSupport.AddLabel(chartData, dataLabel);
 
-        foreach (var dataset in chartData.Datasets)
-            if (dataset is RadarChartDataset radarChartDataset && radarChartDataset.Label == dataLabel)
-                if (data is RadarChartDatasetData radarChartDatasetData)
-                    radarChartDataset.Data?.Add(radarChartDatasetData.Data as double?);
+        foreach (var dataset in chartData.Datasets!.OfType<RadarChartDataset>().Where(dataset => dataset.Label == radarChartDatasetData.DatasetLabel))
+        {
+            (dataset.Data ??= new List<double?>()).Add(radarChartDatasetData.Data as double?);
+        }
 
         await SafeInvokeVoidAsync(RadarChartInterop.AddDatasetData, Id, dataLabel, data);
 

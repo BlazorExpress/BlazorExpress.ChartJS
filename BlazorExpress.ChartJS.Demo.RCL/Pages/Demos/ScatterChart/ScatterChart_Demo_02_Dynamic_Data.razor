@@ -18,10 +18,10 @@
 
     protected override void OnInitialized()
     {
-        // AddDataAsync adds one point to every dataset under a new label; a scatter chart does not show the labels
-        var labels = Enumerable.Range(0, 6).Select(_ => GetNextDeliveryLabel()).ToList();
+        // each zone starts with six deliveries; a scatter chart needs no labels
+        deliveriesCount = 6;
         var datasets = Enumerable.Range(0, 3).Select(_ => (IChartDataset)CreateZoneDataset()).ToList();
-        chartData = new ChartData { Labels = labels, Datasets = datasets };
+        chartData = new ChartData { Datasets = datasets };
 
         scatterChartOptions = new ScatterChartOptions { Responsive = true };
         // null keeps Chart.js's theme-aware default text colour
@@ -63,7 +63,9 @@
             .Select(dataset => (IChartDatasetData)new ScatterChartDatasetData(dataset.Label, GetRandomDelivery()))
             .ToList();
 
-        chartData = await scatterChart.AddDataAsync(chartData, GetNextDeliveryLabel(), data);
+        deliveriesCount += 1;
+        // each point goes to the zone its data names; a scatter chart does not use the label argument
+        chartData = await scatterChart.AddDataAsync(chartData, string.Empty, data);
     }
 
     #region Data Preparation
@@ -90,12 +92,6 @@
         var distance = Math.Round(1 + random.NextDouble() * 19, 1);
         var minutes = Math.Round(10 + distance * 3 + random.Next(-6, 12));
         return new ScatterChartDataPoint(distance, minutes);
-    }
-
-    private string GetNextDeliveryLabel()
-    {
-        deliveriesCount += 1;
-        return $"Delivery {deliveriesCount}";
     }
 
     #endregion Data Preparation

@@ -61,10 +61,10 @@
         <strong>How to use:</strong>
         <div class="content">
             <ol>
-                <li>Create a <code>ChartData</code> with a <code>Labels</code> list and one <code>ScatterChartDataset</code> per zone, each with a <code>Data</code> list of <code>ScatterChartDataPoint(x, y)</code>. A scatter chart does not show the labels, but <code>AddDataAsync</code> needs a new one for each point it adds.</li>
+                <li>Create a <code>ChartData</code> with one <code>ScatterChartDataset</code> per zone, each with a <code>Data</code> list of <code>ScatterChartDataPoint(x, y)</code>. A scatter chart needs no <code>Labels</code>.</li>
                 <li>To change existing points, replace each dataset's <code>Data</code> and call <code>scatterChart.UpdateAsync(chartData, scatterChartOptions)</code>.</li>
                 <li>To add a dataset, call <code>scatterChart.AddDatasetAsync(chartData, dataset, scatterChartOptions)</code> and keep the <code>ChartData</code> it returns.</li>
-                <li>To add one point to every dataset, pass a new label and one <code>ScatterChartDatasetData(datasetLabel, point)</code> per dataset to <code>scatterChart.AddDataAsync</code>, and keep the <code>ChartData</code> it returns.</li>
+                <li>To add points, pass one <code>ScatterChartDatasetData(datasetLabel, point)</code> per point to <code>scatterChart.AddDataAsync</code>; each point goes to the dataset it names, and the label argument is not used on a scatter chart. Keep the <code>ChartData</code> it returns.</li>
             </ol>
         </div>
     </Block>

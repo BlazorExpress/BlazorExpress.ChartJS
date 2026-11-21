@@ -15,7 +15,7 @@
             {
                 Responsive = true,
                 // Duration = 0 draws the chart once, instead of animating 5,000 points frame by frame.
-                Animation = new ChartAnimation { Duration = 0 },
+                Animation = ChartAnimation.Disabled,
                 // Index mode finds the hovered label by its x position, without testing every point for a hit.
                 Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false },
             };

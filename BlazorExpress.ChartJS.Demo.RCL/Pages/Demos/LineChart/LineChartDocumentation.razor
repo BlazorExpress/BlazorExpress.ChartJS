@@ -1058,7 +1058,7 @@ blazorexpress.chartjs.registerFunction('demo.greyOverGaps', ctx => touchesGap(ct
         <div class="content">
             <ol>
                 <li>Set <code>PointRadius = [0]</code> on the <code>LineChartDataset</code>, so Chart.js draws one line and no point circles. The hovered point still shows.</li>
-                <li>Set <code>Animation = new ChartAnimation { Duration = 0 }</code> on the options, so the chart is drawn at once.</li>
+                <li>Set <code>Animation = ChartAnimation.Disabled</code> on the options (sent to Chart.js as <code>animation: false</code>), so the chart is drawn at once and redraws without animating.</li>
                 <li>Set <code>Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false }</code>, so the tooltip shows the reading under the pointer without a hit test on every point.</li>
                 <li>Set <code>Scales.X.Ticks = new ChartAxesTicks { MaxTicksLimit = 8, MaxRotation = 0 }</code>, so the x-axis shows at most 8 labels, kept level.</li>
             </ol>

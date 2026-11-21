@@ -115,6 +115,7 @@ public class ChartDatasetDataLabels
     [Description("Gets the data labels anchor as a string.")]
     [ParameterTypeName("string?")]
     [JsonPropertyName("anchor")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? DataLabelsAnchorAsString { get; private set; }
 
     /// <summary>
