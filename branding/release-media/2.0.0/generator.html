@@ -362,6 +362,84 @@ function drawThumbnail() {
   legend([['Visitors', C.violet], ['Sign-ups', C.teal]], 710, 545, 1);
 }
 
+// ---------- soundtrack (original, synthesized with Web Audio) ----------
+// A minor, 120 BPM (a bar is 2 s): Am, F, C, G. Pad and arpeggio throughout; bass, kick and hats under the feature
+// scenes; a whoosh before each scene change, a click on the doughnut tap, and a chime at the start and on the outro.
+async function composeAudio() {
+  const sr = 48000, ac = new OfflineAudioContext(2, Math.ceil(DURATION * sr), sr);
+  const hz = m => 440 * Math.pow(2, (m - 69) / 12);
+  const comp = ac.createDynamicsCompressor(); comp.threshold.value = -16; comp.ratio.value = 3; comp.connect(ac.destination);
+  const master = ac.createGain(); master.connect(comp);
+  master.gain.setValueAtTime(0, 0); master.gain.linearRampToValueAtTime(1.2, 0.6);
+  master.gain.setValueAtTime(1.2, DURATION - 2.5); master.gain.linearRampToValueAtTime(0, DURATION - 0.05);
+  // reverb from a decaying noise impulse
+  const ir = ac.createBuffer(2, sr * 2.2, sr);
+  for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 3); }
+  const rev = ac.createConvolver(); rev.buffer = ir; const revGain = ac.createGain(); revGain.gain.value = 0.35; rev.connect(revGain); revGain.connect(master);
+  const noise = ac.createBuffer(1, sr, sr); { const d = noise.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; }
+  const env = (g, t, peak, attack, decay) => { g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(peak, t + attack); g.gain.exponentialRampToValueAtTime(0.0001, t + attack + decay); };
+  const tone = (type, f, t, peak, attack, decay, { wet = 0.5, pan = 0 } = {}) => {
+    const o = ac.createOscillator(); o.type = type; o.frequency.value = f; const g = ac.createGain(); env(g, t, peak, attack, decay);
+    const p = ac.createStereoPanner(); p.pan.value = pan; o.connect(g); g.connect(p); p.connect(master);
+    if (wet) { const s = ac.createGain(); s.gain.value = wet; p.connect(s); s.connect(rev); }
+    o.start(t); o.stop(t + attack + decay + 0.05);
+  };
+  const noiseHit = (t, peak, decay, type, freq, q = 0.7) => {
+    const s = ac.createBufferSource(); s.buffer = noise; const f = ac.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
+    const g = ac.createGain(); env(g, t, peak, 0.002, decay); s.connect(f); f.connect(g); g.connect(master); s.start(t); s.stop(t + decay + 0.05);
+  };
+  const chords = [[57, 60, 64], [53, 57, 60], [48, 52, 55], [55, 59, 62]], roots = [45, 41, 36, 43];
+  const drumsFrom = 4.5, drumsTo = 39;
+  for (let b = 0; b * 2 < DURATION; b++) {
+    const t0 = b * 2, ch = chords[b % 4];
+    // pad: two detuned saws per chord tone through a low-pass filter
+    for (const m of ch) for (const det of [-7, 7]) {
+      const o = ac.createOscillator(); o.type = 'sawtooth'; o.frequency.value = hz(m); o.detune.value = det;
+      const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 1100; const g = ac.createGain();
+      g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(0.018, t0 + 0.4); g.gain.setValueAtTime(0.018, t0 + 1.75); g.gain.linearRampToValueAtTime(0, t0 + 2.25);
+      o.connect(f); f.connect(g); g.connect(master); const s = ac.createGain(); s.gain.value = 0.6; g.connect(s); s.connect(rev); o.start(t0); o.stop(t0 + 2.3);
+    }
+    // arpeggio in eighths
+    const arp = [ch[0] + 12, ch[1] + 12, ch[2] + 12, ch[0] + 24, ch[2] + 12, ch[1] + 12, ch[0] + 12, ch[2] + 12];
+    arp.forEach((m, i) => tone('triangle', hz(m), t0 + i * 0.25, 0.05, 0.005, 0.24, { wet: 0.6, pan: i % 2 ? 0.25 : -0.25 }));
+    for (let k = 0; k < 4; k++) {
+      const t = t0 + k * 0.5; if (t < drumsFrom || t >= drumsTo) continue;
+      // kick: a sine dropping from 140 to 45 Hz
+      const o = ac.createOscillator(); o.type = 'sine'; o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(45, t + 0.12);
+      const g = ac.createGain(); env(g, t, 0.55, 0.002, 0.28); o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.35);
+      noiseHit(t + 0.25, 0.05, 0.05, 'highpass', 7000); // hat on the off-beat
+      if (k % 2 === 0) tone('triangle', hz(roots[b % 4]), t, 0.2, 0.01, 0.45, { wet: 0 }); // bass on beats 1 and 3
+    }
+  }
+  // whoosh into each scene: band-passed noise sweeping up
+  for (const sc of SCENES.slice(1)) {
+    const t = sc.start - 0.5, s = ac.createBufferSource(); s.buffer = noise; s.loop = true;
+    const f = ac.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.2; f.frequency.setValueAtTime(300, t); f.frequency.exponentialRampToValueAtTime(5000, t + 0.6);
+    const g = ac.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.12, t + 0.45); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.75);
+    s.connect(f); f.connect(g); g.connect(master); g.connect(rev); s.start(t); s.stop(t + 0.8);
+  }
+  tone('sine', 1800, 23.6 + 1.4, 0.12, 0.002, 0.05, { wet: 0.2 }); // the tap on the doughnut slice
+  for (const t of [0.05, 35.4]) [1, 2.76, 5.4].forEach((r, i) => tone('sine', hz(81) * r, t, 0.09 / (i + 1), 0.005, 2.4 / (i + 1), { wet: 0.8 })); // chime
+  return ac.startRendering();
+}
+function levels(buffer) {
+  let peak = 0, sum = 0; const d = buffer.getChannelData(0);
+  for (let i = 0; i < d.length; i++) { const v = Math.abs(d[i]); if (v > peak) peak = v; sum += d[i] * d[i]; }
+  return { peakDb: +(20 * Math.log10(peak)).toFixed(1), rmsDb: +(10 * Math.log10(sum / d.length)).toFixed(1) };
+}
+async function encodeAudio(buffer, muxer) {
+  const enc = new AudioEncoder({ output: (chunk, meta) => muxer.addAudioChunk(chunk, meta), error: e => status('Audio encoder error: ' + e.message) });
+  enc.configure({ codec: 'mp4a.40.2', sampleRate: buffer.sampleRate, numberOfChannels: 2, bitrate: 192000 });
+  const L = buffer.getChannelData(0), R = buffer.getChannelData(1), n = 1024;
+  for (let i = 0; i < buffer.length; i += n) {
+    const len = Math.min(n, buffer.length - i), data = new Float32Array(len * 2);
+    data.set(L.subarray(i, i + len), 0); data.set(R.subarray(i, i + len), len);
+    const ad = new AudioData({ format: 'f32-planar', sampleRate: buffer.sampleRate, numberOfFrames: len, numberOfChannels: 2, timestamp: Math.round(i * 1e6 / buffer.sampleRate), data });
+    enc.encode(ad); ad.close();
+  }
+  await enc.flush();
+}
+
 // ---------- output ----------
 async function save(name, blob) {
   try {
@@ -374,7 +452,11 @@ const toPng = () => new Promise(ok => stage.toBlob(ok, 'image/png'));
 async function renderVideo() {
   stage.width = 1920; stage.height = 1080;
   const fps = 30, frames = Math.round(DURATION * fps);
-  const muxer = new Mp4Muxer.Muxer({ target: new Mp4Muxer.ArrayBufferTarget(), video: { codec: 'avc', width: 1920, height: 1080, frameRate: fps }, fastStart: 'in-memory' });
+  status('Composing the soundtrack…');
+  const audio = await composeAudio(); window.lastLevels = levels(audio);
+  const muxer = new Mp4Muxer.Muxer({ target: new Mp4Muxer.ArrayBufferTarget(), video: { codec: 'avc', width: 1920, height: 1080, frameRate: fps },
+    audio: { codec: 'aac', numberOfChannels: 2, sampleRate: audio.sampleRate }, fastStart: 'in-memory' });
+  await encodeAudio(audio, muxer);
   const encoder = new VideoEncoder({ output: (chunk, meta) => muxer.addVideoChunk(chunk, meta), error: e => status('Encoder error: ' + e.message) });
   encoder.configure({ codec: 'avc1.640028', width: 1920, height: 1080, bitrate: 8_000_000, framerate: fps, avc: { format: 'avc' } });
   for (let i = 0; i < frames; i++) {
