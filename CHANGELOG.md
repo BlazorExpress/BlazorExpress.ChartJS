@@ -2,6 +2,12 @@
 
 All notable changes to BlazorExpress.ChartJS are listed here, newest first.
 
+## Unreleased
+
+### Fixed
+
+- **`ToRgbaString` colours work in every culture.** The alpha value now always uses a decimal point, for example `RGBA(255, 99, 132, 0.5)`. Before, a culture with a decimal comma, such as Italian or German, wrote `RGBA(255, 99, 132, 0,5)`, which Chart.js cannot read, so the chart drew those areas black. This showed up on phones and browsers set to such a language ([Blazor Bootstrap #924](https://github.com/vikramlearning/blazorbootstrap/issues/924)).
+
 ## 2.0.0
 
 Released 2026-11-21.
