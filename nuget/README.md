@@ -9,6 +9,7 @@
 - [Supported Tech Stack](#supported-tech-stack)
 - [Components](#components)
 - [Screenshots](#screenshots)
+- [Contributing](#contributing)
 - [Creators](#creators)
 - [Copyright and license](#copyright-and-license)
 
@@ -210,10 +211,14 @@ A second y axis on the right (`Scales.AdditionalAxes`).
 
 More components coming...
 
+## Contributing
+
+Contributions are welcome. Read the [contributing guide](https://github.com/BlazorExpress/BlazorExpress.ChartJS/blob/main/CONTRIBUTING.md) first.
+
 ## Creators
 
 **Vikram Reddy**
 
 ## Copyright and license
 
-Code and documentation copyright 2026 [Blazor Express](https://blazorexpress.com/) Code released under the [Apache-2.0 License](https://github.com/BlazorExpress/BlazorExpress.ChartJS/blob/main/LICENSE).
+Code and documentation copyright 2024–2026 Vikram Reddy and contributors. Code released under the [Apache-2.0 License](https://github.com/BlazorExpress/BlazorExpress.ChartJS/blob/main/LICENSE).
